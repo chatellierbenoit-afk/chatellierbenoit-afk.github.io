@@ -1,316 +1,656 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Observatoire des votes de l’Assemblée nationale</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f7f7fb;
-  color: #222;
-}
-header {
-  background: #7700FF;
-  color: white;
-  padding: 28px 20px;
-  text-align: center;
-}
-main {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 24px;
-}
-.panel {
-  background: white;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  text-align: center;
-}
-select, input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-sizing: border-box;
-  text-align: center;
-}
-.card {
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 14px;
-  background: #fcfcff;
-}
-.card h3 {
-  margin-top: 0;
-  text-align: center;
-}
-.meta, .muted, .summary {
-  text-align: center;
-  color: #666;
-}
-.badges {
-  text-align: center;
-  margin-top: 10px;
-}
-.badge {
-  display: inline-block;
-  background: #eee;
-  border-radius: 999px;
-  padding: 6px 10px;
-  margin: 4px;
-  font-size: 13px;
-}
-button {
-  display: block;
-  margin: 12px auto 0 auto;
-  background: #7700FF;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 16px;
-  cursor: pointer;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 14px;
-}
-th, td {
-  padding: 9px;
-  border-bottom: 1px solid #eaeaea;
-  text-align: center;
-  font-size: 14px;
-}
-th {
-  background: #f0ebff;
-}
-.small {
-  font-size: 13px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Observatoire des votes de l’Assemblée nationale</title>
+  <style>
+    :root {
+      --violet: #7700FF;
+      --bg: #f5f5fa;
+      --card: #ffffff;
+      --text: #1f1f24;
+      --muted: #6b6b78;
+      --border: #e7e7ef;
+      --shadow: 0 8px 24px rgba(0,0,0,0.06);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: linear-gradient(135deg, #5f00d9, var(--violet));
+      color: white;
+      padding: 42px 20px 34px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.1;
+    }
+
+    header p {
+      margin: 14px 0 0;
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    main {
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      background: #fcfcff;
+    }
+
+    .stat .value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--violet);
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d8d8e4;
+      border-radius: 12px;
+      background: white;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .subline {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .results-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .scrutin-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: #fcfcff;
+    }
+
+    .scrutin-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .meta {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .chips {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .chip {
+      display: inline-block;
+      margin: 4px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #f0ebff;
+      color: #3e1889;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .counts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0 12px;
+    }
+
+    .count-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      background: white;
+    }
+
+    .count-box strong {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 4px;
+    }
+
+    .count-box span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    button {
+      background: var(--violet);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.94;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px;
+    }
+
+    .detail-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .detail-header h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .detail-votes {
+      max-height: 720px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #f6f2ff;
+      z-index: 1;
+    }
+
+    .vote-Pour {
+      color: #0a7a2f;
+      font-weight: 700;
+    }
+
+    .vote-Contre {
+      color: #b30021;
+      font-weight: 700;
+    }
+
+    .vote-Abstention {
+      color: #8a5a00;
+      font-weight: 700;
+    }
+
+    .vote-Non-votant {
+      color: #666;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 1150px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      header h1 {
+        font-size: 32px;
+      }
+
+      .filters,
+      .stats,
+      .counts {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 20px 12px 40px;
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <h1>Observatoire des votes de l’Assemblée nationale</h1>
-  <p>Votes réels par scrutin, groupe et député</p>
-</header>
+  <header>
+    <h1>Observatoire des votes de l’Assemblée nationale</h1>
+    <p>Recherche par député, groupe, scrutin et position de vote</p>
+  </header>
 
-<main>
-  <section class="panel">
-    <div class="grid">
-      <div>
-        <label for="groupFilter">Groupe politique</label>
-        <select id="groupFilter">
-          <option value="">Tous les groupes</option>
-        </select>
-      </div>
-      <div>
-        <label for="voteFilter">Position de vote</label>
-        <select id="voteFilter">
-          <option value="">Toutes les positions</option>
-          <option value="Pour">Pour</option>
-          <option value="Contre">Contre</option>
-          <option value="Abstention">Abstention</option>
-          <option value="Non-votant">Non-votant</option>
-        </select>
-      </div>
-      <div>
-        <label for="themeFilter">Thématique</label>
-        <select id="themeFilter">
-          <option value="">Toutes les thématiques</option>
-        </select>
-      </div>
-      <div>
-        <label for="deputeSearch">Recherche député</label>
-        <input id="deputeSearch" type="text" placeholder="Nom ou prénom">
-      </div>
-    </div>
-    <p class="summary" id="summaryText"></p>
-    <p class="summary small" id="metaText"></p>
-  </section>
-
-  <section class="panel">
-    <h2 style="text-align:center;">Scrutins</h2>
-    <div id="results"></div>
-  </section>
-
-  <section class="panel">
-    <h2 style="text-align:center;">Détail nominatif du scrutin</h2>
-    <div id="detailContainer">
-      <p class="muted">Clique sur “Voir le détail nominatif”.</p>
-    </div>
-  </section>
-</main>
-
-<script>
-let scrutins = [];
-
-const groupFilter = document.getElementById("groupFilter");
-const voteFilter = document.getElementById("voteFilter");
-const themeFilter = document.getElementById("themeFilter");
-const deputeSearch = document.getElementById("deputeSearch");
-const results = document.getElementById("results");
-const detailContainer = document.getElementById("detailContainer");
-const summaryText = document.getElementById("summaryText");
-const metaText = document.getElementById("metaText");
-
-function uniqueSortedValues(array) {
-  return [...new Set(array)].sort((a, b) => a.localeCompare(b, "fr"));
-}
-
-function countsFromVotes(votes) {
-  return {
-    pour: votes.filter(v => v.vote === "Pour").length,
-    contre: votes.filter(v => v.vote === "Contre").length,
-    abstention: votes.filter(v => v.vote === "Abstention").length,
-    nonVotant: votes.filter(v => v.vote === "Non-votant").length
-  };
-}
-
-function populateFilters() {
-  const allVotes = scrutins.flatMap(s => s.votes);
-  const groupes = uniqueSortedValues(allVotes.map(v => v.groupe));
-  const themes = uniqueSortedValues(scrutins.map(s => s.theme));
-
-  groupes.forEach(groupe => {
-    const option = document.createElement("option");
-    option.value = groupe;
-    option.textContent = groupe;
-    groupFilter.appendChild(option);
-  });
-
-  themes.forEach(theme => {
-    const option = document.createElement("option");
-    option.value = theme;
-    option.textContent = theme;
-    themeFilter.appendChild(option);
-  });
-}
-
-function displayResults() {
-  const selectedGroup = groupFilter.value;
-  const selectedVote = voteFilter.value;
-  const selectedTheme = themeFilter.value;
-  const search = deputeSearch.value.trim().toLowerCase();
-
-  const filteredScrutins = scrutins
-    .filter(scrutin => !selectedTheme || scrutin.theme === selectedTheme)
-    .map(scrutin => {
-      const filteredVotes = scrutin.votes.filter(v => {
-        const okGroup = !selectedGroup || v.groupe === selectedGroup;
-        const okVote = !selectedVote || v.vote === selectedVote;
-        const okSearch = !search || v.nom.toLowerCase().includes(search);
-        return okGroup && okVote && okSearch;
-      });
-      return { ...scrutin, filteredVotes };
-    })
-    .filter(scrutin => scrutin.filteredVotes.length > 0);
-
-  results.innerHTML = "";
-  summaryText.textContent = `${filteredScrutins.length} scrutin(s) affiché(s)`;
-
-  if (filteredScrutins.length === 0) {
-    results.innerHTML = `<p class="muted">Aucun scrutin ne correspond à ta recherche.</p>`;
-    return;
-  }
-
-  filteredScrutins
-    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
-    .forEach(scrutin => {
-      const counts = countsFromVotes(scrutin.filteredVotes);
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${scrutin.titre || "Scrutin sans titre"}</h3>
-        <p class="meta">${scrutin.date || ""} • ${scrutin.theme || "Autres"}</p>
-        <div class="badges">
-          <span class="badge">Pour : ${counts.pour}</span>
-          <span class="badge">Contre : ${counts.contre}</span>
-          <span class="badge">Abstention : ${counts.abstention}</span>
-          <span class="badge">Non-votant : ${counts.nonVotant}</span>
+  <main>
+    <section class="panel">
+      <div class="stats">
+        <div class="stat">
+          <div class="value" id="statScrutins">0</div>
+          <div class="label">Scrutins chargés</div>
         </div>
-        <p class="muted">${scrutin.filteredVotes.length} vote(s) dans cette vue</p>
-        <button onclick="showDetail('${scrutin.uid || scrutin.id}')">Voir le détail nominatif</button>
+        <div class="stat">
+          <div class="value" id="statDeputes">0</div>
+          <div class="label">Députés détectés</div>
+        </div>
+        <div class="stat">
+          <div class="value" id="statGroupes">0</div>
+          <div class="label">Groupes détectés</div>
+        </div>
+        <div class="stat">
+          <div class="value" id="statVotes">0</div>
+          <div class="label">Votes individuels</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="filters">
+        <div class="field">
+          <label for="searchDeputy">Recherche député</label>
+          <input id="searchDeputy" type="text" placeholder="Nom ou prénom">
+        </div>
+        <div class="field">
+          <label for="groupFilter">Groupe politique</label>
+          <select id="groupFilter">
+            <option value="">Tous les groupes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="voteFilter">Position de vote</label>
+          <select id="voteFilter">
+            <option value="">Toutes les positions</option>
+            <option value="Pour">Pour</option>
+            <option value="Contre">Contre</option>
+            <option value="Abstention">Abstention</option>
+            <option value="Non-votant">Non-votant</option>
+            <option value="Inconnu">Inconnu</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="themeFilter">Thématique</label>
+          <select id="themeFilter">
+            <option value="">Toutes les thématiques</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="scrutinSearch">Recherche scrutin</label>
+          <input id="scrutinSearch" type="text" placeholder="Titre ou numéro">
+        </div>
+      </div>
+      <div class="subline" id="summaryLine">Chargement des données…</div>
+    </section>
+
+    <section class="layout">
+      <section class="panel">
+        <h2 class="section-title">Scrutins</h2>
+        <div id="results" class="results-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="section-title">Détail nominatif</h2>
+        <div id="detailContainer" class="empty">Clique sur un scrutin pour voir qui a voté quoi.</div>
+      </section>
+    </section>
+
+    <div class="footer-note">
+      Données chargées depuis le fichier data.json du site
+    </div>
+  </main>
+
+  <script>
+    let scrutins = [];
+    let filteredScrutins = [];
+
+    const statScrutins = document.getElementById("statScrutins");
+    const statDeputes = document.getElementById("statDeputes");
+    const statGroupes = document.getElementById("statGroupes");
+    const statVotes = document.getElementById("statVotes");
+
+    const searchDeputy = document.getElementById("searchDeputy");
+    const groupFilter = document.getElementById("groupFilter");
+    const voteFilter = document.getElementById("voteFilter");
+    const themeFilter = document.getElementById("themeFilter");
+    const scrutinSearch = document.getElementById("scrutinSearch");
+
+    const summaryLine = document.getElementById("summaryLine");
+    const results = document.getElementById("results");
+    const detailContainer = document.getElementById("detailContainer");
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat("fr-FR").format(value || 0);
+    }
+
+    function uniq(values) {
+      return [...new Set(values)].filter(Boolean).sort((a, b) => a.localeCompare(b, "fr"));
+    }
+
+    function normalize(text) {
+      return (text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function updateStats(meta) {
+      const totalVotes = scrutins.reduce((sum, s) => sum + (s.votes?.length || 0), 0);
+      statScrutins.textContent = formatNumber(meta?.nombre_scrutins || scrutins.length);
+      statDeputes.textContent = formatNumber(meta?.nombre_deputes_detectes || uniq(scrutins.flatMap(s => s.votes.map(v => v.nom))).length);
+      statGroupes.textContent = formatNumber(meta?.nombre_groupes_detectes || uniq(scrutins.flatMap(s => s.votes.map(v => v.groupe))).length);
+      statVotes.textContent = formatNumber(totalVotes);
+    }
+
+    function fillFilters() {
+      const groupes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
+      const themes = uniq(scrutins.map(s => s.theme || "Autres"));
+
+      groupFilter.innerHTML = `<option value="">Tous les groupes</option>`;
+      themeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
+
+      groupes.forEach(groupe => {
+        const option = document.createElement("option");
+        option.value = groupe;
+        option.textContent = groupe;
+        groupFilter.appendChild(option);
+      });
+
+      themes.forEach(theme => {
+        const option = document.createElement("option");
+        option.value = theme;
+        option.textContent = theme;
+        themeFilter.appendChild(option);
+      });
+    }
+
+    function getCounts(votes) {
+      return {
+        pour: votes.filter(v => v.vote === "Pour").length,
+        contre: votes.filter(v => v.vote === "Contre").length,
+        abstention: votes.filter(v => v.vote === "Abstention").length,
+        nonVotant: votes.filter(v => v.vote === "Non-votant").length
+      };
+    }
+
+    function applyFilters() {
+      const deputyQuery = normalize(searchDeputy.value);
+      const scrutinQuery = normalize(scrutinSearch.value);
+      const selectedGroup = groupFilter.value;
+      const selectedVote = voteFilter.value;
+      const selectedTheme = themeFilter.value;
+
+      filteredScrutins = scrutins
+        .map(scrutin => {
+          const title = scrutin.titre || "";
+          const titleMatch = !scrutinQuery || normalize(title).includes(scrutinQuery) || normalize(String(scrutin.id || "")).includes(scrutinQuery);
+          const themeMatch = !selectedTheme || (scrutin.theme || "Autres") === selectedTheme;
+
+          if (!titleMatch || !themeMatch) {
+            return null;
+          }
+
+          const matchingVotes = (scrutin.votes || []).filter(vote => {
+            const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
+            const groupMatch = !selectedGroup || vote.groupe === selectedGroup;
+            const voteMatch = !selectedVote || vote.vote === selectedVote;
+            return deputyMatch && groupMatch && voteMatch;
+          });
+
+          if (matchingVotes.length === 0) {
+            return null;
+          }
+
+          return {
+            ...scrutin,
+            matchingVotes
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
+      renderResults();
+    }
+
+    function renderResults() {
+      results.innerHTML = "";
+
+      summaryLine.textContent = `${formatNumber(filteredScrutins.length)} scrutin(s) correspondent à la recherche`;
+
+      if (filteredScrutins.length === 0) {
+        results.innerHTML = `<div class="empty">Aucun scrutin ne correspond aux filtres choisis.</div>`;
+        detailContainer.innerHTML = `Clique sur un scrutin pour voir qui a voté quoi.`;
+        return;
+      }
+
+      filteredScrutins.forEach(scrutin => {
+        const counts = getCounts(scrutin.matchingVotes);
+
+        const card = document.createElement("article");
+        card.className = "scrutin-card";
+
+        card.innerHTML = `
+          <h3>${scrutin.titre || `Scrutin ${scrutin.id}`}</h3>
+          <div class="meta">${scrutin.date || "Date non renseignée"}</div>
+          <div class="chips">
+            <span class="chip">${scrutin.theme || "Autres"}</span>
+            <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) affiché(s)</span>
+          </div>
+          <div class="counts">
+            <div class="count-box">
+              <strong>${counts.pour}</strong>
+              <span>Pour</span>
+            </div>
+            <div class="count-box">
+              <strong>${counts.contre}</strong>
+              <span>Contre</span>
+            </div>
+            <div class="count-box">
+              <strong>${counts.abstention}</strong>
+              <span>Abstention</span>
+            </div>
+            <div class="count-box">
+              <strong>${counts.nonVotant}</strong>
+              <span>Non-votant</span>
+            </div>
+          </div>
+          <div class="actions">
+            <button data-scrutin-id="${scrutin.uid || scrutin.id}">Voir le détail nominatif</button>
+          </div>
+        `;
+
+        card.querySelector("button").addEventListener("click", () => {
+          showDetail(scrutin.uid || scrutin.id);
+        });
+
+        results.appendChild(card);
+      });
+    }
+
+    function showDetail(scrutinId) {
+      const scrutin = filteredScrutins.find(s => String(s.uid || s.id) === String(scrutinId))
+        || scrutins.find(s => String(s.uid || s.id) === String(scrutinId));
+
+      if (!scrutin) {
+        detailContainer.innerHTML = `<div class="empty">Scrutin introuvable.</div>`;
+        return;
+      }
+
+      const deputyQuery = normalize(searchDeputy.value);
+      const selectedGroup = groupFilter.value;
+      const selectedVote = voteFilter.value;
+
+      const votes = (scrutin.votes || [])
+        .filter(vote => {
+          const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
+          const groupMatch = !selectedGroup || vote.groupe === selectedGroup;
+          const voteMatch = !selectedVote || vote.vote === selectedVote;
+          return deputyMatch && groupMatch && voteMatch;
+        })
+        .sort((a, b) => {
+          const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
+          if (g !== 0) return g;
+          return (a.nom || "").localeCompare(b.nom || "", "fr");
+        });
+
+      detailContainer.innerHTML = `
+        <div class="detail-header">
+          <h3>${scrutin.titre || `Scrutin ${scrutin.id}`}</h3>
+          <div class="meta">${scrutin.date || "Date non renseignée"} · ${scrutin.theme || "Autres"} · ${formatNumber(votes.length)} vote(s)</div>
+        </div>
+        <div class="detail-votes">
+          <table>
+            <thead>
+              <tr>
+                <th>Député</th>
+                <th>Groupe</th>
+                <th>Vote</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${votes.map(v => `
+                <tr>
+                  <td>${v.nom || ""}</td>
+                  <td>${v.groupe || ""}</td>
+                  <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
       `;
-      results.appendChild(card);
-    });
-}
+    }
 
-window.showDetail = function(scrutinUid) {
-  const scrutin = scrutins.find(s => (s.uid || s.id) == scrutinUid);
+    function bindEvents() {
+      [searchDeputy, groupFilter, voteFilter, themeFilter, scrutinSearch].forEach(el => {
+        el.addEventListener("input", applyFilters);
+        el.addEventListener("change", applyFilters);
+      });
+    }
 
-  if (!scrutin) {
-    detailContainer.innerHTML = `<p class="muted">Scrutin introuvable.</p>`;
-    return;
-  }
+    async function init() {
+      try {
+        const response = await fetch("data.json");
+        const data = await response.json();
 
-  const votes = [...scrutin.votes].sort((a, b) => {
-    const groupCompare = a.groupe.localeCompare(b.groupe, "fr");
-    if (groupCompare !== 0) return groupCompare;
-    return a.nom.localeCompare(b.nom, "fr");
-  });
+        scrutins = data.scrutins || [];
 
-  detailContainer.innerHTML = `
-    <h3 style="text-align:center;">${scrutin.titre || "Scrutin"}</h3>
-    <p class="meta">${scrutin.date || ""} • ${scrutin.theme || "Autres"}</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Député</th>
-          <th>Groupe</th>
-          <th>Vote</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${votes.map(v => `
-          <tr>
-            <td>${v.nom}</td>
-            <td>${v.groupe}</td>
-            <td>${v.vote}</td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-  `;
-};
+        updateStats(data.meta || {});
+        fillFilters();
+        bindEvents();
+        applyFilters();
 
-fetch("data.json")
-  .then(r => r.json())
-  .then(data => {
-    scrutins = data.scrutins || [];
+      } catch (error) {
+        console.error(error);
+        summaryLine.textContent = "Impossible de charger les données.";
+        results.innerHTML = `<div class="empty">Le fichier data.json n’a pas pu être chargé.</div>`;
+      }
+    }
 
-    const meta = data.meta || {};
-    metaText.textContent =
-      `Scrutins : ${meta.nombre_scrutins || 0} • Députés détectés : ${meta.nombre_deputes_detectes || 0} • Groupes détectés : ${meta.nombre_groupes_detectes || 0}`;
-
-    populateFilters();
-    displayResults();
-  })
-  .catch(err => {
-    console.error(err);
-    results.innerHTML = `<p class="muted">Impossible de charger data.json</p>`;
-  });
-
-groupFilter.addEventListener("change", displayResults);
-voteFilter.addEventListener("change", displayResults);
-themeFilter.addEventListener("change", displayResults);
-deputeSearch.addEventListener("input", displayResults);
-</script>
+    init();
+  </script>
 </body>
 </html>
