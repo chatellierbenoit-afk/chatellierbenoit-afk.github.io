@@ -1,121 +1,56 @@
-import csv
-import io
 import json
-import re
+import ssl
+import urllib.request
+import zipfile
+from io import BytesIO
 from pathlib import Path
 
-import requests
-
 OUTPUT_FILE = Path("data.json")
-CIVIX_DATASET_API = "https://www.data.gouv.fr/api/1/datasets/donnees-parlementaires-francaises-votes-deputes-scrutins-civix/"
 
-def normalize_key(value: str) -> str:
-    return re.sub(r"[^a-z0-9]", "", (value or "").lower())
+SCRUTINS_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
+AMO_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/deputes_actifs_mandats_actifs_organes/AMO10_deputes_actifs_mandats_actifs_organes.json.zip"
 
-def find_column(headers, candidates):
-    normalized = {h: normalize_key(h) for h in headers}
+ssl_context = ssl.create_default_context()
 
-    for candidate in candidates:
-        c = normalize_key(candidate)
-        for original, norm in normalized.items():
-            if norm == c:
-                return original
+def fetch_bytes(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, context=ssl_context, timeout=120) as response:
+        return response.read()
 
-    for candidate in candidates:
-        c = normalize_key(candidate)
-        for original, norm in normalized.items():
-            if c in norm:
-                return original
+def ensure_list(value):
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
 
-    return None
+def open_json_from_zip(zip_bytes: bytes):
+    with zipfile.ZipFile(BytesIO(zip_bytes)) as zf:
+        for name in zf.namelist():
+            if name.lower().endswith(".json"):
+                return json.loads(zf.read(name).decode("utf-8"))
+    raise RuntimeError("Aucun JSON trouvé dans l’archive zip.")
 
-def download_json(url: str):
-    response = requests.get(url, timeout=60)
-    response.raise_for_status()
-    return response.json()
-
-def decode_csv_content(raw: bytes) -> str:
-    for encoding in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
-        try:
-            return raw.decode(encoding)
-        except UnicodeDecodeError:
-            pass
-    return raw.decode("utf-8", errors="replace")
-
-def download_csv(url: str):
-    response = requests.get(url, timeout=120)
-    response.raise_for_status()
-
-    text = decode_csv_content(response.content)
-
-    sample = text[:5000]
-    try:
-        dialect = csv.Sniffer().sniff(sample, delimiters=";,|\t")
-        delimiter = dialect.delimiter
-    except Exception:
-        delimiter = ","
-
-    reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
-    rows = list(reader)
-    headers = reader.fieldnames or []
-    return rows, headers
-
-def pick_best_resource(resources, kind):
-    candidates = []
-
-    for resource in resources:
-        title = (resource.get("title") or "").lower()
-        url = (resource.get("url") or "").lower()
-
-        if not url.endswith(".csv"):
-            continue
-
-        score = 0
-
-        if kind == "votes":
-            if "vote" in title:
-                score += 10
-            if "votes" in title:
-                score += 10
-            if "scrutin" not in title:
-                score += 2
-
-        elif kind == "scrutins":
-            if "scrutin" in title:
-                score += 10
-            if "scrutins" in title:
-                score += 10
-            if "vote" not in title:
-                score += 2
-
-        elif kind == "deputes":
-            if "deput" in title:
-                score += 10
-            if "actif" in title:
-                score += 3
-
-        if "csv" in title:
-            score += 1
-
-        if score > 0:
-            candidates.append((score, resource))
-
-    if not candidates:
-        return None
-
-    candidates.sort(key=lambda x: x[0], reverse=True)
-    return candidates[0][1]
-
-def safe_value(row, col):
-    if not col:
-        return ""
-    return (row.get(col) or "").strip()
+def normalize_vote_label(raw):
+    value = (raw or "").strip().lower()
+    mapping = {
+        "pour": "Pour",
+        "pours": "Pour",
+        "contre": "Contre",
+        "contres": "Contre",
+        "abstention": "Abstention",
+        "abstentions": "Abstention",
+        "nonvotant": "Non-votant",
+        "nonvotants": "Non-votant",
+        "non-votant": "Non-votant",
+        "non-votants": "Non-votant",
+    }
+    return mapping.get(value, raw or "Inconnu")
 
 def guess_theme(text: str) -> str:
     t = (text or "").lower()
-
     rules = [
-        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "impôt", "taxe"]),
+        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
         ("Santé", ["santé", "hôpital", "médical", "soin"]),
         ("Éducation", ["éducation", "école", "université", "enseignement"]),
         ("Écologie / Énergie", ["écologie", "climat", "énergie", "environnement"]),
@@ -128,163 +63,174 @@ def guess_theme(text: str) -> str:
         ("Défense / International", ["défense", "armée", "europe", "international"]),
         ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
     ]
-
     for theme, keywords in rules:
-        if any(keyword in t for keyword in keywords):
+        if any(k in t for k in keywords):
             return theme
-
     return "Autres"
 
-def main():
-    print("Téléchargement des métadonnées CIVIX…")
-    dataset = download_json(CIVIX_DATASET_API)
-    resources = dataset.get("resources", [])
+def extract_votants(node):
+    out = []
 
-    votes_resource = pick_best_resource(resources, "votes")
-    scrutins_resource = pick_best_resource(resources, "scrutins")
-    deputes_resource = pick_best_resource(resources, "deputes")
+    if isinstance(node, dict):
+        if "votant" in node:
+            votants = node["votant"]
+            if isinstance(votants, list):
+                out.extend(votants)
+            else:
+                out.append(votants)
+        elif "acteurRef" in node:
+            out.append(node)
+        else:
+            for value in node.values():
+                out.extend(extract_votants(value))
 
-    if not votes_resource:
-        raise RuntimeError("Impossible de trouver le CSV des votes.")
-    if not scrutins_resource:
-        raise RuntimeError("Impossible de trouver le CSV des scrutins.")
+    elif isinstance(node, list):
+        for item in node:
+            out.extend(extract_votants(item))
 
-    print("Fichier votes choisi :", votes_resource.get("title"))
-    print("Fichier scrutins choisi :", scrutins_resource.get("title"))
-    if deputes_resource:
-        print("Fichier députés choisi :", deputes_resource.get("title"))
+    return out
 
-    vote_rows, vote_headers = download_csv(votes_resource["url"])
-    scrutin_rows, scrutin_headers = download_csv(scrutins_resource["url"])
-
-    deputes_rows = []
-    deputes_headers = []
-    if deputes_resource:
-        deputes_rows, deputes_headers = download_csv(deputes_resource["url"])
-
-    vote_cols = {
-        "scrutin_uid": find_column(vote_headers, ["scrutin_uid", "scrutin_id", "id_scrutin"]),
-        "numero_scrutin": find_column(vote_headers, ["numero_scrutin", "scrutin_numero", "numero"]),
-        "date_scrutin": find_column(vote_headers, ["date_scrutin", "scrutin_date", "date"]),
-        "acteur_uid": find_column(vote_headers, ["acteur_uid", "depute_uid", "uid_acteur"]),
-        "prenom": find_column(vote_headers, ["prenom"]),
-        "nom": find_column(vote_headers, ["nom"]),
-        "groupe": find_column(vote_headers, ["groupe", "groupe_sigle", "groupe_nom"]),
-        "position": find_column(vote_headers, ["position", "vote_position", "vote"]),
+def extract_deputes_from_amo(payload):
+    """
+    Construit un index par uid acteur :
+    {
+      "PA720606": {"nom": "...", "origine": "..."}
     }
+    """
+    index = {}
 
-    scrutin_cols = {
-        "scrutin_uid": find_column(scrutin_headers, ["scrutin_uid", "scrutin_id", "id_scrutin"]),
-        "numero_scrutin": find_column(scrutin_headers, ["numero_scrutin", "scrutin_numero", "numero"]),
-        "date_scrutin": find_column(scrutin_headers, ["date_scrutin", "scrutin_date", "date"]),
-        "titre": find_column(scrutin_headers, ["titre", "intitule", "objet", "libelle"]),
-        "description": find_column(scrutin_headers, ["description", "resume", "detail", "objet_long"]),
-    }
+    export = payload.get("export") or payload
 
-    deputes_cols = {
-        "acteur_uid": find_column(deputes_headers, ["acteur_uid", "depute_uid", "uid_acteur", "uid"]),
-        "prenom": find_column(deputes_headers, ["prenom"]),
-        "nom": find_column(deputes_headers, ["nom"]),
-        "circonscription": find_column(deputes_headers, ["circonscription", "nom_circonscription"]),
-        "departement": find_column(deputes_headers, ["departement", "nom_departement"]),
-        "region": find_column(deputes_headers, ["region"]),
-    }
+    acteurs_block = export.get("acteurs") or export.get("acteur") or {}
+    acteurs = acteurs_block.get("acteur") if isinstance(acteurs_block, dict) else acteurs_block
+    acteurs = ensure_list(acteurs)
 
-    scrutins_meta = {}
+    for acteur in acteurs:
+        uid = acteur.get("uid", "")
 
-    for row in scrutin_rows:
-        scrutin_uid = safe_value(row, scrutin_cols["scrutin_uid"])
-        numero = safe_value(row, scrutin_cols["numero_scrutin"])
-        date = safe_value(row, scrutin_cols["date_scrutin"])
-        titre = safe_value(row, scrutin_cols["titre"])
-        description = safe_value(row, scrutin_cols["description"])
+        etat_civil = acteur.get("etatCivil", {})
+        ident = etat_civil.get("ident", {})
 
-        key = scrutin_uid or numero
-        if not key:
-            continue
-
-        full_text = f"{titre} {description}".strip()
-
-        scrutins_meta[key] = {
-            "numero": numero,
-            "date": date,
-            "titre": titre or (f"Scrutin n°{numero}" if numero else f"Scrutin {key}"),
-            "description": description,
-            "theme": guess_theme(full_text),
-        }
-
-    deputes_meta = {}
-
-    for row in deputes_rows:
-        uid = safe_value(row, deputes_cols["acteur_uid"])
-        prenom = safe_value(row, deputes_cols["prenom"])
-        nom = safe_value(row, deputes_cols["nom"])
-        circo = safe_value(row, deputes_cols["circonscription"])
-        dep = safe_value(row, deputes_cols["departement"])
-        reg = safe_value(row, deputes_cols["region"])
-
-        origine_parts = [x for x in [circo, dep, reg] if x]
-        origine = " · ".join(dict.fromkeys(origine_parts))
+        prenom = ident.get("prenom", "") or ident.get("prenomUsuel", "")
+        nom = ident.get("nom", "") or ident.get("nomFamille", "")
         nom_complet = f"{prenom} {nom}".strip()
 
+        adresses = ensure_list(acteur.get("adresses", {}).get("adresse"))
+        circo = ""
+        departement = ""
+
+        for adr in adresses:
+            if not isinstance(adr, dict):
+                continue
+            type_adr = (adr.get("type") or "").lower()
+            texte = (adr.get("texte") or "").strip()
+            if not texte:
+                continue
+            if "circonscription" in type_adr and not circo:
+                circo = texte
+            if ("departement" in type_adr or "département" in type_adr) and not departement:
+                departement = texte
+
+        origine_parts = [x for x in [circo, departement] if x]
+        origine = " · ".join(origine_parts)
+
         if uid:
-            deputes_meta[uid] = {
-                "nom": nom_complet,
+            index[uid] = {
+                "nom": nom_complet or uid,
                 "origine": origine
             }
 
-    scrutins_map = {}
+    return index
 
-    for row in vote_rows:
-        scrutin_uid = safe_value(row, vote_cols["scrutin_uid"])
-        numero = safe_value(row, vote_cols["numero_scrutin"])
-        date = safe_value(row, vote_cols["date_scrutin"])
-        acteur_uid = safe_value(row, vote_cols["acteur_uid"])
-        prenom = safe_value(row, vote_cols["prenom"])
-        nom = safe_value(row, vote_cols["nom"])
-        groupe = safe_value(row, vote_cols["groupe"])
-        position = safe_value(row, vote_cols["position"])
+def extract_scrutins(payload, deputes_index):
+    root = payload.get("scrutins") or payload
+    raw_scrutins = root.get("scrutin") if isinstance(root, dict) else root
+    raw_scrutins = ensure_list(raw_scrutins)
 
-        key = scrutin_uid or numero
-        if not key:
-            continue
+    scrutins = []
 
-        nom_complet = f"{prenom} {nom}".strip()
-        depute_info = deputes_meta.get(acteur_uid, {})
-        origine = depute_info.get("origine", "")
+    for scrutin in raw_scrutins:
+        uid = str(scrutin.get("uid") or scrutin.get("numero") or "")
+        numero = str(scrutin.get("numero") or "")
+        date = scrutin.get("dateScrutin", "")
 
-        meta = scrutins_meta.get(key, {})
-        titre = meta.get("titre") or (f"Scrutin n°{numero}" if numero else f"Scrutin {key}")
-        description = meta.get("description", "")
-        theme = meta.get("theme") or guess_theme(titre)
+        titre = (
+            scrutin.get("titre")
+            or scrutin.get("intitule")
+            or f"Scrutin n°{numero}" if numero else f"Scrutin {uid}"
+        )
 
-        if key not in scrutins_map:
-            scrutins_map[key] = {
-                "id": key,
-                "uid": key,
+        description = ""
+        if isinstance(scrutin.get("objet"), dict):
+            description = scrutin["objet"].get("libelle", "") or scrutin["objet"].get("titre", "")
+
+        full_text = f"{titre} {description}".strip()
+        theme = guess_theme(full_text)
+
+        votes = []
+
+        ventilation = scrutin.get("ventilationVotes", {})
+        organe = ventilation.get("organe", {})
+        groupes = ensure_list((organe.get("groupes") or {}).get("groupe"))
+
+        for groupe in groupes:
+            groupe_label = (
+                groupe.get("libelle")
+                or groupe.get("nom")
+                or groupe.get("organeRef")
+                or "Groupe inconnu"
+            )
+
+            decompte = (groupe.get("vote") or {}).get("decompteNominatif", {})
+
+            for bucket_name in ["pours", "contres", "abstentions", "nonVotants"]:
+                bucket = decompte.get(bucket_name)
+                votants = extract_votants(bucket)
+
+                for votant in votants:
+                    acteur_ref = (votant.get("acteurRef") or "").strip()
+                    depute_info = deputes_index.get(acteur_ref, {})
+                    nom = depute_info.get("nom") or acteur_ref or "Inconnu"
+                    origine = depute_info.get("origine", "")
+
+                    votes.append({
+                        "nom": nom,
+                        "groupe": groupe_label,
+                        "vote": normalize_vote_label(bucket_name),
+                        "origine": origine
+                    })
+
+        if votes:
+            scrutins.append({
+                "id": uid or numero,
+                "uid": uid or numero,
                 "titre": titre,
                 "description": description,
-                "date": meta.get("date") or date,
+                "date": date,
                 "theme": theme,
-                "votes": []
-            }
+                "votes": votes
+            })
 
-        scrutins_map[key]["votes"].append({
-            "nom": nom_complet or "Inconnu",
-            "groupe": groupe or "Inconnu",
-            "vote": position or "Inconnu",
-            "origine": origine
-        })
-
-    scrutins = list(scrutins_map.values())
     scrutins.sort(key=lambda s: s.get("date", ""), reverse=True)
+    return scrutins
+
+def main():
+    print("Téléchargement des scrutins officiels…")
+    scrutins_payload = open_json_from_zip(fetch_bytes(SCRUTINS_URL))
+
+    print("Téléchargement des députés actifs…")
+    amo_payload = open_json_from_zip(fetch_bytes(AMO_URL))
+
+    deputes_index = extract_deputes_from_amo(amo_payload)
+    scrutins = extract_scrutins(scrutins_payload, deputes_index)
 
     deputes = sorted({v["nom"] for s in scrutins for v in s["votes"]})
     groupes = sorted({v["groupe"] for s in scrutins for v in s["votes"]})
 
     output = {
         "meta": {
-            "source_votes": "CIVIX / données publiques de l’Assemblée nationale",
+            "source_votes": "Assemblée nationale open data - Scrutins.json.zip",
+            "source_deputes": "Assemblée nationale open data - AMO10 députés actifs",
             "nombre_scrutins": len(scrutins),
             "nombre_deputes_detectes": len(deputes),
             "nombre_groupes_detectes": len(groupes)
