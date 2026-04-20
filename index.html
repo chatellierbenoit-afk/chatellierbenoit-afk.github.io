@@ -47,7 +47,7 @@
     }
 
     main {
-      max-width: 1350px;
+      max-width: 1380px;
       margin: 0 auto;
       padding: 28px 18px 60px;
     }
@@ -122,7 +122,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 22px;
       align-items: start;
     }
@@ -156,6 +156,17 @@
       color: var(--muted);
       margin-bottom: 12px;
       font-size: 14px;
+    }
+
+    .description {
+      margin: 14px 0;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f8f6ff;
+      border: 1px solid #ece6ff;
+      color: #45455a;
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .chips {
@@ -236,6 +247,17 @@
       font-size: 24px;
     }
 
+    .detail-description {
+      margin: 14px 0 16px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f8f6ff;
+      border: 1px solid #ece6ff;
+      color: #45455a;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
     .detail-votes {
       max-height: 720px;
       overflow: auto;
@@ -254,6 +276,7 @@
       border-bottom: 1px solid var(--border);
       text-align: left;
       font-size: 14px;
+      vertical-align: top;
     }
 
     th {
@@ -263,22 +286,36 @@
       z-index: 1;
     }
 
+    .depute-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .depute-origin {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
     .vote-Pour {
       color: #0a7a2f;
       font-weight: 700;
     }
 
-    .vote-Contre {
+    .vote-Contre,
+    .vote-contre {
       color: #b30021;
       font-weight: 700;
     }
 
-    .vote-Abstention {
+    .vote-Abstention,
+    .vote-abstention {
       color: #8a5a00;
       font-weight: 700;
     }
 
-    .vote-Non-votant {
+    .vote-Non-votant,
+    .vote-non-votant {
       color: #666;
       font-weight: 700;
     }
@@ -367,8 +404,11 @@
             <option value="">Toutes les positions</option>
             <option value="Pour">Pour</option>
             <option value="Contre">Contre</option>
+            <option value="contre">contre</option>
             <option value="Abstention">Abstention</option>
+            <option value="abstention">abstention</option>
             <option value="Non-votant">Non-votant</option>
+            <option value="non-votant">non-votant</option>
             <option value="Inconnu">Inconnu</option>
           </select>
         </div>
@@ -469,10 +509,10 @@
 
     function getCounts(votes) {
       return {
-        pour: votes.filter(v => v.vote === "Pour").length,
-        contre: votes.filter(v => v.vote === "Contre").length,
-        abstention: votes.filter(v => v.vote === "Abstention").length,
-        nonVotant: votes.filter(v => v.vote === "Non-votant").length
+        pour: votes.filter(v => v.vote === "Pour" || v.vote === "pour").length,
+        contre: votes.filter(v => v.vote === "Contre" || v.vote === "contre").length,
+        abstention: votes.filter(v => v.vote === "Abstention" || v.vote === "abstention").length,
+        nonVotant: votes.filter(v => v.vote === "Non-votant" || v.vote === "non-votant").length
       };
     }
 
@@ -486,7 +526,13 @@
       filteredScrutins = scrutins
         .map(scrutin => {
           const title = scrutin.titre || "";
-          const titleMatch = !scrutinQuery || normalize(title).includes(scrutinQuery) || normalize(String(scrutin.id || "")).includes(scrutinQuery);
+          const description = scrutin.description || "";
+          const titleMatch =
+            !scrutinQuery ||
+            normalize(title).includes(scrutinQuery) ||
+            normalize(description).includes(scrutinQuery) ||
+            normalize(String(scrutin.id || "")).includes(scrutinQuery);
+
           const themeMatch = !selectedTheme || (scrutin.theme || "Autres") === selectedTheme;
 
           if (!titleMatch || !themeMatch) {
@@ -517,7 +563,6 @@
 
     function renderResults() {
       results.innerHTML = "";
-
       summaryLine.textContent = `${formatNumber(filteredScrutins.length)} scrutin(s) correspondent à la recherche`;
 
       if (filteredScrutins.length === 0) {
@@ -539,6 +584,7 @@
             <span class="chip">${scrutin.theme || "Autres"}</span>
             <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) affiché(s)</span>
           </div>
+          ${scrutin.description ? `<div class="description">${scrutin.description}</div>` : ""}
           <div class="counts">
             <div class="count-box">
               <strong>${counts.pour}</strong>
@@ -601,6 +647,7 @@
           <h3>${scrutin.titre || `Scrutin ${scrutin.id}`}</h3>
           <div class="meta">${scrutin.date || "Date non renseignée"} · ${scrutin.theme || "Autres"} · ${formatNumber(votes.length)} vote(s)</div>
         </div>
+        ${scrutin.description ? `<div class="detail-description">${scrutin.description}</div>` : ""}
         <div class="detail-votes">
           <table>
             <thead>
@@ -613,7 +660,10 @@
             <tbody>
               ${votes.map(v => `
                 <tr>
-                  <td>${v.nom || ""}</td>
+                  <td>
+                    <div class="depute-name">${v.nom || ""}</div>
+                    ${v.origine ? `<div class="depute-origin">${v.origine}</div>` : ""}
+                  </td>
                   <td>${v.groupe || ""}</td>
                   <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
                 </tr>
