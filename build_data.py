@@ -6,7 +6,19 @@ OUTPUT_FILE = Path("data.json")
 
 URL = "https://www.data.gouv.fr/api/1/datasets/donnees-parlementaires-francaises-votes-deputes-scrutins-civix/"
 
+def guess_theme(text):
+    t = text.lower()
+    if "budget" in t or "finances" in t:
+        return "Budget"
+    if "santé" in t:
+        return "Santé"
+    if "immigration" in t:
+        return "Immigration"
+    if "écologie" in t or "climat" in t:
+        return "Écologie"
+    return "Autres"
 def main():
+    
     print("Téléchargement des métadonnées du jeu...")
 
     response = requests.get(URL, timeout=30)
@@ -71,14 +83,14 @@ def main():
 
         nom_complet = f"{prenom} {nom}".strip()
 
-        if scrutin_uid not in scrutins_map:
-            scrutins_map[scrutin_uid] = {
-                "id": scrutin_uid,
-                "uid": scrutin_uid,
-                "titre": f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}",
-                "date": date,
-                "theme": "À classer",
-                "votes": []
+        scrutins_map[scrutin_uid] = {
+    "id": scrutin_uid,
+    "uid": scrutin_uid,
+    "titre": f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}",
+    "date": date,
+    "theme": guess_theme(f"Scrutin n°{numero}"),
+    "votes": []
+}
             }
 
         scrutins_map[scrutin_uid]["votes"].append({
