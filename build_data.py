@@ -8,7 +8,6 @@ import requests
 
 OUTPUT_FILE = Path("data.json")
 CIVIX_DATASET_API = "https://www.data.gouv.fr/api/1/datasets/donnees-parlementaires-francaises-votes-deputes-scrutins-civix/"
-DEPUTES_ACTIFS_API = "https://www.data.gouv.fr/api/1/datasets/deputes-actifs-de-lassemblee-nationale-informations-et-statistiques/"
 
 def normalize_key(value: str) -> str:
     return re.sub(r"[^a-z0-9]", "", (value or "").lower())
@@ -35,10 +34,19 @@ def download_json(url: str):
     response.raise_for_status()
     return response.json()
 
+def decode_csv_content(raw: bytes) -> str:
+    for encoding in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
+        try:
+            return raw.decode(encoding)
+        except UnicodeDecodeError:
+            pass
+    return raw.decode("utf-8", errors="replace")
+
 def download_csv(url: str):
     response = requests.get(url, timeout=120)
     response.raise_for_status()
-    text = response.text
+
+    text = decode_csv_content(response.content)
 
     sample = text[:5000]
     try:
@@ -52,24 +60,51 @@ def download_csv(url: str):
     headers = reader.fieldnames or []
     return rows, headers
 
-def pick_resource(resources, include_keywords):
-    for resource in resources:
-        title = (resource.get("title") or "").lower()
-        url = resource.get("url") or ""
-        if not url.lower().endswith(".csv"):
-            continue
-        if all(keyword in title for keyword in include_keywords):
-            return resource
+def pick_best_resource(resources, kind):
+    candidates = []
 
     for resource in resources:
         title = (resource.get("title") or "").lower()
-        url = resource.get("url") or ""
-        if not url.lower().endswith(".csv"):
-            continue
-        if any(keyword in title for keyword in include_keywords):
-            return resource
+        url = (resource.get("url") or "").lower()
 
-    return None
+        if not url.endswith(".csv"):
+            continue
+
+        score = 0
+
+        if kind == "votes":
+            if "vote" in title:
+                score += 10
+            if "votes" in title:
+                score += 10
+            if "scrutin" not in title:
+                score += 2
+
+        elif kind == "scrutins":
+            if "scrutin" in title:
+                score += 10
+            if "scrutins" in title:
+                score += 10
+            if "vote" not in title:
+                score += 2
+
+        elif kind == "deputes":
+            if "deput" in title:
+                score += 10
+            if "actif" in title:
+                score += 3
+
+        if "csv" in title:
+            score += 1
+
+        if score > 0:
+            candidates.append((score, resource))
+
+    if not candidates:
+        return None
+
+    candidates.sort(key=lambda x: x[0], reverse=True)
+    return candidates[0][1]
 
 def safe_value(row, col):
     if not col:
@@ -89,7 +124,7 @@ def guess_theme(text: str) -> str:
         ("Immigration", ["immigration", "asile", "étranger"]),
         ("Institutions", ["motion", "censure", "constitution", "règlement", "procédure"]),
         ("Agriculture", ["agriculture", "aliment"]),
-        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
+        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine", "culturels"]),
         ("Défense / International", ["défense", "armée", "europe", "international"]),
         ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
     ]
@@ -100,68 +135,35 @@ def guess_theme(text: str) -> str:
 
     return "Autres"
 
-def build_origin(row, cols):
-    pieces = []
-
-    for key in [
-        "circonscription",
-        "nom_circonscription",
-        "numero_circonscription",
-        "departement",
-        "nom_departement",
-        "region",
-    ]:
-        value = safe_value(row, cols.get(key))
-        if value:
-            pieces.append(value)
-
-    seen = []
-    for piece in pieces:
-        if piece not in seen:
-            seen.append(piece)
-
-    return " · ".join(seen)
-
 def main():
     print("Téléchargement des métadonnées CIVIX…")
-    civix_dataset = download_json(CIVIX_DATASET_API)
-    civix_resources = civix_dataset.get("resources", [])
+    dataset = download_json(CIVIX_DATASET_API)
+    resources = dataset.get("resources", [])
 
-    votes_resource = pick_resource(civix_resources, ["vote"])
-    scrutins_resource = pick_resource(civix_resources, ["scrutin"])
-    deputes_resource = pick_resource(civix_resources, ["deput"])
+    votes_resource = pick_best_resource(resources, "votes")
+    scrutins_resource = pick_best_resource(resources, "scrutins")
+    deputes_resource = pick_best_resource(resources, "deputes")
 
     if not votes_resource:
-        raise RuntimeError("Impossible de trouver le CSV des votes dans le jeu CIVIX.")
+        raise RuntimeError("Impossible de trouver le CSV des votes.")
     if not scrutins_resource:
-        raise RuntimeError("Impossible de trouver le CSV des scrutins dans le jeu CIVIX.")
+        raise RuntimeError("Impossible de trouver le CSV des scrutins.")
 
-    print("Téléchargement du CSV des votes…")
+    print("Fichier votes choisi :", votes_resource.get("title"))
+    print("Fichier scrutins choisi :", scrutins_resource.get("title"))
+    if deputes_resource:
+        print("Fichier députés choisi :", deputes_resource.get("title"))
+
     vote_rows, vote_headers = download_csv(votes_resource["url"])
-
-    print("Téléchargement du CSV des scrutins…")
     scrutin_rows, scrutin_headers = download_csv(scrutins_resource["url"])
 
     deputes_rows = []
     deputes_headers = []
-
     if deputes_resource:
-        print("Téléchargement du CSV des députés depuis CIVIX…")
         deputes_rows, deputes_headers = download_csv(deputes_resource["url"])
-    else:
-        try:
-            print("Tentative de récupération du jeu 'députés actifs'…")
-            deputes_dataset = download_json(DEPUTES_ACTIFS_API)
-            deputes_resources = deputes_dataset.get("resources", [])
-            deputes_csv = pick_resource(deputes_resources, ["csv"]) or pick_resource(deputes_resources, ["deput"])
-            if deputes_csv:
-                deputes_rows, deputes_headers = download_csv(deputes_csv["url"])
-        except Exception:
-            deputes_rows = []
-            deputes_headers = []
 
     vote_cols = {
-        "scrutin_uid": find_column(vote_headers, ["scrutin_uid", "scrutinid", "id_scrutin", "scrutin_id"]),
+        "scrutin_uid": find_column(vote_headers, ["scrutin_uid", "scrutin_id", "id_scrutin"]),
         "numero_scrutin": find_column(vote_headers, ["numero_scrutin", "scrutin_numero", "numero"]),
         "date_scrutin": find_column(vote_headers, ["date_scrutin", "scrutin_date", "date"]),
         "acteur_uid": find_column(vote_headers, ["acteur_uid", "depute_uid", "uid_acteur"]),
@@ -172,49 +174,21 @@ def main():
     }
 
     scrutin_cols = {
-        "scrutin_uid": find_column(scrutin_headers, ["scrutin_uid", "id_scrutin", "scrutin_id"]),
+        "scrutin_uid": find_column(scrutin_headers, ["scrutin_uid", "scrutin_id", "id_scrutin"]),
         "numero_scrutin": find_column(scrutin_headers, ["numero_scrutin", "scrutin_numero", "numero"]),
         "date_scrutin": find_column(scrutin_headers, ["date_scrutin", "scrutin_date", "date"]),
         "titre": find_column(scrutin_headers, ["titre", "intitule", "objet", "libelle"]),
         "description": find_column(scrutin_headers, ["description", "resume", "detail", "objet_long"]),
-        "type": find_column(scrutin_headers, ["type_scrutin", "type"]),
     }
 
     deputes_cols = {
         "acteur_uid": find_column(deputes_headers, ["acteur_uid", "depute_uid", "uid_acteur", "uid"]),
         "prenom": find_column(deputes_headers, ["prenom"]),
         "nom": find_column(deputes_headers, ["nom"]),
-        "circonscription": find_column(deputes_headers, ["circonscription", "nom_circonscription", "numero_circonscription"]),
+        "circonscription": find_column(deputes_headers, ["circonscription", "nom_circonscription"]),
         "departement": find_column(deputes_headers, ["departement", "nom_departement"]),
         "region": find_column(deputes_headers, ["region"]),
     }
-
-    required_vote_cols = ["scrutin_uid", "numero_scrutin", "date_scrutin", "prenom", "nom", "groupe", "position"]
-    missing = [key for key in required_vote_cols if not vote_cols[key]]
-    if missing:
-        raise RuntimeError(f"Colonnes manquantes dans le CSV votes : {missing}. En-têtes trouvés : {vote_headers}")
-
-    deputes_by_uid = {}
-    deputes_by_name = {}
-
-    for row in deputes_rows:
-        prenom = safe_value(row, deputes_cols["prenom"])
-        nom = safe_value(row, deputes_cols["nom"])
-        nom_complet = f"{prenom} {nom}".strip()
-        uid = safe_value(row, deputes_cols["acteur_uid"])
-        origine = build_origin(row, deputes_cols)
-
-        if uid:
-            deputes_by_uid[uid] = {
-                "nom": nom_complet,
-                "origine": origine,
-            }
-
-        if nom_complet:
-            deputes_by_name[nom_complet.lower()] = {
-                "nom": nom_complet,
-                "origine": origine,
-            }
 
     scrutins_meta = {}
 
@@ -224,13 +198,12 @@ def main():
         date = safe_value(row, scrutin_cols["date_scrutin"])
         titre = safe_value(row, scrutin_cols["titre"])
         description = safe_value(row, scrutin_cols["description"])
-        type_scrutin = safe_value(row, scrutin_cols["type"])
 
         key = scrutin_uid or numero
         if not key:
             continue
 
-        full_text = " ".join([titre, description, type_scrutin]).strip()
+        full_text = f"{titre} {description}".strip()
 
         scrutins_meta[key] = {
             "numero": numero,
@@ -239,6 +212,26 @@ def main():
             "description": description,
             "theme": guess_theme(full_text),
         }
+
+    deputes_meta = {}
+
+    for row in deputes_rows:
+        uid = safe_value(row, deputes_cols["acteur_uid"])
+        prenom = safe_value(row, deputes_cols["prenom"])
+        nom = safe_value(row, deputes_cols["nom"])
+        circo = safe_value(row, deputes_cols["circonscription"])
+        dep = safe_value(row, deputes_cols["departement"])
+        reg = safe_value(row, deputes_cols["region"])
+
+        origine_parts = [x for x in [circo, dep, reg] if x]
+        origine = " · ".join(dict.fromkeys(origine_parts))
+        nom_complet = f"{prenom} {nom}".strip()
+
+        if uid:
+            deputes_meta[uid] = {
+                "nom": nom_complet,
+                "origine": origine
+            }
 
     scrutins_map = {}
 
@@ -252,23 +245,23 @@ def main():
         groupe = safe_value(row, vote_cols["groupe"])
         position = safe_value(row, vote_cols["position"])
 
-        if not scrutin_uid:
+        key = scrutin_uid or numero
+        if not key:
             continue
 
         nom_complet = f"{prenom} {nom}".strip()
-
-        depute_info = deputes_by_uid.get(acteur_uid) or deputes_by_name.get(nom_complet.lower()) or {}
+        depute_info = deputes_meta.get(acteur_uid, {})
         origine = depute_info.get("origine", "")
 
-        meta = scrutins_meta.get(scrutin_uid) or scrutins_meta.get(numero) or {}
-        titre = meta.get("titre") or (f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}")
+        meta = scrutins_meta.get(key, {})
+        titre = meta.get("titre") or (f"Scrutin n°{numero}" if numero else f"Scrutin {key}")
         description = meta.get("description", "")
         theme = meta.get("theme") or guess_theme(titre)
 
-        if scrutin_uid not in scrutins_map:
-            scrutins_map[scrutin_uid] = {
-                "id": scrutin_uid,
-                "uid": scrutin_uid,
+        if key not in scrutins_map:
+            scrutins_map[key] = {
+                "id": key,
+                "uid": key,
                 "titre": titre,
                 "description": description,
                 "date": meta.get("date") or date,
@@ -276,7 +269,7 @@ def main():
                 "votes": []
             }
 
-        scrutins_map[scrutin_uid]["votes"].append({
+        scrutins_map[key]["votes"].append({
             "nom": nom_complet or "Inconnu",
             "groupe": groupe or "Inconnu",
             "vote": position or "Inconnu",
