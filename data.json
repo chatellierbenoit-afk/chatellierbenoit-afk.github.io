@@ -1,9 +1,519 @@
 {
   "meta": {
-    "source_votes": "Assemblée nationale open data - Scrutins.json.zip",
-    "nombre_scrutins": 0,
-    "nombre_deputes_detectes": 0,
-    "nombre_groupes_detectes": 0
+    "source_votes": "data.gouv.fr / CIVIX",
+    "nombre_scrutins": 1,
+    "nombre_deputes_detectes": 100,
+    "nombre_groupes_detectes": 11
   },
-  "scrutins": []
+  "scrutins": [
+    {
+      "id": "VTANR5L17V6176",
+      "uid": "VTANR5L17V6176",
+      "titre": "Scrutin n°6176",
+      "date": "2026-04-13 00:00:00+00",
+      "theme": "À classer",
+      "votes": [
+        {
+          "nom": "Nicolas Dragon",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Sylvain CarriÃ¨re",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Marc Fesneau",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "Edwige Diaz",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "SÃ©bastien Humbert",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Rodrigo Arenas",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Charles Rodwell",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Isabelle Santiago",
+          "groupe": "SOC",
+          "vote": "abstention"
+        },
+        {
+          "nom": "Olivier Fayssat",
+          "groupe": "UDDPLR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Jocelyn Dessigny",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Christian Girard",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "FrÃ©dÃ©ric-Pierre Vos",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Serge Muller",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "SÃ©golÃ¨ne Amiot",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "CÃ©line Calvez",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Graziella Melchior",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Antoine LÃ©aument",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Pierre Pribetich",
+          "groupe": "SOC",
+          "vote": "pour"
+        },
+        {
+          "nom": "Thierry Benoit",
+          "groupe": "HOR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Matthieu Bloch",
+          "groupe": "UDDPLR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Anchya Bamana",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Caroline Colombier",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Emmanuel Fouquart",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Yoann Gillet",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Philippe Schreck",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Antoine Villedieu",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "HÃ©lÃ¨ne Laporte",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "YaÃ«l MÃ©nachÃ©",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Catherine Rimbert",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Gabriel Amard",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Liliana Tanguy",
+          "groupe": "EPR",
+          "vote": "pour"
+        },
+        {
+          "nom": "Anthony Brosse",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Olivia GrÃ©goire",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Christophe Marion",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Anne Stambach-Terrenoir",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Andy Kerbrat",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Marie-NoÃ«lle Battistel",
+          "groupe": "SOC",
+          "vote": "pour"
+        },
+        {
+          "nom": "Anna Pic",
+          "groupe": "SOC",
+          "vote": "pour"
+        },
+        {
+          "nom": "Ãric Martineau",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "Anne Bergantz",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "Laurent Mazaury",
+          "groupe": "LIOT",
+          "vote": "contre"
+        },
+        {
+          "nom": "Alexandre Allegret-Pilot",
+          "groupe": "UDDPLR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Stella Dupont",
+          "groupe": "NI",
+          "vote": "contre"
+        },
+        {
+          "nom": "Philippe Ballard",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "ThÃ©o Bernhardt",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Roger Chudeau",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Claire Marais-Beuil",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "AurÃ©lien Dutremble",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "StÃ©phanie Galzy",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Jonathan Gery",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Florence Goulet",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "GÃ©raldine Grangier",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Anne Sicard",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "MichaÃ«l Taverne",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Tiffany Joncour",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Florence Joubert",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Robert Le Bourgeois",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Nadine Lechon",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Thierry Perez",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Lisette Pollet",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Laurence Robert-Dehault",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Cyril Tribuiani",
+          "groupe": "null",
+          "vote": "contre"
+        },
+        {
+          "nom": "Marine Hamelet",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "MichÃ¨le Martinez",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Astrid Panosyan-Bouvet",
+          "groupe": "EPR",
+          "vote": "pour"
+        },
+        {
+          "nom": "Florent BoudiÃ©",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Yannick Chenevard",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "FranÃ§ois Cormier-Bouligeon",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Charles Sitzenstuhl",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "JosÃ©phine Missoffe",
+          "groupe": "EPR",
+          "vote": "contre"
+        },
+        {
+          "nom": "YaÃ«l Braun-Pivet",
+          "groupe": "EPR",
+          "vote": "nonVotant"
+        },
+        {
+          "nom": "Emmanuel Fernandes",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "AurÃ©lien TachÃ©",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "AndrÃ©e Taurinya",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Sarah Legrain",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "Ãlisa Martin",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        },
+        {
+          "nom": "MickaÃ«l Bouloux",
+          "groupe": "SOC",
+          "vote": "pour"
+        },
+        {
+          "nom": "Sophie Pantel",
+          "groupe": "SOC",
+          "vote": "pour"
+        },
+        {
+          "nom": "Jordan Guitton",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Frantz Gumbs",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "Sophie Mette",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "Josy Poueyto",
+          "groupe": "DEM",
+          "vote": "contre"
+        },
+        {
+          "nom": "BenoÃ®t Blanchard",
+          "groupe": "HOR",
+          "vote": "abstention"
+        },
+        {
+          "nom": "JoÃ«l Bruneau",
+          "groupe": "LIOT",
+          "vote": "contre"
+        },
+        {
+          "nom": "Jean-Victor Castor",
+          "groupe": "GDR",
+          "vote": "pour"
+        },
+        {
+          "nom": "Elsa Faucillon",
+          "groupe": "GDR",
+          "vote": "pour"
+        },
+        {
+          "nom": "Monique Griseti",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Maxime Michelet",
+          "groupe": "UDDPLR",
+          "vote": "contre"
+        },
+        {
+          "nom": "Maxime Amblard",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "BÃ©nÃ©dicte Auzanot",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Romain Baubry",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "JosÃ© Beaurain",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Sophie Blanc",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Eddy Casterman",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "GisÃ¨le Lelouis",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "David Magnier",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Patrice Martin",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Alexandre Dufosset",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Julien Limongi",
+          "groupe": "RN",
+          "vote": "contre"
+        },
+        {
+          "nom": "Jean-FranÃ§ois Coulomme",
+          "groupe": "LFI-NFP",
+          "vote": "pour"
+        }
+      ]
+    }
+  ]
 }
