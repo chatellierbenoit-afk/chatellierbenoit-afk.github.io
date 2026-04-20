@@ -66,7 +66,7 @@ def main():
 
     scrutins_map = {}
 
-    for row in rows:
+    for row in rows[:20000]:
         if len(row) <= max(i_uid, i_numero, i_date, i_prenom, i_nom, i_groupe, i_position):
             continue
 
