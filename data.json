@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source_votes": "data.gouv.fr / CIVIX",
+    "source_votes": "CIVIX / données publiques de l’Assemblée nationale",
     "nombre_scrutins": 1,
     "nombre_deputes_detectes": 100,
     "nombre_groupes_detectes": 11
@@ -9,509 +9,610 @@
     {
       "id": "VTANR5L17V6176",
       "uid": "VTANR5L17V6176",
-      "titre": "Scrutin n°6176",
+      "titre": "l'amendement nÂ° 28 de M. AurÃ©lien TachÃ© aprÃ¨s l'article 3 du projet de loi relatif Ã  la restitution de biens culturels provenant dâÃtats qui, du fait dâune appropriation illicite, en ont Ã©tÃ© privÃ©s (premiÃ¨re lecture).",
+      "description": "",
       "date": "2026-04-13 00:00:00+00",
-      "theme": "Autres",
+      "theme": "Culture / Médias",
       "votes": [
         {
           "nom": "Nicolas Dragon",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Sylvain CarriÃ¨re",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Marc Fesneau",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Edwige Diaz",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "SÃ©bastien Humbert",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Rodrigo Arenas",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": "Paris"
         },
         {
           "nom": "Charles Rodwell",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Isabelle Santiago",
           "groupe": "SOC",
-          "vote": "abstention"
+          "vote": "abstention",
+          "origine": ""
         },
         {
           "nom": "Olivier Fayssat",
           "groupe": "UDDPLR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Jocelyn Dessigny",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Christian Girard",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "FrÃ©dÃ©ric-Pierre Vos",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Serge Muller",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "SÃ©golÃ¨ne Amiot",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": "Loire-Atlantique"
         },
         {
           "nom": "CÃ©line Calvez",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Graziella Melchior",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Antoine LÃ©aument",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Pierre Pribetich",
           "groupe": "SOC",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Thierry Benoit",
           "groupe": "HOR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Ille-et-Vilaine"
         },
         {
           "nom": "Matthieu Bloch",
           "groupe": "UDDPLR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Doubs"
         },
         {
           "nom": "Anchya Bamana",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Mayotte"
         },
         {
           "nom": "Caroline Colombier",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Emmanuel Fouquart",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Yoann Gillet",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Philippe Schreck",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Antoine Villedieu",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "HÃ©lÃ¨ne Laporte",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "YaÃ«l MÃ©nachÃ©",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Catherine Rimbert",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Gabriel Amard",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": "RhÃ´ne"
         },
         {
           "nom": "Liliana Tanguy",
           "groupe": "EPR",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Anthony Brosse",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Loiret"
         },
         {
           "nom": "Olivia GrÃ©goire",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Christophe Marion",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Anne Stambach-Terrenoir",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Andy Kerbrat",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Marie-NoÃ«lle Battistel",
           "groupe": "SOC",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": "IsÃ¨re"
         },
         {
           "nom": "Anna Pic",
           "groupe": "SOC",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Ãric Martineau",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Anne Bergantz",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Yvelines"
         },
         {
           "nom": "Laurent Mazaury",
           "groupe": "LIOT",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Alexandre Allegret-Pilot",
           "groupe": "UDDPLR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Gard"
         },
         {
           "nom": "Stella Dupont",
           "groupe": "NI",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Philippe Ballard",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Oise"
         },
         {
           "nom": "ThÃ©o Bernhardt",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Bas-Rhin"
         },
         {
           "nom": "Roger Chudeau",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Claire Marais-Beuil",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "AurÃ©lien Dutremble",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "StÃ©phanie Galzy",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Jonathan Gery",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Florence Goulet",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "GÃ©raldine Grangier",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Anne Sicard",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "MichaÃ«l Taverne",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Tiffany Joncour",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Florence Joubert",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Robert Le Bourgeois",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Nadine Lechon",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Thierry Perez",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Lisette Pollet",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Laurence Robert-Dehault",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Cyril Tribuiani",
           "groupe": "null",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Marine Hamelet",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "MichÃ¨le Martinez",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Astrid Panosyan-Bouvet",
           "groupe": "EPR",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Florent BoudiÃ©",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Gironde"
         },
         {
           "nom": "Yannick Chenevard",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "FranÃ§ois Cormier-Bouligeon",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Charles Sitzenstuhl",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "JosÃ©phine Missoffe",
           "groupe": "EPR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "YaÃ«l Braun-Pivet",
           "groupe": "EPR",
-          "vote": "nonVotant"
+          "vote": "nonVotant",
+          "origine": "Yvelines"
         },
         {
           "nom": "Emmanuel Fernandes",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "AurÃ©lien TachÃ©",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "AndrÃ©e Taurinya",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Sarah Legrain",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Ãlisa Martin",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "MickaÃ«l Bouloux",
           "groupe": "SOC",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": "Ille-et-Vilaine"
         },
         {
           "nom": "Sophie Pantel",
           "groupe": "SOC",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Jordan Guitton",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Frantz Gumbs",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Sophie Mette",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Josy Poueyto",
           "groupe": "DEM",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "BenoÃ®t Blanchard",
           "groupe": "HOR",
-          "vote": "abstention"
+          "vote": "abstention",
+          "origine": "Val-d'Oise"
         },
         {
           "nom": "JoÃ«l Bruneau",
           "groupe": "LIOT",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Jean-Victor Castor",
           "groupe": "GDR",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Elsa Faucillon",
           "groupe": "GDR",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         },
         {
           "nom": "Monique Griseti",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Maxime Michelet",
           "groupe": "UDDPLR",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Maxime Amblard",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Meuse"
         },
         {
           "nom": "BÃ©nÃ©dicte Auzanot",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Vaucluse"
         },
         {
           "nom": "Romain Baubry",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Bouches-du-RhÃ´ne"
         },
         {
           "nom": "JosÃ© Beaurain",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "Aisne"
         },
         {
           "nom": "Sophie Blanc",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": "PyrÃ©nÃ©es-Orientales"
         },
         {
           "nom": "Eddy Casterman",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "GisÃ¨le Lelouis",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "David Magnier",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Patrice Martin",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Alexandre Dufosset",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Julien Limongi",
           "groupe": "RN",
-          "vote": "contre"
+          "vote": "contre",
+          "origine": ""
         },
         {
           "nom": "Jean-FranÃ§ois Coulomme",
           "groupe": "LFI-NFP",
-          "vote": "pour"
+          "vote": "pour",
+          "origine": ""
         }
       ]
     }
