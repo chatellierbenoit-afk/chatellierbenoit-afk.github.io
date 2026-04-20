@@ -3,7 +3,7 @@ name: Mise à jour des données
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "15 5 * * *"
 
 jobs:
   update-data:
@@ -23,10 +23,10 @@ jobs:
       - name: Générer data.json
         run: python build_data.py
 
-      - name: Commit automatique si changement
+      - name: Commit si changement
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git diff --cached --quiet || git commit -m "Mise à jour automatique de data.json"
+          git diff --cached --quiet || git commit -m "Mise à jour automatique des données"
           git push
