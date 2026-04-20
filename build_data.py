@@ -4,49 +4,97 @@ from pathlib import Path
 
 OUTPUT_FILE = Path("data.json")
 
-URL = "https://www.data.gouv.fr/fr/datasets/r/3b2e4c74-4e5f-4f69-bc8d-2e4e6a5b0e2b"
+URL = "https://www.data.gouv.fr/api/1/datasets/donnees-parlementaires-francaises-votes-deputes-scrutins-civix/"
 
 def main():
-    print("Téléchargement des données...")
+    print("Téléchargement des métadonnées du jeu...")
 
-    response = requests.get(URL)
-    data = response.json()
+    response = requests.get(URL, timeout=30)
+    response.raise_for_status()
+    dataset = response.json()
 
-    scrutins = []
+    resources = dataset.get("resources", [])
+    if not resources:
+        raise RuntimeError("Aucune ressource trouvée dans le jeu de données.")
 
-    for item in data[:200]:  # limite pour éviter trop lourd
-        scrutin_id = str(item.get("scrutin_numero", ""))
-        titre = item.get("scrutin_titre", "")
-        date = item.get("scrutin_date", "")
+    votes_resource = None
+    for r in resources:
+        title = (r.get("title") or "").lower()
+        url = r.get("url") or ""
+        if "vote" in title and url.endswith(".csv"):
+            votes_resource = url
+            break
 
-        votes = []
+    if not votes_resource:
+        raise RuntimeError("Impossible de trouver le fichier CSV des votes.")
 
-        votes.append({
-            "nom": item.get("depute_nom", "Inconnu"),
-            "groupe": item.get("groupe_sigle", "Inconnu"),
-            "vote": item.get("vote_position", "Inconnu")
+    print("Téléchargement du CSV des votes...")
+    csv_response = requests.get(votes_resource, timeout=60)
+    csv_response.raise_for_status()
+    lines = csv_response.text.splitlines()
+
+    if not lines:
+        raise RuntimeError("Le CSV est vide.")
+
+    header = lines[0].split(",")
+    rows = [line.split(",") for line in lines[1:] if line.strip()]
+
+    def idx(name_candidates):
+        for candidate in name_candidates:
+            if candidate in header:
+                return header.index(candidate)
+        return None
+
+    i_scrutin = idx(["scrutin_numero", "scrutin_id", "id_scrutin"])
+    i_titre = idx(["scrutin_titre", "titre", "scrutin_objet"])
+    i_date = idx(["scrutin_date", "date_scrutin", "date"])
+    i_nom = idx(["depute_nom", "nom", "nom_depute"])
+    i_groupe = idx(["groupe_sigle", "groupe", "groupe_nom"])
+    i_vote = idx(["vote_position", "position_vote", "vote"])
+
+    if None in [i_scrutin, i_titre, i_date, i_nom, i_groupe, i_vote]:
+        raise RuntimeError(f"Colonnes introuvables. En-têtes trouvés : {header}")
+
+    scrutins_map = {}
+
+    for row in rows[:5000]:
+        if len(row) <= max(i_scrutin, i_titre, i_date, i_nom, i_groupe, i_vote):
+            continue
+
+        scrutin_id = row[i_scrutin].strip()
+        titre = row[i_titre].strip()
+        date = row[i_date].strip()
+        nom = row[i_nom].strip()
+        groupe = row[i_groupe].strip()
+        vote = row[i_vote].strip()
+
+        if not scrutin_id:
+            continue
+
+        if scrutin_id not in scrutins_map:
+            scrutins_map[scrutin_id] = {
+                "id": scrutin_id,
+                "uid": scrutin_id,
+                "titre": titre or f"Scrutin {scrutin_id}",
+                "date": date,
+                "theme": "Politique",
+                "votes": []
+            }
+
+        scrutins_map[scrutin_id]["votes"].append({
+            "nom": nom or "Inconnu",
+            "groupe": groupe or "Inconnu",
+            "vote": vote or "Inconnu"
         })
 
-        scrutins.append({
-            "id": scrutin_id,
-            "uid": scrutin_id,
-            "titre": titre,
-            "date": date,
-            "theme": "Politique",
-            "votes": votes
-        })
+    scrutins = list(scrutins_map.values())
 
-    deputes = set()
-    groupes = set()
-
-    for s in scrutins:
-        for v in s["votes"]:
-            deputes.add(v["nom"])
-            groupes.add(v["groupe"])
+    deputes = sorted({v["nom"] for s in scrutins for v in s["votes"]})
+    groupes = sorted({v["groupe"] for s in scrutins for v in s["votes"]})
 
     output = {
         "meta": {
-            "source_votes": "data.gouv.fr",
+            "source_votes": "data.gouv.fr / CIVIX",
             "nombre_scrutins": len(scrutins),
             "nombre_deputes_detectes": len(deputes),
             "nombre_groupes_detectes": len(groupes)
@@ -60,8 +108,9 @@ def main():
     )
 
     print("OK")
-    print(f"Scrutins: {len(scrutins)}")
-    print(f"Députés: {len(deputes)}")
+    print(f"Scrutins : {len(scrutins)}")
+    print(f"Députés : {len(deputes)}")
+    print(f"Groupes : {len(groupes)}")
 
 if __name__ == "__main__":
     main()
