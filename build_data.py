@@ -31,63 +31,64 @@ def main():
     print("Téléchargement du CSV des votes...")
     csv_response = requests.get(votes_resource, timeout=60)
     csv_response.raise_for_status()
-    lines = csv_response.text.splitlines()
 
+    lines = csv_response.text.splitlines()
     if not lines:
         raise RuntimeError("Le CSV est vide.")
 
-    header = lines[0].split(",")
+    header = [h.strip() for h in lines[0].split(",")]
     rows = [line.split(",") for line in lines[1:] if line.strip()]
 
-    def idx(name_candidates):
-        for candidate in name_candidates:
-            if candidate in header:
-                return header.index(candidate)
-        return None
+    def idx(name):
+        if name not in header:
+            raise RuntimeError(f"Colonne manquante : {name}. En-têtes trouvés : {header}")
+        return header.index(name)
 
-    i_scrutin = idx(["scrutin_numero", "scrutin_id", "id_scrutin"])
-    i_titre = idx(["scrutin_titre", "titre", "scrutin_objet"])
-    i_date = idx(["scrutin_date", "date_scrutin", "date"])
-    i_nom = idx(["depute_nom", "nom", "nom_depute"])
-    i_groupe = idx(["groupe_sigle", "groupe", "groupe_nom"])
-    i_vote = idx(["vote_position", "position_vote", "vote"])
-
-    if None in [i_scrutin, i_titre, i_date, i_nom, i_groupe, i_vote]:
-        raise RuntimeError(f"Colonnes introuvables. En-têtes trouvés : {header}")
+    i_uid = idx("scrutin_uid")
+    i_numero = idx("numero_scrutin")
+    i_date = idx("date_scrutin")
+    i_prenom = idx("prenom")
+    i_nom = idx("nom")
+    i_groupe = idx("groupe")
+    i_position = idx("position")
 
     scrutins_map = {}
 
-    for row in rows[:5000]:
-        if len(row) <= max(i_scrutin, i_titre, i_date, i_nom, i_groupe, i_vote):
+    for row in rows:
+        if len(row) <= max(i_uid, i_numero, i_date, i_prenom, i_nom, i_groupe, i_position):
             continue
 
-        scrutin_id = row[i_scrutin].strip()
-        titre = row[i_titre].strip()
+        scrutin_uid = row[i_uid].strip()
+        numero = row[i_numero].strip()
         date = row[i_date].strip()
+        prenom = row[i_prenom].strip()
         nom = row[i_nom].strip()
         groupe = row[i_groupe].strip()
-        vote = row[i_vote].strip()
+        position = row[i_position].strip()
 
-        if not scrutin_id:
+        if not scrutin_uid:
             continue
 
-        if scrutin_id not in scrutins_map:
-            scrutins_map[scrutin_id] = {
-                "id": scrutin_id,
-                "uid": scrutin_id,
-                "titre": titre or f"Scrutin {scrutin_id}",
+        nom_complet = f"{prenom} {nom}".strip()
+
+        if scrutin_uid not in scrutins_map:
+            scrutins_map[scrutin_uid] = {
+                "id": scrutin_uid,
+                "uid": scrutin_uid,
+                "titre": f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}",
                 "date": date,
-                "theme": "Politique",
+                "theme": "À classer",
                 "votes": []
             }
 
-        scrutins_map[scrutin_id]["votes"].append({
-            "nom": nom or "Inconnu",
+        scrutins_map[scrutin_uid]["votes"].append({
+            "nom": nom_complet or "Inconnu",
             "groupe": groupe or "Inconnu",
-            "vote": vote or "Inconnu"
+            "vote": position or "Inconnu"
         })
 
     scrutins = list(scrutins_map.values())
+    scrutins.sort(key=lambda s: s.get("date", ""), reverse=True)
 
     deputes = sorted({v["nom"] for s in scrutins for v in s["votes"]})
     groupes = sorted({v["groupe"] for s in scrutins for v in s["votes"]})
