@@ -17,8 +17,8 @@ def guess_theme(text):
     if "écologie" in t or "climat" in t:
         return "Écologie"
     return "Autres"
+
 def main():
-    
     print("Téléchargement des métadonnées du jeu...")
 
     response = requests.get(URL, timeout=30)
@@ -83,14 +83,14 @@ def main():
 
         nom_complet = f"{prenom} {nom}".strip()
 
-        scrutins_map[scrutin_uid] = {
-    "id": scrutin_uid,
-    "uid": scrutin_uid,
-    "titre": f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}",
-    "date": date,
-    "theme": guess_theme(f"Scrutin n°{numero}"),
-    "votes": []
-}
+        if scrutin_uid not in scrutins_map:
+            scrutins_map[scrutin_uid] = {
+                "id": scrutin_uid,
+                "uid": scrutin_uid,
+                "titre": f"Scrutin n°{numero}" if numero else f"Scrutin {scrutin_uid}",
+                "date": date,
+                "theme": guess_theme(f"Scrutin n°{numero}"),
+                "votes": []
             }
 
         scrutins_map[scrutin_uid]["votes"].append({
