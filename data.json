@@ -1,617 +1,894 @@
 {
   "meta": {
-    "source_votes": "CIVIX / données publiques de l’Assemblée nationale",
+    "source_votes": "Assemblée nationale open data - Scrutins.json.zip",
+    "source_deputes": "Assemblée nationale open data - AMO10 députés actifs",
     "nombre_scrutins": 1,
-    "nombre_deputes_detectes": 100,
-    "nombre_groupes_detectes": 11
+    "nombre_deputes_detectes": 146,
+    "nombre_groupes_detectes": 12
   },
   "scrutins": [
     {
-      "id": "VTANR5L17V6176",
-      "uid": "VTANR5L17V6176",
-      "titre": "Scrutin n°6176",
-      "description": "",
-      "date": "2026-04-13 00:00:00+00",
+      "id": "VTANR5L17V2657",
+      "uid": "VTANR5L17V2657",
+      "titre": "l'article 22 (examen prioritaire) du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
+      "description": "l'article 22 (examen prioritaire) du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
+      "date": "2025-06-24",
       "theme": "Autres",
       "votes": [
         {
-          "nom": "Nicolas Dragon",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA842279",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Sylvain Carrière",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA793238",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Marc Fesneau",
-          "groupe": "DEM",
-          "vote": "contre",
+          "nom": "PA793158",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Edwige Diaz",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA794434",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Sébastien Humbert",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA720668",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Rodrigo Arenas",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
-          "origine": "Paris"
+          "nom": "PA796042",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841487",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793134",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA840075",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794198",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA840119",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793928",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793146",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA842073",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841761",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793246",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794678",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA796034",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793832",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793362",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794418",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793592",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794894",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794954",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA842255",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA840781",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA840757",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794734",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793218",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA795900",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA842085",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841439",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Charles Rodwell",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA841749",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Isabelle Santiago",
-          "groupe": "SOC",
-          "vote": "abstention",
+          "nom": "PA840869",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Olivier Fayssat",
-          "groupe": "UDDPLR",
-          "vote": "contre",
+          "nom": "PA794354",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Jocelyn Dessigny",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA795912",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Christian Girard",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA796026",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Frédéric-Pierre Vos",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA793290",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Serge Muller",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841873",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Ségolène Amiot",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
-          "origine": "Loire-Atlantique"
+          "nom": "PA793672",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA721932",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841563",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794530",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793314",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793330",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793852",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA840915",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794582",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793656",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841955",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA841981",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA842227",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794442",
+          "groupe": "PO845401",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Céline Calvez",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA795410",
+          "groupe": "PO845401",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Graziella Melchior",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA642695",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Antoine Léaument",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA606507",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Pierre Pribetich",
-          "groupe": "SOC",
-          "vote": "pour",
+          "nom": "PA794330",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Thierry Benoit",
-          "groupe": "HOR",
-          "vote": "contre",
-          "origine": "Ille-et-Vilaine"
+          "nom": "PA719890",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA722000",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA795330",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA722134",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA793270",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA794802",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA719512",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
+        },
+        {
+          "nom": "PA795046",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Matthieu Bloch",
-          "groupe": "UDDPLR",
-          "vote": "contre",
-          "origine": "Doubs"
+          "nom": "PA841601",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Anchya Bamana",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Mayotte"
+          "nom": "PA841927",
+          "groupe": "PO845407",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Caroline Colombier",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA793416",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Emmanuel Fouquart",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA719756",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Yoann Gillet",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA795386",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Philippe Schreck",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA720446",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Antoine Villedieu",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA795730",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Hélène Laporte",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA795528",
+          "groupe": "PO845407",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Yaël Ménaché",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA721908",
+          "groupe": "PO845407",
+          "vote": "Non-votant",
           "origine": ""
         },
         {
-          "nom": "Catherine Rimbert",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA793262",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Gabriel Amard",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
-          "origine": "Rhône"
+          "nom": "PA794906",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Liliana Tanguy",
-          "groupe": "EPR",
-          "vote": "pour",
+          "nom": "PA793772",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Anthony Brosse",
-          "groupe": "EPR",
-          "vote": "contre",
-          "origine": "Loiret"
+          "nom": "PA793444",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Olivia Grégoire",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA842187",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Christophe Marion",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA791812",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Anne Stambach-Terrenoir",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA795136",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Andy Kerbrat",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA795844",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Marie-Noëlle Battistel",
-          "groupe": "SOC",
-          "vote": "pour",
-          "origine": "Isère"
+          "nom": "PA841251",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Anna Pic",
-          "groupe": "SOC",
-          "vote": "pour",
+          "nom": "PA794870",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Éric Martineau",
-          "groupe": "DEM",
-          "vote": "contre",
+          "nom": "PA841845",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Anne Bergantz",
-          "groupe": "DEM",
-          "vote": "contre",
-          "origine": "Yvelines"
+          "nom": "PA794106",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Laurent Mazaury",
-          "groupe": "LIOT",
-          "vote": "contre",
+          "nom": "PA794478",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Alexandre Allegret-Pilot",
-          "groupe": "UDDPLR",
-          "vote": "contre",
-          "origine": "Gard"
+          "nom": "PA841947",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Stella Dupont",
-          "groupe": "NI",
-          "vote": "contre",
+          "nom": "PA841729",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Philippe Ballard",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Oise"
+          "nom": "PA795672",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Théo Bernhardt",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Bas-Rhin"
+          "nom": "PA795746",
+          "groupe": "PO845413",
+          "vote": "Contre",
+          "origine": ""
         },
         {
-          "nom": "Roger Chudeau",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA793532",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Claire Marais-Beuil",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA342384",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Aurélien Dutremble",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA795422",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Stéphanie Galzy",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841191",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Jonathan Gery",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA817211",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Florence Goulet",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA796062",
+          "groupe": "PO845413",
+          "vote": "Contre",
           "origine": ""
         },
         {
-          "nom": "Géraldine Grangier",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840829",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Anne Sicard",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840171",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Michaël Taverne",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841853",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Tiffany Joncour",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA1654",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Florence Joubert",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840765",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Robert Le Bourgeois",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA643157",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Nadine Lechon",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841107",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Thierry Perez",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840955",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Lisette Pollet",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841327",
+          "groupe": "PO845419",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Laurence Robert-Dehault",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA719968",
+          "groupe": "PO845425",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Cyril Tribuiani",
-          "groupe": "null",
-          "vote": "contre",
+          "nom": "PA266797",
+          "groupe": "PO845425",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Marine Hamelet",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA794042",
+          "groupe": "PO845425",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Michèle Martinez",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA842141",
+          "groupe": "PO845425",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Astrid Panosyan-Bouvet",
-          "groupe": "EPR",
-          "vote": "pour",
+          "nom": "PA793342",
+          "groupe": "PO845425",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Florent Boudié",
-          "groupe": "EPR",
-          "vote": "contre",
-          "origine": "Gironde"
+          "nom": "PA610968",
+          "groupe": "PO845439",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Yannick Chenevard",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA841701",
+          "groupe": "PO845439",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "François Cormier-Bouligeon",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA840997",
+          "groupe": "PO845439",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Charles Sitzenstuhl",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA841351",
+          "groupe": "PO845439",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Joséphine Missoffe",
-          "groupe": "EPR",
-          "vote": "contre",
+          "nom": "PA2940",
+          "groupe": "PO845439",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Yaël Braun-Pivet",
-          "groupe": "EPR",
-          "vote": "nonVotant",
-          "origine": "Yvelines"
+          "nom": "PA719914",
+          "groupe": "PO845454",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Emmanuel Fernandes",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA795120",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Aurélien Taché",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA795258",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Andrée Taurinya",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA720728",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Sarah Legrain",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA719640",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Élisa Martin",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA794810",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Mickaël Bouloux",
-          "groupe": "SOC",
-          "vote": "pour",
-          "origine": "Ille-et-Vilaine"
+          "nom": "PA794830",
+          "groupe": "PO845454",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Sophie Pantel",
-          "groupe": "SOC",
-          "vote": "pour",
+          "nom": "PA721234",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Jordan Guitton",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA720720",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Frantz Gumbs",
-          "groupe": "DEM",
-          "vote": "contre",
+          "nom": "PA331582",
+          "groupe": "PO845454",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Sophie Mette",
-          "groupe": "DEM",
-          "vote": "contre",
+          "nom": "PA267780",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Josy Poueyto",
-          "groupe": "DEM",
-          "vote": "contre",
+          "nom": "PA719052",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Benoît Blanchard",
-          "groupe": "HOR",
-          "vote": "abstention",
-          "origine": "Val-d'Oise"
+          "nom": "PA842125",
+          "groupe": "PO845470",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Joël Bruneau",
-          "groupe": "LIOT",
-          "vote": "contre",
+          "nom": "PA720230",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Jean-Victor Castor",
-          "groupe": "GDR",
-          "vote": "pour",
+          "nom": "PA793398",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Elsa Faucillon",
-          "groupe": "GDR",
-          "vote": "pour",
+          "nom": "PA720138",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Monique Griseti",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA794466",
+          "groupe": "PO845470",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Maxime Michelet",
-          "groupe": "UDDPLR",
-          "vote": "contre",
+          "nom": "PA720908",
+          "groupe": "PO845470",
+          "vote": "Non-votant",
           "origine": ""
         },
         {
-          "nom": "Maxime Amblard",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Meuse"
+          "nom": "PA840817",
+          "groupe": "PO845485",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Bénédicte Auzanot",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Vaucluse"
+          "nom": "PA942",
+          "groupe": "PO845485",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Romain Baubry",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Bouches-du-Rhône"
+          "nom": "PA796078",
+          "groupe": "PO845485",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "José Beaurain",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Aisne"
+          "nom": "PA795998",
+          "groupe": "PO845514",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Sophie Blanc",
-          "groupe": "RN",
-          "vote": "contre",
-          "origine": "Pyrénées-Orientales"
+          "nom": "PA796010",
+          "groupe": "PO845514",
+          "vote": "Pour",
+          "origine": ""
         },
         {
-          "nom": "Eddy Casterman",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841067",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Gisèle Lelouis",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA841207",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "David Magnier",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840889",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Patrice Martin",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840701",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Alexandre Dufosset",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840721",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Julien Limongi",
-          "groupe": "RN",
-          "vote": "contre",
+          "nom": "PA840773",
+          "groupe": "PO847173",
+          "vote": "Pour",
           "origine": ""
         },
         {
-          "nom": "Jean-François Coulomme",
-          "groupe": "LFI-NFP",
-          "vote": "pour",
+          "nom": "PA569",
+          "groupe": "PO840056",
+          "vote": "Pour",
           "origine": ""
         }
       ]
