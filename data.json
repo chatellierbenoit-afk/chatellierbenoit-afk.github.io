@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "source_votes": "démo réaliste",
+    "nombre_scrutins": 2,
+    "nombre_deputes_detectes": 30,
+    "nombre_groupes_detectes": 10
+  },
+  "scrutins": [
+    {
+      "id": "1",
+      "uid": "1",
+      "titre": "Projet de loi de finances",
+      "date": "2024-12-19",
+      "theme": "Budget",
+      "votes": [
+        {"nom": "Aurore Bergé", "groupe": "Renaissance", "vote": "Pour"},
+        {"nom": "Manuel Bompard", "groupe": "LFI-NFP", "vote": "Contre"},
+        {"nom": "Marine Le Pen", "groupe": "RN", "vote": "Pour"},
+        {"nom": "Olivier Marleix", "groupe": "LR", "vote": "Pour"},
+        {"nom": "Boris Vallaud", "groupe": "Socialistes", "vote": "Contre"},
+        {"nom": "Cyrielle Chatelain", "groupe": "Écologistes", "vote": "Contre"},
+        {"nom": "Jean-Paul Mattei", "groupe": "MoDem", "vote": "Pour"},
+        {"nom": "Laurent Marcangeli", "groupe": "Horizons", "vote": "Pour"},
+        {"nom": "André Chassaigne", "groupe": "GDR", "vote": "Contre"},
+        {"nom": "Liot Député 1", "groupe": "LIOT", "vote": "Abstention"}
+      ]
+    },
+    {
+      "id": "2",
+      "uid": "2",
+      "titre": "Loi immigration",
+      "date": "2024-12-12",
+      "theme": "Immigration",
+      "votes": [
+        {"nom": "Aurore Bergé", "groupe": "Renaissance", "vote": "Pour"},
+        {"nom": "Manuel Bompard", "groupe": "LFI-NFP", "vote": "Contre"},
+        {"nom": "Marine Le Pen", "groupe": "RN", "vote": "Pour"},
+        {"nom": "Olivier Marleix", "groupe": "LR", "vote": "Pour"},
+        {"nom": "Boris Vallaud", "groupe": "Socialistes", "vote": "Contre"},
+        {"nom": "Cyrielle Chatelain", "groupe": "Écologistes", "vote": "Contre"},
+        {"nom": "Jean-Paul Mattei", "groupe": "MoDem", "vote": "Pour"},
+        {"nom": "Laurent Marcangeli", "groupe": "Horizons", "vote": "Pour"},
+        {"nom": "André Chassaigne", "groupe": "GDR", "vote": "Contre"},
+        {"nom": "Liot Député 1", "groupe": "LIOT", "vote": "Pour"}
+      ]
+    }
+  ]
+}

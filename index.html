@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observatoire des votes de l’Assemblée nationale</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f7f7fb;
+  color: #222;
+}
+header {
+  background: #7700FF;
+  color: white;
+  padding: 28px 20px;
+  text-align: center;
+}
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.panel {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  text-align: center;
+}
+select, input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.card {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: #fcfcff;
+}
+.card h3 {
+  margin-top: 0;
+  text-align: center;
+}
+.meta, .muted, .summary {
+  text-align: center;
+  color: #666;
+}
+.badges {
+  text-align: center;
+  margin-top: 10px;
+}
+.badge {
+  display: inline-block;
+  background: #eee;
+  border-radius: 999px;
+  padding: 6px 10px;
+  margin: 4px;
+  font-size: 13px;
+}
+button {
+  display: block;
+  margin: 12px auto 0 auto;
+  background: #7700FF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+}
+th, td {
+  padding: 9px;
+  border-bottom: 1px solid #eaeaea;
+  text-align: center;
+  font-size: 14px;
+}
+th {
+  background: #f0ebff;
+}
+.small {
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Observatoire des votes de l’Assemblée nationale</h1>
+  <p>Votes réels par scrutin, groupe et député</p>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="grid">
+      <div>
+        <label for="groupFilter">Groupe politique</label>
+        <select id="groupFilter">
+          <option value="">Tous les groupes</option>
+        </select>
+      </div>
+      <div>
+        <label for="voteFilter">Position de vote</label>
+        <select id="voteFilter">
+          <option value="">Toutes les positions</option>
+          <option value="Pour">Pour</option>
+          <option value="Contre">Contre</option>
+          <option value="Abstention">Abstention</option>
+          <option value="Non-votant">Non-votant</option>
+        </select>
+      </div>
+      <div>
+        <label for="themeFilter">Thématique</label>
+        <select id="themeFilter">
+          <option value="">Toutes les thématiques</option>
+        </select>
+      </div>
+      <div>
+        <label for="deputeSearch">Recherche député</label>
+        <input id="deputeSearch" type="text" placeholder="Nom ou prénom">
+      </div>
+    </div>
+    <p class="summary" id="summaryText"></p>
+    <p class="summary small" id="metaText"></p>
+  </section>
+
+  <section class="panel">
+    <h2 style="text-align:center;">Scrutins</h2>
+    <div id="results"></div>
+  </section>
+
+  <section class="panel">
+    <h2 style="text-align:center;">Détail nominatif du scrutin</h2>
+    <div id="detailContainer">
+      <p class="muted">Clique sur “Voir le détail nominatif”.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+let scrutins = [];
+
+const groupFilter = document.getElementById("groupFilter");
+const voteFilter = document.getElementById("voteFilter");
+const themeFilter = document.getElementById("themeFilter");
+const deputeSearch = document.getElementById("deputeSearch");
+const results = document.getElementById("results");
+const detailContainer = document.getElementById("detailContainer");
+const summaryText = document.getElementById("summaryText");
+const metaText = document.getElementById("metaText");
+
+function uniqueSortedValues(array) {
+  return [...new Set(array)].sort((a, b) => a.localeCompare(b, "fr"));
+}
+
+function countsFromVotes(votes) {
+  return {
+    pour: votes.filter(v => v.vote === "Pour").length,
+    contre: votes.filter(v => v.vote === "Contre").length,
+    abstention: votes.filter(v => v.vote === "Abstention").length,
+    nonVotant: votes.filter(v => v.vote === "Non-votant").length
+  };
+}
+
+function populateFilters() {
+  const allVotes = scrutins.flatMap(s => s.votes);
+  const groupes = uniqueSortedValues(allVotes.map(v => v.groupe));
+  const themes = uniqueSortedValues(scrutins.map(s => s.theme));
+
+  groupes.forEach(groupe => {
+    const option = document.createElement("option");
+    option.value = groupe;
+    option.textContent = groupe;
+    groupFilter.appendChild(option);
+  });
+
+  themes.forEach(theme => {
+    const option = document.createElement("option");
+    option.value = theme;
+    option.textContent = theme;
+    themeFilter.appendChild(option);
+  });
+}
+
+function displayResults() {
+  const selectedGroup = groupFilter.value;
+  const selectedVote = voteFilter.value;
+  const selectedTheme = themeFilter.value;
+  const search = deputeSearch.value.trim().toLowerCase();
+
+  const filteredScrutins = scrutins
+    .filter(scrutin => !selectedTheme || scrutin.theme === selectedTheme)
+    .map(scrutin => {
+      const filteredVotes = scrutin.votes.filter(v => {
+        const okGroup = !selectedGroup || v.groupe === selectedGroup;
+        const okVote = !selectedVote || v.vote === selectedVote;
+        const okSearch = !search || v.nom.toLowerCase().includes(search);
+        return okGroup && okVote && okSearch;
+      });
+      return { ...scrutin, filteredVotes };
+    })
+    .filter(scrutin => scrutin.filteredVotes.length > 0);
+
+  results.innerHTML = "";
+  summaryText.textContent = `${filteredScrutins.length} scrutin(s) affiché(s)`;
+
+  if (filteredScrutins.length === 0) {
+    results.innerHTML = `<p class="muted">Aucun scrutin ne correspond à ta recherche.</p>`;
+    return;
+  }
+
+  filteredScrutins
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+    .forEach(scrutin => {
+      const counts = countsFromVotes(scrutin.filteredVotes);
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${scrutin.titre || "Scrutin sans titre"}</h3>
+        <p class="meta">${scrutin.date || ""} • ${scrutin.theme || "Autres"}</p>
+        <div class="badges">
+          <span class="badge">Pour : ${counts.pour}</span>
+          <span class="badge">Contre : ${counts.contre}</span>
+          <span class="badge">Abstention : ${counts.abstention}</span>
+          <span class="badge">Non-votant : ${counts.nonVotant}</span>
+        </div>
+        <p class="muted">${scrutin.filteredVotes.length} vote(s) dans cette vue</p>
+        <button onclick="showDetail('${scrutin.uid || scrutin.id}')">Voir le détail nominatif</button>
+      `;
+      results.appendChild(card);
+    });
+}
+
+window.showDetail = function(scrutinUid) {
+  const scrutin = scrutins.find(s => (s.uid || s.id) == scrutinUid);
+
+  if (!scrutin) {
+    detailContainer.innerHTML = `<p class="muted">Scrutin introuvable.</p>`;
+    return;
+  }
+
+  const votes = [...scrutin.votes].sort((a, b) => {
+    const groupCompare = a.groupe.localeCompare(b.groupe, "fr");
+    if (groupCompare !== 0) return groupCompare;
+    return a.nom.localeCompare(b.nom, "fr");
+  });
+
+  detailContainer.innerHTML = `
+    <h3 style="text-align:center;">${scrutin.titre || "Scrutin"}</h3>
+    <p class="meta">${scrutin.date || ""} • ${scrutin.theme || "Autres"}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Député</th>
+          <th>Groupe</th>
+          <th>Vote</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${votes.map(v => `
+          <tr>
+            <td>${v.nom}</td>
+            <td>${v.groupe}</td>
+            <td>${v.vote}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+};
+
+fetch("data.json")
+  .then(r => r.json())
+  .then(data => {
+    scrutins = data.scrutins || [];
+
+    const meta = data.meta || {};
+    metaText.textContent =
+      `Scrutins : ${meta.nombre_scrutins || 0} • Députés détectés : ${meta.nombre_deputes_detectes || 0} • Groupes détectés : ${meta.nombre_groupes_detectes || 0}`;
+
+    populateFilters();
+    displayResults();
+  })
+  .catch(err => {
+    console.error(err);
+    results.innerHTML = `<p class="muted">Impossible de charger data.json</p>`;
+  });
+
+groupFilter.addEventListener("change", displayResults);
+voteFilter.addEventListener("change", displayResults);
+themeFilter.addEventListener("change", displayResults);
+deputeSearch.addEventListener("input", displayResults);
+</script>
+</body>
+</html>
