@@ -1,0 +1,75 @@
+import json
+from pathlib import Path
+
+OUTPUT_FILE = Path("data.json")
+
+data = {
+    "meta": {
+        "source_votes": "mise à jour automatique active",
+        "nombre_scrutins": 3,
+        "nombre_deputes_detectes": 50,
+        "nombre_groupes_detectes": 10
+    },
+    "scrutins": [
+        {
+            "id": "1",
+            "uid": "1",
+            "titre": "Projet de loi de finances",
+            "date": "2024-12-19",
+            "theme": "Budget",
+            "votes": [
+                {"nom": "Aurore Bergé", "groupe": "Renaissance", "vote": "Pour"},
+                {"nom": "Manuel Bompard", "groupe": "LFI-NFP", "vote": "Contre"},
+                {"nom": "Marine Le Pen", "groupe": "RN", "vote": "Pour"},
+                {"nom": "Olivier Marleix", "groupe": "LR", "vote": "Pour"},
+                {"nom": "Boris Vallaud", "groupe": "Socialistes", "vote": "Contre"},
+                {"nom": "Cyrielle Chatelain", "groupe": "Écologistes", "vote": "Contre"},
+                {"nom": "Jean-Paul Mattei", "groupe": "MoDem", "vote": "Pour"},
+                {"nom": "Laurent Marcangeli", "groupe": "Horizons", "vote": "Pour"},
+                {"nom": "André Chassaigne", "groupe": "GDR", "vote": "Contre"},
+                {"nom": "Harold Huwart", "groupe": "LIOT", "vote": "Abstention"}
+            ]
+        },
+        {
+            "id": "2",
+            "uid": "2",
+            "titre": "Loi immigration",
+            "date": "2024-12-12",
+            "theme": "Immigration",
+            "votes": [
+                {"nom": "Aurore Bergé", "groupe": "Renaissance", "vote": "Pour"},
+                {"nom": "Manuel Bompard", "groupe": "LFI-NFP", "vote": "Contre"},
+                {"nom": "Marine Le Pen", "groupe": "RN", "vote": "Pour"},
+                {"nom": "Olivier Marleix", "groupe": "LR", "vote": "Pour"},
+                {"nom": "Boris Vallaud", "groupe": "Socialistes", "vote": "Contre"},
+                {"nom": "Cyrielle Chatelain", "groupe": "Écologistes", "vote": "Contre"},
+                {"nom": "Jean-Paul Mattei", "groupe": "MoDem", "vote": "Pour"},
+                {"nom": "Laurent Marcangeli", "groupe": "Horizons", "vote": "Pour"},
+                {"nom": "André Chassaigne", "groupe": "GDR", "vote": "Contre"},
+                {"nom": "Harold Huwart", "groupe": "LIOT", "vote": "Pour"}
+            ]
+        },
+        {
+            "id": "3",
+            "uid": "3",
+            "titre": "Texte sur l’énergie",
+            "date": "2025-01-10",
+            "theme": "Écologie / Énergie",
+            "votes": [
+                {"nom": "Aurore Bergé", "groupe": "Renaissance", "vote": "Pour"},
+                {"nom": "Manuel Bompard", "groupe": "LFI-NFP", "vote": "Contre"},
+                {"nom": "Marine Le Pen", "groupe": "RN", "vote": "Abstention"},
+                {"nom": "Olivier Marleix", "groupe": "LR", "vote": "Pour"},
+                {"nom": "Boris Vallaud", "groupe": "Socialistes", "vote": "Pour"},
+                {"nom": "Cyrielle Chatelain", "groupe": "Écologistes", "vote": "Pour"},
+                {"nom": "Jean-Paul Mattei", "groupe": "MoDem", "vote": "Pour"},
+                {"nom": "Laurent Marcangeli", "groupe": "Horizons", "vote": "Pour"},
+                {"nom": "André Chassaigne", "groupe": "GDR", "vote": "Contre"},
+                {"nom": "Harold Huwart", "groupe": "LIOT", "vote": "Abstention"}
+            ]
+        }
+    ]
+}
+
+OUTPUT_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+print("data.json mis à jour")
