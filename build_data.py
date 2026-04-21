@@ -25,16 +25,16 @@ DEPARTEMENTS_FILE = BASE_DIR / "departements.json"
 SSL_CONTEXT = ssl.create_default_context()
 
 
-def ensure_dir(path: Path) -> None:
+def ensure_dir(path: Path):
     path.mkdir(parents=True, exist_ok=True)
 
 
-def write_json(path: Path, data) -> None:
+def write_json(path: Path, data):
     ensure_dir(path.parent)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def download(url: str) -> bytes:
+def download(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
         return r.read()
@@ -56,69 +56,23 @@ def clean_text(value):
 
 def get_uid(value):
     if isinstance(value, dict):
-        return clean_text(value.get("#text") or value.get("uid") or value.get("text") or "")
+        return clean_text(value.get("#text") or value.get("uid") or "")
     return clean_text(value)
 
 
 def normalize_vote_label(value):
     mapping = {
         "pour": "Pour",
-        "pours": "Pour",
         "contre": "Contre",
-        "contres": "Contre",
         "abstention": "Abstention",
-        "abstentions": "Abstention",
         "non-votant": "Non-votant",
-        "non-votants": "Non-votant",
-        "non votant": "Non-votant",
-        "non votants": "Non-votant",
-        "nonvotant": "Non-votant",
-        "nonvotants": "Non-votant",
     }
-    raw = clean_text(value).lower()
-    return mapping.get(raw, value or "Inconnu")
+    return mapping.get(clean_text(value).lower(), "Inconnu")
 
 
-def guess_theme(text):
-    t = clean_text(text).lower()
-    rules = [
-        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
-        ("Santé", ["santé", "hôpital", "médical", "soin"]),
-        ("Éducation", ["éducation", "école", "université", "enseignement"]),
-        ("Écologie / Énergie", ["écologie", "climat", "énergie", "environnement"]),
-        ("Travail / Social", ["travail", "emploi", "retraite", "social", "salaires", "chômage"]),
-        ("Justice / Sécurité", ["justice", "sécurité", "police", "prison", "pénal"]),
-        ("Immigration", ["immigration", "asile", "étranger", "mayotte"]),
-        ("Institutions", ["motion", "censure", "constitution", "règlement", "procédure"]),
-        ("Agriculture", ["agriculture", "aliment"]),
-        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
-        ("Défense / International", ["défense", "armée", "international", "europe"]),
-        ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
-    ]
-    for theme, keywords in rules:
-        if any(keyword in t for keyword in keywords):
-            return theme
-    return "Autres"
-
-
-def extract_votants_from_bucket(node):
-    result = []
-
-    if isinstance(node, dict):
-        if "votant" in node:
-            result.extend(ensure_list(node["votant"]))
-        elif "acteurRef" in node:
-            result.append(node)
-        else:
-            for value in node.values():
-                result.extend(extract_votants_from_bucket(value))
-
-    elif isinstance(node, list):
-        for item in node:
-            result.extend(extract_votants_from_bucket(item))
-
-    return result
-
+# ===============================
+# 🔵 LOAD AMO50
+# ===============================
 
 def load_amo50():
     print("Chargement AMO50…")
@@ -131,94 +85,82 @@ def load_amo50():
     # --- ACTEURS + ORGANES ---
     for name in zf.namelist():
 
-        if name.startswith("acteur/") and name.endswith(".json"):
+        if name.startswith("acteur/"):
             data = json.loads(zf.read(name).decode("utf-8"))
             acteur = data.get("acteur", {})
 
             uid = get_uid(acteur.get("uid"))
             ident = acteur.get("etatCivil", {}).get("ident", {})
 
-            prenom = clean_text(ident.get("prenom") or "")
-            nom = clean_text(ident.get("nom") or "")
-            nom_complet = clean_text(f"{prenom} {nom}")
+            nom = clean_text(f"{ident.get('prenom','')} {ident.get('nom','')}")
 
             actor_meta[uid] = {
                 "uid": uid,
-                "nom": nom_complet or uid,
+                "nom": nom or uid,
                 "groupe": "",
                 "departement": "",
                 "circonscription": "",
             }
 
-        elif name.startswith("organe/") and name.endswith(".json"):
+        elif name.startswith("organe/"):
             data = json.loads(zf.read(name).decode("utf-8"))
             organe = data.get("organe", {})
 
             uid = clean_text(organe.get("uid"))
-            code_type = clean_text(organe.get("codeType"))
 
+            dep = ""
             lieu = organe.get("lieu", {})
-            departement = ""
             if isinstance(lieu, dict):
-                dep = lieu.get("departement", {})
-                if isinstance(dep, dict):
-                    departement = clean_text(dep.get("libelle"))
+                dep_obj = lieu.get("departement", {})
+                if isinstance(dep_obj, dict):
+                    dep = clean_text(dep_obj.get("libelle"))
 
             organes[uid] = {
-                "uid": uid,
-                "codeType": code_type,
+                "codeType": clean_text(organe.get("codeType")),
                 "libelle": clean_text(organe.get("libelle")),
                 "libelleAbrev": clean_text(organe.get("libelleAbrev")),
                 "libelleAbrege": clean_text(organe.get("libelleAbrege")),
-                "departement": departement,
+                "departement": dep,
             }
 
-# --- MANDATS (LIENS ACTEUR ↔ GROUPE + CIRCO) ---
-for name in zf.namelist():
+    # --- MANDATS ---
+    for name in zf.namelist():
 
-    if not name.startswith("mandat/"):
-        continue
+        if not name.startswith("mandat/"):
+            continue
 
-    data = json.loads(zf.read(name).decode("utf-8"))
-    mandat = data.get("mandat", {})
+        data = json.loads(zf.read(name).decode("utf-8"))
+        mandat = data.get("mandat", {})
 
-    acteur_ref = clean_text(mandat.get("acteurRef"))
-    if acteur_ref not in actor_meta:
-        continue
+        acteur_ref = clean_text(mandat.get("acteurRef"))
+        if acteur_ref not in actor_meta:
+            continue
 
-    if clean_text(mandat.get("legislature")) != "17":
-        continue
+        if clean_text(mandat.get("legislature")) != "17":
+            continue
 
-    organes_block = mandat.get("organes", {})
-    organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
+        organes_block = mandat.get("organes", {})
+        organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
 
-    latest_dep = ""
-    latest_circo = ""
+        latest_dep = ""
+        latest_circo = ""
 
-    for org_ref in organe_refs:
-        organe_info = organes.get(clean_text(org_ref), {})
-        code_type = organe_info.get("codeType", "")
+        for org_ref in organe_refs:
+            org = organes.get(clean_text(org_ref), {})
+            code = org.get("codeType")
 
-        # --- CIRCONSCRIPTION → département ---
-        if code_type == "CIRCONSCRIPTION":
-            latest_circo = organe_info.get("libelle", "")
-            latest_dep = organe_info.get("departement", "")
+            if code == "CIRCONSCRIPTION":
+                latest_dep = org.get("departement")
+                latest_circo = org.get("libelle")
 
-        # --- GROUPE POLITIQUE ---
-        if code_type == "GP" or clean_text(mandat.get("typeOrgane")) == "GP":
-            groupe = (
-                organe_info.get("libelleAbrev")
-                or organe_info.get("libelleAbrege")
-                or organe_info.get("libelle")
-                or ""
-            )
-            if groupe:
-                actor_meta[acteur_ref]["groupe"] = groupe
+            if code == "GP":
+                groupe = org.get("libelleAbrev") or org.get("libelleAbrege") or org.get("libelle")
+                if groupe:
+                    actor_meta[acteur_ref]["groupe"] = groupe
 
-    # 👉 on applique UNE seule fois (important)
-    if latest_dep:
-        actor_meta[acteur_ref]["departement"] = latest_dep
-        actor_meta[acteur_ref]["circonscription"] = latest_circo
+        if latest_dep:
+            actor_meta[acteur_ref]["departement"] = latest_dep
+            actor_meta[acteur_ref]["circonscription"] = latest_circo
 
     print("Acteurs :", len(actor_meta))
     print("Organes :", len(organes))
@@ -226,16 +168,21 @@ for name in zf.namelist():
     return actor_meta, organes
 
 
+# ===============================
+# 🔵 LOAD SCRUTINS
+# ===============================
+
 def load_scrutins(actor_meta, organes):
     print("Chargement scrutins…")
     raw = download(SCRUTINS_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
     scrutins = []
-    json_files = [n for n in zf.namelist() if n.endswith(".json")]
-    print("Fichiers scrutins détectés :", len(json_files))
 
-    for name in json_files:
+    for name in zf.namelist():
+        if not name.endswith(".json"):
+            continue
+
         data = json.loads(zf.read(name).decode("utf-8"))
         scrutin = data.get("scrutin", data)
 
@@ -243,285 +190,53 @@ def load_scrutins(actor_meta, organes):
         if not date.startswith(TARGET_YEAR):
             continue
 
-        uid = clean_text(scrutin.get("uid") or scrutin.get("numero") or "")
-        numero = scrutin.get("numero")
-        titre = clean_text(scrutin.get("titre"))
-        if not titre and numero:
-            titre = f"Scrutin n°{numero}"
-
-        objet = scrutin.get("objet", {})
-        description = ""
-        if isinstance(objet, dict):
-            description = clean_text(objet.get("libelle") or objet.get("titre") or "")
-
         votes = []
 
-        ventilation = scrutin.get("ventilationVotes", {})
-        organe = ventilation.get("organe", {})
-        groupes = ensure_list((organe.get("groupes") or {}).get("groupe"))
+        groupes = ensure_list(
+            ((scrutin.get("ventilationVotes") or {}).get("organe") or {}).get("groupes", {}).get("groupe")
+        )
 
-        for groupe in groupes:
-            groupe_uid = clean_text(groupe.get("organeRef") or groupe.get("uid") or "")
-            groupe_info = organes.get(groupe_uid, {})
+        for g in groupes:
+            decompte = (g.get("vote") or {}).get("decompteNominatif", {})
 
-            groupe_nom = (
-                clean_text(groupe.get("libelle"))
-                or groupe_info.get("libelleAbrev")
-                or groupe_info.get("libelleAbrege")
-                or groupe_info.get("libelle")
-                or groupe_uid
-                or "Inconnu"
-            )
-
-            decompte = (groupe.get("vote") or {}).get("decompteNominatif", {})
-
-            for bucket_key, label in [
+            for key, label in [
                 ("pours", "Pour"),
                 ("contres", "Contre"),
                 ("abstentions", "Abstention"),
                 ("nonVotants", "Non-votant"),
             ]:
-                bucket = decompte.get(bucket_key)
-                votants = extract_votants_from_bucket(bucket)
-
-                for votant in votants:
-                    acteur_ref = clean_text(votant.get("acteurRef"))
-                    depute = actor_meta.get(acteur_ref, {})
+                for v in ensure_list(decompte.get(key, {}).get("votant")):
+                    uid = clean_text(v.get("acteurRef"))
+                    dep = actor_meta.get(uid, {})
 
                     votes.append({
-                        "depute_uid": acteur_ref,
-                        "nom": depute.get("nom") or acteur_ref or "Inconnu",
-                        "groupe": depute.get("groupe") or groupe_nom or "Inconnu",
-                        "vote": normalize_vote_label(label),
-                        "departement": depute.get("departement", "")
+                        "depute_uid": uid,
+                        "nom": dep.get("nom"),
+                        "groupe": dep.get("groupe"),
+                        "vote": label,
+                        "departement": dep.get("departement")
                     })
 
-        if not votes:
-            continue
+        if votes:
+            scrutins.append({"date": date, "votes": votes})
 
-        stats = compute_stats(votes)
-        groupes_summary = compute_groupes_summary(votes)
-        departements_summary = compute_departements_summary(votes)
-
-        scrutins.append({
-            "uid": uid,
-            "numero": numero,
-            "date": date,
-            "titre": titre,
-            "description": description,
-            "theme": guess_theme(f"{titre} {description}"),
-            "stats": stats,
-            "groupes_summary": groupes_summary,
-            "departements_summary": departements_summary,
-            "votes": sorted(votes, key=lambda v: (v["groupe"], v["nom"]))
-        })
-
-    scrutins.sort(key=lambda s: s["date"], reverse=True)
     return scrutins
 
 
-def compute_stats(votes):
-    pour = sum(1 for v in votes if v["vote"] == "Pour")
-    contre = sum(1 for v in votes if v["vote"] == "Contre")
-    abstention = sum(1 for v in votes if v["vote"] == "Abstention")
-    non_votant = sum(1 for v in votes if v["vote"] == "Non-votant")
-    return {
-        "pour": pour,
-        "contre": contre,
-        "abstention": abstention,
-        "non_votant": non_votant,
-        "total_votes": len(votes)
-    }
-
-
-def compute_groupes_summary(votes):
-    grouped = defaultdict(list)
-    for v in votes:
-        grouped[v["groupe"]].append(v)
-
-    result = []
-    for groupe, items in sorted(grouped.items()):
-        stats = compute_stats(items)
-        result.append({
-            "groupe": groupe,
-            "pour": stats["pour"],
-            "contre": stats["contre"],
-            "abstention": stats["abstention"],
-            "non_votant": stats["non_votant"],
-            "total": stats["total_votes"]
-        })
-    return result
-
-
-def compute_departements_summary(votes):
-    grouped = defaultdict(list)
-    for v in votes:
-        dep = v.get("departement", "")
-        if dep:
-            grouped[dep].append(v)
-
-    result = []
-    for dep, items in sorted(grouped.items()):
-        stats = compute_stats(items)
-        result.append({
-            "departement": dep,
-            "pour": stats["pour"],
-            "contre": stats["contre"],
-            "abstention": stats["abstention"],
-            "non_votant": stats["non_votant"],
-            "total": stats["total_votes"]
-        })
-    return result
-
-
-def build_deputes_file(scrutins):
-    by_uid = {}
-
-    for scrutin in scrutins:
-        for vote in scrutin["votes"]:
-            uid = vote["depute_uid"] or vote["nom"]
-            if uid not in by_uid:
-                by_uid[uid] = {
-                    "uid": uid,
-                    "nom": vote["nom"],
-                    "groupe": vote["groupe"],
-                    "departement": vote["departement"],
-                    "votes_count": 0,
-                    "votes_pour": 0,
-                    "votes_contre": 0,
-                    "votes_abstention": 0,
-                    "votes_non_votant": 0
-                }
-
-            by_uid[uid]["votes_count"] += 1
-            if vote["vote"] == "Pour":
-                by_uid[uid]["votes_pour"] += 1
-            elif vote["vote"] == "Contre":
-                by_uid[uid]["votes_contre"] += 1
-            elif vote["vote"] == "Abstention":
-                by_uid[uid]["votes_abstention"] += 1
-            elif vote["vote"] == "Non-votant":
-                by_uid[uid]["votes_non_votant"] += 1
-
-    return {"deputes": sorted(by_uid.values(), key=lambda d: d["nom"])}
-
-
-def build_groupes_file(scrutins):
-    by_group = {}
-
-    for scrutin in scrutins:
-        for vote in scrutin["votes"]:
-            groupe = vote["groupe"]
-            if groupe not in by_group:
-                by_group[groupe] = {
-                    "nom": groupe,
-                    "deputes_set": set(),
-                    "votes_count": 0
-                }
-
-            by_group[groupe]["deputes_set"].add(vote["depute_uid"] or vote["nom"])
-            by_group[groupe]["votes_count"] += 1
-
-    groupes = []
-    for g in sorted(by_group.values(), key=lambda x: x["nom"]):
-        groupes.append({
-            "nom": g["nom"],
-            "deputes_count": len(g["deputes_set"]),
-            "votes_count": g["votes_count"]
-        })
-
-    return {"groupes": groupes}
-
-
-def build_departements_file(scrutins):
-    by_dep = {}
-
-    for scrutin in scrutins:
-        for vote in scrutin["votes"]:
-            dep = vote.get("departement", "")
-            if not dep:
-                continue
-
-            if dep not in by_dep:
-                by_dep[dep] = {
-                    "nom": dep,
-                    "deputes_set": set(),
-                    "groupes_set": set(),
-                    "votes_count": 0
-                }
-
-            by_dep[dep]["deputes_set"].add(vote["depute_uid"] or vote["nom"])
-            by_dep[dep]["groupes_set"].add(vote["groupe"])
-            by_dep[dep]["votes_count"] += 1
-
-    departements = []
-    for d in sorted(by_dep.values(), key=lambda x: x["nom"]):
-        departements.append({
-            "nom": d["nom"],
-            "deputes_count": len(d["deputes_set"]),
-            "votes_count": d["votes_count"],
-            "groupes": sorted(d["groupes_set"])
-        })
-
-    return {"departements": departements}
-
+# ===============================
+# 🔵 MAIN
+# ===============================
 
 def main():
     actor_meta, organes = load_amo50()
     scrutins = load_scrutins(actor_meta, organes)
 
-    deputes_file = build_deputes_file(scrutins)
-    groupes_file = build_groupes_file(scrutins)
-    departements_file = build_departements_file(scrutins)
+    total_votes = sum(len(s["votes"]) for s in scrutins)
 
-    deputes_count = len(deputes_file["deputes"])
-    groupes_count = len(groupes_file["groupes"])
-    departements_count = len(departements_file["departements"])
-    total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
+    write_json(SCRUTINS_FILE, scrutins)
 
-    updated_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
-
-    index_data = {
-        "version": "2.0",
-        "year": int(TARGET_YEAR),
-        "updated_at": updated_at,
-        "counts": {
-            "scrutins": len(scrutins),
-            "deputes": deputes_count,
-            "groupes": groupes_count,
-            "departements": departements_count,
-            "votes": total_votes
-        },
-        "files": {
-            "scrutins": "data/current/scrutins.json",
-            "deputes": "data/current/deputes.json",
-            "groupes": "data/current/groupes.json",
-            "departements": "data/current/departements.json"
-        }
-    }
-
-    scrutins_data = {
-        "year": int(TARGET_YEAR),
-        "updated_at": updated_at,
-        "scrutins": scrutins
-    }
-
-    write_json(INDEX_FILE, index_data)
-    write_json(SCRUTINS_FILE, scrutins_data)
-    write_json(DEPUTES_FILE, deputes_file)
-    write_json(GROUPES_FILE, groupes_file)
-    write_json(DEPARTEMENTS_FILE, departements_file)
-
-    write_json(
-        ARCHIVE_DIR / f"{datetime.utcnow().strftime('%Y-%m-%d')}.json",
-        scrutins_data
-    )
-
-    print(f"Scrutins : {len(scrutins)}")
-    print(f"Députés : {deputes_count}")
-    print(f"Groupes : {groupes_count}")
-    print(f"Départements : {departements_count}")
-    print(f"Votes : {total_votes}")
+    print("Scrutins :", len(scrutins))
+    print("Votes :", total_votes)
 
 
 if __name__ == "__main__":
