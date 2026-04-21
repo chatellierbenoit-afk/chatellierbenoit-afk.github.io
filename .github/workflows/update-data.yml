@@ -25,14 +25,14 @@ jobs:
       - name: Afficher les fichiers générés
         run: |
           echo "=== contenu de data ==="
-          find data -maxdepth 3 -type f | sort || true
+          find data -maxdepth 4 -type f | sort || true
 
       - name: Commit et push des données
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/current/ data/archives/ || true
+          git add data/current/ || true
 
           git diff --cached --quiet && echo "Aucun changement à commit" || git commit -m "Mise à jour automatique des données"
           git push
