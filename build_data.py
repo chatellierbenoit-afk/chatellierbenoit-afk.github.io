@@ -191,9 +191,15 @@ def load_amo50():
             continue
 
         organes_block = mandat.get("organes", {})
-        organe_ref = clean_text(organes_block.get("organeRef")) if isinstance(organes_block, dict) else ""
-        organe_info = organes.get(organe_ref, {})
-        code_type = organe_info.get("codeType", "")
+organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
+
+for org_ref in organe_refs:
+    organe_info = organes.get(clean_text(org_ref), {})
+    code_type = organe_info.get("codeType", "")
+
+    if code_type == "CIRCONSCRIPTION":
+        actor_meta[acteur_ref]["circonscription"] = organe_info.get("libelle", "")
+        actor_meta[acteur_ref]["departement"] = organe_info.get("departement", "")
 
         type_organe = clean_text(mandat.get("typeOrgane"))
         if type_organe == "GP" or code_type == "GP":
