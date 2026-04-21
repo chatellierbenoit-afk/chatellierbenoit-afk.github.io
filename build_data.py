@@ -197,7 +197,7 @@ def load_amo():
                 if circo:
                     actors[acteur_ref]["circonscription"] = circo
 
-    return actors
+    return actors, organes
 
 
 def compute_stats(votes):
@@ -254,7 +254,7 @@ def compute_departements(votes):
     return sorted(result, key=lambda x: x["departement"])
 
 
-def load_scrutins(actors):
+def load_scrutins(actors, organes):
     raw = download(SCRUTINS_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
@@ -291,10 +291,15 @@ def load_scrutins(actors):
         votes = []
 
         for groupe_block in groupes:
+            groupe_ref = clean(groupe_block.get("organeRef"))
+            groupe_organe = organes.get(groupe_ref, {})
+
             groupe_nom = clean(
                 groupe_block.get("libelle")
                 or groupe_block.get("libelleAbrev")
-                or groupe_block.get("organeRef")
+                or groupe_organe.get("libelleAbrev")
+                or groupe_organe.get("libelleAbrege")
+                or groupe_organe.get("libelle")
                 or ""
             )
 
@@ -346,8 +351,8 @@ def load_scrutins(actors):
 
 
 def main():
-    actors = load_amo()
-    scrutins = load_scrutins(actors)
+    actors, organes = load_amo()
+    scrutins = load_scrutins(actors, organes)
 
     months = defaultdict(list)
 
@@ -379,7 +384,7 @@ def main():
     unique_departements = sorted({a["departement"] for a in actors.values() if a["departement"]})
 
     index_data = {
-        "version": "2.4",
+        "version": "2.5",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
