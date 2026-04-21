@@ -2,249 +2,186 @@ import json
 import ssl
 import urllib.request
 import zipfile
+from collections import defaultdict
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
-from collections import defaultdict
 
 
-TARGET_YEAR = "2025"
+MIN_YEAR = 2024
 
 SCRUTINS_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
 AMO50_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/amo/acteurs_mandats_organes_divises/AMO50_acteurs_mandats_organes_divises.json.zip"
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
-INDEX_FILE = BASE_DIR / "index.json"
 
 SSL_CONTEXT = ssl.create_default_context()
 
 
-def ensure_dir(path: Path):
+def ensure_dir(path):
     path.mkdir(parents=True, exist_ok=True)
 
 
-def write_json(path: Path, data):
+def write_json(path, data):
     ensure_dir(path.parent)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
-def download(url: str):
+def download(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
+    with urllib.request.urlopen(req, context=SSL_CONTEXT) as r:
         return r.read()
 
 
-def ensure_list(value):
-    if value is None:
+def ensure_list(v):
+    if v is None:
         return []
-    if isinstance(value, list):
-        return value
-    return [value]
+    return v if isinstance(v, list) else [v]
 
 
-def clean_text(value):
-    if value is None:
-        return ""
-    return " ".join(str(value).replace("\u00a0", " ").split()).strip()
+def clean(v):
+    return "" if v is None else str(v).strip()
 
 
-def get_uid(value):
-    if isinstance(value, dict):
-        return clean_text(value.get("#text") or value.get("uid") or "")
-    return clean_text(value)
+def get_uid(v):
+    if isinstance(v, dict):
+        return clean(v.get("#text"))
+    return clean(v)
 
 
-def guess_theme(text):
-    t = clean_text(text).lower()
-    rules = [
-        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
-        ("Santé", ["santé", "hôpital", "médical", "soin"]),
-        ("Éducation", ["éducation", "école", "université", "enseignement"]),
-        ("Écologie / Énergie", ["écologie", "climat", "énergie", "environnement"]),
-        ("Travail / Social", ["travail", "emploi", "retraite", "social", "salaires", "chômage"]),
-        ("Justice / Sécurité", ["justice", "sécurité", "police", "prison", "pénal"]),
-        ("Immigration", ["immigration", "asile", "étranger", "mayotte"]),
-        ("Institutions", ["motion", "censure", "constitution", "règlement", "procédure"]),
-        ("Agriculture", ["agriculture", "aliment"]),
-        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
-        ("Défense / International", ["défense", "armée", "international", "europe"]),
-        ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
-    ]
-    for theme, keywords in rules:
-        if any(keyword in t for keyword in keywords):
-            return theme
-    return "Autres"
+# 🔥 IMPORTANT : version robuste (récursive)
+def extract_votants(node):
+    result = []
+
+    if isinstance(node, dict):
+        if "votant" in node:
+            result.extend(ensure_list(node["votant"]))
+        elif "acteurRef" in node:
+            result.append(node)
+        else:
+            for v in node.values():
+                result.extend(extract_votants(v))
+
+    elif isinstance(node, list):
+        for item in node:
+            result.extend(extract_votants(item))
+
+    return result
 
 
-def load_amo50():
-    print("Chargement AMO50…")
+# =========================
+# ACTEURS + GROUPES
+# =========================
+
+def load_amo():
     raw = download(AMO50_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
-    actor_meta = {}
+    actors = {}
     organes = {}
 
     for name in zf.namelist():
-        if name.startswith("acteur/") and name.endswith(".json"):
-            data = json.loads(zf.read(name).decode("utf-8"))
-            acteur = data.get("acteur", {})
-            uid = get_uid(acteur.get("uid"))
-            ident = acteur.get("etatCivil", {}).get("ident", {})
-            prenom = clean_text(ident.get("prenom") or "")
-            nom = clean_text(ident.get("nom") or "")
-            actor_meta[uid] = {
-                "uid": uid,
-                "nom": clean_text(f"{prenom} {nom}") or uid,
+
+        if name.startswith("acteur/"):
+            data = json.loads(zf.read(name))
+            a = data.get("acteur", {})
+
+            uid = get_uid(a.get("uid"))
+            ident = a.get("etatCivil", {}).get("ident", {})
+
+            nom = f"{clean(ident.get('prenom'))} {clean(ident.get('nom'))}".strip()
+
+            actors[uid] = {
+                "nom": nom,
                 "groupe": "",
-                "departement": "",
-                "circonscription": "",
+                "departement": ""
             }
 
-        elif name.startswith("organe/") and name.endswith(".json"):
-            data = json.loads(zf.read(name).decode("utf-8"))
-            organe = data.get("organe", {})
-            uid = clean_text(organe.get("uid"))
+        elif name.startswith("organe/"):
+            data = json.loads(zf.read(name))
+            o = data.get("organe", {})
+
+            uid = clean(o.get("uid"))
 
             dep = ""
-            lieu = organe.get("lieu", {})
+            lieu = o.get("lieu", {})
             if isinstance(lieu, dict):
-                dep_obj = lieu.get("departement", {})
-                if isinstance(dep_obj, dict):
-                    dep = clean_text(dep_obj.get("libelle"))
+                d = lieu.get("departement", {})
+                if isinstance(d, dict):
+                    dep = clean(d.get("libelle"))
 
             organes[uid] = {
-                "codeType": clean_text(organe.get("codeType")),
-                "libelle": clean_text(organe.get("libelle")),
-                "libelleAbrev": clean_text(organe.get("libelleAbrev")),
-                "libelleAbrege": clean_text(organe.get("libelleAbrege")),
-                "departement": dep,
+                "type": clean(o.get("codeType")),
+                "nom": clean(o.get("libelleAbrev") or o.get("libelle")),
+                "departement": dep
             }
 
+    # mandats
     for name in zf.namelist():
         if not name.startswith("mandat/"):
             continue
 
-        data = json.loads(zf.read(name).decode("utf-8"))
-        mandat = data.get("mandat", {})
-        acteur_ref = clean_text(mandat.get("acteurRef"))
+        data = json.loads(zf.read(name))
+        m = data.get("mandat", {})
 
-        if acteur_ref not in actor_meta:
+        if clean(m.get("legislature")) != "17":
             continue
 
-        if clean_text(mandat.get("legislature")) != "17":
+        acteur = clean(m.get("acteurRef"))
+        if acteur not in actors:
             continue
 
-        organes_block = mandat.get("organes", {})
-        organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
+        refs = ensure_list(m.get("organes", {}).get("organeRef"))
 
-        latest_dep = ""
-        latest_circo = ""
+        for ref in refs:
+            o = organes.get(clean(ref), {})
 
-        for org_ref in organe_refs:
-            org = organes.get(clean_text(org_ref), {})
-            code = org.get("codeType")
+            if o.get("type") == "GP":
+                actors[acteur]["groupe"] = o.get("nom")
 
-            if code == "CIRCONSCRIPTION":
-                latest_dep = org.get("departement") or ""
-                latest_circo = org.get("libelle") or ""
+            if o.get("type") == "CIRCONSCRIPTION":
+                actors[acteur]["departement"] = o.get("departement")
 
-            if code == "GP":
-                groupe = org.get("libelleAbrev") or org.get("libelleAbrege") or org.get("libelle") or ""
-                if groupe:
-                    actor_meta[acteur_ref]["groupe"] = groupe
-
-        if latest_dep:
-            actor_meta[acteur_ref]["departement"] = latest_dep
-            actor_meta[acteur_ref]["circonscription"] = latest_circo
-
-    print("Acteurs :", len(actor_meta))
-    print("Organes :", len(organes))
-    return actor_meta
+    return actors, organes
 
 
-def build_group_summary(votes):
-    by_group = defaultdict(lambda: {"pour": 0, "contre": 0, "abstention": 0, "non_votant": 0, "total": 0})
+# =========================
+# SCRUTINS
+# =========================
 
-    for v in votes:
-        g = v.get("groupe") or "Inconnu"
-        by_group[g]["total"] += 1
-        if v["vote"] == "Pour":
-            by_group[g]["pour"] += 1
-        elif v["vote"] == "Contre":
-            by_group[g]["contre"] += 1
-        elif v["vote"] == "Abstention":
-            by_group[g]["abstention"] += 1
-        elif v["vote"] == "Non-votant":
-            by_group[g]["non_votant"] += 1
-
-    return [
-        {"groupe": groupe, **stats}
-        for groupe, stats in sorted(by_group.items())
-    ]
-
-
-def build_department_summary(votes):
-    by_dep = defaultdict(lambda: {"pour": 0, "contre": 0, "abstention": 0, "non_votant": 0, "total": 0})
-
-    for v in votes:
-        dep = v.get("departement") or ""
-        if not dep:
-            continue
-        by_dep[dep]["total"] += 1
-        if v["vote"] == "Pour":
-            by_dep[dep]["pour"] += 1
-        elif v["vote"] == "Contre":
-            by_dep[dep]["contre"] += 1
-        elif v["vote"] == "Abstention":
-            by_dep[dep]["abstention"] += 1
-        elif v["vote"] == "Non-votant":
-            by_dep[dep]["non_votant"] += 1
-
-    return [
-        {"departement": dep, **stats}
-        for dep, stats in sorted(by_dep.items())
-    ]
-
-
-def load_scrutins(actor_meta):
-    print("Chargement scrutins…")
+def load_scrutins(actors, organes):
     raw = download(SCRUTINS_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
-    by_month = defaultdict(list)
-    total_votes = 0
-    unique_deputes = set()
-    unique_groupes = set()
-    unique_departements = set()
+    scrutins = []
 
     for name in zf.namelist():
-        if not name.endswith(".json"):
+
+        data = json.loads(zf.read(name))
+        s = data.get("scrutin", data)
+
+        date = clean(s.get("dateScrutin"))
+
+        if not date:
             continue
 
-        data = json.loads(zf.read(name).decode("utf-8"))
-        scrutin = data.get("scrutin", data)
-
-        date = clean_text(scrutin.get("dateScrutin"))
-        if not date.startswith(TARGET_YEAR):
+        year = int(date[:4])
+        if year < MIN_YEAR:
             continue
-
-        uid = clean_text(scrutin.get("uid") or scrutin.get("numero") or "")
-        numero = scrutin.get("numero")
-        titre = clean_text(scrutin.get("titre")) or f"Scrutin n°{numero}"
-        objet = scrutin.get("objet") or {}
-        description = clean_text(objet.get("libelle") or objet.get("titre") or "")
-        theme = guess_theme(f"{titre} {description}")
 
         votes = []
 
         groupes = ensure_list(
-            ((scrutin.get("ventilationVotes") or {}).get("organe") or {}).get("groupes", {}).get("groupe")
+            s.get("ventilationVotes", {})
+             .get("organe", {})
+             .get("groupes", {})
+             .get("groupe")
         )
 
         for g in groupes:
+
             decompte = (g.get("vote") or {}).get("decompteNominatif", {})
-            groupe_nom = clean_text(g.get("libelle") or "")
 
             for key, label in [
                 ("pours", "Pour"),
@@ -252,103 +189,59 @@ def load_scrutins(actor_meta):
                 ("abstentions", "Abstention"),
                 ("nonVotants", "Non-votant"),
             ]:
-                bucket = decompte.get(key) or {}
-                for v in ensure_list(bucket.get("votant")):
-                    uid_dep = clean_text(v.get("acteurRef"))
-                    depute = actor_meta.get(uid_dep, {})
+                votants = extract_votants(decompte.get(key))
 
-                    nom = depute.get("nom") or uid_dep
-                    groupe = depute.get("groupe") or groupe_nom or "Inconnu"
-                    departement = depute.get("departement") or ""
-
-                    unique_deputes.add(nom)
-                    unique_groupes.add(groupe)
-                    if departement:
-                        unique_departements.add(departement)
+                for v in votants:
+                    uid = clean(v.get("acteurRef"))
+                    dep = actors.get(uid, {})
 
                     votes.append({
-                        "depute_uid": uid_dep,
-                        "nom": nom,
-                        "groupe": groupe,
+                        "nom": dep.get("nom") or uid,
+                        "groupe": dep.get("groupe") or "Inconnu",
                         "vote": label,
-                        "departement": departement
+                        "departement": dep.get("departement", "")
                     })
 
         if not votes:
             continue
 
-        total_votes += len(votes)
-        month_key = date[:7]
-
-        stats = {
-            "pour": sum(1 for v in votes if v["vote"] == "Pour"),
-            "contre": sum(1 for v in votes if v["vote"] == "Contre"),
-            "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
-            "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
-            "total_votes": len(votes),
-        }
-
-        by_month[month_key].append({
-            "uid": uid,
-            "numero": numero,
+        scrutins.append({
+            "uid": clean(s.get("uid")),
             "date": date,
-            "titre": titre,
-            "description": description,
-            "theme": theme,
-            "stats": stats,
-            "groupes_summary": build_group_summary(votes),
-            "departements_summary": build_department_summary(votes),
+            "titre": clean(s.get("titre")),
             "votes": votes
         })
 
-    meta = {
-        "scrutins": sum(len(v) for v in by_month.values()),
-        "votes": total_votes,
-        "deputes": len(unique_deputes),
-        "groupes": len(unique_groupes),
-        "departements": len(unique_departements),
-    }
+    return scrutins
 
-    return by_month, meta
 
+# =========================
+# BUILD
+# =========================
 
 def main():
-    actor_meta = load_amo50()
-    by_month, meta = load_scrutins(actor_meta)
+    actors, organes = load_amo()
+    scrutins = load_scrutins(actors, organes)
 
-    months_index = []
-    for month in sorted(by_month.keys()):
-        scrutins = sorted(by_month[month], key=lambda x: x["date"], reverse=True)
+    # regroupement par mois
+    months = defaultdict(list)
 
-        file_path = MONTHS_DIR / f"{month}.json"
-        write_json(file_path, {
-            "month": month,
-            "year": int(TARGET_YEAR),
-            "scrutins": scrutins
-        })
+    for s in scrutins:
+        month = s["date"][:7]
+        months[month].append(s)
 
-        months_index.append({
-            "month": month,
-            "file": f"data/current/months/{month}.json",
-            "scrutins": len(scrutins)
-        })
+    for m, data in months.items():
+        write_json(MONTHS_DIR / f"{m}.json", {"scrutins": data})
 
-    updated_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    index = {
+        "months": sorted(months.keys(), reverse=True),
+        "count": len(scrutins)
+    }
 
-    write_json(INDEX_FILE, {
-        "version": "2.2",
-        "year": int(TARGET_YEAR),
-        "updated_at": updated_at,
-        "counts": meta,
-        "months": months_index
-    })
+    write_json(BASE_DIR / "index.json", index)
 
-    print(f"Scrutins : {meta['scrutins']}")
-    print(f"Députés : {meta['deputes']}")
-    print(f"Groupes : {meta['groupes']}")
-    print(f"Départements : {meta['departements']}")
-    print(f"Votes : {meta['votes']}")
-    print(f"Mois générés : {len(months_index)}")
+    print("Scrutins :", len(scrutins))
+    print("Mois :", len(months))
 
 
 if __name__ == "__main__":
