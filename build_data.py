@@ -179,7 +179,7 @@ def load_amo():
             organe = organes.get(ref, {})
             code_type = organe.get("codeType", "")
 
-            if code_type == "GP":
+            if code_type in {"GP", "GRP"} or clean(mandat.get("typeOrgane")) == "GP":
                 groupe = (
                     organe.get("libelleAbrev")
                     or organe.get("libelleAbrege")
@@ -379,7 +379,7 @@ def main():
     unique_departements = sorted({a["departement"] for a in actors.values() if a["departement"]})
 
     index_data = {
-        "version": "2.3",
+        "version": "2.4",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
