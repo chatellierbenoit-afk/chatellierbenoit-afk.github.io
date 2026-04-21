@@ -8,7 +8,14 @@
       "date": "2025-09-08",
       "titre": "la déclaration de politique générale du Gouvernement de M. François Bayrou (application de l'article 49, alinéa premier, de la Constitution).",
       "description": "la déclaration de politique générale du Gouvernement de M. François Bayrou (application de l'article 49, alinéa premier, de la Constitution).",
-      "votes_count": 573,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 194,
+        "contre": 364,
+        "abstention": 15,
+        "non_votant": 0,
+        "total_votes": 573
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -27,6 +34,7 @@
           "total": 553
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",

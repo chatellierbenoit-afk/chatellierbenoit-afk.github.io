@@ -8,7 +8,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 64 de Mme Corneloup après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 64 de Mme Corneloup après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 81,
+      "theme": "Autres",
+      "stats": {
+        "pour": 46,
+        "contre": 32,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 81
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -27,6 +34,7 @@
           "total": 78
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA720822",
@@ -603,7 +611,14 @@
       "date": "2025-07-10",
       "titre": "l'article premier de la proposition de loi visant à encourager, à faciliter et à sécuriser l'exercice du mandat d'élu local (première lecture)(seconde délibération).",
       "description": "l'article premier de la proposition de loi visant à encourager, à faciliter et à sécuriser l'exercice du mandat d'élu local (première lecture)(seconde délibération).",
-      "votes_count": 145,
+      "theme": "Autres",
+      "stats": {
+        "pour": 143,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 145
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -622,6 +637,7 @@
           "total": 141
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -1646,7 +1662,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 637 de Mme Allemand après l'article 23 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 637 de Mme Allemand après l'article 23 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 109,
+      "theme": "Autres",
+      "stats": {
+        "pour": 1,
+        "contre": 103,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 109
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -1665,6 +1688,7 @@
           "total": 108
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -2437,7 +2461,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement de suppression n° 501 de Mme Élisa Martin à l'article 18 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement de suppression n° 501 de Mme Élisa Martin à l'article 18 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 101,
+      "theme": "Autres",
+      "stats": {
+        "pour": 23,
+        "contre": 71,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 101
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -2456,6 +2487,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -3172,7 +3204,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 863 de la commission des lois au titre de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 863 de la commission des lois au titre de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 125,
+      "theme": "Autres",
+      "stats": {
+        "pour": 80,
+        "contre": 3,
+        "abstention": 40,
+        "non_votant": 2,
+        "total_votes": 125
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -3191,6 +3230,7 @@
           "total": 120
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -4075,7 +4115,14 @@
       "date": "2025-07-10",
       "titre": "l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 92,
+      "theme": "Autres",
+      "stats": {
+        "pour": 83,
+        "contre": 0,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 92
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -4094,6 +4141,7 @@
           "total": 89
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -4747,7 +4795,14 @@
       "date": "2025-07-10",
       "titre": "l'article 18 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 18 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 102,
+      "theme": "Autres",
+      "stats": {
+        "pour": 76,
+        "contre": 20,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 102
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -4766,6 +4821,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -5489,7 +5545,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 640 de M. Lenormand après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 640 de M. Lenormand après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 52,
+      "theme": "Autres",
+      "stats": {
+        "pour": 23,
+        "contre": 21,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 52
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -5508,6 +5571,7 @@
           "total": 50
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -5881,7 +5945,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement n° 492 de M. Duplessy à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement n° 492 de M. Duplessy à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 102,
+      "theme": "Autres",
+      "stats": {
+        "pour": 24,
+        "contre": 76,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 102
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -5900,6 +5971,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -6623,7 +6695,14 @@
       "date": "2025-07-10",
       "titre": "l’ensemble de la proposition de loi relative au mode d'élection des membres du Conseil de Paris et des conseils municipaux de Lyon et de Marseille (lecture définitive).",
       "description": "l’ensemble de la proposition de loi relative au mode d'élection des membres du Conseil de Paris et des conseils municipaux de Lyon et de Marseille (lecture définitive).",
-      "votes_count": 144,
+      "theme": "Autres",
+      "stats": {
+        "pour": 112,
+        "contre": 28,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 144
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -6642,6 +6721,7 @@
           "total": 140
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -7659,7 +7739,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 720 de Mme Brocard après l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 720 de Mme Brocard après l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 96,
+      "theme": "Autres",
+      "stats": {
+        "pour": 38,
+        "contre": 55,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 96
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -7678,6 +7765,7 @@
           "total": 94
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -8359,7 +8447,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 818 de M. Michoux à l'article 19 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 818 de M. Michoux à l'article 19 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 92,
+      "theme": "Autres",
+      "stats": {
+        "pour": 32,
+        "contre": 55,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 92
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -8378,6 +8473,7 @@
           "total": 89
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841645",
@@ -9031,7 +9127,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement n° 857 du Gouvernement à l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement n° 857 du Gouvernement à l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 75,
+      "theme": "Autres",
+      "stats": {
+        "pour": 72,
+        "contre": 0,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 75
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -9050,6 +9153,7 @@
           "total": 73
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -9584,7 +9688,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement n° 539 de M. Le Gac à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement n° 539 de M. Le Gac à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 90,
+      "theme": "Autres",
+      "stats": {
+        "pour": 84,
+        "contre": 2,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 90
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -9603,6 +9714,7 @@
           "total": 87
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -10242,7 +10354,14 @@
       "date": "2025-07-10",
       "titre": "l'article 19 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 19 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 103,
+      "theme": "Autres",
+      "stats": {
+        "pour": 101,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 103
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -10261,6 +10380,7 @@
           "total": 100
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -10991,7 +11111,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 502 de Mme Élisa Martin à l'article 18 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 502 de Mme Élisa Martin à l'article 18 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 101,
+      "theme": "Autres",
+      "stats": {
+        "pour": 19,
+        "contre": 77,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 101
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -11010,6 +11137,7 @@
           "total": 98
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -11726,7 +11854,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 36 de Mme Hervieu et les amendements identiques suivants après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 36 de Mme Hervieu et les amendements identiques suivants après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 85,
+      "theme": "Autres",
+      "stats": {
+        "pour": 48,
+        "contre": 35,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 85
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -11745,6 +11880,7 @@
           "total": 82
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA720822",
@@ -12349,7 +12485,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 784 de Mme Firmin Le Bodo au titre de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 784 de Mme Firmin Le Bodo au titre de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 133,
+      "theme": "Autres",
+      "stats": {
+        "pour": 10,
+        "contre": 79,
+        "abstention": 42,
+        "non_votant": 2,
+        "total_votes": 133
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -12368,6 +12511,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793832",
@@ -13308,7 +13452,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 290 de M. William à l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 290 de M. William à l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 95,
+      "theme": "Autres",
+      "stats": {
+        "pour": 63,
+        "contre": 26,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 95
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -13327,6 +13478,7 @@
           "total": 92
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -14001,7 +14153,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 657 de Mme Rossi après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 657 de Mme Rossi après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 72,
+      "theme": "Autres",
+      "stats": {
+        "pour": 43,
+        "contre": 23,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 72
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -14020,6 +14179,7 @@
           "total": 70
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -14533,7 +14693,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 224 de Mme Allemand après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 224 de Mme Allemand après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 72,
+      "theme": "Autres",
+      "stats": {
+        "pour": 43,
+        "contre": 25,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 72
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -14552,6 +14719,7 @@
           "total": 70
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -15065,7 +15233,14 @@
       "date": "2025-07-10",
       "titre": "l'article 29 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 29 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 101,
+      "theme": "Autres",
+      "stats": {
+        "pour": 8,
+        "contre": 85,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 101
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -15084,6 +15259,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -15800,7 +15976,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 386 de M. Bilde après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 386 de M. Bilde après l'article 30 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 82,
+      "theme": "Autres",
+      "stats": {
+        "pour": 28,
+        "contre": 52,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 82
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -15819,6 +16002,7 @@
           "total": 80
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -16402,7 +16586,14 @@
       "date": "2025-07-10",
       "titre": "l'article 20 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 20 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 109,
+      "theme": "Autres",
+      "stats": {
+        "pour": 106,
+        "contre": 0,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 109
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -16421,6 +16612,7 @@
           "total": 107
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -17193,7 +17385,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement n° 491 de M. Duplessy à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement n° 491 de M. Duplessy à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 103,
+      "theme": "Autres",
+      "stats": {
+        "pour": 6,
+        "contre": 95,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 103
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -17212,6 +17411,7 @@
           "total": 100
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -17942,7 +18142,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement de suppression n° 499 de Mme Élisa Martin à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement de suppression n° 499 de Mme Élisa Martin à l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 96,
+      "theme": "Autres",
+      "stats": {
+        "pour": 18,
+        "contre": 72,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 96
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -17961,6 +18168,7 @@
           "total": 93
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -18642,7 +18850,14 @@
       "date": "2025-07-10",
       "titre": "l'article 24 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 24 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 111,
+      "theme": "Autres",
+      "stats": {
+        "pour": 37,
+        "contre": 29,
+        "abstention": 43,
+        "non_votant": 2,
+        "total_votes": 111
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -18661,6 +18876,7 @@
           "total": 109
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -19447,7 +19663,14 @@
       "date": "2025-07-10",
       "titre": "l’amendement n° 856 du Gouvernement et l'amendement identique suivant à l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l’amendement n° 856 du Gouvernement et l'amendement identique suivant à l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 78,
+      "theme": "Autres",
+      "stats": {
+        "pour": 74,
+        "contre": 0,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 78
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -19466,6 +19689,7 @@
           "total": 75
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -20021,7 +20245,14 @@
       "date": "2025-07-10",
       "titre": "l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 17 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 79,
+      "theme": "Autres",
+      "stats": {
+        "pour": 77,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 79
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -20040,6 +20271,7 @@
           "total": 76
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -20602,7 +20834,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 580 de M. Le Gac à l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 580 de M. Le Gac à l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 95,
+      "theme": "Autres",
+      "stats": {
+        "pour": 79,
+        "contre": 12,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 95
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -20621,6 +20860,7 @@
           "total": 93
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -21295,7 +21535,14 @@
       "date": "2025-07-10",
       "titre": "l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 26 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 94,
+      "theme": "Autres",
+      "stats": {
+        "pour": 90,
+        "contre": 0,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 94
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -21314,6 +21561,7 @@
           "total": 92
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -21981,7 +22229,14 @@
       "date": "2025-07-10",
       "titre": "l'ensemble de la proposition de loi visant à encourager, à faciliter et à sécuriser l'exercice du mandat d'élu local (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à encourager, à faciliter et à sécuriser l'exercice du mandat d'élu local (première lecture).",
-      "votes_count": 170,
+      "theme": "Autres",
+      "stats": {
+        "pour": 132,
+        "contre": 0,
+        "abstention": 36,
+        "non_votant": 2,
+        "total_votes": 170
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -22000,6 +22255,7 @@
           "total": 163
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -23199,7 +23455,14 @@
       "date": "2025-07-10",
       "titre": "l'article 18 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 18 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 101,
+      "theme": "Autres",
+      "stats": {
+        "pour": 79,
+        "contre": 17,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 101
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -23218,6 +23481,7 @@
           "total": 98
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -23934,7 +24198,14 @@
       "date": "2025-07-10",
       "titre": "l'article 25 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 25 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 106,
+      "theme": "Autres",
+      "stats": {
+        "pour": 104,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 106
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -23953,6 +24224,7 @@
           "total": 104
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -24704,7 +24976,14 @@
       "date": "2025-07-10",
       "titre": "l'amendement n° 8 de M. Sitzenstuhl et l'amendement identique suivant à l'article 19 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 8 de M. Sitzenstuhl et l'amendement identique suivant à l'article 19 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 109,
+      "theme": "Autres",
+      "stats": {
+        "pour": 65,
+        "contre": 31,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 109
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -24723,6 +25002,7 @@
           "total": 106
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -25495,7 +25775,14 @@
       "date": "2025-07-10",
       "titre": "l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 18 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 101,
+      "theme": "Autres",
+      "stats": {
+        "pour": 77,
+        "contre": 18,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 101
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -25514,6 +25801,7 @@
           "total": 98
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -26230,7 +26518,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement de suppression n° 843 du Gouvernement à l'article 8 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement de suppression n° 843 du Gouvernement à l'article 8 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 115,
+      "theme": "Autres",
+      "stats": {
+        "pour": 53,
+        "contre": 57,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 115
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -26249,6 +26544,7 @@
           "total": 111
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -27063,7 +27359,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 441 de Mme Elisa Martin à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 441 de Mme Elisa Martin à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 136,
+      "theme": "Autres",
+      "stats": {
+        "pour": 28,
+        "contre": 104,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 136
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -27082,6 +27385,7 @@
           "total": 129
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -28043,7 +28347,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 782 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 782 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 120,
+      "theme": "Autres",
+      "stats": {
+        "pour": 40,
+        "contre": 73,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 120
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -28062,6 +28373,7 @@
           "total": 119
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -28911,7 +29223,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 668 de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 668 de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 102,
+      "theme": "Autres",
+      "stats": {
+        "pour": 63,
+        "contre": 34,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 102
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -28930,6 +29249,7 @@
           "total": 97
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -29653,7 +29973,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 74 de M. de Courson et les amendements identiques suivants à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 74 de M. de Courson et les amendements identiques suivants à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 140,
+      "theme": "Autres",
+      "stats": {
+        "pour": 60,
+        "contre": 74,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 140
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -29672,6 +29999,7 @@
           "total": 137
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -30661,7 +30989,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 670 de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 670 de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 103,
+      "theme": "Autres",
+      "stats": {
+        "pour": 64,
+        "contre": 37,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 103
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -30680,6 +31015,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -31410,7 +31746,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 111 de M. Hetzel et les amendements identiques suivants à l'article 9 bis (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 111 de M. Hetzel et les amendements identiques suivants à l'article 9 bis (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 121,
+      "theme": "Autres",
+      "stats": {
+        "pour": 87,
+        "contre": 32,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 121
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -31429,6 +31772,7 @@
           "total": 119
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840757",
@@ -32285,7 +32629,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 851 du Gouvernement à l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 851 du Gouvernement à l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 105,
+      "theme": "Autres",
+      "stats": {
+        "pour": 102,
+        "contre": 1,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 105
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -32304,6 +32655,7 @@
           "total": 103
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -33048,7 +33400,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 439 de Mme Elisa Martin à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 439 de Mme Elisa Martin à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 135,
+      "theme": "Autres",
+      "stats": {
+        "pour": 26,
+        "contre": 104,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 135
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -33067,6 +33426,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -34021,7 +34381,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 430 de Mme Élisa Martin à l'article 8 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 430 de Mme Élisa Martin à l'article 8 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 99,
+      "theme": "Autres",
+      "stats": {
+        "pour": 26,
+        "contre": 72,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 99
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -34040,6 +34407,7 @@
           "total": 96
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -34742,7 +35110,14 @@
       "date": "2025-07-09",
       "titre": "l'ensemble du projet de loi de programmation pour la refondation de Mayotte (texte de la commission mixte paritaire).",
       "description": "l'ensemble du projet de loi de programmation pour la refondation de Mayotte (texte de la commission mixte paritaire).",
-      "votes_count": 528,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 354,
+        "contre": 111,
+        "abstention": 62,
+        "non_votant": 1,
+        "total_votes": 528
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -34761,6 +35136,7 @@
           "total": 510
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -38466,7 +38842,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 132 de M. Molac et les amendements identiques suivants à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 132 de M. Molac et les amendements identiques suivants à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 129,
+      "theme": "Autres",
+      "stats": {
+        "pour": 54,
+        "contre": 72,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 129
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -38485,6 +38868,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -39397,7 +39781,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 339 de Mme Mette après l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 339 de Mme Mette après l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 86,
+      "theme": "Autres",
+      "stats": {
+        "pour": 11,
+        "contre": 67,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 86
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -39416,6 +39807,7 @@
           "total": 83
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -40027,7 +40419,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 383 de M. Bilde après l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 383 de M. Bilde après l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 109,
+      "theme": "Autres",
+      "stats": {
+        "pour": 35,
+        "contre": 73,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 109
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -40046,6 +40445,7 @@
           "total": 105
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -40818,7 +41218,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 302 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 302 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 102,
+      "theme": "Autres",
+      "stats": {
+        "pour": 93,
+        "contre": 0,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 102
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -40837,6 +41244,7 @@
           "total": 101
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -41560,7 +41968,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 601 de M. Iordanoff après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 601 de M. Iordanoff après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 130,
+      "theme": "Autres",
+      "stats": {
+        "pour": 13,
+        "contre": 114,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 130
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -41579,6 +41994,7 @@
           "total": 127
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -42498,7 +42914,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 471 de M. Delautrette à l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 471 de M. Delautrette à l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 116,
+      "theme": "Autres",
+      "stats": {
+        "pour": 102,
+        "contre": 8,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -42517,6 +42940,7 @@
           "total": 112
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -43338,7 +43762,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 805 du Gouvernement et l'amendement identique suivant de suppression de l'article 16 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 805 du Gouvernement et l'amendement identique suivant de suppression de l'article 16 bis A de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 108,
+      "theme": "Autres",
+      "stats": {
+        "pour": 71,
+        "contre": 30,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 108
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -43357,6 +43788,7 @@
           "total": 103
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -44122,7 +44554,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 475 de M. Bruneau après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 475 de M. Bruneau après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 63,
+        "contre": 66,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -44141,6 +44580,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -45067,7 +45507,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 802 du Gouvernement à l'article 11 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 802 du Gouvernement à l'article 11 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 113,
+      "theme": "Autres",
+      "stats": {
+        "pour": 56,
+        "contre": 56,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 113
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -45086,6 +45533,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840757",
@@ -45886,7 +46334,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 474 de M. Bruneau après l'article 8 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 474 de M. Bruneau après l'article 8 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 119,
+      "theme": "Autres",
+      "stats": {
+        "pour": 44,
+        "contre": 74,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -45905,6 +46360,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -46747,7 +47203,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 532 de M. Delautrette après l'article 6 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 532 de M. Delautrette après l'article 6 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 117,
+      "theme": "Autres",
+      "stats": {
+        "pour": 112,
+        "contre": 2,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 117
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -46766,6 +47229,7 @@
           "total": 114
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -47594,7 +48058,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 667 (rect.) de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 667 (rect.) de M. Califer après l'article 16 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 104,
+      "theme": "Autres",
+      "stats": {
+        "pour": 34,
+        "contre": 67,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 104
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -47613,6 +48084,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -48350,7 +48822,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement de suppression n° 48 de Mme Corneloup et les amendements identiques suivants à l'article 7 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement de suppression n° 48 de Mme Corneloup et les amendements identiques suivants à l'article 7 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 130,
+      "theme": "Autres",
+      "stats": {
+        "pour": 83,
+        "contre": 45,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 130
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -48369,6 +48848,7 @@
           "total": 127
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -49288,7 +49768,14 @@
       "date": "2025-07-09",
       "titre": "le sous-amendement n° 873 de M. Peytavie à l'amendement n° 851 du Gouvernement à l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "le sous-amendement n° 873 de M. Peytavie à l'amendement n° 851 du Gouvernement à l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 106,
+      "theme": "Autres",
+      "stats": {
+        "pour": 91,
+        "contre": 11,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 106
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -49307,6 +49794,7 @@
           "total": 104
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -50058,7 +50546,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 746 de Mme Brocard de suppression de l'article 16 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 746 de Mme Brocard de suppression de l'article 16 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 104,
+      "theme": "Autres",
+      "stats": {
+        "pour": 24,
+        "contre": 78,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 104
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -50077,6 +50572,7 @@
           "total": 99
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793632",
@@ -50814,7 +51310,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 303 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 303 de M. Peytavie après l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 114,
+      "theme": "Autres",
+      "stats": {
+        "pour": 89,
+        "contre": 12,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 114
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -50833,6 +51336,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -51640,7 +52144,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 483 de M. Bentz à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 483 de M. Bentz à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 144,
+      "theme": "Autres",
+      "stats": {
+        "pour": 60,
+        "contre": 78,
+        "abstention": 5,
+        "non_votant": 1,
+        "total_votes": 144
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -51659,6 +52170,7 @@
           "total": 141
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -52676,7 +53188,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 470 de M. Delautrette à l'article 11 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 470 de M. Delautrette à l'article 11 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 116,
+      "theme": "Autres",
+      "stats": {
+        "pour": 93,
+        "contre": 20,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -52695,6 +53214,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840757",
@@ -53516,7 +54036,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 109 de M. Le Fur et les amendements identiques suivants à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 109 de M. Le Fur et les amendements identiques suivants à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 65,
+        "contre": 60,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -53535,6 +54062,7 @@
           "total": 124
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -54461,7 +54989,14 @@
       "date": "2025-07-09",
       "titre": "l'ensemble du projet de loi organique relatif au Département-Région de Mayotte (texte de la commission mixte paritaire).",
       "description": "l'ensemble du projet de loi organique relatif au Département-Région de Mayotte (texte de la commission mixte paritaire).",
-      "votes_count": 528,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 525,
+        "contre": 2,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 528
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -54480,6 +55015,7 @@
           "total": 510
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -58185,7 +58721,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 490 de M. Duplessy après l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 490 de M. Duplessy après l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 90,
+      "theme": "Autres",
+      "stats": {
+        "pour": 37,
+        "contre": 30,
+        "abstention": 22,
+        "non_votant": 1,
+        "total_votes": 90
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -58204,6 +58747,7 @@
           "total": 87
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793632",
@@ -58843,7 +59387,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 849 du Gouvernement à l'article 14 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 849 du Gouvernement à l'article 14 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 132,
+      "theme": "Autres",
+      "stats": {
+        "pour": 95,
+        "contre": 32,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 132
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -58862,6 +59413,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -59795,7 +60347,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 682 de M. Delautrette et l'amendement identique suivant à l'article 10 (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 682 de M. Delautrette et l'amendement identique suivant à l'article 10 (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 117,
+      "theme": "Autres",
+      "stats": {
+        "pour": 98,
+        "contre": 18,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 117
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -59814,6 +60373,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840757",
@@ -60642,7 +61202,14 @@
       "date": "2025-07-09",
       "titre": "l'article 14 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 14 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 121,
+        "contre": 0,
+        "abstention": 8,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -60661,6 +61228,7 @@
           "total": 127
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -61587,7 +62155,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 803 du Gouvernement et l'amendement identique suivant à l'article 15 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 803 du Gouvernement et l'amendement identique suivant à l'article 15 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 133,
+      "theme": "Autres",
+      "stats": {
+        "pour": 118,
+        "contre": 5,
+        "abstention": 8,
+        "non_votant": 2,
+        "total_votes": 133
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -61606,6 +62181,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -62546,7 +63122,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 359 de Mme Corneloup et les amendements identiques suivants après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 359 de Mme Corneloup et les amendements identiques suivants après l'article 7 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 132,
+      "theme": "Autres",
+      "stats": {
+        "pour": 23,
+        "contre": 107,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 132
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -62565,6 +63148,7 @@
           "total": 129
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -63498,7 +64082,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 472 de M. Le Gac à l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 472 de M. Le Gac à l'article 12 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 121,
+      "theme": "Autres",
+      "stats": {
+        "pour": 77,
+        "contre": 39,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 121
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -63517,6 +64108,7 @@
           "total": 117
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -64373,7 +64965,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 593 de Mme Pochon à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 593 de Mme Pochon à l'article 15 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 130,
+      "theme": "Autres",
+      "stats": {
+        "pour": 31,
+        "contre": 97,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 130
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -64392,6 +64991,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -65311,7 +65911,14 @@
       "date": "2025-07-09",
       "titre": "l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 13 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 102,
+      "theme": "Autres",
+      "stats": {
+        "pour": 96,
+        "contre": 4,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 102
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -65330,6 +65937,7 @@
           "total": 101
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -66053,7 +66661,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 853 du Gouvernement et les amendements identiques suivants à l'article 5 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 853 du Gouvernement et les amendements identiques suivants à l'article 5 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 110,
+      "theme": "Autres",
+      "stats": {
+        "pour": 58,
+        "contre": 49,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 110
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -66072,6 +66687,7 @@
           "total": 108
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -66851,7 +67467,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 838 (rect.) du Gouvernement et l'amendement identique suivant à l'article 9 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 838 (rect.) du Gouvernement et l'amendement identique suivant à l'article 9 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 120,
+      "theme": "Autres",
+      "stats": {
+        "pour": 114,
+        "contre": 4,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 120
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -66870,6 +67493,7 @@
           "total": 116
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840757",
@@ -67719,7 +68343,14 @@
       "date": "2025-07-09",
       "titre": "l'amendement n° 331 de Mme Dalloz à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 331 de Mme Dalloz à l'article 8 A (supprimé) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 141,
+      "theme": "Autres",
+      "stats": {
+        "pour": 62,
+        "contre": 75,
+        "abstention": 3,
+        "non_votant": 1,
+        "total_votes": 141
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -67738,6 +68369,7 @@
           "total": 138
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -68734,7 +69366,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 478 de M. Bruneau à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 478 de M. Bruneau à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 158,
+      "theme": "Autres",
+      "stats": {
+        "pour": 94,
+        "contre": 49,
+        "abstention": 13,
+        "non_votant": 2,
+        "total_votes": 158
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -68753,6 +69392,7 @@
           "total": 154
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -69868,7 +70508,14 @@
       "date": "2025-07-08",
       "titre": "l'ensemble de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 474,
+      "theme": "Autres",
+      "stats": {
+        "pour": 303,
+        "contre": 168,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 474
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -69887,6 +70534,7 @@
           "total": 457
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -73214,7 +73862,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 412 de M. Hetzel à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 412 de M. Hetzel à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 151,
+      "theme": "Autres",
+      "stats": {
+        "pour": 32,
+        "contre": 87,
+        "abstention": 30,
+        "non_votant": 2,
+        "total_votes": 151
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -73233,6 +73888,7 @@
           "total": 148
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841613",
@@ -74299,7 +74955,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement de suppression n° 865 du Gouvernement et les amendements identiques suivants à l'article 3 (examen prioritaire) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement de suppression n° 865 du Gouvernement et les amendements identiques suivants à l'article 3 (examen prioritaire) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 169,
+      "theme": "Autres",
+      "stats": {
+        "pour": 32,
+        "contre": 130,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 169
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -74318,6 +74981,7 @@
           "total": 165
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -75510,7 +76174,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 458 de M. Delautrette à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 458 de M. Delautrette à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 153,
+      "theme": "Autres",
+      "stats": {
+        "pour": 144,
+        "contre": 5,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 153
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -75529,6 +76200,7 @@
           "total": 149
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -76609,7 +77281,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 484 de M. Duplessy et l'amendement identique suivant après l'article 2 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 484 de M. Duplessy et l'amendement identique suivant après l'article 2 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 156,
+      "theme": "Autres",
+      "stats": {
+        "pour": 36,
+        "contre": 114,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 156
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -76628,6 +77307,7 @@
           "total": 152
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -77729,7 +78409,14 @@
       "date": "2025-07-08",
       "titre": "l'ensemble de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).",
       "description": "l'ensemble de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).",
-      "votes_count": 566,
+      "theme": "Autres",
+      "stats": {
+        "pour": 316,
+        "contre": 223,
+        "abstention": 25,
+        "non_votant": 2,
+        "total_votes": 566
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -77748,6 +78435,7 @@
           "total": 547
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -81719,7 +82407,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 800 du Gouvernement et les amendements identiques suivants à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 800 du Gouvernement et les amendements identiques suivants à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 156,
+      "theme": "Autres",
+      "stats": {
+        "pour": 136,
+        "contre": 7,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 156
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -81738,6 +82433,7 @@
           "total": 152
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -82839,7 +83535,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 715 de Mme Brocard après l'article 2 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 715 de Mme Brocard après l'article 2 bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 147,
+      "theme": "Autres",
+      "stats": {
+        "pour": 61,
+        "contre": 71,
+        "abstention": 13,
+        "non_votant": 2,
+        "total_votes": 147
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -82858,6 +83561,7 @@
           "total": 143
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -83896,7 +84600,14 @@
       "date": "2025-07-08",
       "titre": "le sous-amendement n° 874 de la commission à l'amendement n° 800 du Gouvernement à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "le sous-amendement n° 874 de la commission à l'amendement n° 800 du Gouvernement à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 153,
+      "theme": "Autres",
+      "stats": {
+        "pour": 129,
+        "contre": 10,
+        "abstention": 12,
+        "non_votant": 2,
+        "total_votes": 153
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -83915,6 +84626,7 @@
           "total": 150
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -84995,7 +85707,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 730 de Mme Brocard à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 730 de Mme Brocard à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 154,
+      "theme": "Autres",
+      "stats": {
+        "pour": 39,
+        "contre": 107,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 154
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -85014,6 +85733,7 @@
           "total": 150
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -86101,7 +86821,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 731 (rect.) de Mme Brocard à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 731 (rect.) de Mme Brocard à l'article 5 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 157,
+      "theme": "Autres",
+      "stats": {
+        "pour": 13,
+        "contre": 137,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 157
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -86120,6 +86847,7 @@
           "total": 153
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -87228,7 +87956,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 496 de M. Bilongo à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 496 de M. Bilongo à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 145,
+      "theme": "Autres",
+      "stats": {
+        "pour": 12,
+        "contre": 121,
+        "abstention": 10,
+        "non_votant": 2,
+        "total_votes": 145
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -87247,6 +87982,7 @@
           "total": 141
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -88271,7 +89007,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 712 de Mme Brocard après l'article 1er bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 712 de Mme Brocard après l'article 1er bis de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 178,
+      "theme": "Autres",
+      "stats": {
+        "pour": 93,
+        "contre": 79,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 178
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -88290,6 +89033,7 @@
           "total": 174
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -89545,7 +90289,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 717 de Mme Brocard à l'article 3 (examen prioritaire) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 717 de Mme Brocard à l'article 3 (examen prioritaire) de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 178,
+      "theme": "Autres",
+      "stats": {
+        "pour": 37,
+        "contre": 135,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 178
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -89564,6 +90315,7 @@
           "total": 174
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -90819,7 +91571,14 @@
       "date": "2025-07-08",
       "titre": "l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 151,
+      "theme": "Autres",
+      "stats": {
+        "pour": 149,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 151
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -90838,6 +91597,7 @@
           "total": 147
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -91904,7 +92664,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 780 de Mme Barèges à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 780 de Mme Barèges à l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 155,
+      "theme": "Autres",
+      "stats": {
+        "pour": 50,
+        "contre": 101,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 155
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -91923,6 +92690,7 @@
           "total": 152
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -93017,7 +93785,14 @@
       "date": "2025-07-08",
       "titre": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).",
       "description": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).",
-      "votes_count": 427,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 158,
+        "contre": 264,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 427
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -93036,6 +93811,7 @@
           "total": 409
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -96034,7 +96810,14 @@
       "date": "2025-07-08",
       "titre": "l'amendement n° 479 de M. Bruneau après l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
       "description": "l'amendement n° 479 de M. Bruneau après l'article 2 de la proposition de loi portant création d'un statut de l'élu local (première lecture).",
-      "votes_count": 153,
+      "theme": "Autres",
+      "stats": {
+        "pour": 12,
+        "contre": 137,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 153
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -96053,6 +96836,7 @@
           "total": 149
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -97133,7 +97917,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 2 de M. Lhardit à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 2 de M. Lhardit à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 124,
+      "theme": "Autres",
+      "stats": {
+        "pour": 19,
+        "contre": 94,
+        "abstention": 9,
+        "non_votant": 2,
+        "total_votes": 124
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -97152,6 +97943,7 @@
           "total": 117
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -98029,7 +98821,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 5 de Mme Runel et l'amendement identique suivant à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 5 de Mme Runel et l'amendement identique suivant à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 124,
+      "theme": "Autres",
+      "stats": {
+        "pour": 20,
+        "contre": 101,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 124
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -98048,6 +98847,7 @@
           "total": 117
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -98925,7 +99725,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement de suppression n° 8 de M. Emmanuel Grégoire à l'article 1er ter de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement de suppression n° 8 de M. Emmanuel Grégoire à l'article 1er ter de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 133,
+      "theme": "Autres",
+      "stats": {
+        "pour": 49,
+        "contre": 73,
+        "abstention": 9,
+        "non_votant": 2,
+        "total_votes": 133
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -98944,6 +99751,7 @@
           "total": 124
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -99884,7 +100692,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 3 de M. Delautrette et l'amendement identique suivant à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 3 de M. Delautrette et l'amendement identique suivant à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 129,
+      "theme": "Autres",
+      "stats": {
+        "pour": 22,
+        "contre": 96,
+        "abstention": 9,
+        "non_votant": 2,
+        "total_votes": 129
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -99903,6 +100718,7 @@
           "total": 121
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -100815,7 +101631,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement de suppression n° 6 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement de suppression n° 6 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 119,
+      "theme": "Autres",
+      "stats": {
+        "pour": 22,
+        "contre": 94,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -100834,6 +101657,7 @@
           "total": 114
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -101676,7 +102500,14 @@
       "date": "2025-07-07",
       "titre": "l'article 1er ter de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article 1er ter de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 101,
+        "contre": 25,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -101695,6 +102526,7 @@
           "total": 122
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -102621,7 +103453,14 @@
       "date": "2025-07-07",
       "titre": "l'article 2 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article 2 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 133,
+      "theme": "Autres",
+      "stats": {
+        "pour": 104,
+        "contre": 25,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 133
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -102640,6 +103479,7 @@
           "total": 125
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -103580,7 +104420,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement de suppression n° 9 de M. Emmanuel Grégoire à l'article 2 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement de suppression n° 9 de M. Emmanuel Grégoire à l'article 2 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 135,
+      "theme": "Autres",
+      "stats": {
+        "pour": 21,
+        "contre": 105,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 135
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -103599,6 +104446,7 @@
           "total": 126
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -104553,7 +105401,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 18 de Mme Runel à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 18 de Mme Runel à l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 119,
+      "theme": "Autres",
+      "stats": {
+        "pour": 12,
+        "contre": 94,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -104572,6 +105427,7 @@
           "total": 112
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -105414,7 +106270,14 @@
       "date": "2025-07-07",
       "titre": "l'article 3 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article 3 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 102,
+        "contre": 26,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -105433,6 +106296,7 @@
           "total": 124
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -106359,7 +107223,14 @@
       "date": "2025-07-07",
       "titre": "l'ensemble de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'ensemble de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 155,
+      "theme": "Autres",
+      "stats": {
+        "pour": 117,
+        "contre": 34,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 155
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -106378,6 +107249,7 @@
           "total": 146
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -107472,7 +108344,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 10 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article 3 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 10 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article 3 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 134,
+      "theme": "Autres",
+      "stats": {
+        "pour": 26,
+        "contre": 104,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 134
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -107491,6 +108370,7 @@
           "total": 126
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -108438,7 +109318,14 @@
       "date": "2025-07-07",
       "titre": "l’article unique de la proposition de loi relative à la restitution d’un bien culturel à la République de Côte d’Ivoire (première lecture).",
       "description": "l’article unique de la proposition de loi relative à la restitution d’un bien culturel à la République de Côte d’Ivoire (première lecture).",
-      "votes_count": 113,
+      "theme": "Culture / Médias",
+      "stats": {
+        "pour": 111,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 113
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -108457,6 +109344,7 @@
           "total": 107
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -109257,7 +110145,14 @@
       "date": "2025-07-07",
       "titre": "l'article 4 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article 4 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 134,
+      "theme": "Autres",
+      "stats": {
+        "pour": 104,
+        "contre": 26,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 134
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -109276,6 +110171,7 @@
           "total": 126
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -110223,7 +111119,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement n° 16 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article 4 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement n° 16 de M. Emmanuel Grégoire et les amendements identiques suivants à l'article 4 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 28,
+        "contre": 101,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -110242,6 +111145,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -111168,7 +112072,14 @@
       "date": "2025-07-07",
       "titre": "l'article 1er bis de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article 1er bis de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 138,
+      "theme": "Autres",
+      "stats": {
+        "pour": 107,
+        "contre": 27,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 138
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -111187,6 +112098,7 @@
           "total": 129
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -112162,7 +113074,14 @@
       "date": "2025-07-07",
       "titre": "l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'article premier de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 103,
+        "contre": 24,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -112181,6 +113100,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -113107,7 +114027,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement de suppression n° 15 de M. Emmanuel Grégoire à l'article 5 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement de suppression n° 15 de M. Emmanuel Grégoire à l'article 5 de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 136,
+      "theme": "Autres",
+      "stats": {
+        "pour": 27,
+        "contre": 105,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 136
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -113126,6 +114053,7 @@
           "total": 128
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -114087,7 +115015,14 @@
       "date": "2025-07-07",
       "titre": "l'amendement de suppression n° 7 de M. Emmanuel Grégoire et l'amendement identique suivant à l'article 1er bis de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
       "description": "l'amendement de suppression n° 7 de M. Emmanuel Grégoire et l'amendement identique suivant à l'article 1er bis de la proposition de loi visant à réformer le mode d’élection des membres du conseil de Paris et des conseils municipaux de Lyon et de Marseille (nouvelle lecture).",
-      "votes_count": 127,
+      "theme": "Autres",
+      "stats": {
+        "pour": 24,
+        "contre": 99,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 127
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -114106,6 +115041,7 @@
           "total": 119
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -115004,7 +115940,14 @@
       "date": "2025-07-07",
       "titre": "l’amendement n° 469 de M. Duplessy après l’article premier de la proposition de loi portant création d’un statut de l’élu local (première lecture).",
       "description": "l’amendement n° 469 de M. Duplessy après l’article premier de la proposition de loi portant création d’un statut de l’élu local (première lecture).",
-      "votes_count": 119,
+      "theme": "Autres",
+      "stats": {
+        "pour": 8,
+        "contre": 53,
+        "abstention": 56,
+        "non_votant": 2,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -115023,6 +115966,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA642988",
@@ -115865,7 +116809,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 31 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 31 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 58,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 13,
+        "contre": 43,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 58
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -115884,6 +116835,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -116299,7 +117251,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 57 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 57 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 67,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 13,
+        "contre": 49,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 67
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -116318,6 +117277,7 @@
           "total": 63
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -116796,7 +117756,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 4 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 4 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 62,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 18,
+        "contre": 43,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 62
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -116815,6 +117782,7 @@
           "total": 58
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -117258,7 +118226,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 52 de M. Boyard de suppression de l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 52 de M. Boyard de suppression de l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 55,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 17,
+        "contre": 35,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -117269,6 +118244,7 @@
           "total": 55
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -117663,7 +118639,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 56 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 56 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 65,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 13,
+        "contre": 47,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 65
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -117682,6 +118665,7 @@
           "total": 61
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -118146,7 +119130,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 33 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 33 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 61,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 14,
+        "contre": 45,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 61
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -118165,6 +119156,7 @@
           "total": 58
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -118601,7 +119593,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 24 de Mme Lebon et l'amendement identique suivant à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 24 de Mme Lebon et l'amendement identique suivant à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 14,
+        "contre": 54,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -118620,6 +119619,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -119119,7 +120119,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 36 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 36 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 67,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 14,
+        "contre": 51,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 67
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -119138,6 +120145,7 @@
           "total": 63
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -119616,7 +120624,14 @@
       "date": "2025-07-03",
       "titre": "le sous-amendement n° 133 de M. Turquois à l'amendement n° 126 rectifié du Gouvernement à l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "le sous-amendement n° 133 de M. Turquois à l'amendement n° 126 rectifié du Gouvernement à l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 64,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 31,
+        "contre": 8,
+        "abstention": 23,
+        "non_votant": 2,
+        "total_votes": 64
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -119635,6 +120650,7 @@
           "total": 60
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -120092,7 +121108,14 @@
       "date": "2025-07-03",
       "titre": "l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 64,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 49,
+        "contre": 14,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 64
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -120111,6 +121134,7 @@
           "total": 60
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -120568,7 +121592,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 34 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 34 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 65,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 16,
+        "contre": 47,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 65
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -120587,6 +121618,7 @@
           "total": 61
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -121051,7 +122083,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 23 de M. Monnet et l'amendement identique suivant à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 23 de M. Monnet et l'amendement identique suivant à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 15,
+        "contre": 53,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -121070,6 +122109,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -121569,7 +122609,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 45 de M. Boyard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 45 de M. Boyard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 15,
+        "contre": 53,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -121588,6 +122635,7 @@
           "total": 68
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -122087,7 +123135,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 3 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 3 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 53,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 17,
+        "contre": 35,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 53
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -122106,6 +123161,7 @@
           "total": 49
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -122486,7 +123542,14 @@
       "date": "2025-07-03",
       "titre": "le sous-amendement n° 143 de M. Turquois à l'amendement n° 76 de M. Viry à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "le sous-amendement n° 143 de M. Turquois à l'amendement n° 76 de M. Viry à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 68,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 27,
+        "contre": 34,
+        "abstention": 6,
+        "non_votant": 1,
+        "total_votes": 68
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -122505,6 +123568,7 @@
           "total": 65
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -122990,7 +124054,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 71 de M. Turquois après l'article 9 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 71 de M. Turquois après l'article 9 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 69,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 38,
+        "contre": 10,
+        "abstention": 20,
+        "non_votant": 1,
+        "total_votes": 69
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -123009,6 +124080,7 @@
           "total": 65
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -123501,7 +124573,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 53 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 53 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 64,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 16,
+        "contre": 47,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 64
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -123520,6 +124599,7 @@
           "total": 63
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -123977,7 +125057,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 15 de M. Weber à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 15 de M. Weber à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 52,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 21,
+        "contre": 29,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 52
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -123996,6 +125083,7 @@
           "total": 48
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -124369,7 +125457,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 97 de Mme Taillé-Polian à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 97 de Mme Taillé-Polian à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 64,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 24,
+        "contre": 39,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 64
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -124388,6 +125483,7 @@
           "total": 60
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840801",
@@ -124845,7 +125941,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 9 de Mme Godard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 9 de Mme Godard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 62,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 27,
+        "contre": 28,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 62
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -124864,6 +125967,7 @@
           "total": 60
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -125307,7 +126411,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 35 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 35 de M. Boyard à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 67,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 16,
+        "contre": 49,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 67
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -125326,6 +126437,7 @@
           "total": 63
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -125804,7 +126916,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 22 de Mme Lebon et les amendements identiques suivants à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 22 de Mme Lebon et les amendements identiques suivants à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 15,
+        "contre": 40,
+        "abstention": 13,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -125823,6 +126942,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -126322,7 +127442,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 123 de Mme Taillé-Polian après l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 123 de Mme Taillé-Polian après l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 71,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 32,
+        "contre": 32,
+        "abstention": 6,
+        "non_votant": 1,
+        "total_votes": 71
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -126341,6 +127468,7 @@
           "total": 68
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -126847,7 +127975,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 109 de Mme Taillé-Polian à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 109 de Mme Taillé-Polian à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 64,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 32,
+        "contre": 30,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 64
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -126866,6 +128001,7 @@
           "total": 62
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -127323,7 +128459,14 @@
       "date": "2025-07-03",
       "titre": "l'ensemble du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'ensemble du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 71,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 57,
+        "contre": 9,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 71
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -127342,6 +128485,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -127848,7 +128992,14 @@
       "date": "2025-07-03",
       "titre": "l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 62,
+        "contre": 0,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -127867,6 +129018,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -128366,7 +129518,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 59 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 59 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 66,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 12,
+        "contre": 49,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 66
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -128385,6 +129544,7 @@
           "total": 62
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -128856,7 +130016,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 25 de M. Monnet et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 25 de M. Monnet et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 62,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 18,
+        "contre": 43,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 62
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -128875,6 +130042,7 @@
           "total": 61
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -129318,7 +130486,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 44 de M. Boyard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 44 de M. Boyard à l'article 2 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 10,
+        "contre": 58,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -129337,6 +130512,7 @@
           "total": 67
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -129836,7 +131012,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 58 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 58 de M. Boyard à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 67,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 14,
+        "contre": 48,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 67
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -129855,6 +131038,7 @@
           "total": 63
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -130333,7 +131517,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 8 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 8 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 68,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 18,
+        "contre": 49,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 68
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -130352,6 +131543,7 @@
           "total": 64
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -130837,7 +132029,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 126 rectifié du Gouvernement à l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 126 rectifié du Gouvernement à l'article 10 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 70,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 55,
+        "contre": 12,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 70
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -130856,6 +132055,7 @@
           "total": 66
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -131355,7 +132555,14 @@
       "date": "2025-07-03",
       "titre": "l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 79,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 65,
+        "contre": 1,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 79
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -131374,6 +132581,7 @@
           "total": 74
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -131936,7 +133144,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 2 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 2 de Mme Godard et les amendements identiques suivants à l'article 4 du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 68,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 21,
+        "contre": 46,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 68
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -131955,6 +133170,7 @@
           "total": 64
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -132440,7 +133656,14 @@
       "date": "2025-07-03",
       "titre": "l'amendement n° 39 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
       "description": "l'amendement n° 39 de M. Boyard et l'amendement identique suivant à l'article premier du projet de loi portant transposition des accords nationaux interprofessionnels en faveur de l'emploi des salariés expérimentés et relatif à l'évolution du dialogue social (première lecture).",
-      "votes_count": 61,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 29,
+        "contre": 23,
+        "abstention": 8,
+        "non_votant": 1,
+        "total_votes": 61
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -132459,6 +133682,7 @@
           "total": 57
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -132895,7 +134119,14 @@
       "date": "2025-07-02",
       "titre": "l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 114,
+      "theme": "Autres",
+      "stats": {
+        "pour": 68,
+        "contre": 45,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 114
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -132914,6 +134145,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -133721,7 +134953,14 @@
       "date": "2025-07-02",
       "titre": "l'ensemble de la proposition de loi relative à la lutte contre l'antisémitisme dans l'enseignement supérieur (texte de la commission mixte paritaire).",
       "description": "l'ensemble de la proposition de loi relative à la lutte contre l'antisémitisme dans l'enseignement supérieur (texte de la commission mixte paritaire).",
-      "votes_count": 462,
+      "theme": "Éducation",
+      "stats": {
+        "pour": 366,
+        "contre": 88,
+        "abstention": 7,
+        "non_votant": 1,
+        "total_votes": 462
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -133740,6 +134979,7 @@
           "total": 447
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -136983,7 +138223,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement de suppression n° 9 de Mme Céline Hervieu et les amendements identiques suivants à l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 9 de Mme Céline Hervieu et les amendements identiques suivants à l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 123,
+      "theme": "Autres",
+      "stats": {
+        "pour": 52,
+        "contre": 70,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 123
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -137002,6 +138249,7 @@
           "total": 118
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -137872,7 +139120,14 @@
       "date": "2025-07-02",
       "titre": "l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 116,
+      "theme": "Autres",
+      "stats": {
+        "pour": 74,
+        "contre": 41,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -137891,6 +139146,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -138712,7 +139968,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement n° 55 (rect.) de M. Marleix à l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement n° 55 (rect.) de M. Marleix à l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 128,
+      "theme": "Autres",
+      "stats": {
+        "pour": 90,
+        "contre": 37,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 128
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -138731,6 +139994,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -139636,7 +140900,14 @@
       "date": "2025-07-02",
       "titre": "l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 128,
+      "theme": "Autres",
+      "stats": {
+        "pour": 81,
+        "contre": 46,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 128
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -139655,6 +140926,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -140560,7 +141832,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement n° 27 de M. Bernalicis à l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement n° 27 de M. Bernalicis à l'article 4 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 113,
+      "theme": "Autres",
+      "stats": {
+        "pour": 42,
+        "contre": 69,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 113
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -140579,6 +141858,7 @@
           "total": 109
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -141379,7 +142659,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement n° 5 de Mme Céline Hervieu à l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement n° 5 de Mme Céline Hervieu à l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 117,
+      "theme": "Autres",
+      "stats": {
+        "pour": 41,
+        "contre": 75,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 117
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -141398,6 +142685,7 @@
           "total": 114
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -142226,7 +143514,14 @@
       "date": "2025-07-02",
       "titre": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi relative à la lutte contre l'antisémitisme dans l'enseignement supérieur (texte de la commission mixte paritaire).",
       "description": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi relative à la lutte contre l'antisémitisme dans l'enseignement supérieur (texte de la commission mixte paritaire).",
-      "votes_count": 227,
+      "theme": "Éducation",
+      "stats": {
+        "pour": 46,
+        "contre": 179,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 227
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -142245,6 +143540,7 @@
           "total": 219
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -143843,7 +145139,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement n° 61 du Gouvernement à l'article 6 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement n° 61 du Gouvernement à l'article 6 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 115,
+      "theme": "Autres",
+      "stats": {
+        "pour": 70,
+        "contre": 43,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 115
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -143862,6 +145165,7 @@
           "total": 111
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -144676,7 +145980,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement de suppression n° 6 de Mme Céline Hervieu et les amendements identiques suivants à l'article 2 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 6 de Mme Céline Hervieu et les amendements identiques suivants à l'article 2 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 131,
+      "theme": "Autres",
+      "stats": {
+        "pour": 45,
+        "contre": 84,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -144695,6 +146006,7 @@
           "total": 127
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -145621,7 +146933,14 @@
       "date": "2025-07-02",
       "titre": "l'article 6 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 6 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 115,
+      "theme": "Autres",
+      "stats": {
+        "pour": 69,
+        "contre": 44,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 115
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -145640,6 +146959,7 @@
           "total": 111
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -146454,7 +147774,14 @@
       "date": "2025-07-02",
       "titre": "le sous-amendement n° 59 du Gouvernement à l'amendement n° 54 (rect.) de M. Marleix à l'article 2 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "le sous-amendement n° 59 du Gouvernement à l'amendement n° 54 (rect.) de M. Marleix à l'article 2 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 129,
+      "theme": "Autres",
+      "stats": {
+        "pour": 84,
+        "contre": 44,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 129
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -146473,6 +147800,7 @@
           "total": 125
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -147385,7 +148713,14 @@
       "date": "2025-07-02",
       "titre": "l'article 3 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 3 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 125,
+      "theme": "Autres",
+      "stats": {
+        "pour": 75,
+        "contre": 49,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 125
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -147404,6 +148739,7 @@
           "total": 121
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -148288,7 +149624,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement de suppression n° 7 de Mme Céline Hervieu et les amendements identiques suivants à l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 7 de Mme Céline Hervieu et les amendements identiques suivants à l'article 2 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 130,
+      "theme": "Autres",
+      "stats": {
+        "pour": 47,
+        "contre": 82,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 130
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -148307,6 +149650,7 @@
           "total": 126
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -149226,7 +150570,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement de suppression n° 8 de Mme Céline Hervieu et les amendements identiques suivants à l'article 3 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 8 de Mme Céline Hervieu et les amendements identiques suivants à l'article 3 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 123,
+      "theme": "Autres",
+      "stats": {
+        "pour": 48,
+        "contre": 74,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 123
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -149245,6 +150596,7 @@
           "total": 119
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793832",
@@ -150115,7 +151467,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement de suppression n° 60 du Gouvernement et les amendements identiques suivants à l'article 3 ter de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 60 du Gouvernement et les amendements identiques suivants à l'article 3 ter de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 126,
+      "theme": "Autres",
+      "stats": {
+        "pour": 110,
+        "contre": 15,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 126
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -150134,6 +151493,7 @@
           "total": 121
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -151025,7 +152385,14 @@
       "date": "2025-07-02",
       "titre": "l'article 7 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 7 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 113,
+      "theme": "Autres",
+      "stats": {
+        "pour": 69,
+        "contre": 43,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 113
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -151044,6 +152411,7 @@
           "total": 109
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -151844,7 +153212,14 @@
       "date": "2025-07-02",
       "titre": "l'ensemble du projet de loi portant création de l'établissement public du commerce et de l'industrie de Corse (première lecture).",
       "description": "l'ensemble du projet de loi portant création de l'établissement public du commerce et de l'industrie de Corse (première lecture).",
-      "votes_count": 61,
+      "theme": "Autres",
+      "stats": {
+        "pour": 59,
+        "contre": 0,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 61
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -151863,6 +153238,7 @@
           "total": 57
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -152299,7 +153675,14 @@
       "date": "2025-07-02",
       "titre": "l'article 5 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 5 de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 114,
+      "theme": "Autres",
+      "stats": {
+        "pour": 88,
+        "contre": 14,
+        "abstention": 10,
+        "non_votant": 2,
+        "total_votes": 114
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -152318,6 +153701,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -153125,7 +154509,14 @@
       "date": "2025-07-02",
       "titre": "l'amendement n° 23 de M. Bernalicis à l'article 3 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement n° 23 de M. Bernalicis à l'article 3 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 115,
+      "theme": "Autres",
+      "stats": {
+        "pour": 48,
+        "contre": 66,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 115
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -153144,6 +154535,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -153958,7 +155350,14 @@
       "date": "2025-07-02",
       "titre": "l'article 3 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'article 3 bis de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d'une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 121,
+      "theme": "Autres",
+      "stats": {
+        "pour": 69,
+        "contre": 51,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 121
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -153977,6 +155376,7 @@
           "total": 116
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -154833,7 +156233,14 @@
       "date": "2025-07-01",
       "titre": "la motion de rejet préalable, déposée par M. Boris Vallaud, de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "la motion de rejet préalable, déposée par M. Boris Vallaud, de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 220,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 44,
+        "contre": 173,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 220
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -154852,6 +156259,7 @@
           "total": 212
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -156401,7 +157809,14 @@
       "date": "2025-07-01",
       "titre": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
       "description": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
-      "votes_count": 190,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 189,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 190
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -156420,6 +157835,7 @@
           "total": 189
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -157759,7 +159175,14 @@
       "date": "2025-07-01",
       "titre": "l'amendement de suppression n° 4 de Mme Céline Hervieu et les amendements identiques suivants à l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
       "description": "l'amendement de suppression n° 4 de Mme Céline Hervieu et les amendements identiques suivants à l'article premier de la proposition de loi visant à faciliter le maintien en rétention des personnes condamnées pour des faits d’une particulière gravité et présentant de forts risques de récidive (première lecture).",
-      "votes_count": 114,
+      "theme": "Autres",
+      "stats": {
+        "pour": 37,
+        "contre": 75,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 114
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -157778,6 +159201,7 @@
           "total": 108
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -158585,7 +160009,14 @@
       "date": "2025-07-01",
       "titre": "l’ensemble du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
       "description": "l’ensemble du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
-      "votes_count": 540,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 367,
+        "contre": 109,
+        "abstention": 64,
+        "non_votant": 0,
+        "total_votes": 540
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -158604,6 +160035,7 @@
           "total": 521
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -162393,7 +163825,14 @@
       "date": "2025-07-01",
       "titre": "l’ensemble du projet de loi organique relatif au Département-Région de Mayotte (première lecture).",
       "description": "l’ensemble du projet de loi organique relatif au Département-Région de Mayotte (première lecture).",
-      "votes_count": 540,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 537,
+        "contre": 0,
+        "abstention": 3,
+        "non_votant": 0,
+        "total_votes": 540
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -162412,6 +163851,7 @@
           "total": 521
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",

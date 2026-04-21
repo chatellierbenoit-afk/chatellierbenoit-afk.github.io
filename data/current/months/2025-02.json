@@ -8,7 +8,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 8 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 8 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 184,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 87,
+        "contre": 95,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 184
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -27,6 +34,7 @@
           "total": 183
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -1324,7 +1332,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 13 de M. Meurin à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement n° 13 de M. Meurin à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 249,
+      "theme": "Autres",
+      "stats": {
+        "pour": 63,
+        "contre": 181,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 249
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -1343,6 +1358,7 @@
           "total": 241
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -3095,7 +3111,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 34 de M. Michoux à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement n° 34 de M. Michoux à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 250,
+      "theme": "Autres",
+      "stats": {
+        "pour": 57,
+        "contre": 188,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 250
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -3114,6 +3137,7 @@
           "total": 241
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -4873,7 +4897,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 22 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 22 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 170,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 30,
+        "contre": 103,
+        "abstention": 35,
+        "non_votant": 2,
+        "total_votes": 170
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -4884,6 +4915,7 @@
           "total": 170
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840837",
@@ -6083,7 +6115,14 @@
       "date": "2025-02-20",
       "titre": "l'ensemble de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'ensemble de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 291,
+      "theme": "Autres",
+      "stats": {
+        "pour": 231,
+        "contre": 51,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 291
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -6102,6 +6141,7 @@
           "total": 284
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -8148,7 +8188,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement de suppression n° 36 de M. Michoux à l'article 2 bis de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement de suppression n° 36 de M. Michoux à l'article 2 bis de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 283,
+      "theme": "Autres",
+      "stats": {
+        "pour": 64,
+        "contre": 214,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 283
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -8167,6 +8214,7 @@
           "total": 276
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -10157,7 +10205,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement de suppression n° 37 de M. Michoux à l'article 2 de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement de suppression n° 37 de M. Michoux à l'article 2 de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 261,
+      "theme": "Autres",
+      "stats": {
+        "pour": 60,
+        "contre": 196,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 261
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -10176,6 +10231,7 @@
           "total": 252
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -12012,7 +12068,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 19 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 19 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 122,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 50,
+        "contre": 69,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 122
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -12023,6 +12086,7 @@
           "total": 122
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -12886,7 +12950,14 @@
       "date": "2025-02-20",
       "titre": "l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 187,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 117,
+        "contre": 40,
+        "abstention": 29,
+        "non_votant": 1,
+        "total_votes": 187
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -12897,6 +12968,7 @@
           "total": 187
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -14215,7 +14287,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 27 de M. Di Filippo au titre de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 27 de M. Di Filippo au titre de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 191,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 39,
+        "contre": 148,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 191
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -14234,6 +14313,7 @@
           "total": 190
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -15580,7 +15660,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 1 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 1 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 226,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 46,
+        "contre": 178,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 226
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -15599,6 +15686,7 @@
           "total": 223
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -17190,7 +17278,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 25 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 25 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 185,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 36,
+        "contre": 111,
+        "abstention": 36,
+        "non_votant": 2,
+        "total_votes": 185
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -17209,6 +17304,7 @@
           "total": 184
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794954",
@@ -18513,7 +18609,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 41 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 41 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 167,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 51,
+        "contre": 107,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 167
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -18524,6 +18627,7 @@
           "total": 167
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -19702,7 +19806,14 @@
       "date": "2025-02-20",
       "titre": "le sous-amendement n° 61 de M. Jean-Philippe Tanguy à l'amendement n° 53 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "le sous-amendement n° 61 de M. Jean-Philippe Tanguy à l'amendement n° 53 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 185,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 35,
+        "contre": 144,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 185
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -19713,6 +19824,7 @@
           "total": 185
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -21017,7 +21129,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 53 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 53 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 187,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 72,
+        "contre": 111,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 187
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -21028,6 +21147,7 @@
           "total": 187
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -22346,7 +22466,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 18 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 18 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 168,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 60,
+        "contre": 105,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 168
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -22357,6 +22484,7 @@
           "total": 168
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840159",
@@ -23542,7 +23670,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 22 de M. Vos à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement n° 22 de M. Vos à l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 250,
+      "theme": "Autres",
+      "stats": {
+        "pour": 55,
+        "contre": 190,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 250
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -23561,6 +23696,7 @@
           "total": 242
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -25320,7 +25456,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 49 de M. Sitzenstuhl au titre de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 49 de M. Sitzenstuhl au titre de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 190,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 39,
+        "contre": 149,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 190
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -25339,6 +25482,7 @@
           "total": 189
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -26678,7 +26822,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 44 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 44 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 175,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 60,
+        "contre": 111,
+        "abstention": 3,
+        "non_votant": 1,
+        "total_votes": 175
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -26689,6 +26840,7 @@
           "total": 175
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -27923,7 +28075,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 9 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 9 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 209,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 90,
+        "contre": 117,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 209
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -27942,6 +28101,7 @@
           "total": 208
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -29414,7 +29574,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 20 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 20 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 151,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 58,
+        "contre": 91,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 151
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -29425,6 +29592,7 @@
           "total": 151
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -30491,7 +30659,14 @@
       "date": "2025-02-20",
       "titre": "l'ensemble de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'ensemble de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 187,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 116,
+        "contre": 39,
+        "abstention": 31,
+        "non_votant": 1,
+        "total_votes": 187
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -30510,6 +30685,7 @@
           "total": 186
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -31828,7 +32004,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 16 de M. Meurin à l'article premier bis de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'amendement n° 16 de M. Meurin à l'article premier bis de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 238,
+      "theme": "Autres",
+      "stats": {
+        "pour": 65,
+        "contre": 170,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 238
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -31847,6 +32030,7 @@
           "total": 230
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",
@@ -33522,7 +33706,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 2 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 2 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 218,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 46,
+        "contre": 169,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 218
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -33541,6 +33732,7 @@
           "total": 215
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793904",
@@ -35076,7 +35268,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 45 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 45 de M. Lefèvre à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 204,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 46,
+        "contre": 153,
+        "abstention": 4,
+        "non_votant": 1,
+        "total_votes": 204
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -35095,6 +35294,7 @@
           "total": 203
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -36532,7 +36732,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 55 de M. Jean-René Cazeneuve à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 55 de M. Jean-René Cazeneuve à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 206,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 44,
+        "contre": 122,
+        "abstention": 39,
+        "non_votant": 1,
+        "total_votes": 206
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -36551,6 +36758,7 @@
           "total": 205
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -38002,7 +38210,14 @@
       "date": "2025-02-20",
       "titre": "l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
       "description": "l'article premier de la proposition de loi visant à protéger la population des risques liés aux substances perfluoroalkylées et polyfluoroalkylées (deuxième lecture).",
-      "votes_count": 276,
+      "theme": "Autres",
+      "stats": {
+        "pour": 204,
+        "contre": 65,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 276
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -38021,6 +38236,7 @@
           "total": 268
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -39962,7 +40178,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 21 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 21 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 157,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 25,
+        "contre": 97,
+        "abstention": 33,
+        "non_votant": 2,
+        "total_votes": 157
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -39973,6 +40196,7 @@
           "total": 157
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA842085",
@@ -41081,7 +41305,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 24 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 24 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 187,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 73,
+        "contre": 112,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 187
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -41100,6 +41331,7 @@
           "total": 186
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -42418,7 +42650,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 23 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 23 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 178,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 33,
+        "contre": 143,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 178
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -42437,6 +42676,7 @@
           "total": 177
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -43692,7 +43932,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 17 de M. Di Filippo et l'amendement identique suivant à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 17 de M. Di Filippo et l'amendement identique suivant à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 173,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 37,
+        "contre": 133,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 173
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -43703,6 +43950,7 @@
           "total": 173
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -44923,7 +45171,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 26 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 26 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 187,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 36,
+        "contre": 112,
+        "abstention": 37,
+        "non_votant": 2,
+        "total_votes": 187
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -44942,6 +45197,7 @@
           "total": 186
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794954",
@@ -46260,7 +46516,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 15 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 15 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 166,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 59,
+        "contre": 105,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 166
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -46271,6 +46534,7 @@
           "total": 166
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796042",
@@ -47442,7 +47706,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 5 de M. Di Filippo et l'amendement identique suivant à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 5 de M. Di Filippo et l'amendement identique suivant à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 198,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 59,
+        "contre": 138,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 198
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -47461,6 +47732,7 @@
           "total": 194
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793102",
@@ -48856,7 +49128,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 54 de M. Sitzenstuhl à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 54 de M. Sitzenstuhl à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 189,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 72,
+        "contre": 114,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 189
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -48875,6 +49154,7 @@
           "total": 188
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -50207,7 +50487,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement de suppression n° 34 de M. Lefèvre et les amendements identiques suivants à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement de suppression n° 34 de M. Lefèvre et les amendements identiques suivants à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 242,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 53,
+        "contre": 187,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -50226,6 +50513,7 @@
           "total": 237
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -51929,7 +52217,14 @@
       "date": "2025-02-20",
       "titre": "l'amendement n° 16 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
       "description": "l'amendement n° 16 de M. Di Filippo à l'article unique de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).",
-      "votes_count": 167,
+      "theme": "Budget / Finances",
+      "stats": {
+        "pour": 34,
+        "contre": 105,
+        "abstention": 26,
+        "non_votant": 2,
+        "total_votes": 167
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -51940,6 +52235,7 @@
           "total": 167
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794954",
@@ -53118,7 +53414,14 @@
       "date": "2025-02-19",
       "titre": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
       "description": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
-      "votes_count": 182,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 181,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 182
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -53129,6 +53432,7 @@
           "total": 182
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -54412,7 +54716,14 @@
       "date": "2025-02-19",
       "titre": "l'ensemble du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire).",
       "description": "l'ensemble du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire).",
-      "votes_count": 532,
+      "theme": "Agriculture",
+      "stats": {
+        "pour": 369,
+        "contre": 160,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 532
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -54431,6 +54742,7 @@
           "total": 516
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -58164,7 +58476,14 @@
       "date": "2025-02-19",
       "titre": "la motion de rejet préalable, déposée par Mme Cyrielle Chatelain, du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire).",
       "description": "la motion de rejet préalable, déposée par Mme Cyrielle Chatelain, du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire).",
-      "votes_count": 328,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 108,
+        "contre": 219,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 328
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -58183,6 +58502,7 @@
           "total": 321
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -60488,7 +60808,14 @@
       "date": "2025-02-18",
       "titre": "l'article premier de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
       "description": "l'article premier de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
-      "votes_count": 111,
+      "theme": "Éducation",
+      "stats": {
+        "pour": 53,
+        "contre": 46,
+        "abstention": 10,
+        "non_votant": 2,
+        "total_votes": 111
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -60507,6 +60834,7 @@
           "total": 107
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793844",
@@ -61293,7 +61621,14 @@
       "date": "2025-02-18",
       "titre": "l'article unique du projet de loi autorisant la ratification du traité sur la coopération dans le domaine de la défense entre la République française et le Royaume d'Espagne (première lecture).",
       "description": "l'article unique du projet de loi autorisant la ratification du traité sur la coopération dans le domaine de la défense entre la République française et le Royaume d'Espagne (première lecture).",
-      "votes_count": 104,
+      "theme": "Défense / International",
+      "stats": {
+        "pour": 95,
+        "contre": 0,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 104
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -61312,6 +61647,7 @@
           "total": 102
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -62049,7 +62385,14 @@
       "date": "2025-02-18",
       "titre": "l'ensemble de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
-      "votes_count": 186,
+      "theme": "Éducation",
+      "stats": {
+        "pour": 112,
+        "contre": 48,
+        "abstention": 24,
+        "non_votant": 2,
+        "total_votes": 186
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -62068,6 +62411,7 @@
           "total": 181
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -63379,7 +63723,14 @@
       "date": "2025-02-18",
       "titre": "l'amendement n° 8 du Gouvernement de suppression de l'article 2 ter de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
       "description": "l'amendement n° 8 du Gouvernement de suppression de l'article 2 ter de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture).",
-      "votes_count": 169,
+      "theme": "Éducation",
+      "stats": {
+        "pour": 136,
+        "contre": 31,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 169
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -63398,6 +63749,7 @@
           "total": 165
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -64590,7 +64942,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 177 de M. Sitzenstuhl à l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 177 de M. Sitzenstuhl à l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 57,
+      "theme": "Santé",
+      "stats": {
+        "pour": 19,
+        "contre": 35,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 57
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -64609,6 +64968,7 @@
           "total": 55
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -65017,7 +65377,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 11 de M. Grenon et les amendements identiques suivants à l'article 23 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 11 de M. Grenon et les amendements identiques suivants à l'article 23 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 55,
+      "theme": "Santé",
+      "stats": {
+        "pour": 24,
+        "contre": 29,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -65036,6 +65403,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -65430,7 +65798,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 8 de M. Blairy et les amendements identiques suivants à l'article 25 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 8 de M. Blairy et les amendements identiques suivants à l'article 25 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 61,
+      "theme": "Santé",
+      "stats": {
+        "pour": 45,
+        "contre": 15,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 61
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -65449,6 +65824,7 @@
           "total": 59
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -65885,7 +66261,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 33 de M. Renault à l'article 20 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 33 de M. Renault à l'article 20 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 51,
+      "theme": "Santé",
+      "stats": {
+        "pour": 24,
+        "contre": 14,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 51
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -65904,6 +66287,7 @@
           "total": 50
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -66270,7 +66654,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 34 de M. Renault à l'article 24 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 34 de M. Renault à l'article 24 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 58,
+      "theme": "Santé",
+      "stats": {
+        "pour": 23,
+        "contre": 33,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 58
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -66289,6 +66680,7 @@
           "total": 56
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -66704,7 +67096,14 @@
       "date": "2025-02-17",
       "titre": "l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 54,
+      "theme": "Santé",
+      "stats": {
+        "pour": 50,
+        "contre": 0,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 54
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -66723,6 +67122,7 @@
           "total": 52
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -67110,7 +67510,14 @@
       "date": "2025-02-17",
       "titre": "l'article 24 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 24 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 60,
+      "theme": "Santé",
+      "stats": {
+        "pour": 35,
+        "contre": 23,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 60
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -67129,6 +67536,7 @@
           "total": 58
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793246",
@@ -67558,7 +67966,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 212 de M. Labaronne à l'article 7 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 212 de M. Labaronne à l'article 7 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 34,
+      "theme": "Santé",
+      "stats": {
+        "pour": 30,
+        "contre": 2,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 34
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -67577,6 +67992,7 @@
           "total": 32
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793832",
@@ -67824,7 +68240,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 21 de M. Cernon à l'article 13 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 21 de M. Cernon à l'article 13 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 56,
+      "theme": "Santé",
+      "stats": {
+        "pour": 14,
+        "contre": 38,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 56
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -67843,6 +68266,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -68244,7 +68668,14 @@
       "date": "2025-02-17",
       "titre": "l'article 19 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 19 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 50,
+      "theme": "Santé",
+      "stats": {
+        "pour": 48,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 50
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -68263,6 +68694,7 @@
           "total": 49
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -68622,7 +69054,14 @@
       "date": "2025-02-17",
       "titre": "l'article 21 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 21 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 52,
+      "theme": "Santé",
+      "stats": {
+        "pour": 20,
+        "contre": 23,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 52
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -68641,6 +69080,7 @@
           "total": 51
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -69014,7 +69454,14 @@
       "date": "2025-02-17",
       "titre": "l'article 15 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 15 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 53,
+      "theme": "Santé",
+      "stats": {
+        "pour": 51,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 53
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -69033,6 +69480,7 @@
           "total": 51
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -69413,7 +69861,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 100 de M. Cernon et les amendements identiques suivants à l'article 31 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 100 de M. Cernon et les amendements identiques suivants à l'article 31 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 72,
+      "theme": "Santé",
+      "stats": {
+        "pour": 18,
+        "contre": 47,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 72
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -69432,6 +69887,7 @@
           "total": 70
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -69945,7 +70401,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 101 de M. Cernon à l'article 33 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 101 de M. Cernon à l'article 33 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 73,
+      "theme": "Santé",
+      "stats": {
+        "pour": 18,
+        "contre": 53,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 73
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -69964,6 +70427,7 @@
           "total": 71
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -70484,7 +70948,14 @@
       "date": "2025-02-17",
       "titre": "l'article 18 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 18 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 55,
+      "theme": "Santé",
+      "stats": {
+        "pour": 53,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -70503,6 +70974,7 @@
           "total": 53
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -70897,7 +71369,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 19 de M. Cernon à l'article 8 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 19 de M. Cernon à l'article 8 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 46,
+      "theme": "Santé",
+      "stats": {
+        "pour": 10,
+        "contre": 30,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 46
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -70916,6 +71395,7 @@
           "total": 44
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA720668",
@@ -71247,7 +71727,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 57 de Mme Sas à l'article 7 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 57 de Mme Sas à l'article 7 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 40,
+      "theme": "Santé",
+      "stats": {
+        "pour": 20,
+        "contre": 18,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 40
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -71266,6 +71753,7 @@
           "total": 38
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA720668",
@@ -71555,7 +72043,14 @@
       "date": "2025-02-17",
       "titre": "l'article 22 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 22 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 53,
+      "theme": "Santé",
+      "stats": {
+        "pour": 28,
+        "contre": 23,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 53
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -71574,6 +72069,7 @@
           "total": 52
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -71954,7 +72450,14 @@
       "date": "2025-02-17",
       "titre": "l'article 16 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 16 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 52,
+      "theme": "Santé",
+      "stats": {
+        "pour": 50,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 52
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -71973,6 +72476,7 @@
           "total": 50
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -72346,7 +72850,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 20 de Mme Ferrer à l'article 9 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 20 de Mme Ferrer à l'article 9 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 50,
+      "theme": "Santé",
+      "stats": {
+        "pour": 14,
+        "contre": 33,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 50
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -72365,6 +72876,7 @@
           "total": 48
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA720668",
@@ -72724,7 +73236,14 @@
       "date": "2025-02-17",
       "titre": "l'article 42 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 42 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 80,
+      "theme": "Santé",
+      "stats": {
+        "pour": 39,
+        "contre": 28,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 80
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -72743,6 +73262,7 @@
           "total": 79
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -73312,7 +73832,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 134 de Mme Ozenne à l'article 28 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 134 de Mme Ozenne à l'article 28 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 45,
+      "theme": "Santé",
+      "stats": {
+        "pour": 13,
+        "contre": 30,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 45
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -73323,6 +73850,7 @@
           "total": 45
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793374",
@@ -73647,7 +74175,14 @@
       "date": "2025-02-17",
       "titre": "l'article 23 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 23 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 55,
+      "theme": "Santé",
+      "stats": {
+        "pour": 31,
+        "contre": 22,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -73666,6 +74201,7 @@
           "total": 53
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -74060,7 +74596,14 @@
       "date": "2025-02-17",
       "titre": "l'article 17 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 17 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 55,
+      "theme": "Santé",
+      "stats": {
+        "pour": 53,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -74079,6 +74622,7 @@
           "total": 53
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -74473,7 +75017,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 37 de M. Renault à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 37 de M. Renault à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 56,
+      "theme": "Santé",
+      "stats": {
+        "pour": 23,
+        "contre": 32,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 56
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -74492,6 +75043,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -74893,7 +75445,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 38 de M. Renault et l'amendement identique suivant à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 38 de M. Renault et l'amendement identique suivant à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 58,
+      "theme": "Santé",
+      "stats": {
+        "pour": 23,
+        "contre": 34,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 58
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -74912,6 +75471,7 @@
           "total": 56
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -75327,7 +75887,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 40 de M. Renault à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 40 de M. Renault à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 56,
+      "theme": "Santé",
+      "stats": {
+        "pour": 24,
+        "contre": 20,
+        "abstention": 10,
+        "non_votant": 2,
+        "total_votes": 56
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -75346,6 +75913,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -75747,7 +76315,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 10 de M. Blairy à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 10 de M. Blairy à l'article 27 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 59,
+      "theme": "Santé",
+      "stats": {
+        "pour": 35,
+        "contre": 21,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 59
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -75766,6 +76341,7 @@
           "total": 57
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -76188,7 +76764,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 111 de M. Leseul et l'amendement identique suivant à l'article 30 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 111 de M. Leseul et l'amendement identique suivant à l'article 30 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 59,
+      "theme": "Santé",
+      "stats": {
+        "pour": 15,
+        "contre": 17,
+        "abstention": 25,
+        "non_votant": 2,
+        "total_votes": 59
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -76199,6 +76782,7 @@
           "total": 59
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841777",
@@ -76621,7 +77205,14 @@
       "date": "2025-02-17",
       "titre": "l'article 26 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'article 26 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 56,
+      "theme": "Santé",
+      "stats": {
+        "pour": 27,
+        "contre": 28,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 56
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -76640,6 +77231,7 @@
           "total": 54
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -77041,7 +77633,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement de suppression n° 12 de M. Grenon et les amendements identiques suivants à l'article 35 (examen prioritaire) du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement de suppression n° 12 de M. Grenon et les amendements identiques suivants à l'article 35 (examen prioritaire) du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 67,
+      "theme": "Santé",
+      "stats": {
+        "pour": 34,
+        "contre": 30,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 67
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -77060,6 +77659,7 @@
           "total": 65
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -77538,7 +78138,14 @@
       "date": "2025-02-17",
       "titre": "l'amendement n° 22 de Mme Ferrer à l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
       "description": "l'amendement n° 22 de Mme Ferrer à l'article 14 du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de santé et de circulation des personnes (première lecture).",
-      "votes_count": 55,
+      "theme": "Santé",
+      "stats": {
+        "pour": 16,
+        "contre": 37,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 55
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -77557,6 +78164,7 @@
           "total": 53
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -77951,7 +78559,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 44 de M. Terlier et l'amendement identique suivant après l'article 10 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 44 de M. Terlier et l'amendement identique suivant après l'article 10 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 131,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 56,
+        "contre": 73,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 131
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -77970,6 +78585,7 @@
           "total": 126
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -78896,7 +79512,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 51 de M. Terlier et l'amendement identique suivant à l'article 4 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 51 de M. Terlier et l'amendement identique suivant à l'article 4 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 93,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 66,
+        "contre": 26,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 93
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -78915,6 +79538,7 @@
           "total": 90
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA840075",
@@ -79575,7 +80199,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement de réécriture globale n° 11 de Mme Maximi à l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement de réécriture globale n° 11 de Mme Maximi à l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 119,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 40,
+        "contre": 77,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -79594,6 +80225,7 @@
           "total": 116
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -80436,7 +81068,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement de suppression n° 54 de Mme Josserand à l'article 9 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement de suppression n° 54 de Mme Josserand à l'article 9 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 121,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 30,
+        "contre": 88,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 121
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -80455,6 +81094,7 @@
           "total": 117
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -81311,7 +81951,14 @@
       "date": "2025-02-13",
       "titre": "l'ensemble de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 184,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 125,
+        "contre": 58,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 184
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -81330,6 +81977,7 @@
           "total": 177
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -82627,7 +83275,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement de suppression n° 55 de Mme Josserand à l'article 10 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement de suppression n° 55 de Mme Josserand à l'article 10 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 136,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 37,
+        "contre": 97,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 136
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -82646,6 +83301,7 @@
           "total": 131
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -83607,7 +84263,14 @@
       "date": "2025-02-13",
       "titre": "l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 117,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 34,
+        "contre": 58,
+        "abstention": 23,
+        "non_votant": 2,
+        "total_votes": 117
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -83626,6 +84289,7 @@
           "total": 113
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -84454,7 +85118,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement de suppression n° 50 de Mme Josserand à l'article 7 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement de suppression n° 50 de Mme Josserand à l'article 7 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 119,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 32,
+        "contre": 85,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 119
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -84473,6 +85144,7 @@
           "total": 116
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -85315,7 +85987,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 59 de Mme Josserand à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 59 de Mme Josserand à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 116,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 26,
+        "contre": 82,
+        "abstention": 7,
+        "non_votant": 1,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -85334,6 +86013,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -86155,7 +86835,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 40 de M. Terlier et l'amendement identique suivant à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 40 de M. Terlier et l'amendement identique suivant à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 117,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 82,
+        "contre": 34,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 117
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -86174,6 +86861,7 @@
           "total": 111
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -87002,7 +87690,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 17 de Mme Alexandra Martin à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 17 de Mme Alexandra Martin à l'article 5 (supprimé) de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 116,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 27,
+        "contre": 81,
+        "abstention": 7,
+        "non_votant": 1,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -87021,6 +87716,7 @@
           "total": 110
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -87842,7 +88538,14 @@
       "date": "2025-02-13",
       "titre": "l'amendement n° 53 de Mme Josserand à l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 53 de Mme Josserand à l'article 8 de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 126,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 32,
+        "contre": 92,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 126
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -87861,6 +88564,7 @@
           "total": 122
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -88752,7 +89456,14 @@
       "date": "2025-02-12",
       "titre": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 73 députés.",
       "description": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 73 députés.",
-      "votes_count": 122,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 121,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 122
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -88763,6 +89474,7 @@
           "total": 122
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -89626,7 +90338,14 @@
       "date": "2025-02-12",
       "titre": "l'ensemble du projet de loi d'urgence pour Mayotte (texte de la commission mixte paritaire).",
       "description": "l'ensemble du projet de loi d'urgence pour Mayotte (texte de la commission mixte paritaire).",
-      "votes_count": 518,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 451,
+        "contre": 0,
+        "abstention": 65,
+        "non_votant": 2,
+        "total_votes": 518
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -89645,6 +90364,7 @@
           "total": 503
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -93280,7 +94000,14 @@
       "date": "2025-02-12",
       "titre": "la motion de rejet préalable, déposée par M. Boris Vallaud, de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "la motion de rejet préalable, déposée par M. Boris Vallaud, de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 300,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 96,
+        "contre": 202,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 300
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -93299,6 +94026,7 @@
           "total": 290
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -95408,7 +96136,14 @@
       "date": "2025-02-12",
       "titre": "l'amendement n° 7 de Mme Faucillon et les amendements identiques suivants de suppression de l'article premier de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
       "description": "l'amendement n° 7 de Mme Faucillon et les amendements identiques suivants de suppression de l'article premier de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).",
-      "votes_count": 192,
+      "theme": "Justice / Sécurité",
+      "stats": {
+        "pour": 63,
+        "contre": 125,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 192
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -95427,6 +96162,7 @@
           "total": 184
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -96780,7 +97516,14 @@
       "date": "2025-02-12",
       "titre": "l'ensemble de la proposition de loi visant à adapter le fonctionnement des instances de gouvernance des chambres d'agriculture et de la mutualité sociale agricole (texte de la commission mixte paritaire).",
       "description": "l'ensemble de la proposition de loi visant à adapter le fonctionnement des instances de gouvernance des chambres d'agriculture et de la mutualité sociale agricole (texte de la commission mixte paritaire).",
-      "votes_count": 249,
+      "theme": "Travail / Social",
+      "stats": {
+        "pour": 203,
+        "contre": 44,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 249
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -96799,6 +97542,7 @@
           "total": 240
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -98551,7 +99295,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 73 de M. Sanvert à l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 73 de M. Sanvert à l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
-      "votes_count": 178,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 77,
+        "contre": 81,
+        "abstention": 18,
+        "non_votant": 2,
+        "total_votes": 178
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -98570,6 +99321,7 @@
           "total": 170
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -99825,7 +100577,14 @@
       "date": "2025-02-11",
       "titre": "l'article 17 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
       "description": "l'article 17 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
-      "votes_count": 190,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 133,
+        "contre": 51,
+        "abstention": 5,
+        "non_votant": 1,
+        "total_votes": 190
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -99844,6 +100603,7 @@
           "total": 181
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -101183,7 +101943,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 50 de M. Jenft et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 50 de M. Jenft et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 113,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 57,
+        "contre": 53,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 113
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -101202,6 +101969,7 @@
           "total": 107
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -102002,7 +102770,14 @@
       "date": "2025-02-11",
       "titre": "le sous-amendement n° 255 de M. Gouffier Valente à l'amendement n° 88 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "le sous-amendement n° 255 de M. Gouffier Valente à l'amendement n° 88 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 173,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 82,
+        "contre": 88,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 173
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -102021,6 +102796,7 @@
           "total": 166
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -103241,7 +104017,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 111 de M. Di Filippo et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 111 de M. Di Filippo et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 139,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 70,
+        "contre": 62,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 139
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -103260,6 +104043,7 @@
           "total": 133
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -104242,7 +105026,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 70 de M. Rancoule à l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 70 de M. Rancoule à l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 163,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 86,
+        "contre": 74,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 163
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -104261,6 +105052,7 @@
           "total": 157
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -105411,7 +106203,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 17 (2ème rect.) de M. Boucard après l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 17 (2ème rect.) de M. Boucard après l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 163,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 117,
+        "contre": 43,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 163
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -105430,6 +106229,7 @@
           "total": 156
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -106580,7 +107380,14 @@
       "date": "2025-02-11",
       "titre": "l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 164,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 82,
+        "contre": 74,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 164
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -106599,6 +107406,7 @@
           "total": 158
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -107756,7 +108564,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 61 de M. Pauget et les amendements identiques suivants à l'article 13 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 61 de M. Pauget et les amendements identiques suivants à l'article 13 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 168,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 93,
+        "contre": 71,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 168
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -107775,6 +108590,7 @@
           "total": 161
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -108960,7 +109776,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 32 (rect.) de M. Gouffier Valente et l'amendement suivant à l'article 14 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 32 (rect.) de M. Gouffier Valente et l'amendement suivant à l'article 14 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 160,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 67,
+        "contre": 20,
+        "abstention": 71,
+        "non_votant": 2,
+        "total_votes": 160
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -108979,6 +109802,7 @@
           "total": 152
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793290",
@@ -110108,7 +110932,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 76 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 76 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 172,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 76,
+        "contre": 94,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 172
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -110127,6 +110958,7 @@
           "total": 165
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -111340,7 +112172,14 @@
       "date": "2025-02-11",
       "titre": "l'ensemble de la proposition de loi relative à la sûreté dans les transports (première lecture).",
       "description": "l'ensemble de la proposition de loi relative à la sûreté dans les transports (première lecture).",
-      "votes_count": 202,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 139,
+        "contre": 59,
+        "abstention": 3,
+        "non_votant": 1,
+        "total_votes": 202
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -111359,6 +112198,7 @@
           "total": 194
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -112782,7 +113622,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 1 de Mme Lise Magnier à l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 1 de Mme Lise Magnier à l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
-      "votes_count": 190,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 57,
+        "contre": 70,
+        "abstention": 61,
+        "non_votant": 2,
+        "total_votes": 190
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -112801,6 +113648,7 @@
           "total": 182
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841131",
@@ -114140,7 +114988,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 55 de M. Jenft à l'article 13 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 55 de M. Jenft à l'article 13 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 169,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 67,
+        "contre": 95,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 169
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -114159,6 +115014,7 @@
           "total": 161
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -115351,7 +116207,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 51 (rect.) de M. Jenft et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 51 (rect.) de M. Jenft et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 150,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 83,
+        "contre": 61,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 150
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -115370,6 +116233,7 @@
           "total": 144
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -116429,7 +117293,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 189 de M. Ray et l'amendement identique suivant après l'article 3 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 189 de M. Ray et l'amendement identique suivant après l'article 3 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 159,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 86,
+        "contre": 67,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 159
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -116448,6 +117319,7 @@
           "total": 152
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -117570,7 +118442,14 @@
       "date": "2025-02-11",
       "titre": "l'article 18 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
       "description": "l'article 18 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
-      "votes_count": 186,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 133,
+        "contre": 50,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 186
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -117589,6 +118468,7 @@
           "total": 178
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -118900,7 +119780,14 @@
       "date": "2025-02-11",
       "titre": "l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 176,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 126,
+        "contre": 48,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 176
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -118919,6 +119806,7 @@
           "total": 168
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -120160,7 +121048,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 237 (rect.) du Gouvernement et l'amendement identique suivant après l'article 9 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 237 (rect.) du Gouvernement et l'amendement identique suivant après l'article 9 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 127,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 86,
+        "contre": 37,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 127
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -120179,6 +121074,7 @@
           "total": 122
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA842279",
@@ -121077,7 +121973,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 200 de M. Boucard après l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 200 de M. Boucard après l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 170,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 82,
+        "contre": 82,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 170
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -121096,6 +121999,7 @@
           "total": 164
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -122295,7 +123199,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 5 de M. Vicot et les amendements identiques suivants à l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 5 de M. Vicot et les amendements identiques suivants à l'article 2 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 176,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 53,
+        "contre": 120,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 176
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -122314,6 +123225,7 @@
           "total": 168
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -123555,7 +124467,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 36 de M. Gouffier Valente à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 36 de M. Gouffier Valente à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 90,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 40,
+        "contre": 47,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 90
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -123574,6 +124493,7 @@
           "total": 85
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -124213,7 +125133,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 56 de M. Jenft à l'article 15 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 56 de M. Jenft à l'article 15 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 178,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 84,
+        "contre": 92,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 178
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -124232,6 +125159,7 @@
           "total": 169
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -125487,7 +126415,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 58 de M. Jenft à l'article 14 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 58 de M. Jenft à l'article 14 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 183,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 89,
+        "contre": 91,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 183
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -125506,6 +126441,7 @@
           "total": 175
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -126796,7 +127732,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 85 de Mme Regol après l'article 9 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 85 de Mme Regol après l'article 9 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 137,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 36,
+        "contre": 99,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 137
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -126815,6 +127758,7 @@
           "total": 132
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793892",
@@ -127783,7 +128727,14 @@
       "date": "2025-02-11",
       "titre": "l'article 6 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article 6 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 141,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 105,
+        "contre": 32,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 141
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -127802,6 +128753,7 @@
           "total": 137
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -128798,7 +129750,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 208 de M. Amirshahi à l'article 15 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture)",
       "description": "l'amendement n° 208 de M. Amirshahi à l'article 15 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture)",
-      "votes_count": 177,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 107,
+        "contre": 68,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 177
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -128817,6 +129776,7 @@
           "total": 169
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794886",
@@ -130065,7 +131025,14 @@
       "date": "2025-02-11",
       "titre": "l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
       "description": "l'article 19 de la proposition de loi relative à la sûreté dans les transports (première lecture).",
-      "votes_count": 194,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 138,
+        "contre": 54,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 194
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -130084,6 +131051,7 @@
           "total": 186
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -131451,7 +132419,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 22 de M. Gouffier Valente à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 22 de M. Gouffier Valente à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 151,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 116,
+        "contre": 20,
+        "abstention": 13,
+        "non_votant": 2,
+        "total_votes": 151
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -131470,6 +132445,7 @@
           "total": 143
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -132536,7 +133512,14 @@
       "date": "2025-02-11",
       "titre": "l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 175,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 123,
+        "contre": 50,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 175
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -132555,6 +133538,7 @@
           "total": 168
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -133789,7 +134773,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 18 de M. Boucard et les amendements identiques suivants après l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 18 de M. Boucard et les amendements identiques suivants après l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 170,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 85,
+        "contre": 81,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 170
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -133808,6 +134799,7 @@
           "total": 163
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793158",
@@ -135007,7 +135999,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 34 de M. Gillet et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 34 de M. Gillet et l'amendement identique suivant à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 81,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 37,
+        "contre": 42,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 81
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -135026,6 +136025,7 @@
           "total": 77
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -135602,7 +136602,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 132 de Mme Duby-Muller et l'amendement identique suivant à l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 132 de Mme Duby-Muller et l'amendement identique suivant à l'article 7 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 162,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 85,
+        "contre": 73,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 162
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -135621,6 +136628,7 @@
           "total": 156
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -136764,7 +137772,14 @@
       "date": "2025-02-11",
       "titre": "l'article 8 quater de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article 8 quater de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 152,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 115,
+        "contre": 18,
+        "abstention": 17,
+        "non_votant": 2,
+        "total_votes": 152
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -136783,6 +137798,7 @@
           "total": 146
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -137856,7 +138872,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 75 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 75 de Mme Regol à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 103,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 49,
+        "contre": 52,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 103
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -137875,6 +138898,7 @@
           "total": 97
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -138605,7 +139629,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 47 de M. Latombe et l'amendement identique suivant à l'article 17 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
       "description": "l'amendement n° 47 de M. Latombe et l'amendement identique suivant à l'article 17 de la proposition de loi relative au renforcement de la sûreté dans les transports ( première lecture).",
-      "votes_count": 188,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 60,
+        "contre": 126,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 188
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -138624,6 +139655,7 @@
           "total": 179
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -139949,7 +140981,14 @@
       "date": "2025-02-11",
       "titre": "l'article 8 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'article 8 de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 167,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 123,
+        "contre": 38,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 167
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -139968,6 +141007,7 @@
           "total": 161
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794562",
@@ -141146,7 +142186,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 30 de M. Gouffier Valente et l'amendement identique suivant à l'article 11 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 30 de M. Gouffier Valente et l'amendement identique suivant à l'article 11 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 137,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 109,
+        "contre": 23,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 137
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -141165,6 +142212,7 @@
           "total": 132
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA842279",
@@ -142133,7 +143181,14 @@
       "date": "2025-02-11",
       "titre": "l'amendement n° 74 de M. Jenft à l'article 16 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 74 de M. Jenft à l'article 16 (supprimé) de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 177,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 85,
+        "contre": 85,
+        "abstention": 5,
+        "non_votant": 2,
+        "total_votes": 177
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -142152,6 +143207,7 @@
           "total": 168
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -143400,7 +144456,14 @@
       "date": "2025-02-10",
       "titre": "l'amendement n° 100 de M. Portes à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 100 de M. Portes à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 79,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 22,
+        "contre": 54,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 79
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -143419,6 +144482,7 @@
           "total": 78
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -143981,7 +145045,14 @@
       "date": "2025-02-10",
       "titre": "l'amendement n° 101 de M. Portes à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 101 de M. Portes à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 77,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 22,
+        "contre": 52,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 77
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -144000,6 +145071,7 @@
           "total": 76
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -144548,7 +145620,14 @@
       "date": "2025-02-10",
       "titre": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 70 députés.",
       "description": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 70 députés.",
-      "votes_count": 116,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 115,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 116
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -144559,6 +145638,7 @@
           "total": 116
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -145380,7 +146460,14 @@
       "date": "2025-02-10",
       "titre": "l'amendement de suppression n° 2 de M. Vicot et les amendements identiques suivants à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement de suppression n° 2 de M. Vicot et les amendements identiques suivants à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 81,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 24,
+        "contre": 55,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 81
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -145399,6 +146486,7 @@
           "total": 80
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -145975,7 +147063,14 @@
       "date": "2025-02-10",
       "titre": "l'ensemble de la proposition de loi, adoptée par le Sénat, pour améliorer la prise en charge de la sclérose latérale amyotrophique et d'autres maladies évolutives graves (première lecture).",
       "description": "l'ensemble de la proposition de loi, adoptée par le Sénat, pour améliorer la prise en charge de la sclérose latérale amyotrophique et d'autres maladies évolutives graves (première lecture).",
-      "votes_count": 94,
+      "theme": "Autres",
+      "stats": {
+        "pour": 92,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 94
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -145994,6 +147089,7 @@
           "total": 92
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -146661,7 +147757,14 @@
       "date": "2025-02-10",
       "titre": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 164,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 20,
+        "contre": 131,
+        "abstention": 11,
+        "non_votant": 2,
+        "total_votes": 164
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -146680,6 +147783,7 @@
           "total": 159
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -147837,7 +148941,14 @@
       "date": "2025-02-10",
       "titre": "l'ensemble de la proposition de loi visant à permettre l'élection du maire d'une commune nouvelle en cas de conseil municipal incomplet (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à permettre l'élection du maire d'une commune nouvelle en cas de conseil municipal incomplet (première lecture).",
-      "votes_count": 99,
+      "theme": "Autres",
+      "stats": {
+        "pour": 78,
+        "contre": 19,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 99
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -147856,6 +148967,7 @@
           "total": 97
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -148558,7 +149670,14 @@
       "date": "2025-02-10",
       "titre": "le sous-amendement n° 270 de M. Gouffier Valente à l'amendement n° 3 (rect.) de M. Vicot à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "le sous-amendement n° 270 de M. Gouffier Valente à l'amendement n° 3 (rect.) de M. Vicot à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 66,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 16,
+        "contre": 41,
+        "abstention": 7,
+        "non_votant": 2,
+        "total_votes": 66
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -148577,6 +149696,7 @@
           "total": 65
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -149048,7 +150168,14 @@
       "date": "2025-02-10",
       "titre": "l'amendement n° 125 (rect.) de Mme Élisa Martin à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 125 (rect.) de Mme Élisa Martin à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 78,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 16,
+        "contre": 54,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 78
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -149067,6 +150194,7 @@
           "total": 77
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -149622,7 +150750,14 @@
       "date": "2025-02-10",
       "titre": "l'article unique de la proposition de loi visant à permettre l'élection du maire d'une commune nouvelle en cas de conseil municipal incomplet (première lecture).",
       "description": "l'article unique de la proposition de loi visant à permettre l'élection du maire d'une commune nouvelle en cas de conseil municipal incomplet (première lecture).",
-      "votes_count": 99,
+      "theme": "Autres",
+      "stats": {
+        "pour": 73,
+        "contre": 24,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 99
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -149641,6 +150776,7 @@
           "total": 97
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -150343,7 +151479,14 @@
       "date": "2025-02-10",
       "titre": "l'amendement n° 3 (rect.) de M. Vicot à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
       "description": "l'amendement n° 3 (rect.) de M. Vicot à l'article premier de la proposition de loi relative au renforcement de la sûreté dans les transports (première lecture).",
-      "votes_count": 77,
+      "theme": "Logement / Transports",
+      "stats": {
+        "pour": 33,
+        "contre": 42,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 77
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -150362,6 +151505,7 @@
           "total": 76
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA794434",
@@ -150910,7 +152054,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 22 de M. Bernalicis à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 22 de M. Bernalicis à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 213,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 49,
+        "contre": 161,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 213
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -150929,6 +152080,7 @@
           "total": 210
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -152429,7 +153581,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 14 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 14 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 283,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 98,
+        "contre": 184,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 283
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -152448,6 +153607,7 @@
           "total": 274
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -154438,7 +155598,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 37 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 37 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 240,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 74,
+        "contre": 162,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 240
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -154457,6 +155624,7 @@
           "total": 236
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -156146,7 +157314,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 7 de M. Gillet et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 7 de M. Gillet et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 277,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 119,
+        "contre": 132,
+        "abstention": 25,
+        "non_votant": 1,
+        "total_votes": 277
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -156165,6 +157340,7 @@
           "total": 270
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -158113,7 +159289,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 46 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 46 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 75,
+        "contre": 162,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -158132,6 +159315,7 @@
           "total": 239
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -159842,7 +161026,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 62 de Mme Voynet après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 62 de Mme Voynet après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 82,
+        "contre": 159,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -159861,6 +161052,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -161571,7 +162763,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 27 de M. Bernalicis après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 27 de M. Bernalicis après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 240,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 79,
+        "contre": 159,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 240
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -161590,6 +162789,7 @@
           "total": 232
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793102",
@@ -163279,7 +164479,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 42 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 42 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 242,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 74,
+        "contre": 162,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -163298,6 +164505,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -165001,7 +166209,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 23 de M. Taché à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 23 de M. Taché à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 208,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 49,
+        "contre": 156,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 208
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -165020,6 +166235,7 @@
           "total": 205
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -166485,7 +167701,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 38 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 38 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 241,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 76,
+        "contre": 160,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 241
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -166504,6 +167727,7 @@
           "total": 237
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -168200,7 +169424,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 2 de M. Taché et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 2 de M. Taché et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 280,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 90,
+        "contre": 187,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 280
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -168219,6 +169450,7 @@
           "total": 273
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -170188,7 +171420,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 24 de M. Bernalicis à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 24 de M. Bernalicis à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 207,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 48,
+        "contre": 156,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 207
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -170207,6 +171446,7 @@
           "total": 204
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -171665,7 +172905,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 10 de M. Gillet à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 10 de M. Gillet à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 232,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 96,
+        "contre": 118,
+        "abstention": 16,
+        "non_votant": 2,
+        "total_votes": 232
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -171684,6 +172931,7 @@
           "total": 226
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -173317,7 +174565,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 98 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 98 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 248,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 81,
+        "contre": 162,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 248
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -173336,6 +174591,7 @@
           "total": 244
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -175081,7 +176337,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 35 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 35 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 242,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 75,
+        "contre": 163,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -175100,6 +176363,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -176803,7 +178067,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 1 de M. Bernalicis et les amendements identiques suivants de suppression de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 1 de M. Bernalicis et les amendements identiques suivants de suppression de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 305,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 113,
+        "contre": 190,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 305
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -176822,6 +178093,7 @@
           "total": 297
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -178966,7 +180238,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 12 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 12 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 267,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 93,
+        "contre": 172,
+        "abstention": 1,
+        "non_votant": 1,
+        "total_votes": 267
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -178985,6 +180264,7 @@
           "total": 259
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -180863,7 +182143,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 36 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 36 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 240,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 74,
+        "contre": 162,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 240
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -180882,6 +182169,7 @@
           "total": 237
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -182571,7 +183859,14 @@
       "date": "2025-02-06",
       "titre": "l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 296,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 179,
+        "contre": 105,
+        "abstention": 10,
+        "non_votant": 2,
+        "total_votes": 296
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -182590,6 +183885,7 @@
           "total": 289
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -184671,7 +185967,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 95 de M. Rimane à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 95 de M. Rimane à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 212,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 49,
+        "contre": 160,
+        "abstention": 1,
+        "non_votant": 2,
+        "total_votes": 212
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -184690,6 +185993,7 @@
           "total": 209
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -186183,7 +187487,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 40 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 40 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 235,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 70,
+        "contre": 161,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 235
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -186202,6 +187513,7 @@
           "total": 231
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -187856,7 +189168,14 @@
       "date": "2025-02-06",
       "titre": "l'ensemble de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'ensemble de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 260,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 162,
+        "contre": 93,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 260
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -187875,6 +189194,7 @@
           "total": 257
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -189704,7 +191024,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 92 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 92 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 77,
+        "contre": 161,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -189723,6 +191050,7 @@
           "total": 239
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -191433,7 +192761,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 44 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 44 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 238,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 73,
+        "contre": 161,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 238
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -191452,6 +192787,7 @@
           "total": 234
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -193127,7 +194463,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 32 de Mme Cathala après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 32 de Mme Cathala après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 252,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 84,
+        "contre": 166,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 252
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -193146,6 +194489,7 @@
           "total": 246
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -194919,7 +196263,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 39 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 39 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 239,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 69,
+        "contre": 162,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 239
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -194938,6 +196289,7 @@
           "total": 235
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -196620,7 +197972,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 74 de Mme Faucillon après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 74 de Mme Faucillon après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 238,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 78,
+        "contre": 158,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 238
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -196639,6 +197998,7 @@
           "total": 230
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -198314,7 +199674,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 76 de Mme Faucillon après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 76 de Mme Faucillon après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 256,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 93,
+        "contre": 161,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 256
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -198333,6 +199700,7 @@
           "total": 249
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -200134,7 +201502,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 88 de Mme Ricourt Vaginay à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 88 de Mme Ricourt Vaginay à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 205,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 95,
+        "contre": 88,
+        "abstention": 20,
+        "non_votant": 2,
+        "total_votes": 205
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -200153,6 +201528,7 @@
           "total": 199
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -201597,7 +202973,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 68 de M. Metzdorf après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 68 de M. Metzdorf après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 234,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 93,
+        "contre": 117,
+        "abstention": 22,
+        "non_votant": 2,
+        "total_votes": 234
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -201616,6 +202999,7 @@
           "total": 229
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -203263,7 +204647,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 60 de M. Taché après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 60 de M. Taché après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 77,
+        "contre": 164,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -203282,6 +204673,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -204992,7 +206384,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 34 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 34 de M. Bernalicis au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 75,
+        "contre": 162,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -205011,6 +206410,7 @@
           "total": 239
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -206721,7 +208121,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 87 de M. Ciotti de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 87 de M. Ciotti de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 283,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 112,
+        "contre": 145,
+        "abstention": 25,
+        "non_votant": 1,
+        "total_votes": 283
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -206740,6 +208147,7 @@
           "total": 276
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -208730,7 +210138,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 41 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 41 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 242,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 76,
+        "contre": 161,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -208749,6 +210164,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -210452,7 +211868,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 45 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 45 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 242,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 75,
+        "contre": 162,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -210471,6 +211894,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -212174,7 +213598,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 71 de Mme Youssouffa à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 71 de Mme Youssouffa à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 248,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 143,
+        "contre": 99,
+        "abstention": 4,
+        "non_votant": 2,
+        "total_votes": 248
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -212193,6 +213624,7 @@
           "total": 240
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -213938,7 +215370,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 64 de Mme Robert-Dehault après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 64 de Mme Robert-Dehault après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 238,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 93,
+        "contre": 129,
+        "abstention": 14,
+        "non_votant": 2,
+        "total_votes": 238
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -213957,6 +215396,7 @@
           "total": 234
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -215632,7 +217072,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 56 de Mme Capdevielle à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 56 de Mme Capdevielle à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 278,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 102,
+        "contre": 173,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 278
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -215651,6 +217098,7 @@
           "total": 269
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -217606,7 +219054,14 @@
       "date": "2025-02-06",
       "titre": "la demande de seconde délibération, présentée par M. Bernalicis, de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "la demande de seconde délibération, présentée par M. Bernalicis, de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 254,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 85,
+        "contre": 161,
+        "abstention": 6,
+        "non_votant": 2,
+        "total_votes": 254
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -217625,6 +219080,7 @@
           "total": 250
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -219412,7 +220868,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 43 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 43 de M. Taché au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 77,
+        "contre": 161,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -219431,6 +220894,7 @@
           "total": 239
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -221141,7 +222605,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 90 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 90 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 243,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 74,
+        "contre": 164,
+        "abstention": 3,
+        "non_votant": 2,
+        "total_votes": 243
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -221160,6 +222631,7 @@
           "total": 239
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -222870,7 +224342,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 31 de M. Bernalicis après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 31 de M. Bernalicis après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 258,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 91,
+        "contre": 165,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 258
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -222889,6 +224368,7 @@
           "total": 251
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA796118",
@@ -224704,7 +226184,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 78 de Mme Faucillon à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 78 de Mme Faucillon à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 268,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 94,
+        "contre": 171,
+        "abstention": 2,
+        "non_votant": 1,
+        "total_votes": 268
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -224723,6 +226210,7 @@
           "total": 260
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA841495",
@@ -226608,7 +228096,14 @@
       "date": "2025-02-06",
       "titre": "l'amendement n° 91 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
       "description": "l'amendement n° 91 de M. Rimane au titre de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).",
-      "votes_count": 242,
+      "theme": "Immigration",
+      "stats": {
+        "pour": 77,
+        "contre": 161,
+        "abstention": 2,
+        "non_votant": 2,
+        "total_votes": 242
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -226627,6 +228122,7 @@
           "total": 238
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793432",
@@ -228330,7 +229826,14 @@
       "date": "2025-02-05",
       "titre": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 91 députés.",
       "description": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 91 députés.",
-      "votes_count": 123,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 122,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 123
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -228341,6 +229844,7 @@
           "total": 123
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -229211,7 +230715,14 @@
       "date": "2025-02-05",
       "titre": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 90 députés.",
       "description": "la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot et 90 députés.",
-      "votes_count": 129,
+      "theme": "Institutions",
+      "stats": {
+        "pour": 128,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 1,
+        "total_votes": 129
+      },
       "groupes_summary": [
         {
           "groupe": "NI",
@@ -229222,6 +230733,7 @@
           "total": 129
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA721908",
@@ -230134,7 +231646,14 @@
       "date": "2025-02-04",
       "titre": "l'ensemble de la proposition de loi visant à interdire les dispositifs électroniques de vapotage à usage unique (texte de la commission mixte paritaire).",
       "description": "l'ensemble de la proposition de loi visant à interdire les dispositifs électroniques de vapotage à usage unique (texte de la commission mixte paritaire).",
-      "votes_count": 165,
+      "theme": "Autres",
+      "stats": {
+        "pour": 163,
+        "contre": 0,
+        "abstention": 0,
+        "non_votant": 2,
+        "total_votes": 165
+      },
       "groupes_summary": [
         {
           "groupe": "Inconnu",
@@ -230153,6 +231672,7 @@
           "total": 156
         }
       ],
+      "departements_summary": [],
       "votes": [
         {
           "depute_uid": "PA793238",

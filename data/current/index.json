@@ -1,10 +1,13 @@
 {
-  "version": "2.1",
+  "version": "2.2",
   "year": 2025,
-  "updated_at": "2026-04-21T11:49:27Z",
+  "updated_at": "2026-04-21T12:03:43Z",
   "counts": {
     "scrutins": 4422,
-    "votes": 756176
+    "votes": 756176,
+    "deputes": 614,
+    "groupes": 2,
+    "departements": 0
   },
   "months": [
     {
