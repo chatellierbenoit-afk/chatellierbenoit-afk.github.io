@@ -16,41 +16,34 @@
       --shadow: 0 10px 24px rgba(0,0,0,0.06);
       --radius: 18px;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
     header {
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
       padding: 42px 20px 32px;
       text-align: center;
     }
-
     header h1 {
       margin: 0;
       font-size: 40px;
       line-height: 1.1;
     }
-
     header p {
       margin: 14px 0 0;
       font-size: 18px;
       opacity: 0.96;
     }
-
     main {
-      max-width: 1400px;
+      max-width: 1450px;
       margin: 0 auto;
       padding: 24px 16px 48px;
     }
-
     .panel {
       background: var(--card);
       border: 1px solid var(--border);
@@ -59,13 +52,11 @@
       padding: 22px;
       margin-bottom: 20px;
     }
-
     .stats {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 14px;
     }
-
     .stat {
       background: #fcfcff;
       border: 1px solid var(--border);
@@ -73,25 +64,51 @@
       padding: 18px;
       text-align: center;
     }
-
     .stat strong {
       display: block;
       font-size: 28px;
       color: var(--violet);
       margin-bottom: 6px;
     }
-
     .stat span {
       color: var(--muted);
       font-size: 14px;
     }
-
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .dashboard-card {
+      background: #fcfcff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .dashboard-card h3 {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .rank-list {
+      display: grid;
+      gap: 8px;
+    }
+    .rank-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      font-size: 14px;
+    }
     .filters {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 14px;
     }
-
     .field label {
       display: block;
       font-weight: 700;
@@ -99,7 +116,6 @@
       margin-bottom: 8px;
       text-align: center;
     }
-
     .field input,
     .field select {
       width: 100%;
@@ -110,53 +126,45 @@
       background: white;
       text-align: center;
     }
-
     .subline {
       margin-top: 14px;
       text-align: center;
       color: var(--muted);
       font-size: 14px;
     }
-
     .layout {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
       gap: 20px;
       align-items: start;
     }
-
     .section-title {
       margin: 0 0 16px;
       font-size: 28px;
       text-align: center;
     }
-
     .results-list {
       display: grid;
       gap: 16px;
     }
-
     .scrutin-card {
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
       background: #fcfcff;
     }
-
     .scrutin-card h3 {
       margin: 0 0 10px;
       text-align: center;
       font-size: 21px;
       line-height: 1.3;
     }
-
     .meta {
       text-align: center;
       color: var(--muted);
       font-size: 14px;
       margin-bottom: 12px;
     }
-
     .description {
       background: #f8f6ff;
       border: 1px solid #ece6ff;
@@ -166,12 +174,10 @@
       font-size: 14px;
       line-height: 1.45;
     }
-
     .chips {
       text-align: center;
       margin-bottom: 12px;
     }
-
     .chip {
       display: inline-block;
       margin: 4px;
@@ -182,14 +188,12 @@
       font-size: 13px;
       font-weight: 700;
     }
-
     .counts {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
       margin: 12px 0 14px;
     }
-
     .count-box {
       background: white;
       border: 1px solid var(--border);
@@ -197,18 +201,15 @@
       padding: 12px;
       text-align: center;
     }
-
     .count-box strong {
       display: block;
       font-size: 20px;
       margin-bottom: 4px;
     }
-
     .count-box span {
       color: var(--muted);
       font-size: 13px;
     }
-
     .mini-table {
       width: 100%;
       border-collapse: collapse;
@@ -218,24 +219,19 @@
       border-radius: 12px;
       overflow: hidden;
     }
-
-    .mini-table th,
-    .mini-table td {
+    .mini-table th, .mini-table td {
       padding: 10px 8px;
       border-bottom: 1px solid var(--border);
       font-size: 13px;
       text-align: left;
     }
-
     .mini-table th {
       background: #f6f2ff;
     }
-
     .actions {
       text-align: center;
       margin-top: 14px;
     }
-
     button {
       background: var(--violet);
       color: white;
@@ -246,35 +242,26 @@
       font-weight: 700;
       cursor: pointer;
     }
-
-    button:hover {
-      opacity: 0.95;
-    }
-
     .detail-header {
       text-align: center;
       margin-bottom: 14px;
     }
-
     .detail-header h3 {
       margin: 0 0 8px;
       font-size: 23px;
       line-height: 1.3;
     }
-
     .detail-votes {
       max-height: 760px;
       overflow: auto;
       border: 1px solid var(--border);
       border-radius: 14px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       background: white;
     }
-
     th, td {
       padding: 11px 12px;
       border-bottom: 1px solid var(--border);
@@ -282,40 +269,33 @@
       font-size: 14px;
       vertical-align: top;
     }
-
     th {
       position: sticky;
       top: 0;
       background: #f6f2ff;
       z-index: 1;
     }
-
     .vote-Pour { color: #0a7a2f; font-weight: 700; }
     .vote-Contre { color: #b30021; font-weight: 700; }
     .vote-Abstention { color: #8a5a00; font-weight: 700; }
     .vote-Non-votant { color: #666; font-weight: 700; }
-
     .empty {
       text-align: center;
       color: var(--muted);
       padding: 28px 8px;
     }
-
     .footer-note {
       text-align: center;
       color: var(--muted);
       font-size: 13px;
       margin-top: 8px;
     }
-
-    @media (max-width: 1150px) {
-      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 1200px) {
+      .stats, .dashboard, .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .layout { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 700px) {
-      .stats, .filters, .counts { grid-template-columns: 1fr; }
+      .stats, .dashboard, .filters, .counts { grid-template-columns: 1fr; }
       header h1 { font-size: 32px; }
       main { padding: 18px 12px 36px; }
     }
@@ -324,34 +304,37 @@
 <body>
   <header>
     <h1>Observatoire des votes de l’Assemblée nationale</h1>
-    <p>Lecture des scrutins, des groupes politiques et des votes nominatifs</p>
+    <p>Lecture des scrutins, des groupes politiques, des députés et des départements</p>
   </header>
 
   <main>
     <section class="panel">
       <div class="stats">
-        <div class="stat">
-          <strong id="statScrutins">0</strong>
-          <span>Scrutins</span>
-        </div>
-        <div class="stat">
-          <strong id="statVotes">0</strong>
-          <span>Votes individuels</span>
-        </div>
-        <div class="stat">
-          <strong id="statDeputes">0</strong>
-          <span>Députés détectés</span>
-        </div>
-        <div class="stat">
-          <strong id="statGroupes">0</strong>
-          <span>Groupes détectés</span>
-        </div>
-        <div class="stat">
-          <strong id="statMonths">0</strong>
-          <span>Mois chargés</span>
-        </div>
+        <div class="stat"><strong id="statScrutins">0</strong><span>Scrutins</span></div>
+        <div class="stat"><strong id="statVotes">0</strong><span>Votes</span></div>
+        <div class="stat"><strong id="statDeputes">0</strong><span>Députés</span></div>
+        <div class="stat"><strong id="statGroupes">0</strong><span>Groupes</span></div>
+        <div class="stat"><strong id="statDepartements">0</strong><span>Départements</span></div>
+        <div class="stat"><strong id="statMonths">0</strong><span>Mois</span></div>
       </div>
       <div class="subline" id="updateLine">Chargement…</div>
+    </section>
+
+    <section class="panel">
+      <div class="dashboard">
+        <div class="dashboard-card">
+          <h3>Groupes les plus présents</h3>
+          <div id="topGroups" class="rank-list"></div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Départements les plus actifs</h3>
+          <div id="topDeps" class="rank-list"></div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Députés les plus présents</h3>
+          <div id="topDeputies" class="rank-list"></div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
@@ -422,6 +405,7 @@
     const statVotes = document.getElementById("statVotes");
     const statDeputes = document.getElementById("statDeputes");
     const statGroupes = document.getElementById("statGroupes");
+    const statDepartements = document.getElementById("statDepartements");
     const statMonths = document.getElementById("statMonths");
 
     const monthFilter = document.getElementById("monthFilter");
@@ -430,6 +414,10 @@
     const voteFilter = document.getElementById("voteFilter");
     const departementFilter = document.getElementById("departementFilter");
     const searchDate = document.getElementById("searchDate");
+
+    const topGroups = document.getElementById("topGroups");
+    const topDeps = document.getElementById("topDeps");
+    const topDeputies = document.getElementById("topDeputies");
 
     const updateLine = document.getElementById("updateLine");
     const summaryLine = document.getElementById("summaryLine");
@@ -458,6 +446,39 @@
         abstention: votes.filter(v => v.vote === "Abstention").length,
         non_votant: votes.filter(v => v.vote === "Non-votant").length,
       };
+    }
+
+    function renderRankList(container, items, labelKey, valueKey) {
+      container.innerHTML = items.length
+        ? items.map(item => `
+            <div class="rank-item">
+              <span>${item[labelKey]}</span>
+              <strong>${formatNumber(item[valueKey])}</strong>
+            </div>
+          `).join("")
+        : `<div class="empty">Aucune donnée</div>`;
+    }
+
+    function buildDashboard() {
+      const groupsMap = new Map();
+      const depsMap = new Map();
+      const deputiesMap = new Map();
+
+      allScrutins.forEach(scrutin => {
+        (scrutin.votes || []).forEach(vote => {
+          groupsMap.set(vote.groupe, (groupsMap.get(vote.groupe) || 0) + 1);
+          if (vote.departement) depsMap.set(vote.departement, (depsMap.get(vote.departement) || 0) + 1);
+          deputiesMap.set(vote.nom, (deputiesMap.get(vote.nom) || 0) + 1);
+        });
+      });
+
+      const topGroupItems = [...groupsMap.entries()].map(([groupe, total]) => ({ groupe, total })).sort((a, b) => b.total - a.total).slice(0, 8);
+      const topDepItems = [...depsMap.entries()].map(([departement, total]) => ({ departement, total })).sort((a, b) => b.total - a.total).slice(0, 8);
+      const topDeputyItems = [...deputiesMap.entries()].map(([nom, total]) => ({ nom, total })).sort((a, b) => b.total - a.total).slice(0, 8);
+
+      renderRankList(topGroups, topGroupItems, "groupe", "total");
+      renderRankList(topDeps, topDepItems, "departement", "total");
+      renderRankList(topDeputies, topDeputyItems, "nom", "total");
     }
 
     function fillMonthFilter() {
@@ -517,10 +538,7 @@
 
           if (!matchingVotes.length) return null;
 
-          return {
-            ...scrutin,
-            matchingVotes
-          };
+          return { ...scrutin, matchingVotes };
         })
         .filter(Boolean)
         .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
@@ -539,7 +557,7 @@
       }
 
       filteredScrutins.slice(0, 100).forEach(scrutin => {
-        const stats = computeStats(scrutin.matchingVotes);
+        const stats = scrutin.stats || computeStats(scrutin.matchingVotes);
         const groupSummary = scrutin.groupes_summary || [];
 
         const card = document.createElement("article");
@@ -550,25 +568,14 @@
           <div class="meta">${scrutin.date || "Date non renseignée"}</div>
           ${scrutin.description ? `<div class="description">${scrutin.description}</div>` : ""}
           <div class="chips">
+            ${scrutin.theme ? `<span class="chip">${scrutin.theme}</span>` : ""}
             <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) filtré(s)</span>
           </div>
           <div class="counts">
-            <div class="count-box">
-              <strong>${formatNumber(stats.pour)}</strong>
-              <span>Pour</span>
-            </div>
-            <div class="count-box">
-              <strong>${formatNumber(stats.contre)}</strong>
-              <span>Contre</span>
-            </div>
-            <div class="count-box">
-              <strong>${formatNumber(stats.abstention)}</strong>
-              <span>Abstention</span>
-            </div>
-            <div class="count-box">
-              <strong>${formatNumber(stats.non_votant)}</strong>
-              <span>Non-votant</span>
-            </div>
+            <div class="count-box"><strong>${formatNumber(stats.pour || 0)}</strong><span>Pour</span></div>
+            <div class="count-box"><strong>${formatNumber(stats.contre || 0)}</strong><span>Contre</span></div>
+            <div class="count-box"><strong>${formatNumber(stats.abstention || 0)}</strong><span>Abstention</span></div>
+            <div class="count-box"><strong>${formatNumber(stats.non_votant || 0)}</strong><span>Non-votant</span></div>
           </div>
           ${groupSummary.length ? `
             <table class="mini-table">
@@ -597,10 +604,7 @@
           </div>
         `;
 
-        card.querySelector("button").addEventListener("click", () => {
-          showDetail(scrutin);
-        });
-
+        card.querySelector("button").addEventListener("click", () => showDetail(scrutin));
         results.appendChild(card);
       });
     }
@@ -652,9 +656,7 @@
 
     async function loadMonthFile(filePath) {
       const response = await fetch(filePath);
-      if (!response.ok) {
-        throw new Error(`Impossible de charger ${filePath}`);
-      }
+      if (!response.ok) throw new Error(`Impossible de charger ${filePath}`);
       return response.json();
     }
 
@@ -666,23 +668,20 @@
         indexData = await indexResponse.json();
 
         const months = indexData?.months || [];
-        const monthPayloads = await Promise.all(
-          months.map(m => loadMonthFile(m.file))
-        );
+        const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
 
         allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
 
-        const uniqueDeputes = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.nom)));
-        const uniqueGroupes = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
-
         statScrutins.textContent = formatNumber(indexData?.counts?.scrutins || allScrutins.length);
         statVotes.textContent = formatNumber(indexData?.counts?.votes || 0);
-        statDeputes.textContent = formatNumber(uniqueDeputes.length);
-        statGroupes.textContent = formatNumber(uniqueGroupes.length);
+        statDeputes.textContent = formatNumber(indexData?.counts?.deputes || 0);
+        statGroupes.textContent = formatNumber(indexData?.counts?.groupes || 0);
+        statDepartements.textContent = formatNumber(indexData?.counts?.departements || 0);
         statMonths.textContent = formatNumber(months.length);
 
         updateLine.textContent = `Dernière mise à jour : ${indexData?.updated_at || "inconnue"}`;
 
+        buildDashboard();
         fillMonthFilter();
         fillFilters();
         bindEvents();
