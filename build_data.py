@@ -214,8 +214,16 @@ for org_ref in organe_refs:
 
         if code_type == "CIRCONSCRIPTION":
             actor_meta[acteur_ref]["circonscription"] = organe_info.get("libelle", "")
-            actor_meta[acteur_ref]["departement"] = organe_info.get("departement", "")
+            dep = organe_info.get("departement")
 
+if not dep:
+    lieu = organe_info.get("lieu", {})
+    if isinstance(lieu, dict):
+        dep_obj = lieu.get("departement", {})
+        if isinstance(dep_obj, dict):
+            dep = dep_obj.get("libelle")
+
+actor_meta[acteur_ref]["departement"] = dep or ""
     print("Acteurs :", len(actor_meta))
     print("Organes :", len(organes))
     return actor_meta, organes
