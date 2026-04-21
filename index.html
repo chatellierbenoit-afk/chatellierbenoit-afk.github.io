@@ -7,12 +7,13 @@
   <style>
     :root {
       --violet: #7700FF;
+      --violet-dark: #5f00d9;
       --bg: #f5f5fa;
       --card: #ffffff;
       --text: #1f1f24;
       --muted: #6b6b78;
       --border: #e7e7ef;
-      --shadow: 0 8px 24px rgba(0,0,0,0.06);
+      --shadow: 0 10px 24px rgba(0,0,0,0.06);
       --radius: 18px;
     }
 
@@ -28,28 +29,28 @@
     }
 
     header {
-      background: linear-gradient(135deg, #5f00d9, var(--violet));
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
-      padding: 42px 20px 34px;
+      padding: 42px 20px 32px;
       text-align: center;
     }
 
     header h1 {
       margin: 0;
-      font-size: 42px;
+      font-size: 40px;
       line-height: 1.1;
     }
 
     header p {
       margin: 14px 0 0;
       font-size: 18px;
-      opacity: 0.95;
+      opacity: 0.96;
     }
 
     main {
-      max-width: 1380px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 28px 18px 60px;
+      padding: 24px 16px 48px;
     }
 
     .panel {
@@ -58,31 +59,31 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 22px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .stats {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
 
     .stat {
+      background: #fcfcff;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 18px;
       text-align: center;
-      background: #fcfcff;
     }
 
-    .stat .value {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .stat strong {
+      display: block;
+      font-size: 30px;
       color: var(--violet);
+      margin-bottom: 6px;
     }
 
-    .stat .label {
+    .stat span {
       color: var(--muted);
       font-size: 14px;
     }
@@ -91,13 +92,12 @@
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
-      margin-top: 8px;
     }
 
     .field label {
       display: block;
-      font-size: 14px;
       font-weight: 700;
+      font-size: 14px;
       margin-bottom: 8px;
       text-align: center;
     }
@@ -106,30 +106,30 @@
     .field select {
       width: 100%;
       padding: 12px 14px;
-      border: 1px solid #d8d8e4;
+      border: 1px solid #d7d7e5;
       border-radius: 12px;
-      background: white;
       font-size: 15px;
+      background: white;
       text-align: center;
     }
 
     .subline {
+      margin-top: 14px;
       text-align: center;
       color: var(--muted);
-      margin-top: 16px;
       font-size: 14px;
     }
 
     .layout {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
-      gap: 22px;
+      gap: 20px;
       align-items: start;
     }
 
     .section-title {
-      margin: 0 0 18px;
-      font-size: 30px;
+      margin: 0 0 16px;
+      font-size: 28px;
       text-align: center;
     }
 
@@ -147,24 +147,24 @@
 
     .scrutin-card h3 {
       margin: 0 0 10px;
-      font-size: 22px;
       text-align: center;
+      font-size: 21px;
+      line-height: 1.3;
     }
 
     .meta {
       text-align: center;
       color: var(--muted);
-      margin-bottom: 12px;
       font-size: 14px;
+      margin-bottom: 12px;
     }
 
     .description {
-      margin: 14px 0;
-      padding: 14px;
-      border-radius: 14px;
       background: #f8f6ff;
       border: 1px solid #ece6ff;
-      color: #45455a;
+      border-radius: 14px;
+      padding: 14px;
+      margin: 12px 0;
       font-size: 14px;
       line-height: 1.45;
     }
@@ -180,7 +180,7 @@
       padding: 7px 11px;
       border-radius: 999px;
       background: #f0ebff;
-      color: #3e1889;
+      color: #3f1988;
       font-size: 13px;
       font-weight: 700;
     }
@@ -189,20 +189,20 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin: 14px 0 12px;
+      margin: 12px 0 14px;
     }
 
     .count-box {
+      background: white;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px;
       text-align: center;
-      background: white;
     }
 
     .count-box strong {
       display: block;
-      font-size: 21px;
+      font-size: 20px;
       margin-bottom: 4px;
     }
 
@@ -211,9 +211,31 @@
       font-size: 13px;
     }
 
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .mini-table th {
+      background: #f6f2ff;
+    }
+
     .actions {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
     button {
@@ -228,38 +250,22 @@
     }
 
     button:hover {
-      opacity: 0.94;
-    }
-
-    .empty {
-      text-align: center;
-      color: var(--muted);
-      padding: 24px 10px;
+      opacity: 0.95;
     }
 
     .detail-header {
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .detail-header h3 {
       margin: 0 0 8px;
-      font-size: 24px;
-    }
-
-    .detail-description {
-      margin: 14px 0 16px;
-      padding: 14px;
-      border-radius: 14px;
-      background: #f8f6ff;
-      border: 1px solid #ece6ff;
-      color: #45455a;
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 23px;
+      line-height: 1.3;
     }
 
     .detail-votes {
-      max-height: 720px;
+      max-height: 760px;
       overflow: auto;
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -286,38 +292,30 @@
       z-index: 1;
     }
 
-    .depute-name {
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .depute-origin {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
     .vote-Pour {
       color: #0a7a2f;
       font-weight: 700;
     }
 
-    .vote-Contre,
-    .vote-contre {
+    .vote-Contre {
       color: #b30021;
       font-weight: 700;
     }
 
-    .vote-Abstention,
-    .vote-abstention {
+    .vote-Abstention {
       color: #8a5a00;
       font-weight: 700;
     }
 
-    .vote-Non-votant,
-    .vote-non-votant {
+    .vote-Non-votant {
       color: #666;
       font-weight: 700;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 8px;
     }
 
     .footer-note {
@@ -328,6 +326,10 @@
     }
 
     @media (max-width: 1150px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -335,25 +337,21 @@
       .layout {
         grid-template-columns: 1fr;
       }
-
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
     }
 
-    @media (max-width: 680px) {
-      header h1 {
-        font-size: 32px;
-      }
-
-      .filters,
+    @media (max-width: 700px) {
       .stats,
+      .filters,
       .counts {
         grid-template-columns: 1fr;
       }
 
+      header h1 {
+        font-size: 32px;
+      }
+
       main {
-        padding: 20px 12px 40px;
+        padding: 18px 12px 36px;
       }
     }
   </style>
@@ -361,69 +359,66 @@
 <body>
   <header>
     <h1>Observatoire des votes de l’Assemblée nationale</h1>
-    <p>Recherche par député, groupe, scrutin et position de vote</p>
+    <p>Lecture des scrutins, des groupes politiques et des votes nominatifs</p>
   </header>
 
   <main>
     <section class="panel">
       <div class="stats">
         <div class="stat">
-          <div class="value" id="statScrutins">0</div>
-          <div class="label">Scrutins chargés</div>
+          <strong id="statScrutins">0</strong>
+          <span>Scrutins</span>
         </div>
         <div class="stat">
-          <div class="value" id="statDeputes">0</div>
-          <div class="label">Députés détectés</div>
+          <strong id="statVotes">0</strong>
+          <span>Votes individuels</span>
         </div>
         <div class="stat">
-          <div class="value" id="statGroupes">0</div>
-          <div class="label">Groupes détectés</div>
+          <strong id="statDeputes">0</strong>
+          <span>Députés détectés</span>
         </div>
         <div class="stat">
-          <div class="value" id="statVotes">0</div>
-          <div class="label">Votes individuels</div>
+          <strong id="statGroupes">0</strong>
+          <span>Groupes détectés</span>
         </div>
       </div>
+      <div class="subline" id="updateLine">Chargement…</div>
     </section>
 
     <section class="panel">
       <div class="filters">
         <div class="field">
           <label for="searchDeputy">Recherche député</label>
-          <input id="searchDeputy" type="text" placeholder="Nom ou prénom">
+          <input id="searchDeputy" type="text" placeholder="Nom du député">
         </div>
         <div class="field">
-          <label for="groupFilter">Groupe politique</label>
+          <label for="groupFilter">Groupe</label>
           <select id="groupFilter">
             <option value="">Tous les groupes</option>
           </select>
         </div>
         <div class="field">
-          <label for="voteFilter">Position de vote</label>
+          <label for="voteFilter">Vote</label>
           <select id="voteFilter">
-            <option value="">Toutes les positions</option>
+            <option value="">Tous les votes</option>
             <option value="Pour">Pour</option>
             <option value="Contre">Contre</option>
-            <option value="contre">contre</option>
             <option value="Abstention">Abstention</option>
-            <option value="abstention">abstention</option>
             <option value="Non-votant">Non-votant</option>
-            <option value="non-votant">non-votant</option>
-            <option value="Inconnu">Inconnu</option>
           </select>
         </div>
         <div class="field">
-          <label for="themeFilter">Thématique</label>
-          <select id="themeFilter">
-            <option value="">Toutes les thématiques</option>
+          <label for="departementFilter">Département</label>
+          <select id="departementFilter">
+            <option value="">Tous les départements</option>
           </select>
         </div>
         <div class="field">
-          <label for="scrutinSearch">Recherche scrutin</label>
-          <input id="scrutinSearch" type="text" placeholder="Titre ou numéro">
+          <label for="searchDate">Date</label>
+          <input id="searchDate" type="text" placeholder="2025-06">
         </div>
       </div>
-      <div class="subline" id="summaryLine">Chargement des données…</div>
+      <div class="subline" id="summaryLine">Chargement des scrutins…</div>
     </section>
 
     <section class="layout">
@@ -434,40 +429,38 @@
 
       <section class="panel">
         <h2 class="section-title">Détail nominatif</h2>
-        <div id="detailContainer" class="empty">Clique sur un scrutin pour voir qui a voté quoi.</div>
+        <div id="detailContainer" class="empty">Clique sur un scrutin pour afficher les votes nominatifs.</div>
       </section>
     </section>
 
     <div class="footer-note">
-      Données chargées depuis le fichier data.json du site
+      Données chargées depuis les fichiers JSON générés automatiquement
     </div>
   </main>
 
   <script>
+    let indexData = null;
     let scrutins = [];
     let filteredScrutins = [];
 
     const statScrutins = document.getElementById("statScrutins");
+    const statVotes = document.getElementById("statVotes");
     const statDeputes = document.getElementById("statDeputes");
     const statGroupes = document.getElementById("statGroupes");
-    const statVotes = document.getElementById("statVotes");
 
     const searchDeputy = document.getElementById("searchDeputy");
     const groupFilter = document.getElementById("groupFilter");
     const voteFilter = document.getElementById("voteFilter");
-    const themeFilter = document.getElementById("themeFilter");
-    const scrutinSearch = document.getElementById("scrutinSearch");
+    const departementFilter = document.getElementById("departementFilter");
+    const searchDate = document.getElementById("searchDate");
 
+    const updateLine = document.getElementById("updateLine");
     const summaryLine = document.getElementById("summaryLine");
     const results = document.getElementById("results");
     const detailContainer = document.getElementById("detailContainer");
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
-    }
-
-    function uniq(values) {
-      return [...new Set(values)].filter(Boolean).sort((a, b) => a.localeCompare(b, "fr"));
     }
 
     function normalize(text) {
@@ -477,78 +470,63 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function updateStats(meta) {
-      const totalVotes = scrutins.reduce((sum, s) => sum + (s.votes?.length || 0), 0);
-      statScrutins.textContent = formatNumber(meta?.nombre_scrutins || scrutins.length);
-      statDeputes.textContent = formatNumber(meta?.nombre_deputes_detectes || uniq(scrutins.flatMap(s => s.votes.map(v => v.nom))).length);
-      statGroupes.textContent = formatNumber(meta?.nombre_groupes_detectes || uniq(scrutins.flatMap(s => s.votes.map(v => v.groupe))).length);
-      statVotes.textContent = formatNumber(totalVotes);
+    function uniq(values) {
+      return [...new Set(values)].filter(Boolean).sort((a, b) => a.localeCompare(b, "fr"));
+    }
+
+    function computeStats(votes) {
+      return {
+        pour: votes.filter(v => v.vote === "Pour").length,
+        contre: votes.filter(v => v.vote === "Contre").length,
+        abstention: votes.filter(v => v.vote === "Abstention").length,
+        nonVotant: votes.filter(v => v.vote === "Non-votant").length,
+      };
     }
 
     function fillFilters() {
-      const groupes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
-      const themes = uniq(scrutins.map(s => s.theme || "Autres"));
+      const groups = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
+      const departements = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.departement)));
 
       groupFilter.innerHTML = `<option value="">Tous les groupes</option>`;
-      themeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
+      departementFilter.innerHTML = `<option value="">Tous les départements</option>`;
 
-      groupes.forEach(groupe => {
+      groups.forEach(group => {
         const option = document.createElement("option");
-        option.value = groupe;
-        option.textContent = groupe;
+        option.value = group;
+        option.textContent = group;
         groupFilter.appendChild(option);
       });
 
-      themes.forEach(theme => {
+      departements.forEach(dep => {
         const option = document.createElement("option");
-        option.value = theme;
-        option.textContent = theme;
-        themeFilter.appendChild(option);
+        option.value = dep;
+        option.textContent = dep;
+        departementFilter.appendChild(option);
       });
-    }
-
-    function getCounts(votes) {
-      return {
-        pour: votes.filter(v => v.vote === "Pour" || v.vote === "pour").length,
-        contre: votes.filter(v => v.vote === "Contre" || v.vote === "contre").length,
-        abstention: votes.filter(v => v.vote === "Abstention" || v.vote === "abstention").length,
-        nonVotant: votes.filter(v => v.vote === "Non-votant" || v.vote === "non-votant").length
-      };
     }
 
     function applyFilters() {
       const deputyQuery = normalize(searchDeputy.value);
-      const scrutinQuery = normalize(scrutinSearch.value);
       const selectedGroup = groupFilter.value;
       const selectedVote = voteFilter.value;
-      const selectedTheme = themeFilter.value;
+      const selectedDep = departementFilter.value;
+      const dateQuery = normalize(searchDate.value);
 
       filteredScrutins = scrutins
         .map(scrutin => {
-          const title = scrutin.titre || "";
-          const description = scrutin.description || "";
-          const titleMatch =
-            !scrutinQuery ||
-            normalize(title).includes(scrutinQuery) ||
-            normalize(description).includes(scrutinQuery) ||
-            normalize(String(scrutin.id || "")).includes(scrutinQuery);
+          const dateMatch = !dateQuery || normalize(scrutin.date || "").includes(dateQuery);
 
-          const themeMatch = !selectedTheme || (scrutin.theme || "Autres") === selectedTheme;
-
-          if (!titleMatch || !themeMatch) {
-            return null;
-          }
+          if (!dateMatch) return null;
 
           const matchingVotes = (scrutin.votes || []).filter(vote => {
             const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
             const groupMatch = !selectedGroup || vote.groupe === selectedGroup;
             const voteMatch = !selectedVote || vote.vote === selectedVote;
-            return deputyMatch && groupMatch && voteMatch;
+            const depMatch = !selectedDep || vote.departement === selectedDep;
+            return deputyMatch && groupMatch && voteMatch && depMatch;
           });
 
-          if (matchingVotes.length === 0) {
-            return null;
-          }
+          if (!matchingVotes.length) return null;
 
           return {
             ...scrutin,
@@ -557,97 +535,102 @@
         })
         .filter(Boolean)
         .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-
+      
       renderResults();
     }
 
     function renderResults() {
       results.innerHTML = "";
-      summaryLine.textContent = `${formatNumber(filteredScrutins.length)} scrutin(s) correspondent à la recherche`;
 
-      if (filteredScrutins.length === 0) {
+      summaryLine.textContent = `${formatNumber(filteredScrutins.length)} scrutin(s) affiché(s)`;
+
+      if (!filteredScrutins.length) {
         results.innerHTML = `<div class="empty">Aucun scrutin ne correspond aux filtres choisis.</div>`;
-        detailContainer.innerHTML = `Clique sur un scrutin pour voir qui a voté quoi.`;
+        detailContainer.innerHTML = `<div class="empty">Clique sur un scrutin pour afficher les votes nominatifs.</div>`;
         return;
       }
 
-      filteredScrutins.forEach(scrutin => {
-        const counts = getCounts(scrutin.matchingVotes);
+      filteredScrutins.slice(0, 100).forEach((scrutin, index) => {
+        const stats = scrutin.stats || computeStats(scrutin.matchingVotes);
+        const groupSummary = scrutin.groupes_summary || [];
 
         const card = document.createElement("article");
         card.className = "scrutin-card";
 
         card.innerHTML = `
-          <h3>${scrutin.titre || `Scrutin ${scrutin.id}`}</h3>
+          <h3>${scrutin.titre || "Scrutin sans titre"}</h3>
           <div class="meta">${scrutin.date || "Date non renseignée"}</div>
-          <div class="chips">
-            <span class="chip">${scrutin.theme || "Autres"}</span>
-            <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) affiché(s)</span>
-          </div>
           ${scrutin.description ? `<div class="description">${scrutin.description}</div>` : ""}
+          <div class="chips">
+            ${scrutin.theme ? `<span class="chip">${scrutin.theme}</span>` : ""}
+            <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) filtré(s)</span>
+          </div>
           <div class="counts">
             <div class="count-box">
-              <strong>${counts.pour}</strong>
+              <strong>${formatNumber(stats.pour || 0)}</strong>
               <span>Pour</span>
             </div>
             <div class="count-box">
-              <strong>${counts.contre}</strong>
+              <strong>${formatNumber(stats.contre || 0)}</strong>
               <span>Contre</span>
             </div>
             <div class="count-box">
-              <strong>${counts.abstention}</strong>
+              <strong>${formatNumber(stats.abstention || 0)}</strong>
               <span>Abstention</span>
             </div>
             <div class="count-box">
-              <strong>${counts.nonVotant}</strong>
+              <strong>${formatNumber(stats.non_votant || stats.nonVotant || 0)}</strong>
               <span>Non-votant</span>
             </div>
           </div>
+          ${groupSummary.length ? `
+            <table class="mini-table">
+              <thead>
+                <tr>
+                  <th>Groupe</th>
+                  <th>Pour</th>
+                  <th>Contre</th>
+                  <th>Abs.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${groupSummary.slice(0, 8).map(g => `
+                  <tr>
+                    <td>${g.groupe}</td>
+                    <td>${g.pour}</td>
+                    <td>${g.contre}</td>
+                    <td>${g.abstention}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          ` : ""}
           <div class="actions">
-            <button data-scrutin-id="${scrutin.uid || scrutin.id}">Voir le détail nominatif</button>
+            <button data-index="${index}">Voir le détail nominatif</button>
           </div>
         `;
 
         card.querySelector("button").addEventListener("click", () => {
-          showDetail(scrutin.uid || scrutin.id);
+          showDetail(scrutin);
         });
 
         results.appendChild(card);
       });
     }
 
-    function showDetail(scrutinId) {
-      const scrutin = filteredScrutins.find(s => String(s.uid || s.id) === String(scrutinId))
-        || scrutins.find(s => String(s.uid || s.id) === String(scrutinId));
-
-      if (!scrutin) {
-        detailContainer.innerHTML = `<div class="empty">Scrutin introuvable.</div>`;
-        return;
-      }
-
-      const deputyQuery = normalize(searchDeputy.value);
-      const selectedGroup = groupFilter.value;
-      const selectedVote = voteFilter.value;
-
-      const votes = (scrutin.votes || [])
-        .filter(vote => {
-          const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
-          const groupMatch = !selectedGroup || vote.groupe === selectedGroup;
-          const voteMatch = !selectedVote || vote.vote === selectedVote;
-          return deputyMatch && groupMatch && voteMatch;
-        })
-        .sort((a, b) => {
-          const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
-          if (g !== 0) return g;
-          return (a.nom || "").localeCompare(b.nom || "", "fr");
-        });
+    function showDetail(scrutin) {
+      const votes = (scrutin.matchingVotes || scrutin.votes || []).slice().sort((a, b) => {
+        const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
+        if (g !== 0) return g;
+        return (a.nom || "").localeCompare(b.nom || "", "fr");
+      });
 
       detailContainer.innerHTML = `
         <div class="detail-header">
-          <h3>${scrutin.titre || `Scrutin ${scrutin.id}`}</h3>
-          <div class="meta">${scrutin.date || "Date non renseignée"} · ${scrutin.theme || "Autres"} · ${formatNumber(votes.length)} vote(s)</div>
+          <h3>${scrutin.titre || "Scrutin sans titre"}</h3>
+          <div class="meta">${scrutin.date || ""} · ${formatNumber(votes.length)} vote(s)</div>
         </div>
-        ${scrutin.description ? `<div class="detail-description">${scrutin.description}</div>` : ""}
+        ${scrutin.description ? `<div class="description">${scrutin.description}</div>` : ""}
         <div class="detail-votes">
           <table>
             <thead>
@@ -655,17 +638,16 @@
                 <th>Député</th>
                 <th>Groupe</th>
                 <th>Vote</th>
+                <th>Département</th>
               </tr>
             </thead>
             <tbody>
               ${votes.map(v => `
                 <tr>
-                  <td>
-                    <div class="depute-name">${v.nom || ""}</div>
-                    ${v.origine ? `<div class="depute-origin">${v.origine}</div>` : ""}
-                  </td>
+                  <td>${v.nom || ""}</td>
                   <td>${v.groupe || ""}</td>
                   <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
+                  <td>${v.departement || ""}</td>
                 </tr>
               `).join("")}
             </tbody>
@@ -675,7 +657,7 @@
     }
 
     function bindEvents() {
-      [searchDeputy, groupFilter, voteFilter, themeFilter, scrutinSearch].forEach(el => {
+      [searchDeputy, groupFilter, voteFilter, departementFilter, searchDate].forEach(el => {
         el.addEventListener("input", applyFilters);
         el.addEventListener("change", applyFilters);
       });
@@ -683,20 +665,32 @@
 
     async function init() {
       try {
-        const response = await fetch("data.json");
-        const data = await response.json();
+        const indexResponse = await fetch("data/current/index.json");
+        indexData = await indexResponse.json();
 
-        scrutins = data.scrutins || [];
+        const scrutinsResponse = await fetch("data/current/scrutins.json");
+        const scrutinsData = await scrutinsResponse.json();
 
-        updateStats(data.meta || {});
+        scrutins = scrutinsData.scrutins || [];
+
+        const uniqueDeputes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.nom)));
+        const uniqueGroupes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
+
+        statScrutins.textContent = formatNumber(indexData?.counts?.scrutins || scrutins.length);
+        statVotes.textContent = formatNumber(indexData?.counts?.votes || 0);
+        statDeputes.textContent = formatNumber(uniqueDeputes.length);
+        statGroupes.textContent = formatNumber(uniqueGroupes.length);
+
+        updateLine.textContent = `Dernière mise à jour : ${indexData?.updated_at || "inconnue"}`;
+
         fillFilters();
         bindEvents();
         applyFilters();
 
       } catch (error) {
         console.error(error);
-        summaryLine.textContent = "Impossible de charger les données.";
-        results.innerHTML = `<div class="empty">Le fichier data.json n’a pas pu être chargé.</div>`;
+        updateLine.textContent = "Impossible de charger les données.";
+        results.innerHTML = `<div class="empty">Erreur de chargement des fichiers JSON.</div>`;
       }
     }
 
