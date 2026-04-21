@@ -7,7 +7,6 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 
-
 MIN_YEAR = 2024
 
 SCRUTINS_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
@@ -50,7 +49,7 @@ def get_uid(v):
     return clean(v)
 
 
-# 🔥 IMPORTANT : version robuste (récursive)
+# 🔥 extraction robuste
 def extract_votants(node):
     result = []
 
@@ -70,9 +69,9 @@ def extract_votants(node):
     return result
 
 
-# =========================
+# ======================
 # ACTEURS + GROUPES
-# =========================
+# ======================
 
 def load_amo():
     raw = download(AMO50_URL)
@@ -143,31 +142,58 @@ def load_amo():
             if o.get("type") == "CIRCONSCRIPTION":
                 actors[acteur]["departement"] = o.get("departement")
 
-    return actors, organes
+    return actors
 
 
-# =========================
+# ======================
 # SCRUTINS
-# =========================
+# ======================
 
-def load_scrutins(actors, organes):
+def compute_stats(votes):
+    return {
+        "pour": sum(1 for v in votes if v["vote"] == "Pour"),
+        "contre": sum(1 for v in votes if v["vote"] == "Contre"),
+        "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
+        "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
+        "total_votes": len(votes)
+    }
+
+
+def compute_groupes(votes):
+    grouped = defaultdict(list)
+    for v in votes:
+        grouped[v["groupe"]].append(v)
+
+    result = []
+    for g, items in grouped.items():
+        stats = compute_stats(items)
+        result.append({
+            "groupe": g,
+            "pour": stats["pour"],
+            "contre": stats["contre"],
+            "abstention": stats["abstention"],
+            "non_votant": stats["non_votant"],
+            "total": stats["total_votes"]
+        })
+
+    return sorted(result, key=lambda x: x["groupe"])
+
+
+def load_scrutins(actors):
     raw = download(SCRUTINS_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
     scrutins = []
 
     for name in zf.namelist():
-
         data = json.loads(zf.read(name))
         s = data.get("scrutin", data)
 
         date = clean(s.get("dateScrutin"))
-
         if not date:
             continue
 
-        year = int(date[:4])
-        if year < MIN_YEAR:
+        if int(date[:4]) < MIN_YEAR:
             continue
 
         votes = []
@@ -196,6 +222,7 @@ def load_scrutins(actors, organes):
                     dep = actors.get(uid, {})
 
                     votes.append({
+                        "depute_uid": uid,
                         "nom": dep.get("nom") or uid,
                         "groupe": dep.get("groupe") or "Inconnu",
                         "vote": label,
@@ -205,43 +232,79 @@ def load_scrutins(actors, organes):
         if not votes:
             continue
 
+        stats = compute_stats(votes)
+
         scrutins.append({
             "uid": clean(s.get("uid")),
+            "numero": s.get("numero"),
             "date": date,
             "titre": clean(s.get("titre")),
+            "description": "",
+            "theme": "Autres",
+            "stats": stats,
+            "groupes_summary": compute_groupes(votes),
+            "departements_summary": [],
             "votes": votes
         })
 
     return scrutins
 
 
-# =========================
+# ======================
 # BUILD
-# =========================
+# ======================
 
 def main():
-    actors, organes = load_amo()
-    scrutins = load_scrutins(actors, organes)
+    actors = load_amo()
+    scrutins = load_scrutins(actors)
 
-    # regroupement par mois
     months = defaultdict(list)
 
     for s in scrutins:
-        month = s["date"][:7]
-        months[month].append(s)
+        m = s["date"][:7]
+        months[m].append(s)
+
+    month_list = []
 
     for m, data in months.items():
-        write_json(MONTHS_DIR / f"{m}.json", {"scrutins": data})
+        path = f"data/current/months/{m}.json"
+
+        write_json(
+            MONTHS_DIR / f"{m}.json",
+            {
+                "month": m,
+                "year": int(m[:4]),
+                "scrutins": data
+            }
+        )
+
+        month_list.append({
+            "month": m,
+            "file": path,
+            "scrutins": len(data)
+        })
+
+    total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
 
     index = {
-        "months": sorted(months.keys(), reverse=True),
-        "count": len(scrutins)
+        "version": "2.2",
+        "year": 2025,
+        "updated_at": datetime.utcnow().isoformat(),
+        "counts": {
+            "scrutins": len(scrutins),
+            "votes": total_votes,
+            "deputes": len(actors),
+            "groupes": len(set(a["groupe"] for a in actors.values() if a["groupe"])),
+            "departements": len(set(a["departement"] for a in actors.values() if a["departement"]))
+        },
+        "months": sorted(month_list, key=lambda x: x["month"], reverse=True)
     }
 
     write_json(BASE_DIR / "index.json", index)
 
     print("Scrutins :", len(scrutins))
-    print("Mois :", len(months))
+    print("Votes :", total_votes)
+    print("Mois :", len(month_list))
 
 
 if __name__ == "__main__":
