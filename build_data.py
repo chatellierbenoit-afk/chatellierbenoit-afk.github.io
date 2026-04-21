@@ -55,6 +55,28 @@ def get_uid(value):
     return clean_text(value)
 
 
+def guess_theme(text):
+    t = clean_text(text).lower()
+    rules = [
+        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
+        ("Santé", ["santé", "hôpital", "médical", "soin"]),
+        ("Éducation", ["éducation", "école", "université", "enseignement"]),
+        ("Écologie / Énergie", ["écologie", "climat", "énergie", "environnement"]),
+        ("Travail / Social", ["travail", "emploi", "retraite", "social", "salaires", "chômage"]),
+        ("Justice / Sécurité", ["justice", "sécurité", "police", "prison", "pénal"]),
+        ("Immigration", ["immigration", "asile", "étranger", "mayotte"]),
+        ("Institutions", ["motion", "censure", "constitution", "règlement", "procédure"]),
+        ("Agriculture", ["agriculture", "aliment"]),
+        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
+        ("Défense / International", ["défense", "armée", "international", "europe"]),
+        ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
+    ]
+    for theme, keywords in rules:
+        if any(keyword in t for keyword in keywords):
+            return theme
+    return "Autres"
+
+
 def load_amo50():
     print("Chargement AMO50…")
     raw = download(AMO50_URL)
@@ -138,7 +160,7 @@ def load_amo50():
 
     print("Acteurs :", len(actor_meta))
     print("Organes :", len(organes))
-    return actor_meta, organes
+    return actor_meta
 
 
 def build_group_summary(votes):
@@ -157,11 +179,31 @@ def build_group_summary(votes):
             by_group[g]["non_votant"] += 1
 
     return [
-        {
-            "groupe": groupe,
-            **stats
-        }
+        {"groupe": groupe, **stats}
         for groupe, stats in sorted(by_group.items())
+    ]
+
+
+def build_department_summary(votes):
+    by_dep = defaultdict(lambda: {"pour": 0, "contre": 0, "abstention": 0, "non_votant": 0, "total": 0})
+
+    for v in votes:
+        dep = v.get("departement") or ""
+        if not dep:
+            continue
+        by_dep[dep]["total"] += 1
+        if v["vote"] == "Pour":
+            by_dep[dep]["pour"] += 1
+        elif v["vote"] == "Contre":
+            by_dep[dep]["contre"] += 1
+        elif v["vote"] == "Abstention":
+            by_dep[dep]["abstention"] += 1
+        elif v["vote"] == "Non-votant":
+            by_dep[dep]["non_votant"] += 1
+
+    return [
+        {"departement": dep, **stats}
+        for dep, stats in sorted(by_dep.items())
     ]
 
 
@@ -172,6 +214,9 @@ def load_scrutins(actor_meta):
 
     by_month = defaultdict(list)
     total_votes = 0
+    unique_deputes = set()
+    unique_groupes = set()
+    unique_departements = set()
 
     for name in zf.namelist():
         if not name.endswith(".json"):
@@ -187,7 +232,9 @@ def load_scrutins(actor_meta):
         uid = clean_text(scrutin.get("uid") or scrutin.get("numero") or "")
         numero = scrutin.get("numero")
         titre = clean_text(scrutin.get("titre")) or f"Scrutin n°{numero}"
-        description = clean_text(((scrutin.get("objet") or {}).get("libelle")) or ((scrutin.get("objet") or {}).get("titre")) or "")
+        objet = scrutin.get("objet") or {}
+        description = clean_text(objet.get("libelle") or objet.get("titre") or "")
+        theme = guess_theme(f"{titre} {description}")
 
         votes = []
 
@@ -210,12 +257,21 @@ def load_scrutins(actor_meta):
                     uid_dep = clean_text(v.get("acteurRef"))
                     depute = actor_meta.get(uid_dep, {})
 
+                    nom = depute.get("nom") or uid_dep
+                    groupe = depute.get("groupe") or groupe_nom or "Inconnu"
+                    departement = depute.get("departement") or ""
+
+                    unique_deputes.add(nom)
+                    unique_groupes.add(groupe)
+                    if departement:
+                        unique_departements.add(departement)
+
                     votes.append({
                         "depute_uid": uid_dep,
-                        "nom": depute.get("nom") or uid_dep,
-                        "groupe": depute.get("groupe") or groupe_nom or "Inconnu",
+                        "nom": nom,
+                        "groupe": groupe,
                         "vote": label,
-                        "departement": depute.get("departement") or ""
+                        "departement": departement
                     })
 
         if not votes:
@@ -224,30 +280,45 @@ def load_scrutins(actor_meta):
         total_votes += len(votes)
         month_key = date[:7]
 
+        stats = {
+            "pour": sum(1 for v in votes if v["vote"] == "Pour"),
+            "contre": sum(1 for v in votes if v["vote"] == "Contre"),
+            "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
+            "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
+            "total_votes": len(votes),
+        }
+
         by_month[month_key].append({
             "uid": uid,
             "numero": numero,
             "date": date,
             "titre": titre,
             "description": description,
-            "votes_count": len(votes),
+            "theme": theme,
+            "stats": stats,
             "groupes_summary": build_group_summary(votes),
+            "departements_summary": build_department_summary(votes),
             "votes": votes
         })
 
-    return by_month, total_votes
+    meta = {
+        "scrutins": sum(len(v) for v in by_month.values()),
+        "votes": total_votes,
+        "deputes": len(unique_deputes),
+        "groupes": len(unique_groupes),
+        "departements": len(unique_departements),
+    }
+
+    return by_month, meta
 
 
 def main():
-    actor_meta, organes = load_amo50()
-    by_month, total_votes = load_scrutins(actor_meta)
+    actor_meta = load_amo50()
+    by_month, meta = load_scrutins(actor_meta)
 
     months_index = []
-    total_scrutins = 0
-
     for month in sorted(by_month.keys()):
         scrutins = sorted(by_month[month], key=lambda x: x["date"], reverse=True)
-        total_scrutins += len(scrutins)
 
         file_path = MONTHS_DIR / f"{month}.json"
         write_json(file_path, {
@@ -265,18 +336,18 @@ def main():
     updated_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
     write_json(INDEX_FILE, {
-        "version": "2.1",
+        "version": "2.2",
         "year": int(TARGET_YEAR),
         "updated_at": updated_at,
-        "counts": {
-            "scrutins": total_scrutins,
-            "votes": total_votes
-        },
+        "counts": meta,
         "months": months_index
     })
 
-    print(f"Scrutins : {total_scrutins}")
-    print(f"Votes : {total_votes}")
+    print(f"Scrutins : {meta['scrutins']}")
+    print(f"Députés : {meta['deputes']}")
+    print(f"Groupes : {meta['groupes']}")
+    print(f"Départements : {meta['departements']}")
+    print(f"Votes : {meta['votes']}")
     print(f"Mois générés : {len(months_index)}")
 
 
