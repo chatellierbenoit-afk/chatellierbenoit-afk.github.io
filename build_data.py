@@ -2,7 +2,6 @@ import json
 import ssl
 import urllib.request
 import zipfile
-from collections import defaultdict
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
@@ -18,9 +17,6 @@ ARCHIVE_DIR = Path(f"data/archives/{TARGET_YEAR}")
 
 INDEX_FILE = BASE_DIR / "index.json"
 SCRUTINS_FILE = BASE_DIR / "scrutins.json"
-DEPUTES_FILE = BASE_DIR / "deputes.json"
-GROUPES_FILE = BASE_DIR / "groupes.json"
-DEPARTEMENTS_FILE = BASE_DIR / "departements.json"
 
 SSL_CONTEXT = ssl.create_default_context()
 
@@ -60,20 +56,6 @@ def get_uid(value):
     return clean_text(value)
 
 
-def normalize_vote_label(value):
-    mapping = {
-        "pour": "Pour",
-        "contre": "Contre",
-        "abstention": "Abstention",
-        "non-votant": "Non-votant",
-    }
-    return mapping.get(clean_text(value).lower(), "Inconnu")
-
-
-# ===============================
-# 🔵 LOAD AMO50
-# ===============================
-
 def load_amo50():
     print("Chargement AMO50…")
     raw = download(AMO50_URL)
@@ -82,27 +64,27 @@ def load_amo50():
     actor_meta = {}
     organes = {}
 
-    # --- ACTEURS + ORGANES ---
     for name in zf.namelist():
-
-        if name.startswith("acteur/"):
+        if name.startswith("acteur/") and name.endswith(".json"):
             data = json.loads(zf.read(name).decode("utf-8"))
             acteur = data.get("acteur", {})
 
             uid = get_uid(acteur.get("uid"))
             ident = acteur.get("etatCivil", {}).get("ident", {})
 
-            nom = clean_text(f"{ident.get('prenom','')} {ident.get('nom','')}")
+            prenom = clean_text(ident.get("prenom") or "")
+            nom = clean_text(ident.get("nom") or "")
+            nom_complet = clean_text(f"{prenom} {nom}")
 
             actor_meta[uid] = {
                 "uid": uid,
-                "nom": nom or uid,
+                "nom": nom_complet or uid,
                 "groupe": "",
                 "departement": "",
                 "circonscription": "",
             }
 
-        elif name.startswith("organe/"):
+        elif name.startswith("organe/") and name.endswith(".json"):
             data = json.loads(zf.read(name).decode("utf-8"))
             organe = data.get("organe", {})
 
@@ -123,9 +105,7 @@ def load_amo50():
                 "departement": dep,
             }
 
-    # --- MANDATS ---
     for name in zf.namelist():
-
         if not name.startswith("mandat/"):
             continue
 
@@ -168,10 +148,6 @@ def load_amo50():
     return actor_meta, organes
 
 
-# ===============================
-# 🔵 LOAD SCRUTINS
-# ===============================
-
 def load_scrutins(actor_meta, organes):
     print("Chargement scrutins…")
     raw = download(SCRUTINS_URL)
@@ -205,7 +181,8 @@ def load_scrutins(actor_meta, organes):
                 ("abstentions", "Abstention"),
                 ("nonVotants", "Non-votant"),
             ]:
-                for v in ensure_list(decompte.get(key, {}).get("votant")):
+                bucket = decompte.get(key) or {}
+                for v in ensure_list(bucket.get("votant")):
                     uid = clean_text(v.get("acteurRef"))
                     dep = actor_meta.get(uid, {})
 
@@ -218,25 +195,49 @@ def load_scrutins(actor_meta, organes):
                     })
 
         if votes:
-            scrutins.append({"date": date, "votes": votes})
+            scrutins.append({
+                "date": date,
+                "votes": votes
+            })
 
     return scrutins
 
-
-# ===============================
-# 🔵 MAIN
-# ===============================
 
 def main():
     actor_meta, organes = load_amo50()
     scrutins = load_scrutins(actor_meta, organes)
 
     total_votes = sum(len(s["votes"]) for s in scrutins)
+    updated_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
-    write_json(SCRUTINS_FILE, scrutins)
+    index_data = {
+        "version": "2.0",
+        "year": int(TARGET_YEAR),
+        "updated_at": updated_at,
+        "counts": {
+            "scrutins": len(scrutins),
+            "votes": total_votes
+        },
+        "files": {
+            "scrutins": "data/current/scrutins.json"
+        }
+    }
 
-    print("Scrutins :", len(scrutins))
-    print("Votes :", total_votes)
+    scrutins_data = {
+        "year": int(TARGET_YEAR),
+        "updated_at": updated_at,
+        "scrutins": scrutins
+    }
+
+    write_json(INDEX_FILE, index_data)
+    write_json(SCRUTINS_FILE, scrutins_data)
+    write_json(
+        ARCHIVE_DIR / f"{datetime.utcnow().strftime('%Y-%m-%d')}.json",
+        scrutins_data
+    )
+
+    print(f"Scrutins : {len(scrutins)}")
+    print(f"Votes : {total_votes}")
 
 
 if __name__ == "__main__":
