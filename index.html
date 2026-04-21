@@ -17,9 +17,7 @@
       --radius: 18px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -64,7 +62,7 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -78,7 +76,7 @@
 
     .stat strong {
       display: block;
-      font-size: 30px;
+      font-size: 28px;
       color: var(--violet);
       margin-bottom: 6px;
     }
@@ -90,7 +88,7 @@
 
     .filters {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -292,25 +290,10 @@
       z-index: 1;
     }
 
-    .vote-Pour {
-      color: #0a7a2f;
-      font-weight: 700;
-    }
-
-    .vote-Contre {
-      color: #b30021;
-      font-weight: 700;
-    }
-
-    .vote-Abstention {
-      color: #8a5a00;
-      font-weight: 700;
-    }
-
-    .vote-Non-votant {
-      color: #666;
-      font-weight: 700;
-    }
+    .vote-Pour { color: #0a7a2f; font-weight: 700; }
+    .vote-Contre { color: #b30021; font-weight: 700; }
+    .vote-Abstention { color: #8a5a00; font-weight: 700; }
+    .vote-Non-votant { color: #666; font-weight: 700; }
 
     .empty {
       text-align: center;
@@ -326,33 +309,15 @@
     }
 
     @media (max-width: 1150px) {
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .filters {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 700px) {
-      .stats,
-      .filters,
-      .counts {
-        grid-template-columns: 1fr;
-      }
-
-      header h1 {
-        font-size: 32px;
-      }
-
-      main {
-        padding: 18px 12px 36px;
-      }
+      .stats, .filters, .counts { grid-template-columns: 1fr; }
+      header h1 { font-size: 32px; }
+      main { padding: 18px 12px 36px; }
     }
   </style>
 </head>
@@ -381,12 +346,22 @@
           <strong id="statGroupes">0</strong>
           <span>Groupes détectés</span>
         </div>
+        <div class="stat">
+          <strong id="statMonths">0</strong>
+          <span>Mois chargés</span>
+        </div>
       </div>
       <div class="subline" id="updateLine">Chargement…</div>
     </section>
 
     <section class="panel">
       <div class="filters">
+        <div class="field">
+          <label for="monthFilter">Mois</label>
+          <select id="monthFilter">
+            <option value="">Tous les mois chargés</option>
+          </select>
+        </div>
         <div class="field">
           <label for="searchDeputy">Recherche député</label>
           <input id="searchDeputy" type="text" placeholder="Nom du député">
@@ -415,7 +390,7 @@
         </div>
         <div class="field">
           <label for="searchDate">Date</label>
-          <input id="searchDate" type="text" placeholder="2025-06">
+          <input id="searchDate" type="text" placeholder="2025-06-24">
         </div>
       </div>
       <div class="subline" id="summaryLine">Chargement des scrutins…</div>
@@ -440,14 +415,16 @@
 
   <script>
     let indexData = null;
-    let scrutins = [];
+    let allScrutins = [];
     let filteredScrutins = [];
 
     const statScrutins = document.getElementById("statScrutins");
     const statVotes = document.getElementById("statVotes");
     const statDeputes = document.getElementById("statDeputes");
     const statGroupes = document.getElementById("statGroupes");
+    const statMonths = document.getElementById("statMonths");
 
+    const monthFilter = document.getElementById("monthFilter");
     const searchDeputy = document.getElementById("searchDeputy");
     const groupFilter = document.getElementById("groupFilter");
     const voteFilter = document.getElementById("voteFilter");
@@ -479,13 +456,23 @@
         pour: votes.filter(v => v.vote === "Pour").length,
         contre: votes.filter(v => v.vote === "Contre").length,
         abstention: votes.filter(v => v.vote === "Abstention").length,
-        nonVotant: votes.filter(v => v.vote === "Non-votant").length,
+        non_votant: votes.filter(v => v.vote === "Non-votant").length,
       };
     }
 
+    function fillMonthFilter() {
+      monthFilter.innerHTML = `<option value="">Tous les mois chargés</option>`;
+      (indexData?.months || []).forEach(m => {
+        const option = document.createElement("option");
+        option.value = m.month;
+        option.textContent = `${m.month} (${m.scrutins})`;
+        monthFilter.appendChild(option);
+      });
+    }
+
     function fillFilters() {
-      const groups = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
-      const departements = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.departement)));
+      const groups = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
+      const departements = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.departement)));
 
       groupFilter.innerHTML = `<option value="">Tous les groupes</option>`;
       departementFilter.innerHTML = `<option value="">Tous les départements</option>`;
@@ -506,17 +493,19 @@
     }
 
     function applyFilters() {
+      const selectedMonth = monthFilter.value;
       const deputyQuery = normalize(searchDeputy.value);
       const selectedGroup = groupFilter.value;
       const selectedVote = voteFilter.value;
       const selectedDep = departementFilter.value;
       const dateQuery = normalize(searchDate.value);
 
-      filteredScrutins = scrutins
+      filteredScrutins = allScrutins
         .map(scrutin => {
+          const monthMatch = !selectedMonth || (scrutin.date || "").startsWith(selectedMonth);
           const dateMatch = !dateQuery || normalize(scrutin.date || "").includes(dateQuery);
 
-          if (!dateMatch) return null;
+          if (!monthMatch || !dateMatch) return null;
 
           const matchingVotes = (scrutin.votes || []).filter(vote => {
             const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
@@ -535,13 +524,12 @@
         })
         .filter(Boolean)
         .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-      
+
       renderResults();
     }
 
     function renderResults() {
       results.innerHTML = "";
-
       summaryLine.textContent = `${formatNumber(filteredScrutins.length)} scrutin(s) affiché(s)`;
 
       if (!filteredScrutins.length) {
@@ -550,8 +538,8 @@
         return;
       }
 
-      filteredScrutins.slice(0, 100).forEach((scrutin, index) => {
-        const stats = scrutin.stats || computeStats(scrutin.matchingVotes);
+      filteredScrutins.slice(0, 100).forEach(scrutin => {
+        const stats = computeStats(scrutin.matchingVotes);
         const groupSummary = scrutin.groupes_summary || [];
 
         const card = document.createElement("article");
@@ -562,24 +550,23 @@
           <div class="meta">${scrutin.date || "Date non renseignée"}</div>
           ${scrutin.description ? `<div class="description">${scrutin.description}</div>` : ""}
           <div class="chips">
-            ${scrutin.theme ? `<span class="chip">${scrutin.theme}</span>` : ""}
             <span class="chip">${formatNumber(scrutin.matchingVotes.length)} vote(s) filtré(s)</span>
           </div>
           <div class="counts">
             <div class="count-box">
-              <strong>${formatNumber(stats.pour || 0)}</strong>
+              <strong>${formatNumber(stats.pour)}</strong>
               <span>Pour</span>
             </div>
             <div class="count-box">
-              <strong>${formatNumber(stats.contre || 0)}</strong>
+              <strong>${formatNumber(stats.contre)}</strong>
               <span>Contre</span>
             </div>
             <div class="count-box">
-              <strong>${formatNumber(stats.abstention || 0)}</strong>
+              <strong>${formatNumber(stats.abstention)}</strong>
               <span>Abstention</span>
             </div>
             <div class="count-box">
-              <strong>${formatNumber(stats.non_votant || stats.nonVotant || 0)}</strong>
+              <strong>${formatNumber(stats.non_votant)}</strong>
               <span>Non-votant</span>
             </div>
           </div>
@@ -606,7 +593,7 @@
             </table>
           ` : ""}
           <div class="actions">
-            <button data-index="${index}">Voir le détail nominatif</button>
+            <button>Voir le détail nominatif</button>
           </div>
         `;
 
@@ -657,32 +644,46 @@
     }
 
     function bindEvents() {
-      [searchDeputy, groupFilter, voteFilter, departementFilter, searchDate].forEach(el => {
+      [monthFilter, searchDeputy, groupFilter, voteFilter, departementFilter, searchDate].forEach(el => {
         el.addEventListener("input", applyFilters);
         el.addEventListener("change", applyFilters);
       });
     }
 
+    async function loadMonthFile(filePath) {
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`Impossible de charger ${filePath}`);
+      }
+      return response.json();
+    }
+
     async function init() {
       try {
         const indexResponse = await fetch("data/current/index.json");
+        if (!indexResponse.ok) throw new Error("index.json introuvable");
+
         indexData = await indexResponse.json();
 
-        const scrutinsResponse = await fetch("data/current/scrutins.json");
-        const scrutinsData = await scrutinsResponse.json();
+        const months = indexData?.months || [];
+        const monthPayloads = await Promise.all(
+          months.map(m => loadMonthFile(m.file))
+        );
 
-        scrutins = scrutinsData.scrutins || [];
+        allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
 
-        const uniqueDeputes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.nom)));
-        const uniqueGroupes = uniq(scrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
+        const uniqueDeputes = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.nom)));
+        const uniqueGroupes = uniq(allScrutins.flatMap(s => (s.votes || []).map(v => v.groupe)));
 
-        statScrutins.textContent = formatNumber(indexData?.counts?.scrutins || scrutins.length);
+        statScrutins.textContent = formatNumber(indexData?.counts?.scrutins || allScrutins.length);
         statVotes.textContent = formatNumber(indexData?.counts?.votes || 0);
         statDeputes.textContent = formatNumber(uniqueDeputes.length);
         statGroupes.textContent = formatNumber(uniqueGroupes.length);
+        statMonths.textContent = formatNumber(months.length);
 
         updateLine.textContent = `Dernière mise à jour : ${indexData?.updated_at || "inconnue"}`;
 
+        fillMonthFilter();
         fillFilters();
         bindEvents();
         applyFilters();
