@@ -17,6 +17,24 @@ MONTHS_DIR = BASE_DIR / "months"
 
 SSL_CONTEXT = ssl.create_default_context()
 
+# Mapping explicite des groupes de la XVIIe législature
+GROUP_LABELS = {
+    "PO845401": "Rassemblement National",
+    "PO845407": "Ensemble pour la République",
+    "PO845413": "La France insoumise - Nouveau Front Populaire",
+    "PO845419": "Socialistes et apparentés",
+    "PO845425": "Droite Républicaine",
+    "PO845439": "Les Démocrates",
+    "PO845454": "Écologiste et Social",
+    "PO845470": "Horizons & Indépendants",
+    "PO845485": "Libertés, indépendants, outre-mer et territoires",
+    "PO845514": "Gauche démocrate et républicaine",
+    "PO847173": "UDR",
+    "PO840056": "Non inscrits",
+    "NI": "Non inscrits",
+    "PO0": "Autre groupe"
+}
+
 
 def ensure_dir(path):
     path.mkdir(parents=True, exist_ok=True)
@@ -107,6 +125,13 @@ def guess_theme(text):
     return "Autres"
 
 
+def normalize_group_label(value):
+    raw = clean(value)
+    if raw in GROUP_LABELS:
+        return GROUP_LABELS[raw]
+    return raw or "Inconnu"
+
+
 def load_amo():
     raw = download(AMO50_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
@@ -184,10 +209,11 @@ def load_amo():
                     organe.get("libelleAbrev")
                     or organe.get("libelleAbrege")
                     or organe.get("libelle")
+                    or ref
                     or ""
                 )
                 if groupe:
-                    actors[acteur_ref]["groupe"] = groupe
+                    actors[acteur_ref]["groupe"] = normalize_group_label(groupe)
 
             if code_type == "CIRCONSCRIPTION":
                 dep = organe.get("departement", "")
@@ -294,12 +320,13 @@ def load_scrutins(actors, organes):
             groupe_ref = clean(groupe_block.get("organeRef"))
             groupe_organe = organes.get(groupe_ref, {})
 
-            groupe_nom = clean(
+            groupe_nom = normalize_group_label(
                 groupe_block.get("libelle")
                 or groupe_block.get("libelleAbrev")
                 or groupe_organe.get("libelleAbrev")
                 or groupe_organe.get("libelleAbrege")
                 or groupe_organe.get("libelle")
+                or groupe_ref
                 or ""
             )
 
@@ -318,7 +345,7 @@ def load_scrutins(actors, organes):
                     acteur = actors.get(uid_dep, {})
 
                     nom = acteur.get("nom") or uid_dep
-                    groupe = acteur.get("groupe") or groupe_nom or "Inconnu"
+                    groupe = normalize_group_label(acteur.get("groupe") or groupe_nom or "Inconnu")
                     departement = acteur.get("departement") or ""
 
                     votes.append({
@@ -380,11 +407,11 @@ def main():
         })
 
     total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
-    unique_groupes = sorted({a["groupe"] for a in actors.values() if a["groupe"]})
-    unique_departements = sorted({a["departement"] for a in actors.values() if a["departement"]})
+    unique_groupes = sorted({v["groupe"] for s in scrutins for v in s["votes"] if v["groupe"]})
+    unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "2.5",
+        "version": "2.6",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
