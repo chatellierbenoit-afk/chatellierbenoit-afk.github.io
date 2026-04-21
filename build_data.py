@@ -173,52 +173,52 @@ def load_amo50():
                 "departement": departement,
             }
 
-    # --- MANDATS (LIENS ACTEUR ↔ GROUPE + CIRCO) ---
-    for name in zf.namelist():
+# --- MANDATS (LIENS ACTEUR ↔ GROUPE + CIRCO) ---
+for name in zf.namelist():
 
-        if not name.startswith("mandat/"):
-            continue
+    if not name.startswith("mandat/"):
+        continue
 
-        data = json.loads(zf.read(name).decode("utf-8"))
-        mandat = data.get("mandat", {})
+    data = json.loads(zf.read(name).decode("utf-8"))
+    mandat = data.get("mandat", {})
 
-        acteur_ref = clean_text(mandat.get("acteurRef"))
-        if acteur_ref not in actor_meta:
-            continue
+    acteur_ref = clean_text(mandat.get("acteurRef"))
+    if acteur_ref not in actor_meta:
+        continue
 
-        if clean_text(mandat.get("legislature")) != "17":
-            continue
+    if clean_text(mandat.get("legislature")) != "17":
+        continue
 
-        organes_block = mandat.get("organes", {})
-        organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
+    organes_block = mandat.get("organes", {})
+    organe_refs = ensure_list(organes_block.get("organeRef")) if isinstance(organes_block, dict) else []
 
-latest_dep = ""
-latest_circo = ""
+    latest_dep = ""
+    latest_circo = ""
 
-for org_ref in organe_refs:
-    organe_info = organes.get(clean_text(org_ref), {})
-    code_type = organe_info.get("codeType", "")
+    for org_ref in organe_refs:
+        organe_info = organes.get(clean_text(org_ref), {})
+        code_type = organe_info.get("codeType", "")
 
-    # CIRCONSCRIPTION → on stocke
-    if code_type == "CIRCONSCRIPTION":
-        latest_circo = organe_info.get("libelle", "")
-        latest_dep = organe_info.get("departement", "")
+        # --- CIRCONSCRIPTION → département ---
+        if code_type == "CIRCONSCRIPTION":
+            latest_circo = organe_info.get("libelle", "")
+            latest_dep = organe_info.get("departement", "")
 
-    # GROUPE
-    if code_type == "GP" or clean_text(mandat.get("typeOrgane")) == "GP":
-        groupe = (
-            organe_info.get("libelleAbrev")
-            or organe_info.get("libelleAbrege")
-            or organe_info.get("libelle")
-            or ""
-        )
-        if groupe:
-            actor_meta[acteur_ref]["groupe"] = groupe
+        # --- GROUPE POLITIQUE ---
+        if code_type == "GP" or clean_text(mandat.get("typeOrgane")) == "GP":
+            groupe = (
+                organe_info.get("libelleAbrev")
+                or organe_info.get("libelleAbrege")
+                or organe_info.get("libelle")
+                or ""
+            )
+            if groupe:
+                actor_meta[acteur_ref]["groupe"] = groupe
 
-# 👉 on applique UNE seule fois
-if latest_dep:
-    actor_meta[acteur_ref]["departement"] = latest_dep
-    actor_meta[acteur_ref]["circonscription"] = latest_circo
+    # 👉 on applique UNE seule fois (important)
+    if latest_dep:
+        actor_meta[acteur_ref]["departement"] = latest_dep
+        actor_meta[acteur_ref]["circonscription"] = latest_circo
 
     print("Acteurs :", len(actor_meta))
     print("Organes :", len(organes))
