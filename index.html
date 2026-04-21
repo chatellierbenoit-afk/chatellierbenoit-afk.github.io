@@ -964,14 +964,14 @@
     }
 
     async function loadMonthFile(filePath) {
-      const response = await fetch(filePath);
+      const response = await fetch("./" + filePath);
       if (!response.ok) throw new Error(`Impossible de charger ${filePath}`);
       return response.json();
     }
 
     async function init() {
       try {
-        const indexResponse = await fetch("data/current/index.json");
+        const indexResponse = await fetch("./data/current/index.json");
         if (!indexResponse.ok) throw new Error("index.json introuvable");
 
         indexData = await indexResponse.json();
