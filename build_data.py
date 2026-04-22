@@ -32,6 +32,7 @@ GROUP_LABELS = {
     "PO847173": "UDR",
     "PO840056": "Non inscrits",
     "NI": "Non inscrits",
+    "PO872880": "Union des droites pour la République",
     "PO0": "Autre groupe"
 }
 
