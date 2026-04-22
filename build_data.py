@@ -36,6 +36,9 @@ GROUP_LABELS = {
     "PO0": "Autre groupe"
 }
 
+SPECIAL_DEPUTY_LABELS = {
+    "PA793334": "Cyril Tribuiani",
+}
 
 def ensure_dir(path):
     path.mkdir(parents=True, exist_ok=True)
