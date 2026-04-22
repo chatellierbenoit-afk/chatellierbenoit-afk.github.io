@@ -1,9 +1,11 @@
 import json
+import re
 import ssl
 import urllib.request
 import zipfile
 from collections import defaultdict
 from datetime import datetime
+from html import unescape
 from io import BytesIO
 from pathlib import Path
 
@@ -17,7 +19,6 @@ MONTHS_DIR = BASE_DIR / "months"
 
 SSL_CONTEXT = ssl.create_default_context()
 
-# Mapping explicite des groupes de la XVIIe législature
 GROUP_LABELS = {
     "PO845401": "Rassemblement National",
     "PO845407": "Ensemble pour la République",
@@ -32,13 +33,12 @@ GROUP_LABELS = {
     "PO847173": "UDR",
     "PO840056": "Non inscrits",
     "NI": "Non inscrits",
-    "PO872880": "Union des droites pour la République",
-    "PO0": "Autre groupe"
+    "PO0": "Autre groupe",
 }
 
-SPECIAL_DEPUTY_LABELS = {
-    "PA793334": "Cyril Tribuiani",
-}
+UNKNOWN_GROUPS = set()
+PROFILE_CACHE = {}
+
 
 def ensure_dir(path):
     path.mkdir(parents=True, exist_ok=True)
@@ -51,8 +51,12 @@ def write_json(path, data):
 
 def download(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, context=SSL_CONTEXT) as r:
+    with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
         return r.read()
+
+
+def download_text(url):
+    return download(url).decode("utf-8", errors="ignore")
 
 
 def ensure_list(v):
@@ -62,7 +66,13 @@ def ensure_list(v):
 
 
 def clean(v):
-    return "" if v is None else str(v).strip()
+    if v is None:
+        return ""
+    return " ".join(str(v).replace("\u00a0", " ").split()).strip()
+
+
+def strip_tags(html_text):
+    return clean(re.sub(r"<[^>]+>", " ", html_text))
 
 
 def get_uid(v):
@@ -133,7 +143,69 @@ def normalize_group_label(value):
     raw = clean(value)
     if raw in GROUP_LABELS:
         return GROUP_LABELS[raw]
+    if raw.startswith("PO"):
+        UNKNOWN_GROUPS.add(raw)
+        return raw
     return raw or "Inconnu"
+
+
+def fetch_depute_profile(uid):
+    if not uid:
+        return {}
+    if uid in PROFILE_CACHE:
+        return PROFILE_CACHE[uid]
+
+    url = f"https://www.assemblee-nationale.fr/dyn/deputes/{uid}"
+    try:
+        html = download_text(url)
+    except Exception:
+        PROFILE_CACHE[uid] = {}
+        return {}
+
+    title_match = re.search(r"<title>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
+    title_text = strip_tags(unescape(title_match.group(1))) if title_match else ""
+
+    # Exemple: "M. Michel Barnier - Paris (2e circonscription)"
+    nom = ""
+    if " - " in title_text:
+        nom = clean(title_text.split(" - ")[0])
+    elif title_text:
+        nom = title_text
+
+    group_match = re.search(
+        r'<h1[^>]*>.*?</h1>(.*?)<\s*\*\s*\*|<h1[^>]*>.*?</h1>(.*?)(?:<h2|<ul|<div class="deputy-head")',
+        html,
+        re.IGNORECASE | re.DOTALL,
+    )
+    group_text = ""
+    if group_match:
+        candidate = group_match.group(1) or group_match.group(2) or ""
+        candidate = strip_tags(unescape(candidate))
+        lines = [clean(x) for x in candidate.split("  ") if clean(x)]
+        if lines:
+            group_text = lines[0]
+
+    if not group_text:
+        m = re.search(r"Rattachement au titre du financement de la vie politique\s*(.*?)\s*Adresse", strip_tags(unescape(html)), re.DOTALL)
+        if m:
+            group_text = clean(m.group(1))
+
+    dep_text = ""
+    # essaie de récupérer "Val-de-Marne (7e circonscription)"
+    if " - " in title_text:
+        zone = clean(title_text.split(" - ", 1)[1])
+        if " (" in zone:
+            dep_text = clean(zone.split(" (", 1)[0])
+        else:
+            dep_text = zone
+
+    profile = {
+        "nom": nom,
+        "groupe": normalize_group_label(group_text),
+        "departement": dep_text,
+    }
+    PROFILE_CACHE[uid] = profile
+    return profile
 
 
 def load_amo():
@@ -160,7 +232,7 @@ def load_amo():
                 "nom": nom_complet or uid,
                 "groupe": "",
                 "departement": "",
-                "circonscription": ""
+                "circonscription": "",
             }
 
         elif name.startswith("organe/") and name.endswith(".json"):
@@ -183,7 +255,7 @@ def load_amo():
                 "libelle": clean(organe.get("libelle")),
                 "libelleAbrev": clean(organe.get("libelleAbrev")),
                 "libelleAbrege": clean(organe.get("libelleAbrege")),
-                "departement": departement
+                "departement": departement,
             }
 
     for name in zf.namelist():
@@ -230,19 +302,38 @@ def load_amo():
     return actors, organes
 
 
+def enrich_actor_if_needed(uid, actor):
+    actor = actor or {"uid": uid, "nom": uid, "groupe": "", "departement": "", "circonscription": ""}
+    need_name = (not actor.get("nom")) or actor.get("nom") == uid
+    need_group = (not actor.get("groupe")) or actor.get("groupe").startswith("PO")
+    need_dep = not actor.get("departement")
+
+    if not (need_name or need_group or need_dep):
+        return actor
+
+    profile = fetch_depute_profile(uid)
+    if profile.get("nom") and (need_name or actor.get("nom") == uid):
+        actor["nom"] = profile["nom"]
+    if profile.get("groupe") and need_group:
+        actor["groupe"] = profile["groupe"]
+    if profile.get("departement") and need_dep:
+        actor["departement"] = profile["departement"]
+
+    return actor
+
+
 def compute_stats(votes):
     return {
         "pour": sum(1 for v in votes if v["vote"] == "Pour"),
         "contre": sum(1 for v in votes if v["vote"] == "Contre"),
         "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
         "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
-        "total_votes": len(votes)
+        "total_votes": len(votes),
     }
 
 
 def compute_groupes(votes):
     grouped = defaultdict(list)
-
     for vote in votes:
         grouped[vote["groupe"]].append(vote)
 
@@ -255,7 +346,7 @@ def compute_groupes(votes):
             "contre": stats["contre"],
             "abstention": stats["abstention"],
             "non_votant": stats["non_votant"],
-            "total": stats["total_votes"]
+            "total": stats["total_votes"],
         })
 
     return sorted(result, key=lambda x: x["groupe"])
@@ -263,7 +354,6 @@ def compute_groupes(votes):
 
 def compute_departements(votes):
     grouped = defaultdict(list)
-
     for vote in votes:
         dep = vote.get("departement", "")
         if dep:
@@ -278,7 +368,7 @@ def compute_departements(votes):
             "contre": stats["contre"],
             "abstention": stats["abstention"],
             "non_votant": stats["non_votant"],
-            "total": stats["total_votes"]
+            "total": stats["total_votes"],
         })
 
     return sorted(result, key=lambda x: x["departement"])
@@ -346,18 +436,20 @@ def load_scrutins(actors, organes):
 
                 for votant in votants:
                     uid_dep = clean(votant.get("acteurRef"))
-                    acteur = actors.get(uid_dep, {})
+                    actor = actors.get(uid_dep, {})
+                    actor = enrich_actor_if_needed(uid_dep, actor)
+                    actors[uid_dep] = actor
 
-                    nom = acteur.get("nom") or uid_dep
-                    groupe = normalize_group_label(acteur.get("groupe") or groupe_nom or "Inconnu")
-                    departement = acteur.get("departement") or ""
+                    nom = actor.get("nom") or uid_dep
+                    groupe = normalize_group_label(actor.get("groupe") or groupe_nom or "Inconnu")
+                    departement = actor.get("departement") or ""
 
                     votes.append({
                         "depute_uid": uid_dep,
                         "nom": nom,
                         "groupe": groupe,
                         "vote": label,
-                        "departement": departement
+                        "departement": departement,
                     })
 
         if not votes:
@@ -375,7 +467,7 @@ def load_scrutins(actors, organes):
             "stats": stats,
             "groupes_summary": compute_groupes(votes),
             "departements_summary": compute_departements(votes),
-            "votes": votes
+            "votes": votes,
         })
 
     return scrutins
@@ -386,7 +478,6 @@ def main():
     scrutins = load_scrutins(actors, organes)
 
     months = defaultdict(list)
-
     for scrutin in scrutins:
         month_key = scrutin["date"][:7]
         months[month_key].append(scrutin)
@@ -400,14 +491,14 @@ def main():
             {
                 "month": month_key,
                 "year": int(month_key[:4]),
-                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True)
-            }
+                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True),
+            },
         )
 
         month_list.append({
             "month": month_key,
             "file": file_path,
-            "scrutins": len(items)
+            "scrutins": len(items),
         })
 
     total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
@@ -415,7 +506,7 @@ def main():
     unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "2.6",
+        "version": "2.7",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -423,9 +514,9 @@ def main():
             "votes": total_votes,
             "deputes": len(actors),
             "groupes": len(unique_groupes),
-            "departements": len(unique_departements)
+            "departements": len(unique_departements),
         },
-        "months": sorted(month_list, key=lambda x: x["month"], reverse=True)
+        "months": sorted(month_list, key=lambda x: x["month"], reverse=True),
     }
 
     write_json(BASE_DIR / "index.json", index_data)
@@ -436,6 +527,7 @@ def main():
     print("Groupes :", len(unique_groupes))
     print("Départements :", len(unique_departements))
     print("Mois :", len(month_list))
+    print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
 
 if __name__ == "__main__":
