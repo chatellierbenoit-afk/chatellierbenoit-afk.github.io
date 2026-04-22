@@ -9,7 +9,6 @@
       --violet: #7700FF;
       --violet-dark: #5b00c7;
       --violet-soft: #f3edff;
-      --bg: #f6f4fb;
       --card: #ffffff;
       --text: #1e1c26;
       --muted: #6f6a7e;
@@ -210,7 +209,7 @@
 
     .filters {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -371,28 +370,6 @@
       font-size: 13px;
     }
 
-    .mini-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .mini-table th,
-    .mini-table td {
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      text-align: left;
-    }
-
-    .mini-table th {
-      background: #f7f2ff;
-    }
-
     .actions {
       text-align: center;
       margin-top: 16px;
@@ -526,11 +503,11 @@
 <body>
   <header class="hero">
     <h1>Observatoire des votes à l’Assemblée nationale</h1>
-    <p>Compare les votes des groupes politiques et suis les votes de tes députés par thème, date ou scrutin.</p>
+    <p>Compare les votes des groupes politiques et découvre comment votent les députés qui te représentent.</p>
 
     <div class="hero-actions">
       <button id="goGroups">Comparer les groupes</button>
-      <button id="goDeputies">Suivre mes députés</button>
+      <button id="goDeputies">Trouver ma circonscription</button>
     </div>
   </header>
 
@@ -546,10 +523,10 @@
         </article>
 
         <article class="entry-card">
-          <h2>Mes députés votent quoi ?</h2>
-          <p>Recherche par député, département ou circonscription pour suivre les votes qui te concernent directement.</p>
+          <h2>Que votent les députés de ma circonscription ?</h2>
+          <p>Recherche par ville, code postal, département ou circonscription pour retrouver les députés qui te représentent.</p>
           <div class="actions">
-            <button id="exploreDeputies">Explorer mes députés</button>
+            <button id="exploreDeputies">Trouver ma circonscription</button>
           </div>
         </article>
       </div>
@@ -624,8 +601,13 @@
         </div>
 
         <div class="field">
-          <label for="deputyFilter">Député</label>
-          <input id="deputyFilter" type="text" placeholder="Nom du député">
+          <label for="territoryFilter">Ville / code postal / circonscription</label>
+          <input id="territoryFilter" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription">
+        </div>
+
+        <div class="field">
+          <label for="deputyFilter">Nom du député</label>
+          <input id="deputyFilter" type="text" placeholder="Optionnel">
         </div>
 
         <div class="field">
@@ -692,6 +674,7 @@
 
     const monthFilter = document.getElementById("monthFilter");
     const groupFilter = document.getElementById("groupFilter");
+    const territoryFilter = document.getElementById("territoryFilter");
     const deputyFilter = document.getElementById("deputyFilter");
     const voteFilter = document.getElementById("voteFilter");
     const dateFilter = document.getElementById("dateFilter");
@@ -719,7 +702,6 @@
 
     function shortTitle(scrutin) {
       const title = (scrutin.titre || "").trim();
-      const lower = title.toLowerCase();
 
       const mSous = title.match(/(sous-amendement n°\s*\d+)/i);
       const mAmend = title.match(/(amendement n°\s*\d+)/i);
@@ -731,18 +713,13 @@
       if (mAmend) return mAmend[1];
       if (mArticle) return mArticle[1];
 
-      if (title.length > 120) {
-        return title.slice(0, 117).trim() + "…";
-      }
-
+      if (title.length > 120) return title.slice(0, 117).trim() + "…";
       return title || "Scrutin sans titre";
     }
 
     function shortDescription(scrutin) {
       const desc = (scrutin.description || scrutin.titre || "").trim();
-      if (desc.length > 220) {
-        return desc.slice(0, 217).trim() + "…";
-      }
+      if (desc.length > 220) return desc.slice(0, 217).trim() + "…";
       return desc;
     }
 
@@ -819,11 +796,7 @@
     function getScrutinAnalysis(scrutin) {
       const summary = scrutin.groupes_summary || [];
       if (!summary.length) {
-        return {
-          mostFor: "-",
-          mostAgainst: "-",
-          mostDivided: "-"
-        };
+        return { mostFor: "-", mostAgainst: "-", mostDivided: "-" };
       }
 
       const mostFor = [...summary].sort((a, b) => (b.pour || 0) - (a.pour || 0))[0];
@@ -847,6 +820,7 @@
     function applyFilters() {
       const selectedMonth = monthFilter.value;
       const selectedGroup = groupFilter.value;
+      const territoryQuery = normalize(territoryFilter.value);
       const deputyQuery = normalize(deputyFilter.value);
       const selectedVote = voteFilter.value;
       const dateQuery = normalize(dateFilter.value);
@@ -861,13 +835,16 @@
 
           const matchingVotes = ensureArray(scrutin.votes).filter(vote => {
             const deputyMatch = !deputyQuery || normalize(vote.nom).includes(deputyQuery);
+            const territoryMatch =
+              !territoryQuery ||
+              normalize(vote.departement || "").includes(territoryQuery) ||
+              normalize(vote.circonscription || "").includes(territoryQuery);
             const groupMatch = !selectedGroup || vote.groupe === selectedGroup;
             const voteMatch = !selectedVote || vote.vote === selectedVote;
-            return deputyMatch && groupMatch && voteMatch;
+            return deputyMatch && territoryMatch && groupMatch && voteMatch;
           });
 
           if (!matchingVotes.length) return null;
-
           return { ...scrutin, matchingVotes };
         })
         .filter(Boolean)
@@ -982,7 +959,7 @@
     }
 
     function bindEvents() {
-      [monthFilter, groupFilter, deputyFilter, voteFilter, dateFilter].forEach(el => {
+      [monthFilter, groupFilter, territoryFilter, deputyFilter, voteFilter, dateFilter].forEach(el => {
         el.addEventListener("input", applyFilters);
         el.addEventListener("change", applyFilters);
       });
@@ -1003,7 +980,7 @@
     });
 
     document.getElementById("goDeputies").addEventListener("click", () => {
-      document.getElementById("deputyFilter").focus();
+      document.getElementById("territoryFilter").focus();
       window.scrollTo({ top: document.querySelector(".filters").offsetTop - 80, behavior: "smooth" });
     });
 
@@ -1013,7 +990,7 @@
     });
 
     document.getElementById("exploreDeputies").addEventListener("click", () => {
-      document.getElementById("deputyFilter").focus();
+      document.getElementById("territoryFilter").focus();
       window.scrollTo({ top: document.querySelector(".filters").offsetTop - 80, behavior: "smooth" });
     });
 
