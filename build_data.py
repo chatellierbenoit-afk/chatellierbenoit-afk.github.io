@@ -142,11 +142,18 @@ def guess_theme(text):
 
 def normalize_group_label(value):
     raw = clean(value)
+
     if raw in GROUP_LABELS:
         return GROUP_LABELS[raw]
+
     if raw.startswith("PO"):
         UNKNOWN_GROUPS.add(raw)
         return raw
+
+    allowed_labels = set(GROUP_LABELS.values())
+    if raw in allowed_labels:
+        return raw
+
     return ""
 
 
