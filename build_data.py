@@ -170,8 +170,6 @@ def fetch_depute_profile(uid):
         PROFILE_CACHE[uid] = {}
         return {}
 
-    text = strip_tags(unescape(html))
-
     title_match = re.search(r"<title>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
     title_text = strip_tags(unescape(title_match.group(1))) if title_match else ""
 
@@ -189,7 +187,6 @@ def fetch_depute_profile(uid):
         else:
             departement = zone
 
-    # On tente d’identifier un éventuel code groupe PO... dans la page
     po_matches = re.findall(r"PO\d{5,}", html)
     po_code = po_matches[0] if po_matches else ""
 
@@ -442,7 +439,7 @@ def load_scrutins(actors, organes):
                     actors[uid_dep] = actor
 
                     nom = actor.get("nom") or uid_dep
-                    groupe = actor.get("groupe") or groupe_nom or "Inconnu"
+                    groupe = normalize_group_label(actor.get("groupe")) or normalize_group_label(groupe_nom) or "Inconnu"
                     departement = actor.get("departement") or ""
 
                     votes.append({
@@ -532,4 +529,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main() c'est bon ?
