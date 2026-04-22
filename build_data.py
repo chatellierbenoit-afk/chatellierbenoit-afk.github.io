@@ -448,6 +448,7 @@ def load_scrutins(actors, organes):
                         "groupe": groupe,
                         "vote": label,
                         "departement": departement,
+                        "circonscription": actor.get("circonscription") or "",
                     })
 
         if not votes:
@@ -504,7 +505,7 @@ def main():
     unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "2.8",
+        "version": "2.9",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -529,4 +530,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
