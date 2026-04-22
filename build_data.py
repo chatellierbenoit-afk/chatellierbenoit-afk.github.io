@@ -31,6 +31,7 @@ GROUP_LABELS = {
     "PO845485": "Libertés, indépendants, outre-mer et territoires",
     "PO845514": "Gauche démocrate et républicaine",
     "PO847173": "UDR",
+    "PO872880": "Union des droites pour la République",
     "PO840056": "Non inscrits",
     "NI": "Non inscrits",
     "PO0": "Autre groupe",
@@ -146,7 +147,7 @@ def normalize_group_label(value):
     if raw.startswith("PO"):
         UNKNOWN_GROUPS.add(raw)
         return raw
-    return raw or "Inconnu"
+    return ""
 
 
 def fetch_depute_profile(uid):
@@ -162,47 +163,33 @@ def fetch_depute_profile(uid):
         PROFILE_CACHE[uid] = {}
         return {}
 
+    text = strip_tags(unescape(html))
+
     title_match = re.search(r"<title>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
     title_text = strip_tags(unescape(title_match.group(1))) if title_match else ""
 
-    # Exemple: "M. Michel Barnier - Paris (2e circonscription)"
     nom = ""
     if " - " in title_text:
         nom = clean(title_text.split(" - ")[0])
     elif title_text:
         nom = title_text
 
-    group_match = re.search(
-        r'<h1[^>]*>.*?</h1>(.*?)<\s*\*\s*\*|<h1[^>]*>.*?</h1>(.*?)(?:<h2|<ul|<div class="deputy-head")',
-        html,
-        re.IGNORECASE | re.DOTALL,
-    )
-    group_text = ""
-    if group_match:
-        candidate = group_match.group(1) or group_match.group(2) or ""
-        candidate = strip_tags(unescape(candidate))
-        lines = [clean(x) for x in candidate.split("  ") if clean(x)]
-        if lines:
-            group_text = lines[0]
-
-    if not group_text:
-        m = re.search(r"Rattachement au titre du financement de la vie politique\s*(.*?)\s*Adresse", strip_tags(unescape(html)), re.DOTALL)
-        if m:
-            group_text = clean(m.group(1))
-
-    dep_text = ""
-    # essaie de récupérer "Val-de-Marne (7e circonscription)"
+    departement = ""
     if " - " in title_text:
         zone = clean(title_text.split(" - ", 1)[1])
         if " (" in zone:
-            dep_text = clean(zone.split(" (", 1)[0])
+            departement = clean(zone.split(" (", 1)[0])
         else:
-            dep_text = zone
+            departement = zone
+
+    # On tente d’identifier un éventuel code groupe PO... dans la page
+    po_matches = re.findall(r"PO\d{5,}", html)
+    po_code = po_matches[0] if po_matches else ""
 
     profile = {
         "nom": nom,
-        "groupe": normalize_group_label(group_text),
-        "departement": dep_text,
+        "groupe": po_code,
+        "departement": departement,
     }
     PROFILE_CACHE[uid] = profile
     return profile
@@ -288,8 +275,9 @@ def load_amo():
                     or ref
                     or ""
                 )
+                groupe = normalize_group_label(groupe)
                 if groupe:
-                    actors[acteur_ref]["groupe"] = normalize_group_label(groupe)
+                    actors[acteur_ref]["groupe"] = groupe
 
             if code_type == "CIRCONSCRIPTION":
                 dep = organe.get("departement", "")
@@ -304,6 +292,7 @@ def load_amo():
 
 def enrich_actor_if_needed(uid, actor):
     actor = actor or {"uid": uid, "nom": uid, "groupe": "", "departement": "", "circonscription": ""}
+
     need_name = (not actor.get("nom")) or actor.get("nom") == uid
     need_group = (not actor.get("groupe")) or actor.get("groupe").startswith("PO")
     need_dep = not actor.get("departement")
@@ -312,10 +301,15 @@ def enrich_actor_if_needed(uid, actor):
         return actor
 
     profile = fetch_depute_profile(uid)
-    if profile.get("nom") and (need_name or actor.get("nom") == uid):
+
+    if profile.get("nom") and need_name:
         actor["nom"] = profile["nom"]
-    if profile.get("groupe") and need_group:
-        actor["groupe"] = profile["groupe"]
+
+    if need_group:
+        fallback_group = normalize_group_label(profile.get("groupe"))
+        if fallback_group:
+            actor["groupe"] = fallback_group
+
     if profile.get("departement") and need_dep:
         actor["departement"] = profile["departement"]
 
@@ -441,7 +435,7 @@ def load_scrutins(actors, organes):
                     actors[uid_dep] = actor
 
                     nom = actor.get("nom") or uid_dep
-                    groupe = normalize_group_label(actor.get("groupe") or groupe_nom or "Inconnu")
+                    groupe = actor.get("groupe") or groupe_nom or "Inconnu"
                     departement = actor.get("departement") or ""
 
                     votes.append({
@@ -506,7 +500,7 @@ def main():
     unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "2.7",
+        "version": "2.8",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
