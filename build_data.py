@@ -9,7 +9,8 @@ from html import unescape
 from io import BytesIO
 from pathlib import Path
 
-MIN_YEAR = 2024
+CURRENT_YEAR = datetime.utcnow().year
+MIN_YEAR = CURRENT_YEAR - 1
 
 SCRUTINS_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
 AMO50_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/amo/acteurs_mandats_organes_divises/AMO50_acteurs_mandats_organes_divises.json.zip"
@@ -505,8 +506,8 @@ def main():
     unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "2.9",
-        "year": datetime.utcnow().year,
+        "version": "3.0",
+        "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
             "scrutins": len(scrutins),
