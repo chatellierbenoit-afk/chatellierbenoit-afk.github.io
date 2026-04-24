@@ -524,7 +524,7 @@
 
         <article class="entry-card">
           <h2>Que votent les députés de ma circonscription ?</h2>
-          <p>Recherche par ville, code postal, département ou circonscription pour retrouver les députés qui te représentent.</p>
+          <p>Recherche par département ou circonscription pour retrouver les députés qui te représentent.</p>
           <div class="actions">
             <button id="exploreDeputies">Trouver ma circonscription</button>
           </div>
@@ -601,8 +601,8 @@
         </div>
 
         <div class="field">
-          <label for="territoryFilter">Ville / code postal / circonscription</label>
-          <input id="territoryFilter" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription">
+          <label for="territoryFilter">Département / circonscription</label>
+          <input id="territoryFilter" type="text" placeholder="Ex. Haute-Garonne, 3e circonscription">
         </div>
 
         <div class="field">
@@ -623,7 +623,7 @@
 
         <div class="field">
           <label for="dateFilter">Date</label>
-          <input id="dateFilter" type="text" placeholder="2026-04-16">
+          <input id="dateFilter" type="text" placeholder="Laisser vide pour toutes les dates">
         </div>
       </div>
       <div class="subline" id="summaryLine">Chargement des données…</div>
@@ -1014,6 +1014,7 @@
         fillFilters();
         buildQuickSummary();
         bindEvents();
+        dateFilter.value = "";
         applyFilters();
 
       } catch (error) {
