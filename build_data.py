@@ -16,6 +16,8 @@ AMO50_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/am
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
+DEPUTES_FILE = BASE_DIR / "deputes.json"
+INDEX_FILE = BASE_DIR / "index.json"
 
 SSL_CONTEXT = ssl.create_default_context()
 
@@ -137,7 +139,6 @@ def extract_votants(node):
         else:
             for value in node.values():
                 result.extend(extract_votants(value))
-
     elif isinstance(node, list):
         for item in node:
             result.extend(extract_votants(item))
@@ -154,7 +155,6 @@ def extract_organe_refs(node):
         else:
             for value in node.values():
                 result.extend(extract_organe_refs(value))
-
     elif isinstance(node, list):
         for item in node:
             result.extend(extract_organe_refs(item))
@@ -536,7 +536,7 @@ def main():
     unique_departements = sorted({d["departement"] for d in deputes_file["deputes"] if d["departement"]})
 
     index_data = {
-        "version": "4.0",
+        "version": "4.1",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -552,8 +552,8 @@ def main():
         },
     }
 
-    write_json(BASE_DIR / "index.json", index_data)
-    write_json(BASE_DIR / "deputes.json", deputes_file)
+    write_json(INDEX_FILE, index_data)
+    write_json(DEPUTES_FILE, deputes_file)
 
     print("Scrutins :", len(scrutins))
     print("Votes :", total_votes)
