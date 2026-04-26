@@ -20,9 +20,7 @@
       --radius: 22px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -92,7 +90,7 @@
       padding: 13px 20px;
       font-size: 14px;
       font-weight: 700;
-      cursor: pointer;
+      cursor: default;
       box-shadow: none;
     }
 
@@ -129,20 +127,31 @@
       text-align: center;
     }
 
-    button.primary {
+    button.primary,
+    button.secondary {
       width: 100%;
-      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
-      color: white;
       border: none;
       border-radius: 14px;
       padding: 15px 20px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+      color: white;
       box-shadow: 0 10px 20px rgba(119, 0, 255, 0.18);
     }
 
-    .search-help {
+    button.secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .search-help,
+    .search-status {
       margin-top: 14px;
       text-align: center;
       color: var(--muted);
@@ -150,11 +159,38 @@
       line-height: 1.45;
     }
 
+    .matches {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .match-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+    }
+
+    .match-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .match-meta {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
     .depute-card {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 18px;
-      align-items: stretch;
     }
 
     .identity-card,
@@ -188,14 +224,8 @@
       background: white;
     }
 
-    .meta-row strong {
-      font-size: 14px;
-    }
-
-    .meta-row span {
-      color: var(--muted);
-      text-align: right;
-    }
+    .meta-row strong { font-size: 14px; }
+    .meta-row span { color: var(--muted); text-align: right; }
 
     .summary-grid {
       display: grid;
@@ -281,6 +311,7 @@
       border-radius: 18px;
       padding: 20px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      cursor: pointer;
     }
 
     .vote-context {
@@ -385,7 +416,8 @@
       .search-depute,
       .themes-grid,
       .summary-grid,
-      .filters {
+      .filters,
+      .matches {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -395,28 +427,21 @@
       .search-depute,
       .themes-grid,
       .summary-grid,
-      .filters {
+      .filters,
+      .matches {
         grid-template-columns: 1fr;
       }
 
-      .hero h1 {
-        font-size: 34px;
-      }
-
-      .vote-card h3 {
-        font-size: 22px;
-      }
-
-      main {
-        padding: 18px 12px 36px;
-      }
+      .hero h1 { font-size: 34px; }
+      .vote-card h3 { font-size: 22px; }
+      main { padding: 18px 12px 36px; }
     }
   </style>
 </head>
 <body>
   <header class="hero">
     <h1>Comment vote votre député ?</h1>
-    <p>Retrouvez votre député par département, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
+    <p>Retrouvez votre député par ville, code postal, département, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
   </header>
 
   <main>
@@ -432,16 +457,18 @@
       <h2 class="panel-title">Trouver mon député</h2>
       <div class="search-depute">
         <div class="field">
-          <label for="deputeSearch">Département / circonscription / nom du député</label>
-          <input id="deputeSearch" type="text" placeholder="Ex. Haute-Garonne, 3e circonscription, Dupont">
+          <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
+          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
         </div>
         <div>
           <button class="primary" id="findDeputyBtn">Voir ses votes</button>
         </div>
       </div>
       <div class="search-help">
-        Commence par retrouver le député qui t’intéresse. Ensuite, le site affiche sa fiche, sa répartition de vote, ses thèmes les plus fréquents et l’historique complet de ses scrutins.
+        La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe par l’API géographique publique pour retrouver la commune puis le département associé.
       </div>
+      <div class="search-status" id="searchStatus"></div>
+      <div id="matchesContainer" class="matches"></div>
     </section>
 
     <section class="panel">
@@ -491,7 +518,7 @@
           </div>
 
           <div class="compare-box" id="deputeCompare">
-            Sélectionne un député pour voir comment il vote par rapport à son groupe.
+            Sélectionne un député pour voir son résumé.
           </div>
         </div>
       </div>
@@ -584,11 +611,14 @@
     let indexData = null;
     let allScrutins = [];
     let allVotesFlat = [];
+    let deputyDirectory = [];
     let selectedDeputy = null;
     let selectedDeputyVotes = [];
 
     const deputeSearch = document.getElementById("deputeSearch");
     const findDeputyBtn = document.getElementById("findDeputyBtn");
+    const searchStatus = document.getElementById("searchStatus");
+    const matchesContainer = document.getElementById("matchesContainer");
 
     const deputeName = document.getElementById("deputeName");
     const deputeGroup = document.getElementById("deputeGroup");
@@ -659,10 +689,14 @@
       };
     }
 
-    async function loadMonthFile(filePath) {
-      const response = await fetch("./" + filePath);
-      if (!response.ok) throw new Error(`Impossible de charger ${filePath}`);
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
       return response.json();
+    }
+
+    async function loadMonthFile(filePath) {
+      return loadJson("./" + filePath);
     }
 
     function fillFilters() {
@@ -702,31 +736,80 @@
       });
     }
 
-    function findDeputyMatches(query) {
+    function localSearch(query) {
       const q = normalize(query);
       if (!q) return [];
 
-      const map = new Map();
-
-      allVotesFlat.forEach(v => {
-        const key = v.depute_uid || v.nom;
-        if (!map.has(key)) {
-          map.set(key, {
-            uid: key,
-            nom: v.nom || "",
-            groupe: v.groupe || "",
-            departement: v.departement || "",
-            circonscription: v.circonscription || ""
-          });
-        }
-      });
-
-      return [...map.values()].filter(d => {
+      return deputyDirectory.filter(d => {
         return (
           normalize(d.nom).includes(q) ||
           normalize(d.departement).includes(q) ||
-          normalize(d.circonscription).includes(q)
+          normalize(d.circonscription).includes(q) ||
+          normalize(d.groupe).includes(q)
         );
+      });
+    }
+
+    async function geoSearch(query) {
+      const q = query.trim();
+      if (!q) return [];
+
+      try {
+        let url = "";
+        if (/^\d{5}$/.test(q)) {
+          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5`;
+        } else {
+          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5`;
+        }
+
+        const response = await fetch(url);
+        if (!response.ok) return [];
+
+        const communes = await response.json();
+        if (!Array.isArray(communes) || !communes.length) return [];
+
+        const departments = [...new Set(
+          communes
+            .map(c => c?.departement?.nom || "")
+            .filter(Boolean)
+        )];
+
+        const matches = deputyDirectory.filter(d =>
+          departments.some(dep => normalize(d.departement) === normalize(dep))
+        );
+
+        if (matches.length) {
+          searchStatus.textContent = `Recherche géographique : ${communes[0].nom} → ${communes[0].departement?.nom || ""}`;
+        }
+
+        return matches;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function renderMatches(matches) {
+      matchesContainer.innerHTML = "";
+
+      if (!matches.length) return;
+
+      matchesContainer.innerHTML = matches.map(d => `
+        <div class="match-card">
+          <h3>${d.nom}</h3>
+          <div class="match-meta">
+            ${d.groupe || "-"}<br>
+            ${d.departement || "-"}<br>
+            ${d.circonscription || "-"}
+          </div>
+          <button class="secondary" data-uid="${d.uid}">Choisir ce député</button>
+        </div>
+      `).join("");
+
+      matchesContainer.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const deputy = deputyDirectory.find(d => d.uid === btn.dataset.uid);
+          if (deputy) selectDeputy(deputy);
+        });
       });
     }
 
@@ -740,6 +823,7 @@
       renderDeputyCard();
       renderThemeSummary();
       renderDeputyVotes();
+      searchStatus.textContent = `${deputy.nom} sélectionné.`;
     }
 
     function renderDeputyCard() {
@@ -872,28 +956,36 @@
       `).join("");
     }
 
-    function runDeputySearch() {
+    async function runDeputySearch() {
       const query = deputeSearch.value.trim();
-      const matches = findDeputyMatches(query);
+      matchesContainer.innerHTML = "";
+      searchStatus.textContent = "";
 
-      if (!matches.length) {
-        deputeName.textContent = "Aucun député trouvé";
-        deputeGroup.textContent = "-";
-        deputeDepartment.textContent = "-";
-        deputeCirc.textContent = "-";
-        deputeVotesCount.textContent = "0";
-        deputePour.textContent = "0";
-        deputeContre.textContent = "0";
-        deputeAbs.textContent = "0";
-        deputeNV.textContent = "0";
-        deputeCompare.textContent = "Essaie avec un autre nom, département ou circonscription.";
-        themesContainer.innerHTML = `<div class="theme-card"><h3>Aucun résultat</h3><strong>0</strong><span>député trouvé</span></div>`;
-        deputeVotesList.innerHTML = `<div class="empty">Aucun député ne correspond à la recherche.</div>`;
-        detailTableBody.innerHTML = `<tr><td colspan="4" class="empty">Aucun détail disponible.</td></tr>`;
+      if (!query) {
+        searchStatus.textContent = "Saisis un nom, une ville, un code postal, un département ou une circonscription.";
         return;
       }
 
-      selectDeputy(matches[0]);
+      let matches = localSearch(query);
+
+      if (!matches.length) {
+        matches = await geoSearch(query);
+      }
+
+      if (!matches.length) {
+        searchStatus.textContent = "Aucun député trouvé.";
+        deputeVotesList.innerHTML = `<div class="empty">Aucun député ne correspond à la recherche.</div>`;
+        return;
+      }
+
+      if (matches.length === 1) {
+        selectDeputy(matches[0]);
+        matchesContainer.innerHTML = "";
+        return;
+      }
+
+      searchStatus.textContent = `${matches.length} résultat(s) trouvés. Choisis un député.`;
+      renderMatches(matches);
     }
 
     function bindEvents() {
@@ -910,22 +1002,24 @@
 
     async function init() {
       try {
-        const indexResponse = await fetch("./data/current/index.json");
-        if (!indexResponse.ok) throw new Error("index.json introuvable");
+        const indexResponse = await loadJson("./data/current/index.json");
+        indexData = indexResponse;
 
-        indexData = await indexResponse.json();
         const months = indexData?.months || [];
         const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
         allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
 
-        fillFilters();
+        const deputesPayload = await loadJson("./data/current/deputes.json");
+        deputyDirectory = deputesPayload.deputes || [];
+
         buildFlatVotes();
+        fillFilters();
         bindEvents();
         dateFilter.value = "";
 
       } catch (error) {
         console.error(error);
-        deputeVotesList.innerHTML = `<div class="empty">Erreur de chargement des fichiers JSON.</div>`;
+        searchStatus.textContent = "Erreur de chargement des fichiers JSON.";
       }
     }
 
