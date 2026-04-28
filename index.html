@@ -90,8 +90,9 @@
       padding: 13px 20px;
       font-size: 14px;
       font-weight: 700;
-      cursor: default;
+      cursor: pointer;
       box-shadow: none;
+      transition: 0.15s ease;
     }
 
     .top-switch button.active {
@@ -99,6 +100,14 @@
       color: white;
       border-color: transparent;
       box-shadow: 0 10px 20px rgba(119, 0, 255, 0.18);
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
     }
 
     .search-depute {
@@ -166,20 +175,25 @@
       margin-top: 16px;
     }
 
-    .match-card {
+    .match-card,
+    .group-card,
+    .scrutin-card {
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 16px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
     }
 
-    .match-card h3 {
+    .match-card h3,
+    .group-card h3,
+    .scrutin-card h3 {
       margin: 0 0 8px;
       font-size: 22px;
       text-align: center;
     }
 
-    .match-meta {
+    .match-meta,
+    .small-muted {
       color: var(--muted);
       font-size: 14px;
       text-align: center;
@@ -275,7 +289,9 @@
       line-height: 1.5;
     }
 
-    .themes-grid {
+    .themes-grid,
+    .groups-grid,
+    .scrutins-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
@@ -310,7 +326,8 @@
       line-height: 1.25;
     }
 
-    .theme-card strong {
+    .theme-card strong,
+    .group-number {
       display: block;
       font-size: 26px;
       color: var(--violet);
@@ -444,7 +461,9 @@
       .themes-grid,
       .summary-grid,
       .filters,
-      .matches {
+      .matches,
+      .groups-grid,
+      .scrutins-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -455,7 +474,9 @@
       .themes-grid,
       .summary-grid,
       .filters,
-      .matches {
+      .matches,
+      .groups-grid,
+      .scrutins-grid {
         grid-template-columns: 1fr;
       }
 
@@ -474,152 +495,187 @@
   <main>
     <section class="panel">
       <div class="top-switch">
-        <button class="active">Mon député</button>
-        <button>Groupes politiques</button>
-        <button>Tous les scrutins</button>
+        <button id="tabDeputy" class="active" type="button">Mon député</button>
+        <button id="tabGroups" type="button">Groupes politiques</button>
+        <button id="tabScrutins" type="button">Tous les scrutins</button>
       </div>
     </section>
 
-    <section class="panel">
-      <h2 class="panel-title">Trouver mon député</h2>
-      <div class="search-depute">
-        <div class="field">
-          <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
-          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
-        </div>
-        <div>
-          <button class="primary" id="findDeputyBtn">Voir ses votes</button>
-        </div>
-      </div>
-      <div class="search-help">
-        La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe aussi par l’API géographique publique.
-      </div>
-      <div class="search-status" id="searchStatus"></div>
-      <div id="matchesContainer" class="matches"></div>
-    </section>
-
-    <section class="panel">
-      <h2 class="panel-title">Fiche député</h2>
-      <div class="depute-card">
-        <div class="identity-card">
-          <h2 id="deputeName">Député à sélectionner</h2>
-          <div id="deputeBio" class="bio-box">Sélectionne un député pour afficher une courte présentation.</div>
-
-          <div class="identity-meta">
-            <div class="meta-row">
-              <strong>Groupe</strong>
-              <span id="deputeGroup">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>Circonscription</strong>
-              <span id="deputeCirc">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>Votes recensés</strong>
-              <span id="deputeVotesCount">-</span>
-            </div>
+    <div id="viewDeputy" class="view active">
+      <section class="panel">
+        <h2 class="panel-title">Trouver mon député</h2>
+        <div class="search-depute">
+          <div class="field">
+            <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
+            <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
+          </div>
+          <div>
+            <button class="primary" id="findDeputyBtn" type="button">Voir ses votes</button>
           </div>
         </div>
+        <div class="search-help">
+          La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe aussi par l’API géographique publique.
+        </div>
+        <div class="search-status" id="searchStatus"></div>
+        <div id="matchesContainer" class="matches"></div>
+      </section>
 
-        <div class="summary-card">
-          <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
-          <div class="summary-grid">
-            <div class="summary-box">
-              <strong id="deputePour">0</strong>
-              <span>Pour</span>
-            </div>
-            <div class="summary-box">
-              <strong id="deputeContre">0</strong>
-              <span>Contre</span>
-            </div>
-            <div class="summary-box">
-              <strong id="deputeAbs">0</strong>
-              <span>Abstention</span>
-            </div>
-            <div class="summary-box">
-              <strong id="deputeNV">0</strong>
-              <span>Non-votant</span>
+      <section class="panel">
+        <h2 class="panel-title">Fiche député</h2>
+        <div class="depute-card">
+          <div class="identity-card">
+            <h2 id="deputeName">Député à sélectionner</h2>
+            <div id="deputeBio" class="bio-box">Sélectionne un député pour afficher une courte présentation.</div>
+
+            <div class="identity-meta">
+              <div class="meta-row">
+                <strong>Groupe</strong>
+                <span id="deputeGroup">-</span>
+              </div>
+              <div class="meta-row">
+                <strong>Circonscription</strong>
+                <span id="deputeCirc">-</span>
+              </div>
+              <div class="meta-row">
+                <strong>Votes recensés</strong>
+                <span id="deputeVotesCount">-</span>
+              </div>
             </div>
           </div>
 
-          <div class="compare-box" id="deputeCompare">
-            Sélectionne un député pour voir son résumé.
+          <div class="summary-card">
+            <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
+            <div class="summary-grid">
+              <div class="summary-box"><strong id="deputePour">0</strong><span>Pour</span></div>
+              <div class="summary-box"><strong id="deputeContre">0</strong><span>Contre</span></div>
+              <div class="summary-box"><strong id="deputeAbs">0</strong><span>Abstention</span></div>
+              <div class="summary-box"><strong id="deputeNV">0</strong><span>Non-votant</span></div>
+            </div>
+            <div class="compare-box" id="deputeCompare">Sélectionne un député pour voir son résumé.</div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel">
-      <h2 class="panel-title">Votes par thématique</h2>
-      <div class="themes-grid" id="themesContainer">
-        <button type="button" class="theme-card">
-          <h3>Aucune donnée</h3>
-          <strong>-</strong>
-          <span>Sélectionne un député</span>
-        </button>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="filters">
-        <div class="field">
-          <label for="monthFilter">Mois</label>
-          <select id="monthFilter">
-            <option value="">Tous les mois</option>
-          </select>
+      <section class="panel">
+        <h2 class="panel-title">Votes par thématique</h2>
+        <div class="themes-grid" id="themesContainer">
+          <button type="button" class="theme-card">
+            <h3>Aucune donnée</h3>
+            <strong>-</strong>
+            <span>Sélectionne un député</span>
+          </button>
         </div>
+      </section>
 
-        <div class="field">
-          <label for="voteFilter">Vote</label>
-          <select id="voteFilter">
-            <option value="">Tous les votes</option>
-            <option value="Pour">Pour</option>
-            <option value="Contre">Contre</option>
-            <option value="Abstention">Abstention</option>
-            <option value="Non-votant">Non-votant</option>
-          </select>
+      <section class="panel">
+        <div class="filters">
+          <div class="field">
+            <label for="monthFilter">Mois</label>
+            <select id="monthFilter">
+              <option value="">Tous les mois</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="voteFilter">Vote</label>
+            <select id="voteFilter">
+              <option value="">Tous les votes</option>
+              <option value="Pour">Pour</option>
+              <option value="Contre">Contre</option>
+              <option value="Abstention">Abstention</option>
+              <option value="Non-votant">Non-votant</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dateFilter">Date</label>
+            <input id="dateFilter" type="text" placeholder="Laisser vide pour toutes les dates">
+          </div>
+
+          <div class="field">
+            <label for="titleFilter">Titre ou mot-clé</label>
+            <input id="titleFilter" type="text" placeholder="Ex. sécurité, budget, agriculture">
+          </div>
         </div>
+      </section>
 
-        <div class="field">
-          <label for="dateFilter">Date</label>
-          <input id="dateFilter" type="text" placeholder="Laisser vide pour toutes les dates">
+      <section class="panel">
+        <h2 class="panel-title">Historique complet des votes</h2>
+        <div id="activeThemeStatus" class="search-status"></div>
+        <div id="deputeVotesList" class="results-list">
+          <div class="empty">Sélectionne un député pour afficher son historique de votes.</div>
         </div>
+      </section>
 
-        <div class="field">
-          <label for="titleFilter">Titre ou mot-clé</label>
-          <input id="titleFilter" type="text" placeholder="Ex. sécurité, budget, agriculture">
+      <section class="panel">
+        <h2 class="panel-title">Détail du scrutin sélectionné</h2>
+        <div class="detail-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Député</th>
+                <th>Groupe</th>
+                <th>Vote</th>
+                <th>Circonscription</th>
+              </tr>
+            </thead>
+            <tbody id="detailTableBody">
+              <tr>
+                <td colspan="4" class="empty">Clique sur un vote pour afficher le détail nominatif du scrutin.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <section class="panel">
-      <h2 class="panel-title">Historique complet des votes</h2>
-      <div id="activeThemeStatus" class="search-status"></div>
-      <div id="deputeVotesList" class="results-list">
-        <div class="empty">Sélectionne un député pour afficher son historique de votes.</div>
-      </div>
-    </section>
+    <div id="viewGroups" class="view">
+      <section class="panel">
+        <h2 class="panel-title">Groupes politiques</h2>
+        <div id="groupsContainer" class="groups-grid"></div>
+      </section>
+    </div>
 
-    <section class="panel">
-      <h2 class="panel-title">Détail du scrutin sélectionné</h2>
-      <div class="detail-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Député</th>
-              <th>Groupe</th>
-              <th>Vote</th>
-              <th>Circonscription</th>
-            </tr>
-          </thead>
-          <tbody id="detailTableBody">
-            <tr>
-              <td colspan="4" class="empty">Clique sur un vote pour afficher le détail nominatif du scrutin.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <div id="viewScrutins" class="view">
+      <section class="panel">
+        <h2 class="panel-title">Tous les scrutins</h2>
+        <div class="filters">
+          <div class="field">
+            <label for="globalMonthFilter">Mois</label>
+            <select id="globalMonthFilter">
+              <option value="">Tous les mois</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="globalThemeFilter">Thématique</label>
+            <select id="globalThemeFilter">
+              <option value="">Toutes les thématiques</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="globalVoteFilter">Vote dominant</label>
+            <select id="globalVoteFilter">
+              <option value="">Tous</option>
+              <option value="Pour">Pour</option>
+              <option value="Contre">Contre</option>
+              <option value="Abstention">Abstention</option>
+              <option value="Non-votant">Non-votant</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="globalTextFilter">Mot-clé</label>
+            <input id="globalTextFilter" type="text" placeholder="Ex. budget, sécurité, agriculture">
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div id="scrutinsContainer" class="results-list"></div>
+      </section>
+    </div>
 
     <div class="footer-note">
       Données chargées depuis les fichiers JSON générés automatiquement
@@ -634,6 +690,14 @@
     let selectedDeputy = null;
     let selectedDeputyVotes = [];
     let activeTheme = "";
+
+    const tabDeputy = document.getElementById("tabDeputy");
+    const tabGroups = document.getElementById("tabGroups");
+    const tabScrutins = document.getElementById("tabScrutins");
+
+    const viewDeputy = document.getElementById("viewDeputy");
+    const viewGroups = document.getElementById("viewGroups");
+    const viewScrutins = document.getElementById("viewScrutins");
 
     const deputeSearch = document.getElementById("deputeSearch");
     const findDeputyBtn = document.getElementById("findDeputyBtn");
@@ -657,10 +721,17 @@
     const dateFilter = document.getElementById("dateFilter");
     const titleFilter = document.getElementById("titleFilter");
 
+    const globalMonthFilter = document.getElementById("globalMonthFilter");
+    const globalThemeFilter = document.getElementById("globalThemeFilter");
+    const globalVoteFilter = document.getElementById("globalVoteFilter");
+    const globalTextFilter = document.getElementById("globalTextFilter");
+
     const themesContainer = document.getElementById("themesContainer");
     const activeThemeStatus = document.getElementById("activeThemeStatus");
     const deputeVotesList = document.getElementById("deputeVotesList");
     const detailTableBody = document.getElementById("detailTableBody");
+    const groupsContainer = document.getElementById("groupsContainer");
+    const scrutinsContainer = document.getElementById("scrutinsContainer");
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
@@ -677,9 +748,24 @@
       return Array.isArray(v) ? v : [];
     }
 
+    function setActiveView(view) {
+      [tabDeputy, tabGroups, tabScrutins].forEach(el => el.classList.remove("active"));
+      [viewDeputy, viewGroups, viewScrutins].forEach(el => el.classList.remove("active"));
+
+      if (view === "deputy") {
+        tabDeputy.classList.add("active");
+        viewDeputy.classList.add("active");
+      } else if (view === "groups") {
+        tabGroups.classList.add("active");
+        viewGroups.classList.add("active");
+      } else {
+        tabScrutins.classList.add("active");
+        viewScrutins.classList.add("active");
+      }
+    }
+
     function shortTitle(scrutin) {
       const title = (scrutin.titre || "").trim();
-
       const mSous = title.match(/(sous-amendement n°\s*\d+)/i);
       const mAmend = title.match(/(amendement n°\s*\d+)/i);
       const mArticle = title.match(/(article\s+[0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
@@ -722,11 +808,28 @@
     function fillFilters() {
       const months = indexData?.months || [];
       monthFilter.innerHTML = `<option value="">Tous les mois</option>`;
+      globalMonthFilter.innerHTML = `<option value="">Tous les mois</option>`;
+
       months.forEach(m => {
+        const label = `${m.month} (${m.scrutins})`;
+        const option1 = document.createElement("option");
+        option1.value = m.month;
+        option1.textContent = label;
+        monthFilter.appendChild(option1);
+
+        const option2 = document.createElement("option");
+        option2.value = m.month;
+        option2.textContent = label;
+        globalMonthFilter.appendChild(option2);
+      });
+
+      const themes = [...new Set(allScrutins.map(s => s.theme).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
+      globalThemeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
+      themes.forEach(theme => {
         const option = document.createElement("option");
-        option.value = m.month;
-        option.textContent = `${m.month} (${m.scrutins})`;
-        monthFilter.appendChild(option);
+        option.value = theme;
+        option.textContent = theme;
+        globalThemeFilter.appendChild(option);
       });
     }
 
@@ -756,20 +859,13 @@
         const circ = normalize(d.circonscription || "");
         const dep = normalize(d.departement || "");
         const groupe = normalize(d.groupe || "");
-
-        return (
-          nom.includes(q) ||
-          circ.includes(q) ||
-          dep.includes(q) ||
-          groupe.includes(q)
-        );
+        return nom.includes(q) || circ.includes(q) || dep.includes(q) || groupe.includes(q);
       });
     }
 
     async function geoSearch(query) {
       const q = query.trim();
       if (!q) return [];
-
       const qNorm = normalize(q);
 
       try {
@@ -785,7 +881,6 @@
         }
 
         let url = "";
-
         if (/^\d{5}$/.test(q)) {
           url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
         } else {
@@ -794,7 +889,6 @@
 
         const response = await fetch(url);
         if (!response.ok) return [];
-
         const communes = await response.json();
         if (!Array.isArray(communes) || !communes.length) return [];
 
@@ -806,9 +900,7 @@
           const dep = normalize(d.departement || "");
           return (
             communeNames.some(city => circ.includes(normalize(city))) ||
-            departmentNames.some(apiDep =>
-              dep.includes(normalize(apiDep)) || circ.includes(normalize(apiDep))
-            )
+            departmentNames.some(apiDep => dep.includes(normalize(apiDep)) || circ.includes(normalize(apiDep)))
           );
         });
 
@@ -827,7 +919,6 @@
 
     function renderMatches(matches) {
       matchesContainer.innerHTML = "";
-
       if (!matches.length) return;
 
       matchesContainer.innerHTML = matches.map(d => `
@@ -837,7 +928,7 @@
             ${d.groupe || "-"}<br>
             ${d.circonscription || d.departement || "-"}
           </div>
-          <button class="secondary" data-uid="${d.uid}">Choisir ce député</button>
+          <button class="secondary" data-uid="${d.uid}" type="button">Choisir ce député</button>
         </div>
       `).join("");
 
@@ -855,7 +946,6 @@
     function selectDeputy(deputy) {
       selectedDeputy = deputy;
       activeTheme = "";
-
       selectedDeputyVotes = allVotesFlat
         .filter(v => (v.depute_uid || v.nom) === deputy.uid)
         .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
@@ -864,6 +954,7 @@
       renderThemeSummary();
       renderDeputyVotes();
       searchStatus.textContent = `${deputy.nom} sélectionné.`;
+      setActiveView("deputy");
     }
 
     function renderDeputyCard() {
@@ -904,7 +995,6 @@
       }
 
       const grouped = new Map();
-
       selectedDeputyVotes.forEach(v => {
         const theme = v.scrutin_theme || "Autres";
         grouped.set(theme, (grouped.get(theme) || 0) + 1);
@@ -916,20 +1006,14 @@
         .slice(0, 8);
 
       themesContainer.innerHTML = ranked.map(item => `
-        <button
-          type="button"
-          class="theme-card ${activeTheme === item.theme ? "active" : ""}"
-          data-theme="${item.theme}"
-        >
+        <button type="button" class="theme-card ${activeTheme === item.theme ? "active" : ""}" data-theme="${item.theme}">
           <h3>${item.theme}</h3>
           <strong>${formatNumber(item.total)}</strong>
           <span>vote(s) sur ce thème</span>
         </button>
       `).join("");
 
-      const cards = themesContainer.querySelectorAll(".theme-card[data-theme]");
-
-      cards.forEach(card => {
+      themesContainer.querySelectorAll(".theme-card[data-theme]").forEach(card => {
         card.addEventListener("click", () => {
           const clickedTheme = card.dataset.theme || "";
           activeTheme = activeTheme === clickedTheme ? "" : clickedTheme;
@@ -955,18 +1039,12 @@
         const monthMatch = !selectedMonth || (v.scrutin_date || "").startsWith(selectedMonth);
         const voteMatch = !selectedVote || v.vote === selectedVote;
         const dateMatch = !dateQuery || normalize(v.scrutin_date || "").includes(dateQuery);
-        const titleMatch =
-          !titleQuery ||
-          normalize(v.scrutin_titre || "").includes(titleQuery) ||
-          normalize(v.scrutin_description || "").includes(titleQuery);
+        const titleMatch = !titleQuery || normalize(v.scrutin_titre || "").includes(titleQuery) || normalize(v.scrutin_description || "").includes(titleQuery);
         const themeMatch = !activeTheme || (v.scrutin_theme || "Autres") === activeTheme;
-
         return monthMatch && voteMatch && dateMatch && titleMatch && themeMatch;
       });
 
-      activeThemeStatus.textContent = activeTheme
-        ? `Filtre thématique actif : ${activeTheme}`
-        : "";
+      activeThemeStatus.textContent = activeTheme ? `Filtre thématique actif : ${activeTheme}` : "";
 
       if (!filtered.length) {
         deputeVotesList.innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
@@ -978,15 +1056,11 @@
           <div class="vote-context">${v.scrutin_date || ""} · ${v.scrutin_theme || "Autres"} · ${v.groupe || ""}</div>
           <h3>${shortTitle(v.scrutin_full)}</h3>
           <p class="vote-description">${shortDescription(v.scrutin_full)}</p>
-
           <div class="chips">
             <span class="chip">${v.scrutin_theme || "Autres"}</span>
             <span class="chip">${selectedDeputy.nom}</span>
           </div>
-
-          <div class="vote-line vote-${(v.vote || "").replace(/\s+/g, "-")}">
-            Vote : ${v.vote || "-"}
-          </div>
+          <div class="vote-line vote-${(v.vote || "").replace(/\s+/g, "-")}">Vote : ${v.vote || "-"}</div>
         </article>
       `).join("");
 
@@ -1016,6 +1090,96 @@
       `).join("");
     }
 
+    function renderGroups() {
+      const grouped = new Map();
+
+      allVotesFlat.forEach(v => {
+        const key = v.groupe || "Inconnu";
+        if (!grouped.has(key)) grouped.set(key, []);
+        grouped.get(key).push(v);
+      });
+
+      const cards = [...grouped.entries()]
+        .map(([group, votes]) => {
+          const stats = computeStats(votes);
+          return {
+            group,
+            total: votes.length,
+            dominant: Object.entries({
+              Pour: stats.pour,
+              Contre: stats.contre,
+              Abstention: stats.abstention,
+              "Non-votant": stats.non_votant
+            }).sort((a, b) => b[1] - a[1])[0][0]
+          };
+        })
+        .sort((a, b) => b.total - a.total);
+
+      groupsContainer.innerHTML = cards.map(item => `
+        <div class="group-card">
+          <h3>${item.group}</h3>
+          <div class="group-number">${formatNumber(item.total)}</div>
+          <div class="small-muted">votes recensés</div>
+          <div class="small-muted">Vote dominant : ${item.dominant}</div>
+        </div>
+      `).join("");
+    }
+
+    function dominantVoteFromStats(stats) {
+      return Object.entries({
+        Pour: stats.pour || 0,
+        Contre: stats.contre || 0,
+        Abstention: stats.abstention || 0,
+        "Non-votant": stats.non_votant || 0
+      }).sort((a, b) => b[1] - a[1])[0][0];
+    }
+
+    function renderAllScrutins() {
+      const month = globalMonthFilter.value;
+      const theme = globalThemeFilter.value;
+      const dominantVote = globalVoteFilter.value;
+      const text = normalize(globalTextFilter.value);
+
+      let filtered = allScrutins.filter(s => {
+        const monthMatch = !month || (s.date || "").startsWith(month);
+        const themeMatch = !theme || (s.theme || "") === theme;
+        const textMatch = !text || normalize(s.titre || "").includes(text) || normalize(s.description || "").includes(text);
+        const domMatch = !dominantVote || dominantVoteFromStats(s.stats || {}) === dominantVote;
+        return monthMatch && themeMatch && textMatch && domMatch;
+      });
+
+      filtered = filtered.sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 150);
+
+      if (!filtered.length) {
+        scrutinsContainer.innerHTML = `<div class="empty">Aucun scrutin ne correspond aux filtres.</div>`;
+        return;
+      }
+
+      scrutinsContainer.innerHTML = filtered.map(s => `
+        <article class="scrutin-card" data-scrutin="${s.uid}">
+          <div class="small-muted">${s.date || ""} · ${s.theme || "Autres"}</div>
+          <h3>${shortTitle(s)}</h3>
+          <p class="vote-description">${shortDescription(s)}</p>
+          <div class="chips">
+            <span class="chip">${s.theme || "Autres"}</span>
+            <span class="chip">Dominant : ${dominantVoteFromStats(s.stats || {})}</span>
+          </div>
+        </article>
+      `).join("");
+
+      scrutinsContainer.querySelectorAll(".scrutin-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const uid = card.dataset.scrutin;
+          const found = allScrutins.find(s => s.uid === uid);
+          if (found) {
+            renderScrutinDetail(found);
+            setActiveView("scrutins");
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }
+        });
+      });
+    }
+
     async function runDeputySearch() {
       const query = deputeSearch.value.trim();
       matchesContainer.innerHTML = "";
@@ -1027,10 +1191,7 @@
       }
 
       let matches = localSearch(query);
-
-      if (!matches.length) {
-        matches = await geoSearch(query);
-      }
+      if (!matches.length) matches = await geoSearch(query);
 
       if (!matches.length) {
         searchStatus.textContent = "Aucun député trouvé.";
@@ -1046,17 +1207,8 @@
 
       matches.sort((a, b) => {
         const q = normalize(query);
-
-        const aScore =
-          (normalize(a.nom).includes(q) ? 3 : 0) +
-          (normalize(a.circonscription).includes(q) ? 2 : 0) +
-          (normalize(a.departement).includes(q) ? 2 : 0);
-
-        const bScore =
-          (normalize(b.nom).includes(q) ? 3 : 0) +
-          (normalize(b.circonscription).includes(q) ? 2 : 0) +
-          (normalize(b.departement).includes(q) ? 2 : 0);
-
+        const aScore = (normalize(a.nom).includes(q) ? 3 : 0) + (normalize(a.circonscription).includes(q) ? 2 : 0) + (normalize(a.departement).includes(q) ? 2 : 0);
+        const bScore = (normalize(b.nom).includes(q) ? 3 : 0) + (normalize(b.circonscription).includes(q) ? 2 : 0) + (normalize(b.departement).includes(q) ? 2 : 0);
         return bScore - aScore;
       });
 
@@ -1065,6 +1217,10 @@
     }
 
     function bindEvents() {
+      tabDeputy.addEventListener("click", () => setActiveView("deputy"));
+      tabGroups.addEventListener("click", () => setActiveView("groups"));
+      tabScrutins.addEventListener("click", () => setActiveView("scrutins"));
+
       findDeputyBtn.addEventListener("click", runDeputySearch);
       deputeSearch.addEventListener("keydown", (e) => {
         if (e.key === "Enter") runDeputySearch();
@@ -1074,12 +1230,16 @@
         el.addEventListener("input", renderDeputyVotes);
         el.addEventListener("change", renderDeputyVotes);
       });
+
+      [globalMonthFilter, globalThemeFilter, globalVoteFilter, globalTextFilter].forEach(el => {
+        el.addEventListener("input", renderAllScrutins);
+        el.addEventListener("change", renderAllScrutins);
+      });
     }
 
     async function init() {
       try {
         indexData = await loadJson("./data/current/index.json");
-
         const months = indexData?.months || [];
         const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
         allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
@@ -1090,8 +1250,9 @@
         buildFlatVotes();
         fillFilters();
         bindEvents();
+        renderGroups();
+        renderAllScrutins();
         dateFilter.value = "";
-
       } catch (error) {
         console.error(error);
         searchStatus.textContent = "Erreur de chargement des fichiers JSON.";
