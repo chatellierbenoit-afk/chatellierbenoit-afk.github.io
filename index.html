@@ -468,7 +468,7 @@
 <body>
   <header class="hero">
     <h1>Comment vote votre député ?</h1>
-    <p>Retrouvez votre député par ville, code postal, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
+    <p>Retrouvez votre député par ville, code postal, département, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
   </header>
 
   <main>
@@ -484,15 +484,15 @@
       <h2 class="panel-title">Trouver mon député</h2>
       <div class="search-depute">
         <div class="field">
-          <label for="deputeSearch">Ville / code postal / circonscription / nom du député</label>
-          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, 3e circonscription, Hadrien Clouet">
+          <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
+          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
         </div>
         <div>
           <button class="primary" id="findDeputyBtn">Voir ses votes</button>
         </div>
       </div>
       <div class="search-help">
-        La recherche essaie d’abord le nom du député et la circonscription. Si tu saisis une ville ou un code postal, le site passe par l’API géographique publique pour retrouver la commune puis le département associé.
+        La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe aussi par l’API géographique publique.
       </div>
       <div class="search-status" id="searchStatus"></div>
       <div id="matchesContainer" class="matches"></div>
@@ -770,13 +770,26 @@
       const q = query.trim();
       if (!q) return [];
 
+      const qNorm = normalize(q);
+
       try {
+        let matches = deputyDirectory.filter(d => {
+          const dep = normalize(d.departement || "");
+          const circ = normalize(d.circonscription || "");
+          return dep.includes(qNorm) || circ.includes(qNorm);
+        });
+
+        if (matches.length) {
+          searchStatus.textContent = `Recherche département / territoire : ${q}`;
+          return matches;
+        }
+
         let url = "";
 
         if (/^\d{5}$/.test(q)) {
-          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=10`;
+          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
         } else {
-          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=10`;
+          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
         }
 
         const response = await fetch(url);
@@ -788,11 +801,15 @@
         const communeNames = [...new Set(communes.map(c => c?.nom || "").filter(Boolean))];
         const departmentNames = [...new Set(communes.map(c => c?.departement?.nom || "").filter(Boolean))];
 
-        const matches = deputyDirectory.filter(d => {
+        matches = deputyDirectory.filter(d => {
           const circ = normalize(d.circonscription || "");
           const dep = normalize(d.departement || "");
-          return communeNames.some(city => circ.includes(normalize(city))) ||
-                 departmentNames.some(apiDep => dep.includes(normalize(apiDep)) || circ.includes(normalize(apiDep)));
+          return (
+            communeNames.some(city => circ.includes(normalize(city))) ||
+            departmentNames.some(apiDep =>
+              dep.includes(normalize(apiDep)) || circ.includes(normalize(apiDep))
+            )
+          );
         });
 
         if (matches.length) {
@@ -1005,7 +1022,7 @@
       searchStatus.textContent = "";
 
       if (!query) {
-        searchStatus.textContent = "Saisis un nom, une ville, un code postal ou une circonscription.";
+        searchStatus.textContent = "Saisis un nom, une ville, un code postal, un département ou une circonscription.";
         return;
       }
 
