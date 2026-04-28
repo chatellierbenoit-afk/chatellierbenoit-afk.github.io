@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Installer Python
         uses: actions/setup-python@v5
@@ -25,12 +27,22 @@ jobs:
         run: python build_data.py
 
       - name: Afficher les fichiers générés
+        if: success()
         run: ls -R data/current
 
       - name: Commit et push des données
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/current
-          git commit -m "Mise à jour automatique des données" || echo "Rien à commit"
-          git push
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/current/
+
+          if git diff --cached --quiet; then
+            echo "Aucun changement à commit"
+            exit 0
+          fi
+
+          git commit -m "Mise à jour automatique des données"
+          git pull --rebase origin main
+          git push origin main
