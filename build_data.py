@@ -5,6 +5,7 @@ import urllib.request
 import zipfile
 from collections import Counter, defaultdict
 from datetime import datetime
+from html import unescape
 from io import BytesIO
 from pathlib import Path
 
@@ -79,6 +80,7 @@ GROUP_LABELS = {
 }
 
 UNKNOWN_GROUPS = set()
+PROFILE_CACHE = {}
 
 
 def ensure_dir(path: Path):
@@ -94,6 +96,10 @@ def download(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
         return r.read()
+
+
+def download_text(url: str) -> str:
+    return download(url).decode("utf-8", errors="ignore")
 
 
 def ensure_list(v):
@@ -120,6 +126,10 @@ def normalize_key(text: str) -> str:
         .replace("’", "'")
     )
     return t
+
+
+def strip_tags(html_text: str) -> str:
+    return clean(re.sub(r"<[^>]+>", " ", html_text))
 
 
 def get_uid(v):
@@ -207,6 +217,70 @@ def normalize_group_label(value):
     return raw
 
 
+def fetch_depute_profile(uid: str):
+    if not uid:
+        return {}
+
+    if uid in PROFILE_CACHE:
+        return PROFILE_CACHE[uid]
+
+    url = f"https://www.assemblee-nationale.fr/dyn/deputes/{uid}"
+
+    try:
+        html = download_text(url)
+    except Exception:
+        PROFILE_CACHE[uid] = {}
+        return {}
+
+    text = strip_tags(unescape(html))
+
+    title_match = re.search(r"<title>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
+    title_text = strip_tags(unescape(title_match.group(1))) if title_match else ""
+
+    nom = ""
+    if " - " in title_text:
+        nom = clean(title_text.split(" - ")[0])
+    elif title_text:
+        nom = title_text
+
+    departement = ""
+    circonscription = ""
+
+    dep_match = re.search(r"((?:Ain|Aisne|Allier|Alpes-de-Haute-Provence|Hautes-Alpes|Alpes-Maritimes|Ardèche|Ardennes|Ariège|Aube|Aude|Aveyron|Bouches-du-Rhône|Calvados|Cantal|Charente|Charente-Maritime|Cher|Corrèze|Corse-du-Sud|Haute-Corse|Côte-d'Or|Côtes-d'Armor|Creuse|Dordogne|Doubs|Drôme|Eure|Eure-et-Loir|Finistère|Gard|Haute-Garonne|Gers|Gironde|Hérault|Ille-et-Vilaine|Indre|Indre-et-Loire|Isère|Jura|Landes|Loir-et-Cher|Loire|Haute-Loire|Loire-Atlantique|Loiret|Lot|Lot-et-Garonne|Lozère|Maine-et-Loire|Manche|Marne|Haute-Marne|Mayenne|Meurthe-et-Moselle|Meuse|Morbihan|Moselle|Nièvre|Nord|Oise|Orne|Pas-de-Calais|Puy-de-Dôme|Pyrénées-Atlantiques|Hautes-Pyrénées|Pyrénées-Orientales|Bas-Rhin|Haut-Rhin|Rhône|Haute-Saône|Saône-et-Loire|Sarthe|Savoie|Haute-Savoie|Paris|Seine-Maritime|Seine-et-Marne|Yvelines|Deux-Sèvres|Somme|Tarn|Tarn-et-Garonne|Var|Vaucluse|Vendée|Vienne|Haute-Vienne|Vosges|Yonne|Territoire de Belfort|Essonne|Hauts-de-Seine|Seine-Saint-Denis|Val-de-Marne|Val-d'Oise|Guadeloupe|Martinique|Guyane|La Réunion|Mayotte))", text, re.IGNORECASE)
+    if dep_match:
+        departement = clean(dep_match.group(1))
+
+    circ_match = re.search(r"(\d+(?:re|ère|e)?\s+circonscription)", text, re.IGNORECASE)
+    if circ_match:
+        circonscription = clean(circ_match.group(1))
+
+    group_code_matches = re.findall(r"PO\d{5,}", html)
+    groupe = normalize_group_label(group_code_matches[0]) if group_code_matches else ""
+
+    bio = ""
+    bio_patterns = [
+        r"Biographie(.*?)(?:Mandat en cours|Autres fonctions|Commission|Contact|Question écrite|$)",
+        r"N[ée] le .*?(?:\.)",
+    ]
+    for pattern in bio_patterns:
+        match = re.search(pattern, text, re.IGNORECASE | re.DOTALL)
+        if match:
+            candidate = clean(match.group(1) if match.lastindex else match.group(0))
+            if len(candidate) > 20:
+                bio = candidate[:500]
+                break
+
+    profile = {
+        "nom": nom,
+        "groupe": groupe,
+        "departement": departement,
+        "circonscription": circonscription,
+        "bio": bio,
+    }
+    PROFILE_CACHE[uid] = profile
+    return profile
+
+
 def load_amo():
     raw = download(AMO50_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
@@ -232,6 +306,7 @@ def load_amo():
                 "groupe": "",
                 "departement": "",
                 "circonscription": "",
+                "bio": "",
             }
 
         elif name.startswith("organe/") and name.endswith(".json"):
@@ -296,6 +371,24 @@ def load_amo():
                     actors[acteur_ref]["departement"] = dep
                 if circo:
                     actors[acteur_ref]["circonscription"] = circo
+
+    for uid, actor in actors.items():
+        profile = fetch_depute_profile(uid)
+
+        if profile.get("nom") and actor["nom"] == uid:
+            actor["nom"] = profile["nom"]
+
+        if not actor.get("groupe") and profile.get("groupe"):
+            actor["groupe"] = profile["groupe"]
+
+        if not actor.get("departement") and profile.get("departement"):
+            actor["departement"] = profile["departement"]
+
+        if not actor.get("circonscription") and profile.get("circonscription"):
+            actor["circonscription"] = profile["circonscription"]
+
+        if profile.get("bio"):
+            actor["bio"] = profile["bio"]
 
     return actors, organes
 
@@ -456,12 +549,14 @@ def build_deputes_file(scrutins, actors):
     for scrutin in scrutins:
         for vote in scrutin["votes"]:
             uid = vote["depute_uid"]
+
             if uid not in by_uid:
+                actor = actors.get(uid, {})
                 by_uid[uid] = {
                     "uid": uid,
                     "nom": vote["nom"],
-                    "departement": vote.get("departement", "") or actors.get(uid, {}).get("departement", ""),
-                    "circonscription": vote.get("circonscription", "") or actors.get(uid, {}).get("circonscription", ""),
+                    "circonscription": vote.get("circonscription", "") or actor.get("circonscription", ""),
+                    "bio": actor.get("bio", ""),
                     "group_counts": Counter(),
                     "votes_count": 0,
                     "votes_pour": 0,
@@ -482,15 +577,20 @@ def build_deputes_file(scrutins, actors):
             elif vote["vote"] == "Non-votant":
                 by_uid[uid]["votes_non_votant"] += 1
 
+            if not by_uid[uid]["circonscription"] and vote.get("circonscription"):
+                by_uid[uid]["circonscription"] = vote["circonscription"]
+
     deputes = []
     for uid, item in by_uid.items():
-        dominant_group = item["group_counts"].most_common(1)[0][0] if item["group_counts"] else actors.get(uid, {}).get("groupe", "")
+        actor = actors.get(uid, {})
+        dominant_group = item["group_counts"].most_common(1)[0][0] if item["group_counts"] else actor.get("groupe", "")
+
         deputes.append({
             "uid": uid,
             "nom": item["nom"],
             "groupe": dominant_group,
-            "departement": item["departement"],
-            "circonscription": item["circonscription"],
+            "circonscription": item["circonscription"] or actor.get("circonscription", ""),
+            "bio": item["bio"] or actor.get("bio", ""),
             "votes_count": item["votes_count"],
             "votes_pour": item["votes_pour"],
             "votes_contre": item["votes_contre"],
@@ -533,10 +633,9 @@ def main():
 
     total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
     unique_groupes = sorted({d["groupe"] for d in deputes_file["deputes"] if d["groupe"]})
-    unique_departements = sorted({d["departement"] for d in deputes_file["deputes"] if d["departement"]})
 
     index_data = {
-        "version": "4.1",
+        "version": "4.2",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -544,7 +643,6 @@ def main():
             "votes": total_votes,
             "deputes": len(deputes_file["deputes"]),
             "groupes": len(unique_groupes),
-            "departements": len(unique_departements),
         },
         "months": sorted(month_list, key=lambda x: x["month"], reverse=True),
         "files": {
@@ -559,7 +657,6 @@ def main():
     print("Votes :", total_votes)
     print("Députés :", len(deputes_file["deputes"]))
     print("Groupes :", len(unique_groupes))
-    print("Départements :", len(unique_departements))
     print("Mois :", len(month_list))
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
