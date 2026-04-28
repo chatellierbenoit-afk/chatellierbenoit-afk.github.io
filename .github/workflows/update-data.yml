@@ -2,13 +2,15 @@ name: Mise à jour des données
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
 
     steps:
       - name: Récupérer le dépôt
@@ -23,16 +25,12 @@ jobs:
         run: python build_data.py
 
       - name: Afficher les fichiers générés
-        run: |
-          echo "=== contenu de data ==="
-          find data -maxdepth 4 -type f | sort || true
+        run: ls -R data/current
 
       - name: Commit et push des données
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add data/current/ || true
-
-          git diff --cached --quiet && echo "Aucun changement à commit" || git commit -m "Mise à jour automatique des données"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/current
+          git commit -m "Mise à jour automatique des données" || echo "Rien à commit"
           git push
