@@ -246,7 +246,11 @@ def fetch_depute_profile(uid: str):
     departement = ""
     circonscription = ""
 
-    dep_match = re.search(r"((?:Ain|Aisne|Allier|Alpes-de-Haute-Provence|Hautes-Alpes|Alpes-Maritimes|Ardèche|Ardennes|Ariège|Aube|Aude|Aveyron|Bouches-du-Rhône|Calvados|Cantal|Charente|Charente-Maritime|Cher|Corrèze|Corse-du-Sud|Haute-Corse|Côte-d'Or|Côtes-d'Armor|Creuse|Dordogne|Doubs|Drôme|Eure|Eure-et-Loir|Finistère|Gard|Haute-Garonne|Gers|Gironde|Hérault|Ille-et-Vilaine|Indre|Indre-et-Loire|Isère|Jura|Landes|Loir-et-Cher|Loire|Haute-Loire|Loire-Atlantique|Loiret|Lot|Lot-et-Garonne|Lozère|Maine-et-Loire|Manche|Marne|Haute-Marne|Mayenne|Meurthe-et-Moselle|Meuse|Morbihan|Moselle|Nièvre|Nord|Oise|Orne|Pas-de-Calais|Puy-de-Dôme|Pyrénées-Atlantiques|Hautes-Pyrénées|Pyrénées-Orientales|Bas-Rhin|Haut-Rhin|Rhône|Haute-Saône|Saône-et-Loire|Sarthe|Savoie|Haute-Savoie|Paris|Seine-Maritime|Seine-et-Marne|Yvelines|Deux-Sèvres|Somme|Tarn|Tarn-et-Garonne|Var|Vaucluse|Vendée|Vienne|Haute-Vienne|Vosges|Yonne|Territoire de Belfort|Essonne|Hauts-de-Seine|Seine-Saint-Denis|Val-de-Marne|Val-d'Oise|Guadeloupe|Martinique|Guyane|La Réunion|Mayotte))", text, re.IGNORECASE)
+    dep_match = re.search(
+        r"((?:Ain|Aisne|Allier|Alpes-de-Haute-Provence|Hautes-Alpes|Alpes-Maritimes|Ardèche|Ardennes|Ariège|Aube|Aude|Aveyron|Bouches-du-Rhône|Calvados|Cantal|Charente|Charente-Maritime|Cher|Corrèze|Corse-du-Sud|Haute-Corse|Côte-d'Or|Côtes-d'Armor|Creuse|Dordogne|Doubs|Drôme|Eure|Eure-et-Loir|Finistère|Gard|Haute-Garonne|Gers|Gironde|Hérault|Ille-et-Vilaine|Indre|Indre-et-Loire|Isère|Jura|Landes|Loir-et-Cher|Loire|Haute-Loire|Loire-Atlantique|Loiret|Lot|Lot-et-Garonne|Lozère|Maine-et-Loire|Manche|Marne|Haute-Marne|Mayenne|Meurthe-et-Moselle|Meuse|Morbihan|Moselle|Nièvre|Nord|Oise|Orne|Pas-de-Calais|Puy-de-Dôme|Pyrénées-Atlantiques|Hautes-Pyrénées|Pyrénées-Orientales|Bas-Rhin|Haut-Rhin|Rhône|Haute-Saône|Saône-et-Loire|Sarthe|Savoie|Haute-Savoie|Paris|Seine-Maritime|Seine-et-Marne|Yvelines|Deux-Sèvres|Somme|Tarn|Tarn-et-Garonne|Var|Vaucluse|Vendée|Vienne|Haute-Vienne|Vosges|Yonne|Territoire de Belfort|Essonne|Hauts-de-Seine|Seine-Saint-Denis|Val-de-Marne|Val-d'Oise|Guadeloupe|Martinique|Guyane|La Réunion|Mayotte))",
+        text,
+        re.IGNORECASE
+    )
     if dep_match:
         departement = clean(dep_match.group(1))
 
@@ -555,6 +559,7 @@ def build_deputes_file(scrutins, actors):
                 by_uid[uid] = {
                     "uid": uid,
                     "nom": vote["nom"],
+                    "departement": vote.get("departement", "") or actor.get("departement", ""),
                     "circonscription": vote.get("circonscription", "") or actor.get("circonscription", ""),
                     "bio": actor.get("bio", ""),
                     "group_counts": Counter(),
@@ -577,6 +582,9 @@ def build_deputes_file(scrutins, actors):
             elif vote["vote"] == "Non-votant":
                 by_uid[uid]["votes_non_votant"] += 1
 
+            if not by_uid[uid]["departement"] and vote.get("departement"):
+                by_uid[uid]["departement"] = vote["departement"]
+
             if not by_uid[uid]["circonscription"] and vote.get("circonscription"):
                 by_uid[uid]["circonscription"] = vote["circonscription"]
 
@@ -589,6 +597,7 @@ def build_deputes_file(scrutins, actors):
             "uid": uid,
             "nom": item["nom"],
             "groupe": dominant_group,
+            "departement": item["departement"] or actor.get("departement", ""),
             "circonscription": item["circonscription"] or actor.get("circonscription", ""),
             "bio": item["bio"] or actor.get("bio", ""),
             "votes_count": item["votes_count"],
@@ -633,9 +642,10 @@ def main():
 
     total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
     unique_groupes = sorted({d["groupe"] for d in deputes_file["deputes"] if d["groupe"]})
+    unique_departements = sorted({d["departement"] for d in deputes_file["deputes"] if d["departement"]})
 
     index_data = {
-        "version": "4.2",
+        "version": "4.3",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -643,6 +653,7 @@ def main():
             "votes": total_votes,
             "deputes": len(deputes_file["deputes"]),
             "groupes": len(unique_groupes),
+            "departements": len(unique_departements),
         },
         "months": sorted(month_list, key=lambda x: x["month"], reverse=True),
         "files": {
@@ -657,6 +668,7 @@ def main():
     print("Votes :", total_votes)
     print("Députés :", len(deputes_file["deputes"]))
     print("Groupes :", len(unique_groupes))
+    print("Départements :", len(unique_departements))
     print("Mois :", len(month_list))
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
