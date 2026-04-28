@@ -754,11 +754,13 @@
       return deputyDirectory.filter(d => {
         const nom = normalize(d.nom || "");
         const circ = normalize(d.circonscription || "");
+        const dep = normalize(d.departement || "");
         const groupe = normalize(d.groupe || "");
 
         return (
           nom.includes(q) ||
           circ.includes(q) ||
+          dep.includes(q) ||
           groupe.includes(q)
         );
       });
@@ -788,8 +790,9 @@
 
         const matches = deputyDirectory.filter(d => {
           const circ = normalize(d.circonscription || "");
+          const dep = normalize(d.departement || "");
           return communeNames.some(city => circ.includes(normalize(city))) ||
-                 departmentNames.some(dep => circ.includes(normalize(dep)));
+                 departmentNames.some(apiDep => dep.includes(normalize(apiDep)) || circ.includes(normalize(apiDep)));
         });
 
         if (matches.length) {
@@ -815,7 +818,7 @@
           <h3>${d.nom}</h3>
           <div class="match-meta">
             ${d.groupe || "-"}<br>
-            ${d.circonscription || "-"}
+            ${d.circonscription || d.departement || "-"}
           </div>
           <button class="secondary" data-uid="${d.uid}">Choisir ce député</button>
         </div>
@@ -854,7 +857,7 @@
       deputeName.textContent = selectedDeputy.nom || "Député inconnu";
       deputeBio.textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
       deputeGroup.textContent = selectedDeputy.groupe || "-";
-      deputeCirc.textContent = selectedDeputy.circonscription || "-";
+      deputeCirc.textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
       deputeVotesCount.textContent = formatNumber(selectedDeputyVotes.length);
 
       deputePour.textContent = formatNumber(stats.pour);
@@ -991,7 +994,7 @@
           <td>${v.nom || ""}</td>
           <td>${v.groupe || ""}</td>
           <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
-          <td>${v.circonscription || ""}</td>
+          <td>${v.circonscription || v.departement || ""}</td>
         </tr>
       `).join("");
     }
@@ -1029,11 +1032,13 @@
 
         const aScore =
           (normalize(a.nom).includes(q) ? 3 : 0) +
-          (normalize(a.circonscription).includes(q) ? 2 : 0);
+          (normalize(a.circonscription).includes(q) ? 2 : 0) +
+          (normalize(a.departement).includes(q) ? 2 : 0);
 
         const bScore =
           (normalize(b.nom).includes(q) ? 3 : 0) +
-          (normalize(b.circonscription).includes(q) ? 2 : 0);
+          (normalize(b.circonscription).includes(q) ? 2 : 0) +
+          (normalize(b.departement).includes(q) ? 2 : 0);
 
         return bScore - aScore;
       });
