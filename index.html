@@ -208,6 +208,18 @@
       line-height: 1.15;
     }
 
+    .bio-box {
+      margin: 14px 0 0;
+      background: var(--violet-soft);
+      border: 1px solid #e8ddff;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: center;
+      color: var(--text);
+    }
+
     .identity-meta {
       display: grid;
       gap: 10px;
@@ -270,11 +282,26 @@
     }
 
     .theme-card {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 16px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
       text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      font: inherit;
+      outline: none;
+    }
+
+    .theme-card:hover,
+    .theme-card.active {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      border-color: #d7c7ff;
+      background: var(--violet-soft);
     }
 
     .theme-card h3 {
@@ -297,7 +324,7 @@
 
     .filters {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -441,7 +468,7 @@
 <body>
   <header class="hero">
     <h1>Comment vote votre député ?</h1>
-    <p>Retrouvez votre député par ville, code postal, département, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
+    <p>Retrouvez votre député par ville, code postal, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
   </header>
 
   <main>
@@ -457,15 +484,15 @@
       <h2 class="panel-title">Trouver mon député</h2>
       <div class="search-depute">
         <div class="field">
-          <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
-          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
+          <label for="deputeSearch">Ville / code postal / circonscription / nom du député</label>
+          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, 3e circonscription, Hadrien Clouet">
         </div>
         <div>
           <button class="primary" id="findDeputyBtn">Voir ses votes</button>
         </div>
       </div>
       <div class="search-help">
-        La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe par l’API géographique publique pour retrouver la commune puis le département associé.
+        La recherche essaie d’abord le nom du député et la circonscription. Si tu saisis une ville ou un code postal, le site passe par l’API géographique publique pour retrouver la commune puis le département associé.
       </div>
       <div class="search-status" id="searchStatus"></div>
       <div id="matchesContainer" class="matches"></div>
@@ -476,14 +503,12 @@
       <div class="depute-card">
         <div class="identity-card">
           <h2 id="deputeName">Député à sélectionner</h2>
+          <div id="deputeBio" class="bio-box">Sélectionne un député pour afficher une courte présentation.</div>
+
           <div class="identity-meta">
             <div class="meta-row">
               <strong>Groupe</strong>
               <span id="deputeGroup">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>Département</strong>
-              <span id="deputeDepartment">-</span>
             </div>
             <div class="meta-row">
               <strong>Circonscription</strong>
@@ -527,11 +552,11 @@
     <section class="panel">
       <h2 class="panel-title">Votes par thématique</h2>
       <div class="themes-grid" id="themesContainer">
-        <div class="theme-card">
+        <button type="button" class="theme-card">
           <h3>Aucune donnée</h3>
           <strong>-</strong>
           <span>Sélectionne un député</span>
-        </div>
+        </button>
       </div>
     </section>
 
@@ -541,13 +566,6 @@
           <label for="monthFilter">Mois</label>
           <select id="monthFilter">
             <option value="">Tous les mois</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="themeFilter">Thématique</label>
-          <select id="themeFilter">
-            <option value="">Toutes les thématiques</option>
           </select>
         </div>
 
@@ -576,6 +594,7 @@
 
     <section class="panel">
       <h2 class="panel-title">Historique complet des votes</h2>
+      <div id="activeThemeStatus" class="search-status"></div>
       <div id="deputeVotesList" class="results-list">
         <div class="empty">Sélectionne un député pour afficher son historique de votes.</div>
       </div>
@@ -590,7 +609,7 @@
               <th>Député</th>
               <th>Groupe</th>
               <th>Vote</th>
-              <th>Département</th>
+              <th>Circonscription</th>
             </tr>
           </thead>
           <tbody id="detailTableBody">
@@ -614,6 +633,7 @@
     let deputyDirectory = [];
     let selectedDeputy = null;
     let selectedDeputyVotes = [];
+    let activeTheme = "";
 
     const deputeSearch = document.getElementById("deputeSearch");
     const findDeputyBtn = document.getElementById("findDeputyBtn");
@@ -621,8 +641,8 @@
     const matchesContainer = document.getElementById("matchesContainer");
 
     const deputeName = document.getElementById("deputeName");
+    const deputeBio = document.getElementById("deputeBio");
     const deputeGroup = document.getElementById("deputeGroup");
-    const deputeDepartment = document.getElementById("deputeDepartment");
     const deputeCirc = document.getElementById("deputeCirc");
     const deputeVotesCount = document.getElementById("deputeVotesCount");
 
@@ -633,12 +653,12 @@
     const deputeCompare = document.getElementById("deputeCompare");
 
     const monthFilter = document.getElementById("monthFilter");
-    const themeFilter = document.getElementById("themeFilter");
     const voteFilter = document.getElementById("voteFilter");
     const dateFilter = document.getElementById("dateFilter");
     const titleFilter = document.getElementById("titleFilter");
 
     const themesContainer = document.getElementById("themesContainer");
+    const activeThemeStatus = document.getElementById("activeThemeStatus");
     const deputeVotesList = document.getElementById("deputeVotesList");
     const detailTableBody = document.getElementById("detailTableBody");
 
@@ -708,15 +728,6 @@
         option.textContent = `${m.month} (${m.scrutins})`;
         monthFilter.appendChild(option);
       });
-
-      const themes = [...new Set(allScrutins.map(s => s.theme).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
-      themeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
-      themes.forEach(t => {
-        const option = document.createElement("option");
-        option.value = t;
-        option.textContent = t;
-        themeFilter.appendChild(option);
-      });
     }
 
     function buildFlatVotes() {
@@ -742,13 +753,11 @@
 
       return deputyDirectory.filter(d => {
         const nom = normalize(d.nom || "");
-        const dep = normalize(d.departement || "");
         const circ = normalize(d.circonscription || "");
         const groupe = normalize(d.groupe || "");
 
         return (
           nom.includes(q) ||
-          dep.includes(q) ||
           circ.includes(q) ||
           groupe.includes(q)
         );
@@ -763,52 +772,24 @@
         let url = "";
 
         if (/^\d{5}$/.test(q)) {
-          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
+          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=10`;
         } else {
-          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
+          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=10`;
         }
 
         const response = await fetch(url);
-        if (!response.ok) {
-          console.error("Erreur API geo", response.status);
-          return [];
-        }
+        if (!response.ok) return [];
 
         const communes = await response.json();
-        if (!Array.isArray(communes) || !communes.length) {
-          return [];
-        }
+        if (!Array.isArray(communes) || !communes.length) return [];
 
-        const communeNames = [...new Set(
-          communes.map(c => c?.nom || "").filter(Boolean)
-        )];
-
-        const departmentNames = [...new Set(
-          communes.map(c => c?.departement?.nom || "").filter(Boolean)
-        )];
-
-        const departmentCodes = [...new Set(
-          communes.map(c => c?.departement?.code || "").filter(Boolean)
-        )];
+        const communeNames = [...new Set(communes.map(c => c?.nom || "").filter(Boolean))];
+        const departmentNames = [...new Set(communes.map(c => c?.departement?.nom || "").filter(Boolean))];
 
         const matches = deputyDirectory.filter(d => {
-          const nom = normalize(d.nom || "");
-          const dep = normalize(d.departement || "");
           const circ = normalize(d.circonscription || "");
-
-          const depMatch = departmentNames.some(apiDep => {
-            const n = normalize(apiDep);
-            return dep.includes(n) || n.includes(dep);
-          });
-
-          const depCodeMatch = departmentCodes.some(code => dep.includes(normalize(code)));
-
-          const communeMatch = communeNames.some(city => {
-            const n = normalize(city);
-            return circ.includes(n) || nom.includes(n);
-          });
-
-          return depMatch || depCodeMatch || communeMatch;
+          return communeNames.some(city => circ.includes(normalize(city))) ||
+                 departmentNames.some(dep => circ.includes(normalize(dep)));
         });
 
         if (matches.length) {
@@ -834,7 +815,6 @@
           <h3>${d.nom}</h3>
           <div class="match-meta">
             ${d.groupe || "-"}<br>
-            ${d.departement || "-"}<br>
             ${d.circonscription || "-"}
           </div>
           <button class="secondary" data-uid="${d.uid}">Choisir ce député</button>
@@ -854,6 +834,7 @@
 
     function selectDeputy(deputy) {
       selectedDeputy = deputy;
+      activeTheme = "";
 
       selectedDeputyVotes = allVotesFlat
         .filter(v => (v.depute_uid || v.nom) === deputy.uid)
@@ -871,8 +852,8 @@
       const stats = computeStats(selectedDeputyVotes);
 
       deputeName.textContent = selectedDeputy.nom || "Député inconnu";
+      deputeBio.textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
       deputeGroup.textContent = selectedDeputy.groupe || "-";
-      deputeDepartment.textContent = selectedDeputy.departement || "-";
       deputeCirc.textContent = selectedDeputy.circonscription || "-";
       deputeVotesCount.textContent = formatNumber(selectedDeputyVotes.length);
 
@@ -893,16 +874,17 @@
     function renderThemeSummary() {
       if (!selectedDeputyVotes.length) {
         themesContainer.innerHTML = `
-          <div class="theme-card">
+          <button type="button" class="theme-card">
             <h3>Aucune donnée</h3>
             <strong>-</strong>
             <span>Sélectionne un député</span>
-          </div>
+          </button>
         `;
         return;
       }
 
       const grouped = new Map();
+
       selectedDeputyVotes.forEach(v => {
         const theme = v.scrutin_theme || "Autres";
         grouped.set(theme, (grouped.get(theme) || 0) + 1);
@@ -914,38 +896,57 @@
         .slice(0, 8);
 
       themesContainer.innerHTML = ranked.map(item => `
-        <div class="theme-card">
+        <button
+          type="button"
+          class="theme-card ${activeTheme === item.theme ? "active" : ""}"
+          data-theme="${item.theme}"
+        >
           <h3>${item.theme}</h3>
           <strong>${formatNumber(item.total)}</strong>
           <span>vote(s) sur ce thème</span>
-        </div>
+        </button>
       `).join("");
+
+      const cards = themesContainer.querySelectorAll(".theme-card[data-theme]");
+
+      cards.forEach(card => {
+        card.addEventListener("click", () => {
+          const clickedTheme = card.dataset.theme || "";
+          activeTheme = activeTheme === clickedTheme ? "" : clickedTheme;
+          renderThemeSummary();
+          renderDeputyVotes();
+        });
+      });
     }
 
     function renderDeputyVotes() {
       if (!selectedDeputy) {
         deputeVotesList.innerHTML = `<div class="empty">Sélectionne un député pour afficher son historique de votes.</div>`;
+        activeThemeStatus.textContent = "";
         return;
       }
 
       const selectedMonth = monthFilter.value;
-      const selectedTheme = themeFilter.value;
       const selectedVote = voteFilter.value;
       const dateQuery = normalize(dateFilter.value);
       const titleQuery = normalize(titleFilter.value);
 
       const filtered = selectedDeputyVotes.filter(v => {
         const monthMatch = !selectedMonth || (v.scrutin_date || "").startsWith(selectedMonth);
-        const themeMatch = !selectedTheme || (v.scrutin_theme || "") === selectedTheme;
         const voteMatch = !selectedVote || v.vote === selectedVote;
         const dateMatch = !dateQuery || normalize(v.scrutin_date || "").includes(dateQuery);
         const titleMatch =
           !titleQuery ||
           normalize(v.scrutin_titre || "").includes(titleQuery) ||
           normalize(v.scrutin_description || "").includes(titleQuery);
+        const themeMatch = !activeTheme || (v.scrutin_theme || "Autres") === activeTheme;
 
-        return monthMatch && themeMatch && voteMatch && dateMatch && titleMatch;
+        return monthMatch && voteMatch && dateMatch && titleMatch && themeMatch;
       });
+
+      activeThemeStatus.textContent = activeTheme
+        ? `Filtre thématique actif : ${activeTheme}`
+        : "";
 
       if (!filtered.length) {
         deputeVotesList.innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
@@ -990,7 +991,7 @@
           <td>${v.nom || ""}</td>
           <td>${v.groupe || ""}</td>
           <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
-          <td>${v.departement || ""}</td>
+          <td>${v.circonscription || ""}</td>
         </tr>
       `).join("");
     }
@@ -1001,7 +1002,7 @@
       searchStatus.textContent = "";
 
       if (!query) {
-        searchStatus.textContent = "Saisis un nom, une ville, un code postal, un département ou une circonscription.";
+        searchStatus.textContent = "Saisis un nom, une ville, un code postal ou une circonscription.";
         return;
       }
 
@@ -1028,12 +1029,10 @@
 
         const aScore =
           (normalize(a.nom).includes(q) ? 3 : 0) +
-          (normalize(a.departement).includes(q) ? 2 : 0) +
           (normalize(a.circonscription).includes(q) ? 2 : 0);
 
         const bScore =
           (normalize(b.nom).includes(q) ? 3 : 0) +
-          (normalize(b.departement).includes(q) ? 2 : 0) +
           (normalize(b.circonscription).includes(q) ? 2 : 0);
 
         return bScore - aScore;
@@ -1049,7 +1048,7 @@
         if (e.key === "Enter") runDeputySearch();
       });
 
-      [monthFilter, themeFilter, voteFilter, dateFilter, titleFilter].forEach(el => {
+      [monthFilter, voteFilter, dateFilter, titleFilter].forEach(el => {
         el.addEventListener("input", renderDeputyVotes);
         el.addEventListener("change", renderDeputyVotes);
       });
