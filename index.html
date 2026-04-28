@@ -130,7 +130,6 @@
     button.primary,
     button.secondary {
       width: 100%;
-      border: none;
       border-radius: 14px;
       padding: 15px 20px;
       font-size: 15px;
@@ -139,6 +138,7 @@
     }
 
     button.primary {
+      border: none;
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
       box-shadow: 0 10px 20px rgba(119, 0, 255, 0.18);
@@ -741,11 +741,16 @@
       if (!q) return [];
 
       return deputyDirectory.filter(d => {
+        const nom = normalize(d.nom || "");
+        const dep = normalize(d.departement || "");
+        const circ = normalize(d.circonscription || "");
+        const groupe = normalize(d.groupe || "");
+
         return (
-          normalize(d.nom).includes(q) ||
-          normalize(d.departement).includes(q) ||
-          normalize(d.circonscription).includes(q) ||
-          normalize(d.groupe).includes(q)
+          nom.includes(q) ||
+          dep.includes(q) ||
+          circ.includes(q) ||
+          groupe.includes(q)
         );
       });
     }
@@ -756,34 +761,65 @@
 
       try {
         let url = "";
+
         if (/^\d{5}$/.test(q)) {
-          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5`;
+          url = `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
         } else {
-          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5`;
+          url = `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,code,codesPostaux,departement&boost=population&limit=10`;
         }
 
         const response = await fetch(url);
-        if (!response.ok) return [];
+        if (!response.ok) {
+          console.error("Erreur API geo", response.status);
+          return [];
+        }
 
         const communes = await response.json();
-        if (!Array.isArray(communes) || !communes.length) return [];
+        if (!Array.isArray(communes) || !communes.length) {
+          return [];
+        }
 
-        const departments = [...new Set(
-          communes
-            .map(c => c?.departement?.nom || "")
-            .filter(Boolean)
+        const communeNames = [...new Set(
+          communes.map(c => c?.nom || "").filter(Boolean)
         )];
 
-        const matches = deputyDirectory.filter(d =>
-          departments.some(dep => normalize(d.departement) === normalize(dep))
-        );
+        const departmentNames = [...new Set(
+          communes.map(c => c?.departement?.nom || "").filter(Boolean)
+        )];
+
+        const departmentCodes = [...new Set(
+          communes.map(c => c?.departement?.code || "").filter(Boolean)
+        )];
+
+        const matches = deputyDirectory.filter(d => {
+          const nom = normalize(d.nom || "");
+          const dep = normalize(d.departement || "");
+          const circ = normalize(d.circonscription || "");
+
+          const depMatch = departmentNames.some(apiDep => {
+            const n = normalize(apiDep);
+            return dep.includes(n) || n.includes(dep);
+          });
+
+          const depCodeMatch = departmentCodes.some(code => dep.includes(normalize(code)));
+
+          const communeMatch = communeNames.some(city => {
+            const n = normalize(city);
+            return circ.includes(n) || nom.includes(n);
+          });
+
+          return depMatch || depCodeMatch || communeMatch;
+        });
 
         if (matches.length) {
-          searchStatus.textContent = `Recherche géographique : ${communes[0].nom} → ${communes[0].departement?.nom || ""}`;
+          const firstCity = communeNames[0] || "";
+          const firstDep = departmentNames[0] || "";
+          searchStatus.textContent = `Recherche géographique : ${firstCity}${firstDep ? " → " + firstDep : ""}`;
         }
 
         return matches;
-      } catch (e) {
+      } catch (error) {
+        console.error("geoSearch error", error);
         return [];
       }
     }
@@ -808,7 +844,10 @@
       matchesContainer.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("click", () => {
           const deputy = deputyDirectory.find(d => d.uid === btn.dataset.uid);
-          if (deputy) selectDeputy(deputy);
+          if (deputy) {
+            selectDeputy(deputy);
+            matchesContainer.innerHTML = "";
+          }
         });
       });
     }
@@ -984,8 +1023,24 @@
         return;
       }
 
+      matches.sort((a, b) => {
+        const q = normalize(query);
+
+        const aScore =
+          (normalize(a.nom).includes(q) ? 3 : 0) +
+          (normalize(a.departement).includes(q) ? 2 : 0) +
+          (normalize(a.circonscription).includes(q) ? 2 : 0);
+
+        const bScore =
+          (normalize(b.nom).includes(q) ? 3 : 0) +
+          (normalize(b.departement).includes(q) ? 2 : 0) +
+          (normalize(b.circonscription).includes(q) ? 2 : 0);
+
+        return bScore - aScore;
+      });
+
       searchStatus.textContent = `${matches.length} résultat(s) trouvés. Choisis un député.`;
-      renderMatches(matches);
+      renderMatches(matches.slice(0, 12));
     }
 
     function bindEvents() {
@@ -1002,8 +1057,7 @@
 
     async function init() {
       try {
-        const indexResponse = await loadJson("./data/current/index.json");
-        indexData = indexResponse;
+        indexData = await loadJson("./data/current/index.json");
 
         const months = indexData?.months || [];
         const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
