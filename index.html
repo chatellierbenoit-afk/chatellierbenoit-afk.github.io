@@ -160,7 +160,8 @@
     }
 
     .search-help,
-    .search-status {
+    .search-status,
+    .small-muted {
       margin-top: 14px;
       text-align: center;
       color: var(--muted);
@@ -176,7 +177,6 @@
     }
 
     .match-card,
-    .group-card,
     .scrutin-card {
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -185,15 +185,13 @@
     }
 
     .match-card h3,
-    .group-card h3,
     .scrutin-card h3 {
       margin: 0 0 8px;
       font-size: 22px;
       text-align: center;
     }
 
-    .match-meta,
-    .small-muted {
+    .match-meta {
       color: var(--muted);
       font-size: 14px;
       text-align: center;
@@ -290,14 +288,14 @@
     }
 
     .themes-grid,
-    .groups-grid,
-    .scrutins-grid {
+    .groups-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
 
-    .theme-card {
+    .theme-card,
+    .group-card {
       appearance: none;
       -webkit-appearance: none;
       width: 100%;
@@ -313,14 +311,17 @@
     }
 
     .theme-card:hover,
-    .theme-card.active {
+    .theme-card.active,
+    .group-card:hover,
+    .group-card.active {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
       border-color: #d7c7ff;
       background: var(--violet-soft);
     }
 
-    .theme-card h3 {
+    .theme-card h3,
+    .group-card h3 {
       margin: 0 0 8px;
       font-size: 18px;
       line-height: 1.25;
@@ -462,8 +463,7 @@
       .summary-grid,
       .filters,
       .matches,
-      .groups-grid,
-      .scrutins-grid {
+      .groups-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -475,8 +475,7 @@
       .summary-grid,
       .filters,
       .matches,
-      .groups-grid,
-      .scrutins-grid {
+      .groups-grid {
         grid-template-columns: 1fr;
       }
 
@@ -634,6 +633,11 @@
         <h2 class="panel-title">Groupes politiques</h2>
         <div id="groupsContainer" class="groups-grid"></div>
       </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Détail du groupe</h2>
+        <div id="groupDetailContainer" class="empty">Clique sur un groupe pour afficher son détail.</div>
+      </section>
     </div>
 
     <div id="viewScrutins" class="view">
@@ -690,6 +694,7 @@
     let selectedDeputy = null;
     let selectedDeputyVotes = [];
     let activeTheme = "";
+    let selectedGroup = null;
 
     const tabDeputy = document.getElementById("tabDeputy");
     const tabGroups = document.getElementById("tabGroups");
@@ -731,6 +736,7 @@
     const deputeVotesList = document.getElementById("deputeVotesList");
     const detailTableBody = document.getElementById("detailTableBody");
     const groupsContainer = document.getElementById("groupsContainer");
+    const groupDetailContainer = document.getElementById("groupDetailContainer");
     const scrutinsContainer = document.getElementById("scrutinsContainer");
 
     function formatNumber(value) {
@@ -795,6 +801,15 @@
       };
     }
 
+    function dominantVoteLabel(stats) {
+      return Object.entries({
+        Pour: stats.pour || 0,
+        Contre: stats.contre || 0,
+        Abstention: stats.abstention || 0,
+        "Non-votant": stats.non_votant || 0
+      }).sort((a, b) => b[1] - a[1])[0][0];
+    }
+
     async function loadJson(path) {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Impossible de charger ${path}`);
@@ -812,6 +827,7 @@
 
       months.forEach(m => {
         const label = `${m.month} (${m.scrutins})`;
+
         const option1 = document.createElement("option");
         option1.value = m.month;
         option1.textContent = label;
@@ -946,6 +962,7 @@
     function selectDeputy(deputy) {
       selectedDeputy = deputy;
       activeTheme = "";
+
       selectedDeputyVotes = allVotesFlat
         .filter(v => (v.depute_uid || v.nom) === deputy.uid)
         .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
@@ -1104,34 +1121,121 @@
           const stats = computeStats(votes);
           return {
             group,
+            votes,
             total: votes.length,
-            dominant: Object.entries({
-              Pour: stats.pour,
-              Contre: stats.contre,
-              Abstention: stats.abstention,
-              "Non-votant": stats.non_votant
-            }).sort((a, b) => b[1] - a[1])[0][0]
+            stats,
+            dominant: dominantVoteLabel(stats)
           };
         })
         .sort((a, b) => b.total - a.total);
 
       groupsContainer.innerHTML = cards.map(item => `
-        <div class="group-card">
+        <button type="button" class="group-card ${selectedGroup === item.group ? "active" : ""}" data-group="${item.group}">
           <h3>${item.group}</h3>
           <div class="group-number">${formatNumber(item.total)}</div>
           <div class="small-muted">votes recensés</div>
           <div class="small-muted">Vote dominant : ${item.dominant}</div>
-        </div>
+        </button>
       `).join("");
+
+      groupsContainer.querySelectorAll(".group-card[data-group]").forEach(card => {
+        card.addEventListener("click", () => {
+          selectedGroup = card.dataset.group || "";
+          renderGroups();
+          renderGroupDetail(selectedGroup);
+        });
+      });
     }
 
-    function dominantVoteFromStats(stats) {
-      return Object.entries({
-        Pour: stats.pour || 0,
-        Contre: stats.contre || 0,
-        Abstention: stats.abstention || 0,
-        "Non-votant": stats.non_votant || 0
-      }).sort((a, b) => b[1] - a[1])[0][0];
+    function renderGroupDetail(groupName) {
+      if (!groupName) {
+        groupDetailContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher son détail.</div>`;
+        return;
+      }
+
+      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+      const stats = computeStats(groupVotes);
+
+      const themeMap = new Map();
+      groupVotes.forEach(v => {
+        const theme = v.scrutin_theme || "Autres";
+        themeMap.set(theme, (themeMap.get(theme) || 0) + 1);
+      });
+
+      const topThemes = [...themeMap.entries()]
+        .map(([theme, total]) => ({ theme, total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 6);
+
+      const scrutinsMap = new Map();
+      groupVotes.forEach(v => {
+        if (!scrutinsMap.has(v.scrutin_uid)) {
+          scrutinsMap.set(v.scrutin_uid, {
+            uid: v.scrutin_uid,
+            date: v.scrutin_date,
+            theme: v.scrutin_theme,
+            scrutin: v.scrutin_full
+          });
+        }
+      });
+
+      const scrutins = [...scrutinsMap.values()]
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+        .slice(0, 20);
+
+      groupDetailContainer.innerHTML = `
+        <div class="depute-card">
+          <div class="identity-card">
+            <h2>${groupName}</h2>
+            <div class="identity-meta">
+              <div class="meta-row">
+                <strong>Votes recensés</strong>
+                <span>${formatNumber(groupVotes.length)}</span>
+              </div>
+              <div class="meta-row">
+                <strong>Vote dominant</strong>
+                <span>${dominantVoteLabel(stats)}</span>
+              </div>
+            </div>
+
+            <div class="chips" style="margin-top:16px;">
+              ${topThemes.map(t => `<span class="chip">${t.theme} · ${formatNumber(t.total)}</span>`).join("")}
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
+            <div class="summary-grid">
+              <div class="summary-box"><strong>${formatNumber(stats.pour)}</strong><span>Pour</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.contre)}</strong><span>Contre</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.abstention)}</strong><span>Abstention</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.non_votant)}</strong><span>Non-votant</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;" class="results-list">
+          ${scrutins.map(item => `
+            <article class="scrutin-card group-scrutin-card" data-scrutin="${item.uid}" style="cursor:pointer;">
+              <div class="small-muted">${item.date || ""} · ${item.theme || "Autres"}</div>
+              <h3>${shortTitle(item.scrutin)}</h3>
+              <p class="vote-description">${shortDescription(item.scrutin)}</p>
+            </article>
+          `).join("")}
+        </div>
+      `;
+
+      groupDetailContainer.querySelectorAll(".group-scrutin-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const uid = card.dataset.scrutin;
+          const found = allScrutins.find(s => s.uid === uid);
+          if (found) {
+            renderScrutinDetail(found);
+            setActiveView("scrutins");
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }
+        });
+      });
     }
 
     function renderAllScrutins() {
@@ -1144,7 +1248,7 @@
         const monthMatch = !month || (s.date || "").startsWith(month);
         const themeMatch = !theme || (s.theme || "") === theme;
         const textMatch = !text || normalize(s.titre || "").includes(text) || normalize(s.description || "").includes(text);
-        const domMatch = !dominantVote || dominantVoteFromStats(s.stats || {}) === dominantVote;
+        const domMatch = !dominantVote || dominantVoteLabel(s.stats || {}) === dominantVote;
         return monthMatch && themeMatch && textMatch && domMatch;
       });
 
@@ -1156,13 +1260,13 @@
       }
 
       scrutinsContainer.innerHTML = filtered.map(s => `
-        <article class="scrutin-card" data-scrutin="${s.uid}">
+        <article class="scrutin-card" data-scrutin="${s.uid}" style="cursor:pointer;">
           <div class="small-muted">${s.date || ""} · ${s.theme || "Autres"}</div>
           <h3>${shortTitle(s)}</h3>
           <p class="vote-description">${shortDescription(s)}</p>
           <div class="chips">
             <span class="chip">${s.theme || "Autres"}</span>
-            <span class="chip">Dominant : ${dominantVoteFromStats(s.stats || {})}</span>
+            <span class="chip">Dominant : ${dominantVoteLabel(s.stats || {})}</span>
           </div>
         </article>
       `).join("");
@@ -1173,7 +1277,6 @@
           const found = allScrutins.find(s => s.uid === uid);
           if (found) {
             renderScrutinDetail(found);
-            setActiveView("scrutins");
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
           }
         });
