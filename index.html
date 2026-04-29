@@ -684,7 +684,29 @@
       </section>
 
       <section class="panel">
+        <h2 class="panel-title">Liste des scrutins</h2>
         <div id="scrutinsContainer" class="results-list"></div>
+      </section>
+
+      <section class="panel" id="scrutinDetailPanel">
+        <h2 class="panel-title">Détail du scrutin</h2>
+        <div class="detail-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Député</th>
+                <th>Groupe</th>
+                <th>Vote</th>
+                <th>Circonscription</th>
+              </tr>
+            </thead>
+            <tbody id="globalDetailTableBody">
+              <tr>
+                <td colspan="4" class="empty">Clique sur un scrutin pour afficher le détail nominatif.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
 
@@ -746,6 +768,8 @@
     const groupDetailContainer = document.getElementById("groupDetailContainer");
     const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
     const scrutinsContainer = document.getElementById("scrutinsContainer");
+    const globalDetailTableBody = document.getElementById("globalDetailTableBody");
+    const scrutinDetailPanel = document.getElementById("scrutinDetailPanel");
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
@@ -1093,19 +1117,19 @@
         card.addEventListener("click", () => {
           const uid = card.dataset.scrutin;
           const found = allScrutins.find(s => s.uid === uid);
-          if (found) renderScrutinDetail(found);
+          if (found) renderScrutinDetail(found, "deputy");
         });
       });
     }
 
-    function renderScrutinDetail(scrutin) {
+    function renderScrutinDetail(scrutin, target = "deputy") {
       const votes = ensureArray(scrutin.votes).slice().sort((a, b) => {
         const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
         if (g !== 0) return g;
         return (a.nom || "").localeCompare(b.nom || "", "fr");
       });
 
-      detailTableBody.innerHTML = votes.map(v => `
+      const rows = votes.map(v => `
         <tr>
           <td>${v.nom || ""}</td>
           <td>${v.groupe || ""}</td>
@@ -1113,6 +1137,13 @@
           <td>${v.circonscription || v.departement || ""}</td>
         </tr>
       `).join("");
+
+      if (target === "scrutins") {
+        globalDetailTableBody.innerHTML = rows || `<tr><td colspan="4" class="empty">Aucune donnée nominative.</td></tr>`;
+        scrutinDetailPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        detailTableBody.innerHTML = rows || `<tr><td colspan="4" class="empty">Aucune donnée nominative.</td></tr>`;
+      }
     }
 
     function renderGroups() {
@@ -1240,9 +1271,8 @@
           const uid = card.dataset.scrutin;
           const found = allScrutins.find(s => s.uid === uid);
           if (found) {
-            renderScrutinDetail(found);
             setActiveView("scrutins");
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+            renderScrutinDetail(found, "scrutins");
           }
         });
       });
@@ -1322,8 +1352,7 @@
           const uid = card.dataset.scrutin;
           const found = allScrutins.find(s => s.uid === uid);
           if (found) {
-            renderScrutinDetail(found);
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+            renderScrutinDetail(found, "scrutins");
           }
         });
       });
