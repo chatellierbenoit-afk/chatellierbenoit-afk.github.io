@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche groupe</title>
+  <style>
+    :root {
+      --violet: #7700FF;
+      --violet-dark: #5b00c7;
+      --violet-soft: #f3edff;
+      --card: #ffffff;
+      --text: #1e1c26;
+      --muted: #6f6a7e;
+      --border: #e7e2f2;
+      --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f8f6fd 0%, #f3f0fb 100%);
+      color: var(--text);
+    }
+
+    header.hero {
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+      color: white;
+      padding: 36px 20px 30px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
+    }
+
+    .top-links {
+      max-width: 1480px;
+      margin: 18px auto 0;
+      padding: 0 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .top-links a {
+      display: inline-block;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      font-weight: 700;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.12;
+    }
+
+    .hero p {
+      margin: 12px auto 0;
+      font-size: 17px;
+      max-width: 900px;
+      line-height: 1.45;
+      opacity: 0.98;
+    }
+
+    main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 16px 52px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      margin: 0 0 18px;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .depute-card {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .identity-card,
+    .summary-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+    }
+
+    .identity-card h2 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .identity-meta {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .meta-row strong { font-size: 14px; }
+    .meta-row span { color: var(--muted); text-align: right; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .summary-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .summary-box strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 6px;
+      color: var(--violet);
+    }
+
+    .summary-box span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chips {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .chip {
+      display: inline-block;
+      margin: 4px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #efe8ff;
+      color: #41178d;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .groups-grid,
+    .results-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .group-card,
+    .scrutin-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .group-card:hover,
+    .scrutin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      background: var(--violet-soft);
+    }
+
+    .group-card h3,
+    .scrutin-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .group-number {
+      display: block;
+      font-size: 26px;
+      color: var(--violet);
+      margin-bottom: 6px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .small-muted {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .vote-description {
+      margin: 0;
+      background: var(--violet-soft);
+      border: 1px solid #e8ddff;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 8px;
+    }
+
+    @media (max-width: 1250px) {
+      .depute-card,
+      .summary-grid,
+      .groups-grid,
+      .results-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .depute-card,
+      .summary-grid,
+      .groups-grid,
+      .results-list {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 { font-size: 32px; }
+      main { padding: 18px 12px 36px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="top-links">
+      <a href="index.html">Accueil</a>
+    </div>
+    <h1 id="pageTitle">Fiche groupe</h1>
+    <p id="pageSubtitle">Chargement…</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2 class="panel-title">Résumé du groupe</h2>
+      <div id="groupDetailContainer"></div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Députés du groupe</h2>
+      <div id="groupDeputiesContainer" class="groups-grid"></div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Scrutins récents du groupe</h2>
+      <div id="groupScrutinsContainer" class="results-list"></div>
+    </section>
+  </main>
+
+  <script>
+    let allScrutins = [];
+    let allVotesFlat = [];
+    let deputyDirectory = [];
+    let groupName = "";
+
+    const pageTitle = document.getElementById("pageTitle");
+    const pageSubtitle = document.getElementById("pageSubtitle");
+    const groupDetailContainer = document.getElementById("groupDetailContainer");
+    const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
+    const groupScrutinsContainer = document.getElementById("groupScrutinsContainer");
+
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name) || "";
+    }
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat("fr-FR").format(value || 0);
+    }
+
+    function ensureArray(v) {
+      return Array.isArray(v) ? v : [];
+    }
+
+    function computeStats(votes) {
+      return {
+        pour: votes.filter(v => v.vote === "Pour").length,
+        contre: votes.filter(v => v.vote === "Contre").length,
+        abstention: votes.filter(v => v.vote === "Abstention").length,
+        non_votant: votes.filter(v => v.vote === "Non-votant").length,
+      };
+    }
+
+    function dominantVoteLabel(stats) {
+      return Object.entries({
+        Pour: stats.pour || 0,
+        Contre: stats.contre || 0,
+        Abstention: stats.abstention || 0,
+        "Non-votant": stats.non_votant || 0
+      }).sort((a, b) => b[1] - a[1])[0][0];
+    }
+
+    function shortTitle(scrutin) {
+      const title = (scrutin.titre || "").trim();
+      const mSous = title.match(/(sous-amendement n°\s*\d+)/i);
+      const mAmend = title.match(/(amendement n°\s*\d+)/i);
+      const mArticle = title.match(/(article\s+[0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
+
+      if (mSous && mArticle) return `${mSous[1]} sur ${mArticle[1]}`;
+      if (mSous) return mSous[1];
+      if (mAmend && mArticle) return `${mAmend[1]} sur ${mArticle[1]}`;
+      if (mAmend) return mAmend[1];
+      if (mArticle) return mArticle[1];
+
+      if (title.length > 120) return title.slice(0, 117).trim() + "…";
+      return title || "Scrutin sans titre";
+    }
+
+    function shortDescription(scrutin) {
+      const desc = (scrutin.description || scrutin.titre || "").trim();
+      if (desc.length > 220) return desc.slice(0, 217).trim() + "…";
+      return desc;
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
+      return response.json();
+    }
+
+    async function loadMonthFile(filePath) {
+      return loadJson("./" + filePath);
+    }
+
+    function buildFlatVotes() {
+      allVotesFlat = [];
+      allScrutins.forEach(scrutin => {
+        ensureArray(scrutin.votes).forEach(vote => {
+          allVotesFlat.push({
+            ...vote,
+            scrutin_uid: scrutin.uid,
+            scrutin_date: scrutin.date,
+            scrutin_theme: scrutin.theme,
+            scrutin_titre: scrutin.titre,
+            scrutin_description: scrutin.description,
+            scrutin_full: scrutin
+          });
+        });
+      });
+    }
+
+    function renderGroupDetail() {
+      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+      const stats = computeStats(groupVotes);
+
+      const themeMap = new Map();
+      groupVotes.forEach(v => {
+        const theme = v.scrutin_theme || "Autres";
+        themeMap.set(theme, (themeMap.get(theme) || 0) + 1);
+      });
+
+      const topThemes = [...themeMap.entries()]
+        .map(([theme, total]) => ({ theme, total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 6);
+
+      pageTitle.textContent = groupName;
+      pageSubtitle.textContent = `${formatNumber(groupVotes.length)} votes recensés · Vote dominant : ${dominantVoteLabel(stats)}`;
+
+      groupDetailContainer.innerHTML = `
+        <div class="depute-card">
+          <div class="identity-card">
+            <h2>${groupName}</h2>
+            <div class="identity-meta">
+              <div class="meta-row">
+                <strong>Votes recensés</strong>
+                <span>${formatNumber(groupVotes.length)}</span>
+              </div>
+              <div class="meta-row">
+                <strong>Vote dominant</strong>
+                <span>${dominantVoteLabel(stats)}</span>
+              </div>
+            </div>
+
+            <div class="chips">
+              ${topThemes.map(t => `<span class="chip">${t.theme} · ${formatNumber(t.total)}</span>`).join("")}
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
+            <div class="summary-grid">
+              <div class="summary-box"><strong>${formatNumber(stats.pour)}</strong><span>Pour</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.contre)}</strong><span>Contre</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.abstention)}</strong><span>Abstention</span></div>
+              <div class="summary-box"><strong>${formatNumber(stats.non_votant)}</strong><span>Non-votant</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGroupDeputies() {
+      const deputies = deputyDirectory
+        .filter(d => (d.groupe || "Inconnu") === groupName)
+        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
+
+      if (!deputies.length) {
+        groupDeputiesContainer.innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
+        return;
+      }
+
+      groupDeputiesContainer.innerHTML = deputies.map(d => `
+        <a class="group-card" href="depute.html?uid=${encodeURIComponent(d.uid)}">
+          <h3>${d.nom || "Député inconnu"}</h3>
+          <div class="small-muted">${d.circonscription || d.departement || "-"}</div>
+          <div class="group-number">${formatNumber(d.votes_count || 0)}</div>
+          <div class="small-muted">votes recensés</div>
+        </a>
+      `).join("");
+    }
+
+    function renderGroupScrutins() {
+      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+
+      const scrutinsMap = new Map();
+      groupVotes.forEach(v => {
+        if (!scrutinsMap.has(v.scrutin_uid)) {
+          scrutinsMap.set(v.scrutin_uid, {
+            uid: v.scrutin_uid,
+            date: v.scrutin_date,
+            theme: v.scrutin_theme,
+            scrutin: v.scrutin_full
+          });
+        }
+      });
+
+      const scrutins = [...scrutinsMap.values()]
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+        .slice(0, 40);
+
+      if (!scrutins.length) {
+        groupScrutinsContainer.innerHTML = `<div class="empty">Aucun scrutin trouvé pour ce groupe.</div>`;
+        return;
+      }
+
+      groupScrutinsContainer.innerHTML = scrutins.map(item => `
+        <a class="scrutin-card" href="scrutin.html?uid=${encodeURIComponent(item.uid)}">
+          <div class="small-muted">${item.date || ""} · ${item.theme || "Autres"}</div>
+          <h3>${shortTitle(item.scrutin)}</h3>
+          <p class="vote-description">${shortDescription(item.scrutin)}</p>
+        </a>
+      `).join("");
+    }
+
+    async function init() {
+      try {
+        groupName = getParam("name");
+
+        if (!groupName) {
+          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Nom de groupe manquant.</div></section>`;
+          return;
+        }
+
+        const indexData = await loadJson("./data/current/index.json");
+        const months = indexData?.months || [];
+        const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
+        allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
+
+        const deputesPayload = await loadJson("./data/current/deputes.json");
+        deputyDirectory = deputesPayload.deputes || [];
+
+        buildFlatVotes();
+        renderGroupDetail();
+        renderGroupDeputies();
+        renderGroupScrutins();
+      } catch (error) {
+        console.error(error);
+        document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
