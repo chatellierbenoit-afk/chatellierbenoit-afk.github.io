@@ -638,6 +638,13 @@
         <h2 class="panel-title">Détail du groupe</h2>
         <div id="groupDetailContainer" class="empty">Clique sur un groupe pour afficher son détail.</div>
       </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Députés du groupe</h2>
+        <div id="groupDeputiesContainer" class="groups-grid">
+          <div class="empty">Clique sur un groupe pour afficher ses députés.</div>
+        </div>
+      </section>
     </div>
 
     <div id="viewScrutins" class="view">
@@ -737,6 +744,7 @@
     const detailTableBody = document.getElementById("detailTableBody");
     const groupsContainer = document.getElementById("groupsContainer");
     const groupDetailContainer = document.getElementById("groupDetailContainer");
+    const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
     const scrutinsContainer = document.getElementById("scrutinsContainer");
 
     function formatNumber(value) {
@@ -1143,6 +1151,7 @@
           selectedGroup = card.dataset.group || "";
           renderGroups();
           renderGroupDetail(selectedGroup);
+          renderGroupDeputies(selectedGroup);
         });
       });
     }
@@ -1150,6 +1159,7 @@
     function renderGroupDetail(groupName) {
       if (!groupName) {
         groupDetailContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher son détail.</div>`;
+        groupDeputiesContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher ses députés.</div>`;
         return;
       }
 
@@ -1233,6 +1243,42 @@
             renderScrutinDetail(found);
             setActiveView("scrutins");
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }
+        });
+      });
+    }
+
+    function renderGroupDeputies(groupName) {
+      if (!groupName) {
+        groupDeputiesContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher ses députés.</div>`;
+        return;
+      }
+
+      const deputies = deputyDirectory
+        .filter(d => (d.groupe || "Inconnu") === groupName)
+        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
+
+      if (!deputies.length) {
+        groupDeputiesContainer.innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
+        return;
+      }
+
+      groupDeputiesContainer.innerHTML = deputies.map(d => `
+        <button type="button" class="group-card group-deputy-card" data-uid="${d.uid}">
+          <h3>${d.nom || "Député inconnu"}</h3>
+          <div class="small-muted">${d.circonscription || d.departement || "-"}</div>
+          <div class="group-number">${formatNumber(d.votes_count || 0)}</div>
+          <div class="small-muted">votes recensés</div>
+        </button>
+      `).join("");
+
+      groupDeputiesContainer.querySelectorAll(".group-deputy-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const deputy = deputyDirectory.find(d => d.uid === card.dataset.uid);
+          if (deputy) {
+            selectDeputy(deputy);
+            setActiveView("deputy");
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }
         });
       });
