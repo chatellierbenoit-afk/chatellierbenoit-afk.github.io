@@ -74,47 +74,16 @@
       letter-spacing: -0.01em;
     }
 
-    .top-switch {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .top-switch button {
-      min-width: 190px;
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 13px 20px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: none;
-      transition: 0.15s ease;
-    }
-
-    .top-switch button.active {
-      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
-      color: white;
-      border-color: transparent;
-      box-shadow: 0 10px 20px rgba(119, 0, 255, 0.18);
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .search-depute {
+    .search-grid,
+    .filters {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 14px;
       align-items: end;
+    }
+
+    .filters {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .field label {
@@ -137,23 +106,30 @@
     }
 
     button.primary,
-    button.secondary {
+    button.secondary,
+    a.primary-link,
+    a.secondary-link {
+      display: inline-block;
       width: 100%;
       border-radius: 14px;
       padding: 15px 20px;
       font-size: 15px;
       font-weight: 700;
+      text-align: center;
+      text-decoration: none;
       cursor: pointer;
     }
 
-    button.primary {
+    button.primary,
+    a.primary-link {
       border: none;
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
       box-shadow: 0 10px 20px rgba(119, 0, 255, 0.18);
     }
 
-    button.secondary {
+    button.secondary,
+    a.secondary-link {
       background: white;
       color: var(--text);
       border: 1px solid var(--border);
@@ -169,227 +145,58 @@
       line-height: 1.45;
     }
 
-    .matches {
+    .cards,
+    .matches,
+    .groups-grid,
+    .scrutins-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      gap: 14px;
       margin-top: 16px;
     }
 
-    .match-card,
-    .scrutin-card {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-    }
-
-    .match-card h3,
-    .scrutin-card h3 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      text-align: center;
-    }
-
-    .match-meta {
-      color: var(--muted);
-      font-size: 14px;
-      text-align: center;
-      line-height: 1.45;
-      margin-bottom: 12px;
-    }
-
-    .depute-card {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-    }
-
-    .identity-card,
-    .summary-card {
+    .group-card,
+    .scrutin-card,
+    .match-card {
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 22px;
+      padding: 18px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-    }
-
-    .identity-card h2 {
-      margin: 0 0 12px;
-      font-size: 34px;
-      text-align: center;
-      line-height: 1.15;
-    }
-
-    .bio-box {
-      margin: 14px 0 0;
-      background: var(--violet-soft);
-      border: 1px solid #e8ddff;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 1.5;
-      text-align: center;
+      text-decoration: none;
       color: var(--text);
-    }
-
-    .identity-meta {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: white;
-    }
-
-    .meta-row strong { font-size: 14px; }
-    .meta-row span { color: var(--muted); text-align: right; }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .summary-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .summary-box strong {
       display: block;
-      font-size: 24px;
-      margin-bottom: 6px;
-    }
-
-    .summary-box span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .compare-box {
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      background: var(--violet-soft);
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .themes-grid,
-    .groups-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .theme-card,
-    .group-card {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      text-align: center;
-      cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      font: inherit;
-      outline: none;
     }
 
-    .theme-card:hover,
-    .theme-card.active,
     .group-card:hover,
-    .group-card.active {
+    .scrutin-card:hover,
+    .match-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
-      border-color: #d7c7ff;
       background: var(--violet-soft);
     }
 
-    .theme-card h3,
-    .group-card h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
+    .group-card h3,
+    .scrutin-card h3,
+    .match-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-align: center;
       line-height: 1.25;
     }
 
-    .theme-card strong,
     .group-number {
       display: block;
-      font-size: 26px;
-      color: var(--violet);
-      margin-bottom: 6px;
-    }
-
-    .theme-card span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .results-list {
-      display: grid;
-      gap: 18px;
-    }
-
-    .vote-card {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      cursor: pointer;
-    }
-
-    .vote-context {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .vote-card h3 {
-      margin: 0 0 10px;
-      text-align: center;
       font-size: 28px;
-      line-height: 1.22;
-      letter-spacing: -0.02em;
-    }
-
-    .vote-description {
-      margin: 0;
-      background: var(--violet-soft);
-      border: 1px solid #e8ddff;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 1.5;
+      color: var(--violet);
       text-align: center;
+      margin-bottom: 6px;
+      font-weight: 700;
     }
 
     .chips {
       text-align: center;
-      margin-top: 16px;
-      margin-bottom: 14px;
+      margin-top: 12px;
     }
 
     .chip {
@@ -401,46 +208,6 @@
       color: #41178d;
       font-size: 13px;
       font-weight: 700;
-    }
-
-    .vote-line {
-      margin-top: 14px;
-      text-align: center;
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .vote-Pour { color: var(--success); }
-    .vote-Contre { color: var(--danger); }
-    .vote-Abstention { color: var(--warning); }
-    .vote-Non-votant { color: #666; }
-
-    .detail-table {
-      max-height: 760px;
-      overflow: auto;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    th, td {
-      padding: 11px 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 14px;
-      vertical-align: top;
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-      background: #f6f2ff;
-      z-index: 1;
     }
 
     .empty {
@@ -457,30 +224,27 @@
     }
 
     @media (max-width: 1250px) {
-      .depute-card,
-      .search-depute,
-      .themes-grid,
-      .summary-grid,
-      .filters,
+      .cards,
       .matches,
-      .groups-grid {
+      .groups-grid,
+      .scrutins-grid,
+      .filters,
+      .search-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 760px) {
-      .depute-card,
-      .search-depute,
-      .themes-grid,
-      .summary-grid,
-      .filters,
+      .cards,
       .matches,
-      .groups-grid {
+      .groups-grid,
+      .scrutins-grid,
+      .filters,
+      .search-grid {
         grid-template-columns: 1fr;
       }
 
       .hero h1 { font-size: 34px; }
-      .vote-card h3 { font-size: 22px; }
       main { padding: 18px 12px 36px; }
     }
   </style>
@@ -488,227 +252,69 @@
 <body>
   <header class="hero">
     <h1>Comment vote votre député ?</h1>
-    <p>Retrouvez votre député par ville, code postal, département, circonscription ou nom, puis consultez l’ensemble de ses votes à l’Assemblée nationale.</p>
+    <p>Retrouvez votre député par ville, code postal, département, circonscription ou nom, puis consultez ses votes, les groupes politiques et tous les scrutins.</p>
   </header>
 
   <main>
     <section class="panel">
-      <div class="top-switch">
-        <button id="tabDeputy" class="active" type="button">Mon député</button>
-        <button id="tabGroups" type="button">Groupes politiques</button>
-        <button id="tabScrutins" type="button">Tous les scrutins</button>
+      <h2 class="panel-title">Trouver mon député</h2>
+      <div class="search-grid">
+        <div class="field">
+          <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
+          <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
+        </div>
+        <div>
+          <button class="primary" id="findDeputyBtn" type="button">Voir ses votes</button>
+        </div>
       </div>
+      <div class="search-help">
+        La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe aussi par l’API géographique publique.
+      </div>
+      <div class="search-status" id="searchStatus"></div>
+      <div id="matchesContainer" class="matches"></div>
     </section>
 
-    <div id="viewDeputy" class="view active">
-      <section class="panel">
-        <h2 class="panel-title">Trouver mon député</h2>
-        <div class="search-depute">
-          <div class="field">
-            <label for="deputeSearch">Ville / code postal / département / circonscription / nom du député</label>
-            <input id="deputeSearch" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
-          </div>
-          <div>
-            <button class="primary" id="findDeputyBtn" type="button">Voir ses votes</button>
-          </div>
+    <section class="panel">
+      <h2 class="panel-title">Accès rapide aux groupes politiques</h2>
+      <div id="groupsContainer" class="groups-grid"></div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Explorer tous les scrutins</h2>
+      <div class="filters">
+        <div class="field">
+          <label for="globalMonthFilter">Mois</label>
+          <select id="globalMonthFilter">
+            <option value="">Tous les mois</option>
+          </select>
         </div>
-        <div class="search-help">
-          La recherche essaie d’abord le nom du député, le département et la circonscription. Si tu saisis une ville ou un code postal, le site passe aussi par l’API géographique publique.
+
+        <div class="field">
+          <label for="globalThemeFilter">Thématique</label>
+          <select id="globalThemeFilter">
+            <option value="">Toutes les thématiques</option>
+          </select>
         </div>
-        <div class="search-status" id="searchStatus"></div>
-        <div id="matchesContainer" class="matches"></div>
-      </section>
 
-      <section class="panel">
-        <h2 class="panel-title">Fiche député</h2>
-        <div class="depute-card">
-          <div class="identity-card">
-            <h2 id="deputeName">Député à sélectionner</h2>
-            <div id="deputeBio" class="bio-box">Sélectionne un député pour afficher une courte présentation.</div>
-
-            <div class="identity-meta">
-              <div class="meta-row">
-                <strong>Groupe</strong>
-                <span id="deputeGroup">-</span>
-              </div>
-              <div class="meta-row">
-                <strong>Circonscription</strong>
-                <span id="deputeCirc">-</span>
-              </div>
-              <div class="meta-row">
-                <strong>Votes recensés</strong>
-                <span id="deputeVotesCount">-</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
-            <div class="summary-grid">
-              <div class="summary-box"><strong id="deputePour">0</strong><span>Pour</span></div>
-              <div class="summary-box"><strong id="deputeContre">0</strong><span>Contre</span></div>
-              <div class="summary-box"><strong id="deputeAbs">0</strong><span>Abstention</span></div>
-              <div class="summary-box"><strong id="deputeNV">0</strong><span>Non-votant</span></div>
-            </div>
-            <div class="compare-box" id="deputeCompare">Sélectionne un député pour voir son résumé.</div>
-          </div>
+        <div class="field">
+          <label for="globalVoteFilter">Vote dominant</label>
+          <select id="globalVoteFilter">
+            <option value="">Tous</option>
+            <option value="Pour">Pour</option>
+            <option value="Contre">Contre</option>
+            <option value="Abstention">Abstention</option>
+            <option value="Non-votant">Non-votant</option>
+          </select>
         </div>
-      </section>
 
-      <section class="panel">
-        <h2 class="panel-title">Votes par thématique</h2>
-        <div class="themes-grid" id="themesContainer">
-          <button type="button" class="theme-card">
-            <h3>Aucune donnée</h3>
-            <strong>-</strong>
-            <span>Sélectionne un député</span>
-          </button>
+        <div class="field">
+          <label for="globalTextFilter">Mot-clé</label>
+          <input id="globalTextFilter" type="text" placeholder="Ex. budget, sécurité, agriculture">
         </div>
-      </section>
+      </div>
 
-      <section class="panel">
-        <div class="filters">
-          <div class="field">
-            <label for="monthFilter">Mois</label>
-            <select id="monthFilter">
-              <option value="">Tous les mois</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="voteFilter">Vote</label>
-            <select id="voteFilter">
-              <option value="">Tous les votes</option>
-              <option value="Pour">Pour</option>
-              <option value="Contre">Contre</option>
-              <option value="Abstention">Abstention</option>
-              <option value="Non-votant">Non-votant</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="dateFilter">Date</label>
-            <input id="dateFilter" type="text" placeholder="Laisser vide pour toutes les dates">
-          </div>
-
-          <div class="field">
-            <label for="titleFilter">Titre ou mot-clé</label>
-            <input id="titleFilter" type="text" placeholder="Ex. sécurité, budget, agriculture">
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">Historique complet des votes</h2>
-        <div id="activeThemeStatus" class="search-status"></div>
-        <div id="deputeVotesList" class="results-list">
-          <div class="empty">Sélectionne un député pour afficher son historique de votes.</div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">Détail du scrutin sélectionné</h2>
-        <div class="detail-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Député</th>
-                <th>Groupe</th>
-                <th>Vote</th>
-                <th>Circonscription</th>
-              </tr>
-            </thead>
-            <tbody id="detailTableBody">
-              <tr>
-                <td colspan="4" class="empty">Clique sur un vote pour afficher le détail nominatif du scrutin.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-
-    <div id="viewGroups" class="view">
-      <section class="panel">
-        <h2 class="panel-title">Groupes politiques</h2>
-        <div id="groupsContainer" class="groups-grid"></div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">Détail du groupe</h2>
-        <div id="groupDetailContainer" class="empty">Clique sur un groupe pour afficher son détail.</div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">Députés du groupe</h2>
-        <div id="groupDeputiesContainer" class="groups-grid">
-          <div class="empty">Clique sur un groupe pour afficher ses députés.</div>
-        </div>
-      </section>
-    </div>
-
-    <div id="viewScrutins" class="view">
-      <section class="panel">
-        <h2 class="panel-title">Tous les scrutins</h2>
-        <div class="filters">
-          <div class="field">
-            <label for="globalMonthFilter">Mois</label>
-            <select id="globalMonthFilter">
-              <option value="">Tous les mois</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="globalThemeFilter">Thématique</label>
-            <select id="globalThemeFilter">
-              <option value="">Toutes les thématiques</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="globalVoteFilter">Vote dominant</label>
-            <select id="globalVoteFilter">
-              <option value="">Tous</option>
-              <option value="Pour">Pour</option>
-              <option value="Contre">Contre</option>
-              <option value="Abstention">Abstention</option>
-              <option value="Non-votant">Non-votant</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="globalTextFilter">Mot-clé</label>
-            <input id="globalTextFilter" type="text" placeholder="Ex. budget, sécurité, agriculture">
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">Liste des scrutins</h2>
-        <div id="scrutinsContainer" class="results-list"></div>
-      </section>
-
-      <section class="panel" id="scrutinDetailPanel">
-        <h2 class="panel-title">Détail du scrutin</h2>
-        <div class="detail-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Député</th>
-                <th>Groupe</th>
-                <th>Vote</th>
-                <th>Circonscription</th>
-              </tr>
-            </thead>
-            <tbody id="globalDetailTableBody">
-              <tr>
-                <td colspan="4" class="empty">Clique sur un scrutin pour afficher le détail nominatif.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <div id="scrutinsContainer" class="results-list" style="margin-top:18px;"></div>
+    </section>
 
     <div class="footer-note">
       Données chargées depuis les fichiers JSON générés automatiquement
@@ -720,56 +326,18 @@
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
-    let selectedDeputy = null;
-    let selectedDeputyVotes = [];
-    let activeTheme = "";
-    let selectedGroup = null;
-
-    const tabDeputy = document.getElementById("tabDeputy");
-    const tabGroups = document.getElementById("tabGroups");
-    const tabScrutins = document.getElementById("tabScrutins");
-
-    const viewDeputy = document.getElementById("viewDeputy");
-    const viewGroups = document.getElementById("viewGroups");
-    const viewScrutins = document.getElementById("viewScrutins");
 
     const deputeSearch = document.getElementById("deputeSearch");
     const findDeputyBtn = document.getElementById("findDeputyBtn");
     const searchStatus = document.getElementById("searchStatus");
     const matchesContainer = document.getElementById("matchesContainer");
-
-    const deputeName = document.getElementById("deputeName");
-    const deputeBio = document.getElementById("deputeBio");
-    const deputeGroup = document.getElementById("deputeGroup");
-    const deputeCirc = document.getElementById("deputeCirc");
-    const deputeVotesCount = document.getElementById("deputeVotesCount");
-
-    const deputePour = document.getElementById("deputePour");
-    const deputeContre = document.getElementById("deputeContre");
-    const deputeAbs = document.getElementById("deputeAbs");
-    const deputeNV = document.getElementById("deputeNV");
-    const deputeCompare = document.getElementById("deputeCompare");
-
-    const monthFilter = document.getElementById("monthFilter");
-    const voteFilter = document.getElementById("voteFilter");
-    const dateFilter = document.getElementById("dateFilter");
-    const titleFilter = document.getElementById("titleFilter");
+    const groupsContainer = document.getElementById("groupsContainer");
+    const scrutinsContainer = document.getElementById("scrutinsContainer");
 
     const globalMonthFilter = document.getElementById("globalMonthFilter");
     const globalThemeFilter = document.getElementById("globalThemeFilter");
     const globalVoteFilter = document.getElementById("globalVoteFilter");
     const globalTextFilter = document.getElementById("globalTextFilter");
-
-    const themesContainer = document.getElementById("themesContainer");
-    const activeThemeStatus = document.getElementById("activeThemeStatus");
-    const deputeVotesList = document.getElementById("deputeVotesList");
-    const detailTableBody = document.getElementById("detailTableBody");
-    const groupsContainer = document.getElementById("groupsContainer");
-    const groupDetailContainer = document.getElementById("groupDetailContainer");
-    const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
-    const scrutinsContainer = document.getElementById("scrutinsContainer");
-    const globalDetailTableBody = document.getElementById("globalDetailTableBody");
-    const scrutinDetailPanel = document.getElementById("scrutinDetailPanel");
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
@@ -786,20 +354,22 @@
       return Array.isArray(v) ? v : [];
     }
 
-    function setActiveView(view) {
-      [tabDeputy, tabGroups, tabScrutins].forEach(el => el.classList.remove("active"));
-      [viewDeputy, viewGroups, viewScrutins].forEach(el => el.classList.remove("active"));
+    function computeStats(votes) {
+      return {
+        pour: votes.filter(v => v.vote === "Pour").length,
+        contre: votes.filter(v => v.vote === "Contre").length,
+        abstention: votes.filter(v => v.vote === "Abstention").length,
+        non_votant: votes.filter(v => v.vote === "Non-votant").length,
+      };
+    }
 
-      if (view === "deputy") {
-        tabDeputy.classList.add("active");
-        viewDeputy.classList.add("active");
-      } else if (view === "groups") {
-        tabGroups.classList.add("active");
-        viewGroups.classList.add("active");
-      } else {
-        tabScrutins.classList.add("active");
-        viewScrutins.classList.add("active");
-      }
+    function dominantVoteLabel(stats) {
+      return Object.entries({
+        Pour: stats.pour || 0,
+        Contre: stats.contre || 0,
+        Abstention: stats.abstention || 0,
+        "Non-votant": stats.non_votant || 0
+      }).sort((a, b) => b[1] - a[1])[0][0];
     }
 
     function shortTitle(scrutin) {
@@ -824,24 +394,6 @@
       return desc;
     }
 
-    function computeStats(votes) {
-      return {
-        pour: votes.filter(v => v.vote === "Pour").length,
-        contre: votes.filter(v => v.vote === "Contre").length,
-        abstention: votes.filter(v => v.vote === "Abstention").length,
-        non_votant: votes.filter(v => v.vote === "Non-votant").length,
-      };
-    }
-
-    function dominantVoteLabel(stats) {
-      return Object.entries({
-        Pour: stats.pour || 0,
-        Contre: stats.contre || 0,
-        Abstention: stats.abstention || 0,
-        "Non-votant": stats.non_votant || 0
-      }).sort((a, b) => b[1] - a[1])[0][0];
-    }
-
     async function loadJson(path) {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Impossible de charger ${path}`);
@@ -850,35 +402,6 @@
 
     async function loadMonthFile(filePath) {
       return loadJson("./" + filePath);
-    }
-
-    function fillFilters() {
-      const months = indexData?.months || [];
-      monthFilter.innerHTML = `<option value="">Tous les mois</option>`;
-      globalMonthFilter.innerHTML = `<option value="">Tous les mois</option>`;
-
-      months.forEach(m => {
-        const label = `${m.month} (${m.scrutins})`;
-
-        const option1 = document.createElement("option");
-        option1.value = m.month;
-        option1.textContent = label;
-        monthFilter.appendChild(option1);
-
-        const option2 = document.createElement("option");
-        option2.value = m.month;
-        option2.textContent = label;
-        globalMonthFilter.appendChild(option2);
-      });
-
-      const themes = [...new Set(allScrutins.map(s => s.theme).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
-      globalThemeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
-      themes.forEach(theme => {
-        const option = document.createElement("option");
-        option.value = theme;
-        option.textContent = theme;
-        globalThemeFilter.appendChild(option);
-      });
     }
 
     function buildFlatVotes() {
@@ -895,6 +418,27 @@
             scrutin_full: scrutin
           });
         });
+      });
+    }
+
+    function fillFilters() {
+      const months = indexData?.months || [];
+      globalMonthFilter.innerHTML = `<option value="">Tous les mois</option>`;
+
+      months.forEach(m => {
+        const option = document.createElement("option");
+        option.value = m.month;
+        option.textContent = `${m.month} (${m.scrutins})`;
+        globalMonthFilter.appendChild(option);
+      });
+
+      const themes = [...new Set(allScrutins.map(s => s.theme).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
+      globalThemeFilter.innerHTML = `<option value="">Toutes les thématiques</option>`;
+      themes.forEach(theme => {
+        const option = document.createElement("option");
+        option.value = theme;
+        option.textContent = theme;
+        globalThemeFilter.appendChild(option);
       });
     }
 
@@ -937,6 +481,7 @@
 
         const response = await fetch(url);
         if (!response.ok) return [];
+
         const communes = await response.json();
         if (!Array.isArray(communes) || !communes.length) return [];
 
@@ -967,183 +512,19 @@
 
     function renderMatches(matches) {
       matchesContainer.innerHTML = "";
+
       if (!matches.length) return;
 
       matchesContainer.innerHTML = matches.map(d => `
-        <div class="match-card">
+        <a class="match-card" href="depute.html?uid=${encodeURIComponent(d.uid)}">
           <h3>${d.nom}</h3>
           <div class="match-meta">
             ${d.groupe || "-"}<br>
             ${d.circonscription || d.departement || "-"}
           </div>
-          <button class="secondary" data-uid="${d.uid}" type="button">Choisir ce député</button>
-        </div>
+          <span class="primary-link">Ouvrir la fiche député</span>
+        </a>
       `).join("");
-
-      matchesContainer.querySelectorAll("button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const deputy = deputyDirectory.find(d => d.uid === btn.dataset.uid);
-          if (deputy) {
-            selectDeputy(deputy);
-            matchesContainer.innerHTML = "";
-          }
-        });
-      });
-    }
-
-    function selectDeputy(deputy) {
-      selectedDeputy = deputy;
-      activeTheme = "";
-
-      selectedDeputyVotes = allVotesFlat
-        .filter(v => (v.depute_uid || v.nom) === deputy.uid)
-        .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
-
-      renderDeputyCard();
-      renderThemeSummary();
-      renderDeputyVotes();
-      searchStatus.textContent = `${deputy.nom} sélectionné.`;
-      setActiveView("deputy");
-    }
-
-    function renderDeputyCard() {
-      if (!selectedDeputy) return;
-
-      const stats = computeStats(selectedDeputyVotes);
-
-      deputeName.textContent = selectedDeputy.nom || "Député inconnu";
-      deputeBio.textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
-      deputeGroup.textContent = selectedDeputy.groupe || "-";
-      deputeCirc.textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
-      deputeVotesCount.textContent = formatNumber(selectedDeputyVotes.length);
-
-      deputePour.textContent = formatNumber(stats.pour);
-      deputeContre.textContent = formatNumber(stats.contre);
-      deputeAbs.textContent = formatNumber(stats.abstention);
-      deputeNV.textContent = formatNumber(stats.non_votant);
-
-      const groupVotes = allVotesFlat.filter(v => v.groupe === selectedDeputy.groupe);
-      const groupStats = computeStats(groupVotes);
-
-      deputeCompare.textContent =
-        selectedDeputy.groupe
-          ? `${selectedDeputy.nom} siège dans le groupe ${selectedDeputy.groupe}. Sur l’ensemble chargé, ce groupe compte ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
-          : "Aucun groupe renseigné pour ce député.";
-    }
-
-    function renderThemeSummary() {
-      if (!selectedDeputyVotes.length) {
-        themesContainer.innerHTML = `
-          <button type="button" class="theme-card">
-            <h3>Aucune donnée</h3>
-            <strong>-</strong>
-            <span>Sélectionne un député</span>
-          </button>
-        `;
-        return;
-      }
-
-      const grouped = new Map();
-      selectedDeputyVotes.forEach(v => {
-        const theme = v.scrutin_theme || "Autres";
-        grouped.set(theme, (grouped.get(theme) || 0) + 1);
-      });
-
-      const ranked = [...grouped.entries()]
-        .map(([theme, total]) => ({ theme, total }))
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 8);
-
-      themesContainer.innerHTML = ranked.map(item => `
-        <button type="button" class="theme-card ${activeTheme === item.theme ? "active" : ""}" data-theme="${item.theme}">
-          <h3>${item.theme}</h3>
-          <strong>${formatNumber(item.total)}</strong>
-          <span>vote(s) sur ce thème</span>
-        </button>
-      `).join("");
-
-      themesContainer.querySelectorAll(".theme-card[data-theme]").forEach(card => {
-        card.addEventListener("click", () => {
-          const clickedTheme = card.dataset.theme || "";
-          activeTheme = activeTheme === clickedTheme ? "" : clickedTheme;
-          renderThemeSummary();
-          renderDeputyVotes();
-        });
-      });
-    }
-
-    function renderDeputyVotes() {
-      if (!selectedDeputy) {
-        deputeVotesList.innerHTML = `<div class="empty">Sélectionne un député pour afficher son historique de votes.</div>`;
-        activeThemeStatus.textContent = "";
-        return;
-      }
-
-      const selectedMonth = monthFilter.value;
-      const selectedVote = voteFilter.value;
-      const dateQuery = normalize(dateFilter.value);
-      const titleQuery = normalize(titleFilter.value);
-
-      const filtered = selectedDeputyVotes.filter(v => {
-        const monthMatch = !selectedMonth || (v.scrutin_date || "").startsWith(selectedMonth);
-        const voteMatch = !selectedVote || v.vote === selectedVote;
-        const dateMatch = !dateQuery || normalize(v.scrutin_date || "").includes(dateQuery);
-        const titleMatch = !titleQuery || normalize(v.scrutin_titre || "").includes(titleQuery) || normalize(v.scrutin_description || "").includes(titleQuery);
-        const themeMatch = !activeTheme || (v.scrutin_theme || "Autres") === activeTheme;
-        return monthMatch && voteMatch && dateMatch && titleMatch && themeMatch;
-      });
-
-      activeThemeStatus.textContent = activeTheme ? `Filtre thématique actif : ${activeTheme}` : "";
-
-      if (!filtered.length) {
-        deputeVotesList.innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
-        return;
-      }
-
-      deputeVotesList.innerHTML = filtered.map(v => `
-        <article class="vote-card" data-scrutin="${v.scrutin_uid}">
-          <div class="vote-context">${v.scrutin_date || ""} · ${v.scrutin_theme || "Autres"} · ${v.groupe || ""}</div>
-          <h3>${shortTitle(v.scrutin_full)}</h3>
-          <p class="vote-description">${shortDescription(v.scrutin_full)}</p>
-          <div class="chips">
-            <span class="chip">${v.scrutin_theme || "Autres"}</span>
-            <span class="chip">${selectedDeputy.nom}</span>
-          </div>
-          <div class="vote-line vote-${(v.vote || "").replace(/\s+/g, "-")}">Vote : ${v.vote || "-"}</div>
-        </article>
-      `).join("");
-
-      document.querySelectorAll(".vote-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const uid = card.dataset.scrutin;
-          const found = allScrutins.find(s => s.uid === uid);
-          if (found) renderScrutinDetail(found, "deputy");
-        });
-      });
-    }
-
-    function renderScrutinDetail(scrutin, target = "deputy") {
-      const votes = ensureArray(scrutin.votes).slice().sort((a, b) => {
-        const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
-        if (g !== 0) return g;
-        return (a.nom || "").localeCompare(b.nom || "", "fr");
-      });
-
-      const rows = votes.map(v => `
-        <tr>
-          <td>${v.nom || ""}</td>
-          <td>${v.groupe || ""}</td>
-          <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
-          <td>${v.circonscription || v.departement || ""}</td>
-        </tr>
-      `).join("");
-
-      if (target === "scrutins") {
-        globalDetailTableBody.innerHTML = rows || `<tr><td colspan="4" class="empty">Aucune donnée nominative.</td></tr>`;
-        scrutinDetailPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        detailTableBody.innerHTML = rows || `<tr><td colspan="4" class="empty">Aucune donnée nominative.</td></tr>`;
-      }
     }
 
     function renderGroups() {
@@ -1160,158 +541,21 @@
           const stats = computeStats(votes);
           return {
             group,
-            votes,
             total: votes.length,
-            stats,
             dominant: dominantVoteLabel(stats)
           };
         })
-        .sort((a, b) => b.total - a.total);
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 12);
 
       groupsContainer.innerHTML = cards.map(item => `
-        <button type="button" class="group-card ${selectedGroup === item.group ? "active" : ""}" data-group="${item.group}">
+        <a class="group-card" href="groupe.html?name=${encodeURIComponent(item.group)}">
           <h3>${item.group}</h3>
           <div class="group-number">${formatNumber(item.total)}</div>
           <div class="small-muted">votes recensés</div>
           <div class="small-muted">Vote dominant : ${item.dominant}</div>
-        </button>
+        </a>
       `).join("");
-
-      groupsContainer.querySelectorAll(".group-card[data-group]").forEach(card => {
-        card.addEventListener("click", () => {
-          selectedGroup = card.dataset.group || "";
-          renderGroups();
-          renderGroupDetail(selectedGroup);
-          renderGroupDeputies(selectedGroup);
-        });
-      });
-    }
-
-    function renderGroupDetail(groupName) {
-      if (!groupName) {
-        groupDetailContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher son détail.</div>`;
-        groupDeputiesContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher ses députés.</div>`;
-        return;
-      }
-
-      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
-      const stats = computeStats(groupVotes);
-
-      const themeMap = new Map();
-      groupVotes.forEach(v => {
-        const theme = v.scrutin_theme || "Autres";
-        themeMap.set(theme, (themeMap.get(theme) || 0) + 1);
-      });
-
-      const topThemes = [...themeMap.entries()]
-        .map(([theme, total]) => ({ theme, total }))
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 6);
-
-      const scrutinsMap = new Map();
-      groupVotes.forEach(v => {
-        if (!scrutinsMap.has(v.scrutin_uid)) {
-          scrutinsMap.set(v.scrutin_uid, {
-            uid: v.scrutin_uid,
-            date: v.scrutin_date,
-            theme: v.scrutin_theme,
-            scrutin: v.scrutin_full
-          });
-        }
-      });
-
-      const scrutins = [...scrutinsMap.values()]
-        .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
-        .slice(0, 20);
-
-      groupDetailContainer.innerHTML = `
-        <div class="depute-card">
-          <div class="identity-card">
-            <h2>${groupName}</h2>
-            <div class="identity-meta">
-              <div class="meta-row">
-                <strong>Votes recensés</strong>
-                <span>${formatNumber(groupVotes.length)}</span>
-              </div>
-              <div class="meta-row">
-                <strong>Vote dominant</strong>
-                <span>${dominantVoteLabel(stats)}</span>
-              </div>
-            </div>
-
-            <div class="chips" style="margin-top:16px;">
-              ${topThemes.map(t => `<span class="chip">${t.theme} · ${formatNumber(t.total)}</span>`).join("")}
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
-            <div class="summary-grid">
-              <div class="summary-box"><strong>${formatNumber(stats.pour)}</strong><span>Pour</span></div>
-              <div class="summary-box"><strong>${formatNumber(stats.contre)}</strong><span>Contre</span></div>
-              <div class="summary-box"><strong>${formatNumber(stats.abstention)}</strong><span>Abstention</span></div>
-              <div class="summary-box"><strong>${formatNumber(stats.non_votant)}</strong><span>Non-votant</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:20px;" class="results-list">
-          ${scrutins.map(item => `
-            <article class="scrutin-card group-scrutin-card" data-scrutin="${item.uid}" style="cursor:pointer;">
-              <div class="small-muted">${item.date || ""} · ${item.theme || "Autres"}</div>
-              <h3>${shortTitle(item.scrutin)}</h3>
-              <p class="vote-description">${shortDescription(item.scrutin)}</p>
-            </article>
-          `).join("")}
-        </div>
-      `;
-
-      groupDetailContainer.querySelectorAll(".group-scrutin-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const uid = card.dataset.scrutin;
-          const found = allScrutins.find(s => s.uid === uid);
-          if (found) {
-            setActiveView("scrutins");
-            renderScrutinDetail(found, "scrutins");
-          }
-        });
-      });
-    }
-
-    function renderGroupDeputies(groupName) {
-      if (!groupName) {
-        groupDeputiesContainer.innerHTML = `<div class="empty">Clique sur un groupe pour afficher ses députés.</div>`;
-        return;
-      }
-
-      const deputies = deputyDirectory
-        .filter(d => (d.groupe || "Inconnu") === groupName)
-        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
-
-      if (!deputies.length) {
-        groupDeputiesContainer.innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
-        return;
-      }
-
-      groupDeputiesContainer.innerHTML = deputies.map(d => `
-        <button type="button" class="group-card group-deputy-card" data-uid="${d.uid}">
-          <h3>${d.nom || "Député inconnu"}</h3>
-          <div class="small-muted">${d.circonscription || d.departement || "-"}</div>
-          <div class="group-number">${formatNumber(d.votes_count || 0)}</div>
-          <div class="small-muted">votes recensés</div>
-        </button>
-      `).join("");
-
-      groupDeputiesContainer.querySelectorAll(".group-deputy-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const deputy = deputyDirectory.find(d => d.uid === card.dataset.uid);
-          if (deputy) {
-            selectDeputy(deputy);
-            setActiveView("deputy");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        });
-      });
     }
 
     function renderAllScrutins() {
@@ -1328,7 +572,7 @@
         return monthMatch && themeMatch && textMatch && domMatch;
       });
 
-      filtered = filtered.sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 150);
+      filtered = filtered.sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 100);
 
       if (!filtered.length) {
         scrutinsContainer.innerHTML = `<div class="empty">Aucun scrutin ne correspond aux filtres.</div>`;
@@ -1336,7 +580,7 @@
       }
 
       scrutinsContainer.innerHTML = filtered.map(s => `
-        <article class="scrutin-card" data-scrutin="${s.uid}" style="cursor:pointer;">
+        <a class="scrutin-card" href="scrutin.html?uid=${encodeURIComponent(s.uid)}">
           <div class="small-muted">${s.date || ""} · ${s.theme || "Autres"}</div>
           <h3>${shortTitle(s)}</h3>
           <p class="vote-description">${shortDescription(s)}</p>
@@ -1344,18 +588,8 @@
             <span class="chip">${s.theme || "Autres"}</span>
             <span class="chip">Dominant : ${dominantVoteLabel(s.stats || {})}</span>
           </div>
-        </article>
+        </a>
       `).join("");
-
-      scrutinsContainer.querySelectorAll(".scrutin-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const uid = card.dataset.scrutin;
-          const found = allScrutins.find(s => s.uid === uid);
-          if (found) {
-            renderScrutinDetail(found, "scrutins");
-          }
-        });
-      });
     }
 
     async function runDeputySearch() {
@@ -1373,13 +607,11 @@
 
       if (!matches.length) {
         searchStatus.textContent = "Aucun député trouvé.";
-        deputeVotesList.innerHTML = `<div class="empty">Aucun député ne correspond à la recherche.</div>`;
         return;
       }
 
       if (matches.length === 1) {
-        selectDeputy(matches[0]);
-        matchesContainer.innerHTML = "";
+        window.location.href = `depute.html?uid=${encodeURIComponent(matches[0].uid)}`;
         return;
       }
 
@@ -1395,18 +627,9 @@
     }
 
     function bindEvents() {
-      tabDeputy.addEventListener("click", () => setActiveView("deputy"));
-      tabGroups.addEventListener("click", () => setActiveView("groups"));
-      tabScrutins.addEventListener("click", () => setActiveView("scrutins"));
-
       findDeputyBtn.addEventListener("click", runDeputySearch);
       deputeSearch.addEventListener("keydown", (e) => {
         if (e.key === "Enter") runDeputySearch();
-      });
-
-      [monthFilter, voteFilter, dateFilter, titleFilter].forEach(el => {
-        el.addEventListener("input", renderDeputyVotes);
-        el.addEventListener("change", renderDeputyVotes);
       });
 
       [globalMonthFilter, globalThemeFilter, globalVoteFilter, globalTextFilter].forEach(el => {
@@ -1430,7 +653,6 @@
         bindEvents();
         renderGroups();
         renderAllScrutins();
-        dateFilter.value = "";
       } catch (error) {
         console.error(error);
         searchStatus.textContent = "Erreur de chargement des fichiers JSON.";
