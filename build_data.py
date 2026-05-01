@@ -38,6 +38,15 @@ GROUP_LABELS = {
     "PO0": "Autre groupe",
 }
 
+MANUAL_NAME_FIXES = {
+    "PA793334": {
+        "nom": "Cyril Tribuiani",
+        "groupe": "Rassemblement National",
+        "departement": "Alpes-Maritimes",
+        "circonscription": "6e circonscription",
+    },
+}
+
 UNKNOWN_GROUPS = set()
 PROFILE_CACHE = {}
 
@@ -158,6 +167,28 @@ def normalize_group_label(value):
     return ""
 
 
+def apply_manual_fix(uid, actor):
+    fix = MANUAL_NAME_FIXES.get(uid)
+    if not fix:
+        return actor
+
+    actor = actor or {
+        "uid": uid,
+        "nom": "",
+        "groupe": "",
+        "departement": "",
+        "circonscription": "",
+        "bio": "",
+    }
+
+    for key in ["nom", "groupe", "departement", "circonscription", "bio"]:
+        value = clean(fix.get(key))
+        if value:
+            actor[key] = value
+
+    return actor
+
+
 def fetch_depute_profile(uid):
     if not uid:
         return {}
@@ -199,7 +230,11 @@ def fetch_depute_profile(uid):
             departement = zone
 
     circonscription = ""
-    circ_match = re.search(r"(\d+(?:re|er|e)?\s+circonscription)", text, re.IGNORECASE)
+    circ_match = re.search(
+        r"(\d+(?:re|er|e)?\s+circonscription)",
+        text,
+        re.IGNORECASE
+    )
     if circ_match:
         circonscription = clean(circ_match.group(1))
 
@@ -213,7 +248,11 @@ def fetch_depute_profile(uid):
             break
 
     bio = ""
-    bio_match = re.search(r"Biographie(.*?)(Mandat en cours|Voir le groupe politique|$)", text, re.IGNORECASE | re.DOTALL)
+    bio_match = re.search(
+        r"Biographie(.*?)(Mandat en cours|Voir le groupe politique|$)",
+        text,
+        re.IGNORECASE | re.DOTALL
+    )
     if bio_match:
         bio = clean(bio_match.group(1))
     if not bio:
@@ -335,6 +374,8 @@ def enrich_actor_if_needed(uid, actor):
         "circonscription": "",
         "bio": "",
     }
+
+    actor = apply_manual_fix(uid, actor)
 
     current_name = clean(actor.get("nom"))
     need_name = (not current_name) or current_name == uid or current_name.startswith("PA")
@@ -485,6 +526,7 @@ def load_scrutins(actors, organes):
                     uid_dep = clean(votant.get("acteurRef"))
                     actor = actors.get(uid_dep, {})
                     actor = enrich_actor_if_needed(uid_dep, actor)
+                    actor = apply_manual_fix(uid_dep, actor)
                     actors[uid_dep] = actor
 
                     nom = clean(actor.get("nom"))
@@ -494,6 +536,10 @@ def load_scrutins(actors, organes):
                         fallback_nom = clean(profile.get("nom"))
                         if fallback_nom and not fallback_nom.startswith("PA"):
                             nom = fallback_nom
+
+                    if not nom or nom.startswith("PA"):
+                        actor = apply_manual_fix(uid_dep, actor)
+                        nom = clean(actor.get("nom"))
 
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
@@ -546,16 +592,23 @@ def build_deputes_file(actors, scrutins):
             continue
 
         actor = enrich_actor_if_needed(uid, actor)
+        actor = apply_manual_fix(uid, actor)
         actors[uid] = actor
 
         nom = clean(actor.get("nom"))
+
+        if not nom or nom.startswith("PA"):
+            actor = apply_manual_fix(uid, actor)
+            nom = clean(actor.get("nom"))
+
         if not nom or nom.startswith("PA"):
             profile = fetch_depute_profile(uid)
             profile_nom = clean(profile.get("nom"))
             if profile_nom and not profile_nom.startswith("PA"):
                 nom = profile_nom
-            else:
-                nom = f"Député {uid}"
+
+        if not nom or nom.startswith("PA"):
+            nom = f"Député {uid}"
 
         deputes.append({
             "uid": uid,
@@ -606,7 +659,7 @@ def main():
     unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
 
     index_data = {
-        "version": "3.0",
+        "version": "3.1",
         "year": datetime.utcnow().year,
         "updated_at": datetime.utcnow().isoformat(),
         "counts": {
@@ -630,7 +683,7 @@ def main():
 
     print("Scrutins :", len(scrutins))
     print("Votes :", total_votes)
-    print("Députés :", len({v['depute_uid'] for s in scrutins for v in s["votes"]}))
+    print("Députés :", len({v['depute_uid'] for s in scrutins for v in s['votes']}))
     print("Groupes :", len(unique_groupes))
     print("Départements :", len(unique_departements))
     print("Mois :", len(month_list))
