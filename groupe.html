@@ -236,28 +236,6 @@
       text-align: center;
     }
 
-    .participation-wrap {
-      display: grid;
-      gap: 16px;
-    }
-
-    .participation-bar {
-      width: 100%;
-      height: 22px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #efeaf8;
-      display: flex;
-      border: 1px solid var(--border);
-    }
-
-    .seg {
-      height: 100%;
-    }
-
-    .seg-present { background: var(--violet); }
-    .seg-absent { background: #d7d0e6; }
-
     .empty {
       text-align: center;
       color: var(--muted);
@@ -302,34 +280,15 @@
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Participation estimée du groupe</h2>
-      <div class="participation-wrap">
-        <div class="summary-grid">
-          <div class="summary-box"><strong id="groupSize">0</strong><span>Effectif théorique</span></div>
-          <div class="summary-box"><strong id="groupPresent">0</strong><span>Présences recensées</span></div>
-          <div class="summary-box"><strong id="groupAbsent">0</strong><span>Absences estimées</span></div>
-          <div class="summary-box"><strong id="groupPresenceRate">0%</strong><span>Taux de présence estimé</span></div>
-        </div>
-
-        <div class="participation-bar">
-          <div id="groupSegPresent" class="seg seg-present" style="width:0%"></div>
-          <div id="groupSegAbsent" class="seg seg-absent" style="width:100%"></div>
-        </div>
-
-        <div class="chips">
-          <span class="chip" id="groupChipPresent">Présences : 0</span>
-          <span class="chip" id="groupChipAbsent">Absences estimées : 0</span>
-          <span class="chip" id="groupChipAverage">Moyenne par scrutin : 0</span>
-        </div>
-
-        <div class="small-muted">
-          Estimation calculée sur la base de l’effectif actuel du groupe multiplié par le nombre de scrutins chargés.
-        </div>
+      <h2 class="panel-title">Présence observée du groupe</h2>
+      <div class="summary-grid" id="presenceObservedGrid"></div>
+      <div class="small-muted">
+        Ces chiffres sont calculés à partir des scrutins réellement chargés et des députés effectivement observés dans les votes de ce groupe sur la période.
       </div>
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Députés du groupe</h2>
+      <h2 class="panel-title">Députés observés dans ce groupe</h2>
       <div id="groupDeputiesContainer" class="groups-grid"></div>
     </section>
 
@@ -350,16 +309,7 @@
     const groupDetailContainer = document.getElementById("groupDetailContainer");
     const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
     const groupScrutinsContainer = document.getElementById("groupScrutinsContainer");
-
-    const groupSize = document.getElementById("groupSize");
-    const groupPresent = document.getElementById("groupPresent");
-    const groupAbsent = document.getElementById("groupAbsent");
-    const groupPresenceRate = document.getElementById("groupPresenceRate");
-    const groupSegPresent = document.getElementById("groupSegPresent");
-    const groupSegAbsent = document.getElementById("groupSegAbsent");
-    const groupChipPresent = document.getElementById("groupChipPresent");
-    const groupChipAbsent = document.getElementById("groupChipAbsent");
-    const groupChipAverage = document.getElementById("groupChipAverage");
+    const presenceObservedGrid = document.getElementById("presenceObservedGrid");
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
@@ -369,8 +319,8 @@
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
 
-    function formatPercent(value) {
-      return `${(value || 0).toFixed(1)}%`;
+    function formatDecimal(value) {
+      return Number(value || 0).toFixed(1);
     }
 
     function ensureArray(v) {
@@ -444,8 +394,33 @@
       });
     }
 
+    function getGroupVotes() {
+      return allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+    }
+
+    function getObservedDeputiesForGroup() {
+      const groupVotes = getGroupVotes();
+      const byUid = new Map();
+
+      groupVotes.forEach(v => {
+        if (!byUid.has(v.depute_uid)) {
+          const full = deputyDirectory.find(d => d.uid === v.depute_uid);
+          byUid.set(v.depute_uid, {
+            uid: v.depute_uid,
+            nom: full?.nom || v.nom || v.depute_uid,
+            circonscription: full?.circonscription || v.circonscription || "",
+            departement: full?.departement || v.departement || "",
+            votes_count: 0
+          });
+        }
+        byUid.get(v.depute_uid).votes_count += 1;
+      });
+
+      return [...byUid.values()].sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
+    }
+
     function renderGroupDetail() {
-      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+      const groupVotes = getGroupVotes();
       const stats = computeStats(groupVotes);
 
       const themeMap = new Map();
@@ -495,32 +470,37 @@
       `;
     }
 
-    function renderGroupParticipation() {
-      const deputies = deputyDirectory.filter(d => (d.groupe || "Inconnu") === groupName);
-      const size = deputies.length;
-      const present = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName).length;
-      const totalPossible = size * allScrutins.length;
-      const absent = Math.max(0, totalPossible - present);
-      const rate = totalPossible ? (present / totalPossible) * 100 : 0;
-      const avgPerScrutin = allScrutins.length ? present / allScrutins.length : 0;
+    function renderPresenceObserved() {
+      const groupVotes = getGroupVotes();
+      const observedDeputies = getObservedDeputiesForGroup();
 
-      groupSize.textContent = formatNumber(size);
-      groupPresent.textContent = formatNumber(present);
-      groupAbsent.textContent = formatNumber(absent);
-      groupPresenceRate.textContent = formatPercent(rate);
+      const scrutinToDeputies = new Map();
+      groupVotes.forEach(v => {
+        if (!scrutinToDeputies.has(v.scrutin_uid)) {
+          scrutinToDeputies.set(v.scrutin_uid, new Set());
+        }
+        scrutinToDeputies.get(v.scrutin_uid).add(v.depute_uid);
+      });
 
-      groupSegPresent.style.width = `${rate}%`;
-      groupSegAbsent.style.width = `${100 - rate}%`;
+      const scrutinsCount = scrutinToDeputies.size;
+      const observedDeputiesCount = observedDeputies.length;
+      const totalPresenceMarks = [...scrutinToDeputies.values()].reduce((sum, set) => sum + set.size, 0);
+      const averagePresent = scrutinsCount ? totalPresenceMarks / scrutinsCount : 0;
+      const maxPresent = scrutinsCount ? Math.max(...[...scrutinToDeputies.values()].map(set => set.size)) : 0;
+      const minPresent = scrutinsCount ? Math.min(...[...scrutinToDeputies.values()].map(set => set.size)) : 0;
 
-      groupChipPresent.textContent = `Présences : ${formatNumber(present)}`;
-      groupChipAbsent.textContent = `Absences estimées : ${formatNumber(absent)}`;
-      groupChipAverage.textContent = `Moyenne par scrutin : ${avgPerScrutin.toFixed(1)}`;
+      presenceObservedGrid.innerHTML = `
+        <div class="summary-box"><strong>${formatNumber(observedDeputiesCount)}</strong><span>Députés observés</span></div>
+        <div class="summary-box"><strong>${formatNumber(scrutinsCount)}</strong><span>Scrutins où le groupe apparaît</span></div>
+        <div class="summary-box"><strong>${formatNumber(totalPresenceMarks)}</strong><span>Présences observées</span></div>
+        <div class="summary-box"><strong>${formatDecimal(averagePresent)}</strong><span>Moyenne de présents par scrutin</span></div>
+        <div class="summary-box"><strong>${formatNumber(maxPresent)}</strong><span>Maximum observé sur un scrutin</span></div>
+        <div class="summary-box"><strong>${formatNumber(minPresent)}</strong><span>Minimum observé sur un scrutin</span></div>
+      `;
     }
 
     function renderGroupDeputies() {
-      const deputies = deputyDirectory
-        .filter(d => (d.groupe || "Inconnu") === groupName)
-        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
+      const deputies = getObservedDeputiesForGroup();
 
       if (!deputies.length) {
         groupDeputiesContainer.innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
@@ -538,7 +518,7 @@
     }
 
     function renderGroupScrutins() {
-      const groupVotes = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName);
+      const groupVotes = getGroupVotes();
 
       const scrutinsMap = new Map();
       groupVotes.forEach(v => {
@@ -589,7 +569,7 @@
 
         buildFlatVotes();
         renderGroupDetail();
-        renderGroupParticipation();
+        renderPresenceObserved();
         renderGroupDeputies();
         renderGroupScrutins();
       } catch (error) {
