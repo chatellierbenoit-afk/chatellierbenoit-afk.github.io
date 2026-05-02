@@ -543,7 +543,7 @@ def load_scrutins(actors, organes):
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
 
-                    groupe = normalize_group_label(actor.get("groupe") or groupe_nom or "Inconnu")
+                    groupe = normalize_group_label(groupe_nom or actor.get("groupe") or "Inconnu")
                     departement = actor.get("departement") or ""
                     circonscription = actor.get("circonscription") or ""
 
@@ -610,10 +610,23 @@ def build_deputes_file(actors, scrutins):
         if not nom or nom.startswith("PA"):
             nom = f"Député {uid}"
 
+        observed_group_counts = defaultdict(int)
+        for vote in actor_votes:
+            g = clean(vote.get("groupe"))
+            if g and g != "Inconnu":
+                observed_group_counts[g] += 1
+
+        observed_main_group = ""
+        if observed_group_counts:
+            observed_main_group = sorted(
+                observed_group_counts.items(),
+                key=lambda x: (-x[1], x[0])
+            )[0][0]
+
         deputes.append({
             "uid": uid,
             "nom": nom,
-            "groupe": normalize_group_label(clean(actor.get("groupe"))),
+            "groupe": observed_main_group or normalize_group_label(clean(actor.get("groupe"))),
             "departement": clean(actor.get("departement")),
             "circonscription": clean(actor.get("circonscription")),
             "bio": clean(actor.get("bio")),
@@ -645,8 +658,14 @@ def build_year_index(scrutins):
             })
 
         total_votes = sum(s["stats"]["total_votes"] for s in items)
-        unique_groupes = sorted({v["groupe"] for s in items for v in s["votes"] if v["groupe"] and v["groupe"] != "Inconnu"})
-        unique_departements = sorted({v["departement"] for s in items for v in s["votes"] if v["departement"]})
+        unique_groupes = sorted({
+            v["groupe"] for s in items for v in s["votes"]
+            if v["groupe"] and v["groupe"] != "Inconnu"
+        })
+        unique_departements = sorted({
+            v["departement"] for s in items for v in s["votes"]
+            if v["departement"]
+        })
         unique_deputes = {v["depute_uid"] for s in items for v in s["votes"]}
 
         result[str(year)] = {
@@ -698,10 +717,13 @@ def main():
         v["groupe"] for s in scrutins for v in s["votes"]
         if v["groupe"] and v["groupe"] != "Inconnu"
     })
-    unique_departements = sorted({v["departement"] for s in scrutins for v in s["votes"] if v["departement"]})
+    unique_departements = sorted({
+        v["departement"] for s in scrutins for v in s["votes"]
+        if v["departement"]
+    })
 
     index_data = {
-        "version": "4.0",
+        "version": "4.1",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -746,3 +768,7 @@ def main():
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
     print("Noms encore en PA :", remaining_pa_names[:50])
     print("Total noms encore en PA :", len(remaining_pa_names))
+
+
+if __name__ == "__main__":
+    main()
