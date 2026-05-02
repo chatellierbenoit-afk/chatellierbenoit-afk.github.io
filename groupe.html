@@ -13,6 +13,7 @@
       --text: #1e1c26;
       --muted: #6f6a7e;
       --border: #e7e2f2;
+      --warning: #946200;
       --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
       --radius: 22px;
     }
@@ -235,6 +236,28 @@
       text-align: center;
     }
 
+    .participation-wrap {
+      display: grid;
+      gap: 16px;
+    }
+
+    .participation-bar {
+      width: 100%;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #efeaf8;
+      display: flex;
+      border: 1px solid var(--border);
+    }
+
+    .seg {
+      height: 100%;
+    }
+
+    .seg-present { background: var(--violet); }
+    .seg-absent { background: #d7d0e6; }
+
     .empty {
       text-align: center;
       color: var(--muted);
@@ -279,6 +302,33 @@
     </section>
 
     <section class="panel">
+      <h2 class="panel-title">Participation estimée du groupe</h2>
+      <div class="participation-wrap">
+        <div class="summary-grid">
+          <div class="summary-box"><strong id="groupSize">0</strong><span>Effectif théorique</span></div>
+          <div class="summary-box"><strong id="groupPresent">0</strong><span>Présences recensées</span></div>
+          <div class="summary-box"><strong id="groupAbsent">0</strong><span>Absences estimées</span></div>
+          <div class="summary-box"><strong id="groupPresenceRate">0%</strong><span>Taux de présence estimé</span></div>
+        </div>
+
+        <div class="participation-bar">
+          <div id="groupSegPresent" class="seg seg-present" style="width:0%"></div>
+          <div id="groupSegAbsent" class="seg seg-absent" style="width:100%"></div>
+        </div>
+
+        <div class="chips">
+          <span class="chip" id="groupChipPresent">Présences : 0</span>
+          <span class="chip" id="groupChipAbsent">Absences estimées : 0</span>
+          <span class="chip" id="groupChipAverage">Moyenne par scrutin : 0</span>
+        </div>
+
+        <div class="small-muted">
+          Estimation calculée sur la base de l’effectif actuel du groupe multiplié par le nombre de scrutins chargés.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2 class="panel-title">Députés du groupe</h2>
       <div id="groupDeputiesContainer" class="groups-grid"></div>
     </section>
@@ -301,12 +351,26 @@
     const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
     const groupScrutinsContainer = document.getElementById("groupScrutinsContainer");
 
+    const groupSize = document.getElementById("groupSize");
+    const groupPresent = document.getElementById("groupPresent");
+    const groupAbsent = document.getElementById("groupAbsent");
+    const groupPresenceRate = document.getElementById("groupPresenceRate");
+    const groupSegPresent = document.getElementById("groupSegPresent");
+    const groupSegAbsent = document.getElementById("groupSegAbsent");
+    const groupChipPresent = document.getElementById("groupChipPresent");
+    const groupChipAbsent = document.getElementById("groupChipAbsent");
+    const groupChipAverage = document.getElementById("groupChipAverage");
+
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
     }
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
+    }
+
+    function formatPercent(value) {
+      return `${(value || 0).toFixed(1)}%`;
     }
 
     function ensureArray(v) {
@@ -431,6 +495,28 @@
       `;
     }
 
+    function renderGroupParticipation() {
+      const deputies = deputyDirectory.filter(d => (d.groupe || "Inconnu") === groupName);
+      const size = deputies.length;
+      const present = allVotesFlat.filter(v => (v.groupe || "Inconnu") === groupName).length;
+      const totalPossible = size * allScrutins.length;
+      const absent = Math.max(0, totalPossible - present);
+      const rate = totalPossible ? (present / totalPossible) * 100 : 0;
+      const avgPerScrutin = allScrutins.length ? present / allScrutins.length : 0;
+
+      groupSize.textContent = formatNumber(size);
+      groupPresent.textContent = formatNumber(present);
+      groupAbsent.textContent = formatNumber(absent);
+      groupPresenceRate.textContent = formatPercent(rate);
+
+      groupSegPresent.style.width = `${rate}%`;
+      groupSegAbsent.style.width = `${100 - rate}%`;
+
+      groupChipPresent.textContent = `Présences : ${formatNumber(present)}`;
+      groupChipAbsent.textContent = `Absences estimées : ${formatNumber(absent)}`;
+      groupChipAverage.textContent = `Moyenne par scrutin : ${avgPerScrutin.toFixed(1)}`;
+    }
+
     function renderGroupDeputies() {
       const deputies = deputyDirectory
         .filter(d => (d.groupe || "Inconnu") === groupName)
@@ -503,6 +589,7 @@
 
         buildFlatVotes();
         renderGroupDetail();
+        renderGroupParticipation();
         renderGroupDeputies();
         renderGroupScrutins();
       } catch (error) {
