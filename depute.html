@@ -16,6 +16,7 @@
       --success: #0b7a36;
       --danger: #b31c2f;
       --warning: #946200;
+      --neutral: #7b728d;
       --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
       --radius: 22px;
     }
@@ -326,7 +327,38 @@
     .vote-Pour { color: var(--success); }
     .vote-Contre { color: var(--danger); }
     .vote-Abstention { color: var(--warning); }
-    .vote-Non-votant { color: #666; }
+    .vote-Non-votant { color: var(--neutral); }
+
+    .small-muted {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .participation-wrap {
+      display: grid;
+      gap: 16px;
+    }
+
+    .participation-bar {
+      width: 100%;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #efeaf8;
+      display: flex;
+      border: 1px solid var(--border);
+    }
+
+    .seg {
+      height: 100%;
+    }
+
+    .seg-voted { background: var(--violet); }
+    .seg-nonvotant { background: var(--warning); }
+    .seg-absent { background: #d7d0e6; }
 
     .empty {
       text-align: center;
@@ -405,6 +437,34 @@
     </section>
 
     <section class="panel">
+      <h2 class="panel-title">Participation estimée</h2>
+      <div class="participation-wrap">
+        <div class="summary-grid">
+          <div class="summary-box"><strong id="scrutinsPeriod">0</strong><span>Scrutins sur la période</span></div>
+          <div class="summary-box"><strong id="presenceCount">0</strong><span>Présences recensées</span></div>
+          <div class="summary-box"><strong id="absenceCount">0</strong><span>Absences estimées</span></div>
+          <div class="summary-box"><strong id="presenceRate">0%</strong><span>Taux de présence estimé</span></div>
+        </div>
+
+        <div class="participation-bar">
+          <div id="segVoted" class="seg seg-voted" style="width:0%"></div>
+          <div id="segNonVotant" class="seg seg-nonvotant" style="width:0%"></div>
+          <div id="segAbsent" class="seg seg-absent" style="width:100%"></div>
+        </div>
+
+        <div class="chips">
+          <span class="chip" id="chipVoted">Vote exprimé : 0</span>
+          <span class="chip" id="chipNonVotant">Non-votant : 0</span>
+          <span class="chip" id="chipAbsent">Absent estimé : 0</span>
+        </div>
+
+        <div class="small-muted">
+          Estimation calculée à partir du nombre total de scrutins chargés sur la période sélectionnée par les données du site.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2 class="panel-title">Votes par thématique</h2>
       <div class="themes-grid" id="themesContainer"></div>
     </section>
@@ -473,6 +533,17 @@
     const deputeNV = document.getElementById("deputeNV");
     const deputeCompare = document.getElementById("deputeCompare");
 
+    const scrutinsPeriod = document.getElementById("scrutinsPeriod");
+    const presenceCount = document.getElementById("presenceCount");
+    const absenceCount = document.getElementById("absenceCount");
+    const presenceRate = document.getElementById("presenceRate");
+    const segVoted = document.getElementById("segVoted");
+    const segNonVotant = document.getElementById("segNonVotant");
+    const segAbsent = document.getElementById("segAbsent");
+    const chipVoted = document.getElementById("chipVoted");
+    const chipNonVotant = document.getElementById("chipNonVotant");
+    const chipAbsent = document.getElementById("chipAbsent");
+
     const themesContainer = document.getElementById("themesContainer");
     const activeThemeStatus = document.getElementById("activeThemeStatus");
     const deputeVotesList = document.getElementById("deputeVotesList");
@@ -488,6 +559,10 @@
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
+    }
+
+    function formatPercent(value) {
+      return `${(value || 0).toFixed(1)}%`;
     }
 
     function normalize(text) {
@@ -599,6 +674,33 @@
           : "Aucun groupe renseigné pour ce député.";
     }
 
+    function renderParticipation() {
+      const stats = computeStats(selectedDeputyVotes);
+      const totalScrutins = allScrutins.length;
+      const presents = selectedDeputyVotes.length;
+      const voted = stats.pour + stats.contre + stats.abstention;
+      const nonVotant = stats.non_votant;
+      const absents = Math.max(0, totalScrutins - presents);
+
+      const presentRateValue = totalScrutins ? (presents / totalScrutins) * 100 : 0;
+      const votedRate = totalScrutins ? (voted / totalScrutins) * 100 : 0;
+      const nonVotantRate = totalScrutins ? (nonVotant / totalScrutins) * 100 : 0;
+      const absentRate = totalScrutins ? (absents / totalScrutins) * 100 : 0;
+
+      scrutinsPeriod.textContent = formatNumber(totalScrutins);
+      presenceCount.textContent = formatNumber(presents);
+      absenceCount.textContent = formatNumber(absents);
+      presenceRate.textContent = formatPercent(presentRateValue);
+
+      segVoted.style.width = `${votedRate}%`;
+      segNonVotant.style.width = `${nonVotantRate}%`;
+      segAbsent.style.width = `${absentRate}%`;
+
+      chipVoted.textContent = `Vote exprimé : ${formatNumber(voted)}`;
+      chipNonVotant.textContent = `Non-votant : ${formatNumber(nonVotant)}`;
+      chipAbsent.textContent = `Absent estimé : ${formatNumber(absents)}`;
+    }
+
     function renderThemeSummary() {
       if (!selectedDeputyVotes.length) {
         themesContainer.innerHTML = `<div class="empty">Aucune donnée disponible.</div>`;
@@ -704,6 +806,7 @@
           .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
 
         renderDeputyCard();
+        renderParticipation();
         renderThemeSummary();
         renderDeputyVotes();
       } catch (error) {
