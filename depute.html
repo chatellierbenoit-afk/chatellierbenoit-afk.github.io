@@ -337,28 +337,11 @@
       line-height: 1.45;
     }
 
-    .participation-wrap {
+    .presence-grid {
       display: grid;
-      gap: 16px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
     }
-
-    .participation-bar {
-      width: 100%;
-      height: 22px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #efeaf8;
-      display: flex;
-      border: 1px solid var(--border);
-    }
-
-    .seg {
-      height: 100%;
-    }
-
-    .seg-voted { background: var(--violet); }
-    .seg-nonvotant { background: var(--warning); }
-    .seg-absent { background: #d7d0e6; }
 
     .empty {
       text-align: center;
@@ -370,7 +353,8 @@
       .depute-card,
       .themes-grid,
       .summary-grid,
-      .filters {
+      .filters,
+      .presence-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -379,7 +363,8 @@
       .depute-card,
       .themes-grid,
       .summary-grid,
-      .filters {
+      .filters,
+      .presence-grid {
         grid-template-columns: 1fr;
       }
 
@@ -409,7 +394,7 @@
 
           <div class="identity-meta">
             <div class="meta-row">
-              <strong>Groupe</strong>
+              <strong>Groupe observé principal</strong>
               <span id="deputeGroup">-</span>
             </div>
             <div class="meta-row">
@@ -437,30 +422,10 @@
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Participation estimée</h2>
-      <div class="participation-wrap">
-        <div class="summary-grid">
-          <div class="summary-box"><strong id="scrutinsPeriod">0</strong><span>Scrutins sur la période</span></div>
-          <div class="summary-box"><strong id="presenceCount">0</strong><span>Présences recensées</span></div>
-          <div class="summary-box"><strong id="absenceCount">0</strong><span>Absences estimées</span></div>
-          <div class="summary-box"><strong id="presenceRate">0%</strong><span>Taux de présence estimé</span></div>
-        </div>
-
-        <div class="participation-bar">
-          <div id="segVoted" class="seg seg-voted" style="width:0%"></div>
-          <div id="segNonVotant" class="seg seg-nonvotant" style="width:0%"></div>
-          <div id="segAbsent" class="seg seg-absent" style="width:100%"></div>
-        </div>
-
-        <div class="chips">
-          <span class="chip" id="chipVoted">Vote exprimé : 0</span>
-          <span class="chip" id="chipNonVotant">Non-votant : 0</span>
-          <span class="chip" id="chipAbsent">Absent estimé : 0</span>
-        </div>
-
-        <div class="small-muted">
-          Estimation calculée à partir du nombre total de scrutins chargés sur la période sélectionnée par les données du site.
-        </div>
+      <h2 class="panel-title">Présence observée du député</h2>
+      <div class="presence-grid" id="presenceGrid"></div>
+      <div class="small-muted">
+        Ces chiffres sont calculés à partir des scrutins réellement chargés sur le site. On mesure ici la présence observée du député dans les votes nominaux disponibles.
       </div>
     </section>
 
@@ -533,17 +498,7 @@
     const deputeNV = document.getElementById("deputeNV");
     const deputeCompare = document.getElementById("deputeCompare");
 
-    const scrutinsPeriod = document.getElementById("scrutinsPeriod");
-    const presenceCount = document.getElementById("presenceCount");
-    const absenceCount = document.getElementById("absenceCount");
-    const presenceRate = document.getElementById("presenceRate");
-    const segVoted = document.getElementById("segVoted");
-    const segNonVotant = document.getElementById("segNonVotant");
-    const segAbsent = document.getElementById("segAbsent");
-    const chipVoted = document.getElementById("chipVoted");
-    const chipNonVotant = document.getElementById("chipNonVotant");
-    const chipAbsent = document.getElementById("chipAbsent");
-
+    const presenceGrid = document.getElementById("presenceGrid");
     const themesContainer = document.getElementById("themesContainer");
     const activeThemeStatus = document.getElementById("activeThemeStatus");
     const deputeVotesList = document.getElementById("deputeVotesList");
@@ -561,8 +516,8 @@
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
 
-    function formatPercent(value) {
-      return `${(value || 0).toFixed(1)}%`;
+    function formatDecimal(value) {
+      return Number(value || 0).toFixed(1);
     }
 
     function normalize(text) {
@@ -595,7 +550,7 @@
       if (mSous) return mSous[1];
       if (mAmend && mArticle) return `${mAmend[1]} sur ${mArticle[1]}`;
       if (mAmend) return mAmend[1];
-      if (mArticle) return mArticle[1];
+      if (mArticle) return `Vote sur l’article ${mArticle[1].trim()}`;
 
       if (title.length > 120) return title.slice(0, 117).trim() + "…";
       return title || "Scrutin sans titre";
@@ -645,19 +600,34 @@
       });
     }
 
+    function getObservedMainGroup(votes) {
+      const counts = new Map();
+      votes.forEach(v => {
+        const g = (v.groupe || "").trim();
+        if (!g || g === "Inconnu") return;
+        counts.set(g, (counts.get(g) || 0) + 1);
+      });
+
+      if (!counts.size) return selectedDeputy?.groupe || "-";
+
+      return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1])[0][0];
+    }
+
     function renderDeputyCard() {
       const stats = computeStats(selectedDeputyVotes);
+      const mainGroup = getObservedMainGroup(selectedDeputyVotes);
 
       pageTitle.textContent = selectedDeputy.nom || "Député inconnu";
-      pageSubtitle.textContent = `${selectedDeputy.groupe || "-"} · ${selectedDeputy.circonscription || selectedDeputy.departement || "-"}`;
+      pageSubtitle.textContent = `${mainGroup || "-"} · ${selectedDeputy.circonscription || selectedDeputy.departement || "-"}`;
       deputeName.textContent = selectedDeputy.nom || "Député inconnu";
       deputeBio.textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
-      deputeGroup.textContent = selectedDeputy.groupe || "-";
+      deputeGroup.textContent = mainGroup || "-";
       deputeCirc.textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
       deputeVotesCount.textContent = formatNumber(selectedDeputyVotes.length);
 
-      if (selectedDeputy.groupe) {
-        groupLink.href = `groupe.html?name=${encodeURIComponent(selectedDeputy.groupe)}`;
+      if (mainGroup && mainGroup !== "-") {
+        groupLink.href = `groupe.html?name=${encodeURIComponent(mainGroup)}`;
       }
 
       deputePour.textContent = formatNumber(stats.pour);
@@ -665,40 +635,29 @@
       deputeAbs.textContent = formatNumber(stats.abstention);
       deputeNV.textContent = formatNumber(stats.non_votant);
 
-      const groupVotes = allVotesFlat.filter(v => v.groupe === selectedDeputy.groupe);
+      const groupVotes = allVotesFlat.filter(v => v.groupe === mainGroup);
       const groupStats = computeStats(groupVotes);
 
       deputeCompare.textContent =
-        selectedDeputy.groupe
-          ? `${selectedDeputy.nom} siège dans le groupe ${selectedDeputy.groupe}. Sur l’ensemble chargé, ce groupe compte ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
-          : "Aucun groupe renseigné pour ce député.";
+        mainGroup && groupVotes.length
+          ? `${selectedDeputy.nom} est observé principalement dans le groupe ${mainGroup} sur la période chargée. Ce groupe totalise ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
+          : "Aucun groupe principal observable sur la période.";
     }
 
-    function renderParticipation() {
-      const stats = computeStats(selectedDeputyVotes);
+    function renderObservedPresence() {
       const totalScrutins = allScrutins.length;
-      const presents = selectedDeputyVotes.length;
-      const voted = stats.pour + stats.contre + stats.abstention;
-      const nonVotant = stats.non_votant;
-      const absents = Math.max(0, totalScrutins - presents);
+      const present = selectedDeputyVotes.length;
+      const voted = selectedDeputyVotes.filter(v => v.vote !== "Non-votant").length;
+      const nonVotant = selectedDeputyVotes.filter(v => v.vote === "Non-votant").length;
+      const rate = totalScrutins ? (present / totalScrutins) * 100 : 0;
 
-      const presentRateValue = totalScrutins ? (presents / totalScrutins) * 100 : 0;
-      const votedRate = totalScrutins ? (voted / totalScrutins) * 100 : 0;
-      const nonVotantRate = totalScrutins ? (nonVotant / totalScrutins) * 100 : 0;
-      const absentRate = totalScrutins ? (absents / totalScrutins) * 100 : 0;
-
-      scrutinsPeriod.textContent = formatNumber(totalScrutins);
-      presenceCount.textContent = formatNumber(presents);
-      absenceCount.textContent = formatNumber(absents);
-      presenceRate.textContent = formatPercent(presentRateValue);
-
-      segVoted.style.width = `${votedRate}%`;
-      segNonVotant.style.width = `${nonVotantRate}%`;
-      segAbsent.style.width = `${absentRate}%`;
-
-      chipVoted.textContent = `Vote exprimé : ${formatNumber(voted)}`;
-      chipNonVotant.textContent = `Non-votant : ${formatNumber(nonVotant)}`;
-      chipAbsent.textContent = `Absent estimé : ${formatNumber(absents)}`;
+      presenceGrid.innerHTML = `
+        <div class="summary-box"><strong>${formatNumber(totalScrutins)}</strong><span>Scrutins chargés</span></div>
+        <div class="summary-box"><strong>${formatNumber(present)}</strong><span>Présences observées</span></div>
+        <div class="summary-box"><strong>${formatNumber(voted)}</strong><span>Votes exprimés</span></div>
+        <div class="summary-box"><strong>${formatNumber(nonVotant)}</strong><span>Non-votants observés</span></div>
+        <div class="summary-box"><strong>${formatDecimal(rate)}%</strong><span>Taux de présence observé</span></div>
+      `;
     }
 
     function renderThemeSummary() {
@@ -806,7 +765,7 @@
           .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
 
         renderDeputyCard();
-        renderParticipation();
+        renderObservedPresence();
         renderThemeSummary();
         renderDeputyVotes();
       } catch (error) {
