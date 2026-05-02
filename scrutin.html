@@ -69,7 +69,7 @@
     .hero p {
       margin: 12px auto 0;
       font-size: 17px;
-      max-width: 900px;
+      max-width: 980px;
       line-height: 1.45;
       opacity: 0.98;
     }
@@ -118,9 +118,9 @@
       background: var(--violet-soft);
       border: 1px solid #e8ddff;
       border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 1.5;
+      padding: 16px;
+      font-size: 16px;
+      line-height: 1.6;
       text-align: center;
     }
 
@@ -256,18 +256,18 @@
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Participation estimée</h2>
+      <h2 class="panel-title">Participation observée</h2>
       <div class="participation-wrap">
         <div class="summary-grid">
           <div class="summary-box"><strong id="presentCount">0</strong><span>Présents recensés</span></div>
           <div class="summary-box"><strong id="votedCount">0</strong><span>Votants</span></div>
           <div class="summary-box"><strong id="nonVotantCount">0</strong><span>Non-votants</span></div>
-          <div class="summary-box"><strong id="absentCount">0</strong><span>Absents estimés</span></div>
+          <div class="summary-box"><strong id="absentCount">0</strong><span>Absents par différence avec 577</span></div>
         </div>
 
         <div class="summary-grid">
-          <div class="summary-box"><strong id="participationRate">0%</strong><span>Taux de participation estimé</span></div>
-          <div class="summary-box"><strong>577</strong><span>Base de calcul</span></div>
+          <div class="summary-box"><strong id="participationRate">0%</strong><span>Taux de présence observé</span></div>
+          <div class="summary-box"><strong>577</strong><span>Base de calcul Assemblée</span></div>
           <div class="summary-box"><strong id="pourCount">0</strong><span>Pour</span></div>
           <div class="summary-box"><strong id="contreCount">0</strong><span>Contre</span></div>
         </div>
@@ -285,11 +285,11 @@
           <span class="chip" id="chipContre">Contre : 0</span>
           <span class="chip" id="chipAbstention">Abstention : 0</span>
           <span class="chip" id="chipNonVotant">Non-votant : 0</span>
-          <span class="chip" id="chipAbsent">Absent estimé : 0</span>
+          <span class="chip" id="chipAbsent">Absents : 0</span>
         </div>
 
         <div class="small-muted">
-          Les absences sont estimées par différence avec 577 députés.
+          Les présents, votants et non-votants proviennent du scrutin chargé. Les absents sont calculés par différence avec 577 députés.
         </div>
       </div>
     </section>
@@ -369,6 +369,42 @@
       };
     }
 
+    function shortHumanTitle(scrutin) {
+      const title = (scrutin.titre || "").trim();
+
+      const mSous = title.match(/sous-amendement n°\s*([0-9]+)/i);
+      if (mSous) return `Sous-amendement n°${mSous[1]}`;
+
+      const mAmend = title.match(/amendement n°\s*([0-9]+)/i);
+      if (mAmend) return `Amendement n°${mAmend[1]}`;
+
+      const mArticle = title.match(/article\s+([0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
+      if (mArticle) return `Vote sur l’article ${mArticle[1].trim()}`;
+
+      if (/motion de censure/i.test(title)) return "Motion de censure";
+      if (/ensemble de la proposition de loi/i.test(title)) return "Vote sur l’ensemble du texte";
+
+      if (title.length > 90) return title.slice(0, 87).trim() + "…";
+      return title || "Scrutin";
+    }
+
+    function longHumanSummary(scrutin) {
+      const desc = (scrutin.description || "").trim();
+      const title = (scrutin.titre || "").trim();
+      const theme = scrutin.theme || "Autres";
+      const date = scrutin.date || "";
+
+      if (desc && desc !== title) {
+        return `Ce scrutin, classé dans la thématique « ${theme} » et enregistré le ${date}, porte sur ${desc.charAt(0).toLowerCase() + desc.slice(1)}.`;
+      }
+
+      if (title) {
+        return `Ce scrutin, classé dans la thématique « ${theme} » et enregistré le ${date}, concerne ${title.charAt(0).toLowerCase() + title.slice(1)}.`;
+      }
+
+      return `Ce scrutin est classé dans la thématique « ${theme} » et a été enregistré le ${date}.`;
+    }
+
     async function loadJson(path) {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Impossible de charger ${path}`);
@@ -389,7 +425,10 @@
       const absent = Math.max(0, 577 - present);
       const rate = (present / 577) * 100;
 
-      pageTitle.textContent = scrutin.titre || "Scrutin";
+      const humanTitle = shortHumanTitle(scrutin);
+      const humanSummary = longHumanSummary(scrutin);
+
+      pageTitle.textContent = humanTitle;
       pageSubtitle.textContent = `${scrutin.date || ""} · ${scrutin.theme || "Autres"}`;
 
       scrutinSummary.innerHTML = `
@@ -398,7 +437,7 @@
           <span class="chip">${scrutin.date || ""}</span>
           <span class="chip">UID : ${scrutin.uid || "-"}</span>
         </div>
-        <p class="description">${scrutin.description || scrutin.titre || ""}</p>
+        <p class="description">${humanSummary}</p>
       `;
 
       presentCount.textContent = formatNumber(present);
@@ -425,7 +464,7 @@
       chipContre.textContent = `Contre : ${formatNumber(stats.contre)}`;
       chipAbstention.textContent = `Abstention : ${formatNumber(stats.abstention)}`;
       chipNonVotant.textContent = `Non-votant : ${formatNumber(nonVotant)}`;
-      chipAbsent.textContent = `Absent estimé : ${formatNumber(absent)}`;
+      chipAbsent.textContent = `Absents : ${formatNumber(absent)}`;
 
       const sortedVotes = votes.slice().sort((a, b) => {
         const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
