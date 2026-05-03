@@ -13,7 +13,6 @@
       --text: #1e1c26;
       --muted: #6f6a7e;
       --border: #e7e2f2;
-      --warning: #946200;
       --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
       --radius: 22px;
     }
@@ -83,6 +82,32 @@
       box-shadow: var(--shadow);
       padding: 24px;
       margin-bottom: 20px;
+    }
+
+    .year-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .year-btn {
+      display: inline-block;
+      min-width: 120px;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid #d9d2ea;
+      background: white;
+      color: #1e1c26;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .year-btn.active {
+      background: linear-gradient(135deg, #5b00c7, #7700FF);
+      color: white;
+      border-color: transparent;
     }
 
     .panel-title {
@@ -274,6 +299,8 @@
   </header>
 
   <main>
+    <div class="panel year-switch" id="yearSwitch"></div>
+
     <section class="panel">
       <h2 class="panel-title">Résumé du groupe</h2>
       <div id="groupDetailContainer"></div>
@@ -283,7 +310,7 @@
       <h2 class="panel-title">Présence observée du groupe</h2>
       <div class="summary-grid" id="presenceObservedGrid"></div>
       <div class="small-muted">
-        Ces chiffres sont calculés à partir des scrutins réellement chargés et des députés effectivement observés dans les votes de ce groupe sur la période.
+        Ces chiffres sont calculés uniquement sur l’année sélectionnée.
       </div>
     </section>
 
@@ -299,20 +326,64 @@
   </main>
 
   <script>
+    let selectedYear = "";
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
     let groupName = "";
 
-    const pageTitle = document.getElementById("pageTitle");
-    const pageSubtitle = document.getElementById("pageSubtitle");
-    const groupDetailContainer = document.getElementById("groupDetailContainer");
-    const groupDeputiesContainer = document.getElementById("groupDeputiesContainer");
-    const groupScrutinsContainer = document.getElementById("groupScrutinsContainer");
-    const presenceObservedGrid = document.getElementById("presenceObservedGrid");
-
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
+    }
+
+    function setParamInUrl(url, key, value) {
+      const u = new URL(url, window.location.origin);
+      if (value) u.searchParams.set(key, value);
+      else u.searchParams.delete(key);
+      return u.pathname + u.search;
+    }
+
+    function buildYearButtons(indexData) {
+      const container = document.getElementById("yearSwitch");
+      const years = (indexData?.available_years || []).map(String);
+      const currentUrl = window.location.pathname + window.location.search;
+
+      container.innerHTML = years.map(year => {
+        const href = setParamInUrl(currentUrl, "year", year);
+        const active = selectedYear === year ? "active" : "";
+        return `<a class="year-btn ${active}" href="${href}">${year}</a>`;
+      }).join("");
+    }
+
+    function getSelectedYear(indexData) {
+      const yearParam = getParam("year");
+      const availableYears = (indexData?.available_years || []).map(String);
+      const defaultYear = String(indexData?.default_year || "");
+      if (yearParam && availableYears.includes(yearParam)) return yearParam;
+      if (defaultYear && availableYears.includes(defaultYear)) return defaultYear;
+      return availableYears[0] || "";
+    }
+
+    function getYearLabel() {
+      return selectedYear || "";
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
+      return response.json();
+    }
+
+    async function loadMonthFile(filePath) {
+      return loadJson("./" + filePath);
+    }
+
+    async function loadYearScrutins(indexData) {
+      selectedYear = getSelectedYear(indexData);
+      const yearInfo = indexData?.years?.[selectedYear];
+      const months = yearInfo?.months || [];
+      const payloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
+      return payloads.flatMap(payload => payload.scrutins || []);
     }
 
     function formatNumber(value) {
@@ -355,7 +426,7 @@
       if (mSous) return mSous[1];
       if (mAmend && mArticle) return `${mAmend[1]} sur ${mArticle[1]}`;
       if (mAmend) return mAmend[1];
-      if (mArticle) return mArticle[1];
+      if (mArticle) return `Vote sur l’article ${mArticle[1].trim()}`;
 
       if (title.length > 120) return title.slice(0, 117).trim() + "…";
       return title || "Scrutin sans titre";
@@ -365,16 +436,6 @@
       const desc = (scrutin.description || scrutin.titre || "").trim();
       if (desc.length > 220) return desc.slice(0, 217).trim() + "…";
       return desc;
-    }
-
-    async function loadJson(path) {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
-      return response.json();
-    }
-
-    async function loadMonthFile(filePath) {
-      return loadJson("./" + filePath);
     }
 
     function buildFlatVotes() {
@@ -434,10 +495,10 @@
         .sort((a, b) => b.total - a.total)
         .slice(0, 6);
 
-      pageTitle.textContent = groupName;
-      pageSubtitle.textContent = `${formatNumber(groupVotes.length)} votes recensés · Vote dominant : ${dominantVoteLabel(stats)}`;
+      document.getElementById("pageTitle").textContent = groupName;
+      document.getElementById("pageSubtitle").textContent = `${formatNumber(groupVotes.length)} votes recensés en ${getYearLabel()} · Vote dominant : ${dominantVoteLabel(stats)}`;
 
-      groupDetailContainer.innerHTML = `
+      document.getElementById("groupDetailContainer").innerHTML = `
         <div class="depute-card">
           <div class="identity-card">
             <h2>${groupName}</h2>
@@ -476,9 +537,7 @@
 
       const scrutinToDeputies = new Map();
       groupVotes.forEach(v => {
-        if (!scrutinToDeputies.has(v.scrutin_uid)) {
-          scrutinToDeputies.set(v.scrutin_uid, new Set());
-        }
+        if (!scrutinToDeputies.has(v.scrutin_uid)) scrutinToDeputies.set(v.scrutin_uid, new Set());
         scrutinToDeputies.get(v.scrutin_uid).add(v.depute_uid);
       });
 
@@ -489,7 +548,7 @@
       const maxPresent = scrutinsCount ? Math.max(...[...scrutinToDeputies.values()].map(set => set.size)) : 0;
       const minPresent = scrutinsCount ? Math.min(...[...scrutinToDeputies.values()].map(set => set.size)) : 0;
 
-      presenceObservedGrid.innerHTML = `
+      document.getElementById("presenceObservedGrid").innerHTML = `
         <div class="summary-box"><strong>${formatNumber(observedDeputiesCount)}</strong><span>Députés observés</span></div>
         <div class="summary-box"><strong>${formatNumber(scrutinsCount)}</strong><span>Scrutins où le groupe apparaît</span></div>
         <div class="summary-box"><strong>${formatNumber(totalPresenceMarks)}</strong><span>Présences observées</span></div>
@@ -503,12 +562,12 @@
       const deputies = getObservedDeputiesForGroup();
 
       if (!deputies.length) {
-        groupDeputiesContainer.innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
+        document.getElementById("groupDeputiesContainer").innerHTML = `<div class="empty">Aucun député trouvé pour ce groupe.</div>`;
         return;
       }
 
-      groupDeputiesContainer.innerHTML = deputies.map(d => `
-        <a class="group-card" href="depute.html?uid=${encodeURIComponent(d.uid)}">
+      document.getElementById("groupDeputiesContainer").innerHTML = deputies.map(d => `
+        <a class="group-card" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
           <h3>${d.nom || "Député inconnu"}</h3>
           <div class="small-muted">${d.circonscription || d.departement || "-"}</div>
           <div class="group-number">${formatNumber(d.votes_count || 0)}</div>
@@ -537,12 +596,12 @@
         .slice(0, 40);
 
       if (!scrutins.length) {
-        groupScrutinsContainer.innerHTML = `<div class="empty">Aucun scrutin trouvé pour ce groupe.</div>`;
+        document.getElementById("groupScrutinsContainer").innerHTML = `<div class="empty">Aucun scrutin trouvé pour ce groupe.</div>`;
         return;
       }
 
-      groupScrutinsContainer.innerHTML = scrutins.map(item => `
-        <a class="scrutin-card" href="scrutin.html?uid=${encodeURIComponent(item.uid)}">
+      document.getElementById("groupScrutinsContainer").innerHTML = scrutins.map(item => `
+        <a class="scrutin-card" href="scrutin.html?uid=${encodeURIComponent(item.uid)}&year=${encodeURIComponent(selectedYear)}">
           <div class="small-muted">${item.date || ""} · ${item.theme || "Autres"}</div>
           <h3>${shortTitle(item.scrutin)}</h3>
           <p class="vote-description">${shortDescription(item.scrutin)}</p>
@@ -560,9 +619,9 @@
         }
 
         const indexData = await loadJson("./data/current/index.json");
-        const months = indexData?.months || [];
-        const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
-        allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
+        selectedYear = getSelectedYear(indexData);
+        buildYearButtons(indexData);
+        allScrutins = await loadYearScrutins(indexData);
 
         const deputesPayload = await loadJson("./data/current/deputes.json");
         deputyDirectory = deputesPayload.deputes || [];
