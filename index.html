@@ -15,10 +15,6 @@
       --border: #e7e2f2;
       --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
       --radius: 22px;
-      --success: #0b7a36;
-      --danger: #b31c2f;
-      --warning: #946200;
-      --neutral: #7b728d;
     }
 
     * { box-sizing: border-box; }
@@ -101,7 +97,7 @@
 
     .counts-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 10px;
     }
@@ -340,9 +336,6 @@
       <div class="counts-grid">
         <div class="count-box"><strong id="countScrutins">0</strong><span>Scrutins</span></div>
         <div class="count-box"><strong id="countVotes">0</strong><span>Votes</span></div>
-        <div class="count-box"><strong id="countDeputes">0</strong><span>Députés</span></div>
-        <div class="count-box"><strong id="countGroupes">0</strong><span>Groupes</span></div>
-        <div class="count-box"><strong id="countDepartements">0</strong><span>Départements</span></div>
       </div>
       <div class="small-muted" id="countsSubtitle">Chargement…</div>
     </section>
@@ -430,10 +423,6 @@
       return availableYears[0] || "";
     }
 
-    function getYearLabel() {
-      return selectedYear || "";
-    }
-
     async function loadJson(path) {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Impossible de charger ${path}`);
@@ -512,9 +501,6 @@
 
       document.getElementById("countScrutins").textContent = formatNumber(counts.scrutins || 0);
       document.getElementById("countVotes").textContent = formatNumber(counts.votes || 0);
-      document.getElementById("countDeputes").textContent = formatNumber(counts.deputes || 0);
-      document.getElementById("countGroupes").textContent = formatNumber(counts.groupes || 0);
-      document.getElementById("countDepartements").textContent = formatNumber(counts.departements || 0);
       document.getElementById("countsSubtitle").textContent =
         `Données ${selectedYear} · dernière mise à jour : ${indexData?.updated_at || ""}`;
     }
