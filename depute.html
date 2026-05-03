@@ -88,6 +88,33 @@
       margin-bottom: 20px;
     }
 
+    .year-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .year-btn {
+      display: inline-block;
+      min-width: 120px;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid #d9d2ea;
+      background: white;
+      color: #1e1c26;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .year-btn.active {
+      background: linear-gradient(135deg, #5b00c7, #7700FF);
+      color: white;
+      border-color: transparent;
+    }
+
     .panel-title {
       margin: 0 0 18px;
       font-size: 30px;
@@ -385,6 +412,8 @@
   </header>
 
   <main>
+    <div class="panel year-switch" id="yearSwitch"></div>
+
     <section class="panel">
       <h2 class="panel-title">Fiche député</h2>
       <div class="depute-card">
@@ -425,7 +454,7 @@
       <h2 class="panel-title">Présence observée du député</h2>
       <div class="presence-grid" id="presenceGrid"></div>
       <div class="small-muted">
-        Ces chiffres sont calculés à partir des scrutins réellement chargés sur le site. On mesure ici la présence observée du député dans les votes nominaux disponibles.
+        Ces chiffres sont calculés uniquement sur l’année sélectionnée.
       </div>
     </section>
 
@@ -475,6 +504,7 @@
 
   <script>
     let indexData = null;
+    let selectedYear = "";
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
@@ -482,34 +512,58 @@
     let selectedDeputyVotes = [];
     let activeTheme = "";
 
-    const pageTitle = document.getElementById("pageTitle");
-    const pageSubtitle = document.getElementById("pageSubtitle");
-    const groupLink = document.getElementById("groupLink");
-
-    const deputeName = document.getElementById("deputeName");
-    const deputeBio = document.getElementById("deputeBio");
-    const deputeGroup = document.getElementById("deputeGroup");
-    const deputeCirc = document.getElementById("deputeCirc");
-    const deputeVotesCount = document.getElementById("deputeVotesCount");
-
-    const deputePour = document.getElementById("deputePour");
-    const deputeContre = document.getElementById("deputeContre");
-    const deputeAbs = document.getElementById("deputeAbs");
-    const deputeNV = document.getElementById("deputeNV");
-    const deputeCompare = document.getElementById("deputeCompare");
-
-    const presenceGrid = document.getElementById("presenceGrid");
-    const themesContainer = document.getElementById("themesContainer");
-    const activeThemeStatus = document.getElementById("activeThemeStatus");
-    const deputeVotesList = document.getElementById("deputeVotesList");
-
-    const monthFilter = document.getElementById("monthFilter");
-    const voteFilter = document.getElementById("voteFilter");
-    const dateFilter = document.getElementById("dateFilter");
-    const titleFilter = document.getElementById("titleFilter");
-
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
+    }
+
+    function setParamInUrl(url, key, value) {
+      const u = new URL(url, window.location.origin);
+      if (value) u.searchParams.set(key, value);
+      else u.searchParams.delete(key);
+      return u.pathname + u.search;
+    }
+
+    function buildYearButtons(indexData) {
+      const container = document.getElementById("yearSwitch");
+      const years = (indexData?.available_years || []).map(String);
+      const currentUrl = window.location.pathname + window.location.search;
+
+      container.innerHTML = years.map(year => {
+        const href = setParamInUrl(currentUrl, "year", year);
+        const active = selectedYear === year ? "active" : "";
+        return `<a class="year-btn ${active}" href="${href}">${year}</a>`;
+      }).join("");
+    }
+
+    function getSelectedYear(indexData) {
+      const yearParam = getParam("year");
+      const availableYears = (indexData?.available_years || []).map(String);
+      const defaultYear = String(indexData?.default_year || "");
+      if (yearParam && availableYears.includes(yearParam)) return yearParam;
+      if (defaultYear && availableYears.includes(defaultYear)) return defaultYear;
+      return availableYears[0] || "";
+    }
+
+    function getYearLabel() {
+      return selectedYear || "";
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
+      return response.json();
+    }
+
+    async function loadMonthFile(filePath) {
+      return loadJson("./" + filePath);
+    }
+
+    async function loadYearScrutins(indexData) {
+      selectedYear = getSelectedYear(indexData);
+      const yearInfo = indexData?.years?.[selectedYear];
+      const months = yearInfo?.months || [];
+      const payloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
+      return payloads.flatMap(payload => payload.scrutins || []);
     }
 
     function formatNumber(value) {
@@ -562,16 +616,6 @@
       return desc;
     }
 
-    async function loadJson(path) {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
-      return response.json();
-    }
-
-    async function loadMonthFile(filePath) {
-      return loadJson("./" + filePath);
-    }
-
     function buildFlatVotes() {
       allVotesFlat = [];
       allScrutins.forEach(scrutin => {
@@ -590,13 +634,14 @@
     }
 
     function fillMonthFilter() {
-      const months = indexData?.months || [];
-      monthFilter.innerHTML = `<option value="">Tous les mois</option>`;
+      const months = indexData?.years?.[selectedYear]?.months || [];
+      const select = document.getElementById("monthFilter");
+      select.innerHTML = `<option value="">Tous les mois</option>`;
       months.forEach(m => {
         const option = document.createElement("option");
         option.value = m.month;
         option.textContent = `${m.month} (${m.scrutins})`;
-        monthFilter.appendChild(option);
+        select.appendChild(option);
       });
     }
 
@@ -610,38 +655,37 @@
 
       if (!counts.size) return selectedDeputy?.groupe || "-";
 
-      return [...counts.entries()]
-        .sort((a, b) => b[1] - a[1])[0][0];
+      return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
     }
 
     function renderDeputyCard() {
       const stats = computeStats(selectedDeputyVotes);
       const mainGroup = getObservedMainGroup(selectedDeputyVotes);
 
-      pageTitle.textContent = selectedDeputy.nom || "Député inconnu";
-      pageSubtitle.textContent = `${mainGroup || "-"} · ${selectedDeputy.circonscription || selectedDeputy.departement || "-"}`;
-      deputeName.textContent = selectedDeputy.nom || "Député inconnu";
-      deputeBio.textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
-      deputeGroup.textContent = mainGroup || "-";
-      deputeCirc.textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
-      deputeVotesCount.textContent = formatNumber(selectedDeputyVotes.length);
+      document.getElementById("pageTitle").textContent = selectedDeputy.nom || "Député inconnu";
+      document.getElementById("pageSubtitle").textContent = `${mainGroup || "-"} · ${selectedDeputy.circonscription || selectedDeputy.departement || "-"} · ${getYearLabel()}`;
+      document.getElementById("deputeName").textContent = selectedDeputy.nom || "Député inconnu";
+      document.getElementById("deputeBio").textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
+      document.getElementById("deputeGroup").textContent = mainGroup || "-";
+      document.getElementById("deputeCirc").textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
+      document.getElementById("deputeVotesCount").textContent = formatNumber(selectedDeputyVotes.length);
 
       if (mainGroup && mainGroup !== "-") {
-        groupLink.href = `groupe.html?name=${encodeURIComponent(mainGroup)}`;
+        document.getElementById("groupLink").href = `groupe.html?name=${encodeURIComponent(mainGroup)}&year=${encodeURIComponent(selectedYear)}`;
       }
 
-      deputePour.textContent = formatNumber(stats.pour);
-      deputeContre.textContent = formatNumber(stats.contre);
-      deputeAbs.textContent = formatNumber(stats.abstention);
-      deputeNV.textContent = formatNumber(stats.non_votant);
+      document.getElementById("deputePour").textContent = formatNumber(stats.pour);
+      document.getElementById("deputeContre").textContent = formatNumber(stats.contre);
+      document.getElementById("deputeAbs").textContent = formatNumber(stats.abstention);
+      document.getElementById("deputeNV").textContent = formatNumber(stats.non_votant);
 
       const groupVotes = allVotesFlat.filter(v => v.groupe === mainGroup);
       const groupStats = computeStats(groupVotes);
 
-      deputeCompare.textContent =
+      document.getElementById("deputeCompare").textContent =
         mainGroup && groupVotes.length
-          ? `${selectedDeputy.nom} est observé principalement dans le groupe ${mainGroup} sur la période chargée. Ce groupe totalise ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
-          : "Aucun groupe principal observable sur la période.";
+          ? `${selectedDeputy.nom} est observé principalement dans le groupe ${mainGroup} en ${selectedYear}. Ce groupe totalise ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
+          : "Aucun groupe principal observable sur cette année.";
     }
 
     function renderObservedPresence() {
@@ -651,7 +695,7 @@
       const nonVotant = selectedDeputyVotes.filter(v => v.vote === "Non-votant").length;
       const rate = totalScrutins ? (present / totalScrutins) * 100 : 0;
 
-      presenceGrid.innerHTML = `
+      document.getElementById("presenceGrid").innerHTML = `
         <div class="summary-box"><strong>${formatNumber(totalScrutins)}</strong><span>Scrutins chargés</span></div>
         <div class="summary-box"><strong>${formatNumber(present)}</strong><span>Présences observées</span></div>
         <div class="summary-box"><strong>${formatNumber(voted)}</strong><span>Votes exprimés</span></div>
@@ -662,7 +706,7 @@
 
     function renderThemeSummary() {
       if (!selectedDeputyVotes.length) {
-        themesContainer.innerHTML = `<div class="empty">Aucune donnée disponible.</div>`;
+        document.getElementById("themesContainer").innerHTML = `<div class="empty">Aucune donnée disponible.</div>`;
         return;
       }
 
@@ -677,8 +721,8 @@
         .sort((a, b) => b.total - a.total)
         .slice(0, 8);
 
-      themesContainer.innerHTML = ranked.map(item => `
-        <a class="theme-card ${activeTheme === item.theme ? "active" : ""}" href="?uid=${encodeURIComponent(selectedDeputy.uid)}&theme=${encodeURIComponent(item.theme)}">
+      document.getElementById("themesContainer").innerHTML = ranked.map(item => `
+        <a class="theme-card ${activeTheme === item.theme ? "active" : ""}" href="?uid=${encodeURIComponent(selectedDeputy.uid)}&theme=${encodeURIComponent(item.theme)}&year=${encodeURIComponent(selectedYear)}">
           <h3>${item.theme}</h3>
           <strong>${formatNumber(item.total)}</strong>
           <span>vote(s) sur ce thème</span>
@@ -687,10 +731,10 @@
     }
 
     function renderDeputyVotes() {
-      const selectedMonth = monthFilter.value;
-      const selectedVote = voteFilter.value;
-      const dateQuery = normalize(dateFilter.value);
-      const titleQuery = normalize(titleFilter.value);
+      const selectedMonth = document.getElementById("monthFilter").value;
+      const selectedVote = document.getElementById("voteFilter").value;
+      const dateQuery = normalize(document.getElementById("dateFilter").value);
+      const titleQuery = normalize(document.getElementById("titleFilter").value);
 
       const filtered = selectedDeputyVotes.filter(v => {
         const monthMatch = !selectedMonth || (v.scrutin_date || "").startsWith(selectedMonth);
@@ -701,15 +745,15 @@
         return monthMatch && voteMatch && dateMatch && titleMatch && themeMatch;
       });
 
-      activeThemeStatus.textContent = activeTheme ? `Filtre thématique actif : ${activeTheme}` : "";
+      document.getElementById("activeThemeStatus").textContent = activeTheme ? `Filtre thématique actif : ${activeTheme}` : "";
 
       if (!filtered.length) {
-        deputeVotesList.innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
+        document.getElementById("deputeVotesList").innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
         return;
       }
 
-      deputeVotesList.innerHTML = filtered.map(v => `
-        <a class="vote-card" href="scrutin.html?uid=${encodeURIComponent(v.scrutin_uid)}">
+      document.getElementById("deputeVotesList").innerHTML = filtered.map(v => `
+        <a class="vote-card" href="scrutin.html?uid=${encodeURIComponent(v.scrutin_uid)}&year=${encodeURIComponent(selectedYear)}">
           <div class="vote-context">${v.scrutin_date || ""} · ${v.scrutin_theme || "Autres"} · ${v.groupe || ""}</div>
           <h3>${shortTitle(v.scrutin_full)}</h3>
           <p class="vote-description">${shortDescription(v.scrutin_full)}</p>
@@ -723,7 +767,8 @@
     }
 
     function bindEvents() {
-      [monthFilter, voteFilter, dateFilter, titleFilter].forEach(el => {
+      ["monthFilter", "voteFilter", "dateFilter", "titleFilter"].forEach(id => {
+        const el = document.getElementById(id);
         el.addEventListener("input", renderDeputyVotes);
         el.addEventListener("change", renderDeputyVotes);
       });
@@ -735,16 +780,14 @@
         activeTheme = getParam("theme");
 
         if (!uid) {
-          pageTitle.textContent = "Député introuvable";
-          pageSubtitle.textContent = "Paramètre uid manquant.";
           document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Impossible d’ouvrir cette fiche député.</div></section>`;
           return;
         }
 
         indexData = await loadJson("./data/current/index.json");
-        const months = indexData?.months || [];
-        const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
-        allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
+        selectedYear = getSelectedYear(indexData);
+        buildYearButtons(indexData);
+        allScrutins = await loadYearScrutins(indexData);
 
         const deputesPayload = await loadJson("./data/current/deputes.json");
         deputyDirectory = deputesPayload.deputes || [];
@@ -761,7 +804,7 @@
         }
 
         selectedDeputyVotes = allVotesFlat
-          .filter(v => (v.depute_uid || v.nom) === selectedDeputy.uid)
+          .filter(v => v.depute_uid === selectedDeputy.uid)
           .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
 
         renderDeputyCard();
