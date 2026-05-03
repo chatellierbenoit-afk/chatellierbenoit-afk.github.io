@@ -295,6 +295,7 @@
       text-align: center;
       color: var(--muted);
       padding: 28px 8px;
+      grid-column: 1 / -1;
     }
 
     @media (max-width: 1200px) {
@@ -441,6 +442,41 @@
       return payloads.flatMap(payload => payload.scrutins || []);
     }
 
+    async function fetchJson(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Erreur API : ${url}`);
+      return response.json();
+    }
+
+    async function resolveGeoQuery(query) {
+      const q = (query || "").trim();
+      if (!q) return null;
+
+      if (/^\d{5}$/.test(q)) {
+        const communes = await fetchJson(`https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&format=json&geometry=centre`);
+        if (Array.isArray(communes) && communes.length) {
+          return {
+            type: "postal",
+            commune: communes[0].nom || "",
+            departement: communes[0]?.departement?.nom || "",
+            departementCode: communes[0]?.departement?.code || ""
+          };
+        }
+      }
+
+      const communesByName = await fetchJson(`https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5&format=json&geometry=centre`);
+      if (Array.isArray(communesByName) && communesByName.length) {
+        return {
+          type: "commune",
+          commune: communesByName[0].nom || "",
+          departement: communesByName[0]?.departement?.nom || "",
+          departementCode: communesByName[0]?.departement?.code || ""
+        };
+      }
+
+      return null;
+    }
+
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
@@ -568,17 +604,45 @@
       return [...seen.values()].sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
     }
 
-    function searchDeputies() {
-      const query = normalize(document.getElementById("deputeSearchInput").value);
+    async function searchDeputies() {
+      const rawQuery = document.getElementById("deputeSearchInput").value.trim();
+      const query = normalize(rawQuery);
+
+      let geo = null;
+      try {
+        geo = await resolveGeoQuery(rawQuery);
+      } catch (e) {
+        console.warn("Recherche géographique impossible :", e);
+      }
+
+      const expandedQueries = [query];
+
+      if (geo) {
+        if (geo.commune) expandedQueries.push(normalize(geo.commune));
+        if (geo.departement) expandedQueries.push(normalize(geo.departement));
+        if (geo.departementCode) expandedQueries.push(normalize(geo.departementCode));
+
+        document.getElementById("deputeSearchInfo").textContent =
+          `Recherche géographique reconnue : ${geo.commune || rawQuery}${geo.departement ? `, ${geo.departement}` : ""} · données ${selectedYear}`;
+      } else {
+        document.getElementById("deputeSearchInfo").textContent =
+          `La recherche se fait uniquement sur les données de l’année sélectionnée.`;
+      }
+
       const results = getSearchableDeputies()
         .filter(d => {
           if (!query) return true;
-          return [
+
+          const haystacks = [
             d.nom,
             d.groupe,
             d.circonscription,
             d.departement
-          ].some(val => normalize(val).includes(query));
+          ].map(normalize);
+
+          return expandedQueries.some(q =>
+            q && haystacks.some(value => value.includes(q))
+          );
         })
         .slice(0, 40);
 
@@ -591,7 +655,8 @@
         </a>
       `).join("");
 
-      document.getElementById("deputeSearchResults").innerHTML = html || `<div class="empty">Aucun député trouvé.</div>`;
+      document.getElementById("deputeSearchResults").innerHTML =
+        html || `<div class="empty">Aucun député trouvé.</div>`;
     }
 
     function bindTabs() {
@@ -626,7 +691,7 @@
         renderCounts();
         renderGroups();
         renderScrutins();
-        searchDeputies();
+        await searchDeputies();
         bindTabs();
         bindSearch();
       } catch (error) {
