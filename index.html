@@ -130,6 +130,102 @@
       margin-top: 10px;
     }
 
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .assembly-bar-wrap {
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+
+    .assembly-bar {
+      width: 100%;
+      min-height: 30px;
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      border: 1px solid var(--border);
+      background: #f3effc;
+    }
+
+    .assembly-seg {
+      min-width: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      padding: 0 6px;
+    }
+
+    .assembly-seg span {
+      opacity: 0.96;
+    }
+
+    .composition-grid,
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .composition-card,
+    .card-link {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .composition-card:hover,
+    .card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      background: var(--violet-soft);
+    }
+
+    .composition-card h3,
+    .card-link h3 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .composition-card .big,
+    .card-link .big {
+      display: block;
+      text-align: center;
+      color: var(--violet);
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .composition-card .meta,
+    .card-link .meta {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .composition-card .sub,
+    .card-link .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .tabs {
       display: flex;
       justify-content: center;
@@ -195,58 +291,6 @@
       cursor: pointer;
     }
 
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .card-link {
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .card-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
-      background: var(--violet-soft);
-    }
-
-    .card-link h3 {
-      margin: 0 0 8px;
-      text-align: center;
-      font-size: 22px;
-      line-height: 1.2;
-    }
-
-    .card-link .meta {
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .card-link .big {
-      display: block;
-      text-align: center;
-      color: var(--violet);
-      font-weight: 700;
-      font-size: 22px;
-      margin-bottom: 6px;
-    }
-
-    .card-link .sub {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     .scrutin-card {
       display: block;
       text-decoration: none;
@@ -300,6 +344,7 @@
 
     @media (max-width: 1200px) {
       .counts-grid,
+      .composition-grid,
       .results-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -311,6 +356,7 @@
 
     @media (max-width: 760px) {
       .counts-grid,
+      .composition-grid,
       .results-grid {
         grid-template-columns: 1fr;
       }
@@ -318,6 +364,7 @@
       .hero h1 { font-size: 31px; }
       .scrutin-card h3 { font-size: 22px; }
       .tab-btn { min-width: auto; width: 100%; }
+      .assembly-seg span { display: none; }
     }
   </style>
 </head>
@@ -339,6 +386,15 @@
         <div class="count-box"><strong id="countVotes">0</strong><span>Votes</span></div>
       </div>
       <div class="small-muted" id="countsSubtitle">Chargement…</div>
+    </section>
+
+    <section class="panel">
+      <h2 class="section-title">Composition de l’Assemblée</h2>
+      <div class="small-muted">Répartition des députés par groupe politique</div>
+      <div class="assembly-bar-wrap">
+        <div class="assembly-bar" id="assemblyBar"></div>
+      </div>
+      <div class="composition-grid" id="compositionGrid"></div>
     </section>
 
     <section class="panel">
@@ -391,6 +447,12 @@
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
+
+    const GROUP_COLORS = [
+      "#6C2BD9", "#8B5CF6", "#2563EB", "#0EA5E9", "#14B8A6",
+      "#10B981", "#84CC16", "#F59E0B", "#F97316", "#EF4444",
+      "#EC4899", "#A855F7", "#64748B", "#9333EA", "#7C3AED"
+    ];
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
@@ -481,6 +543,10 @@
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
 
+    function formatPercent(value) {
+      return `${(value || 0).toFixed(1)}%`;
+    }
+
     function normalize(text) {
       return (text || "")
         .toLowerCase()
@@ -539,6 +605,54 @@
       document.getElementById("countVotes").textContent = formatNumber(counts.votes || 0);
       document.getElementById("countsSubtitle").textContent =
         `Données ${selectedYear} · dernière mise à jour : ${indexData?.updated_at || ""}`;
+    }
+
+    function renderComposition() {
+      const grouped = new Map();
+
+      deputyDirectory.forEach(d => {
+        const groupe = (d.groupe || "Inconnu").trim() || "Inconnu";
+        grouped.set(groupe, (grouped.get(groupe) || 0) + 1);
+      });
+
+      const total = deputyDirectory.length || 0;
+      const rows = [...grouped.entries()]
+        .map(([groupe, count]) => ({
+          groupe,
+          count,
+          pct: total ? (count / total) * 100 : 0
+        }))
+        .sort((a, b) => b.count - a.count);
+
+      const bar = document.getElementById("assemblyBar");
+      const grid = document.getElementById("compositionGrid");
+
+      if (!rows.length) {
+        bar.innerHTML = "";
+        grid.innerHTML = `<div class="empty">Aucune composition disponible.</div>`;
+        return;
+      }
+
+      bar.innerHTML = rows.map((row, i) => {
+        const color = GROUP_COLORS[i % GROUP_COLORS.length];
+        return `
+          <div class="assembly-seg" style="width:${row.pct}%; background:${color}" title="${row.groupe} · ${row.count} député(s) · ${formatPercent(row.pct)}">
+            <span>${row.count}</span>
+          </div>
+        `;
+      }).join("");
+
+      grid.innerHTML = rows.map((row, i) => {
+        const color = GROUP_COLORS[i % GROUP_COLORS.length];
+        return `
+          <a class="composition-card" href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
+            <h3>${row.groupe}</h3>
+            <div class="meta"><span style="display:inline-block;width:12px;height:12px;border-radius:999px;background:${color};vertical-align:middle;margin-right:8px;"></span>${formatPercent(row.pct)}</div>
+            <span class="big">${formatNumber(row.count)}</span>
+            <div class="sub">député(s)</div>
+          </a>
+        `;
+      }).join("");
     }
 
     function renderGroups() {
@@ -689,6 +803,7 @@
 
         buildFlatVotes();
         renderCounts();
+        renderComposition();
         renderGroups();
         renderScrutins();
         await searchDeputies();
