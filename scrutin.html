@@ -89,6 +89,32 @@
       margin-bottom: 20px;
     }
 
+    .year-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .year-btn {
+      display: inline-block;
+      min-width: 120px;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid #d9d2ea;
+      background: white;
+      color: #1e1c26;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .year-btn.active {
+      background: linear-gradient(135deg, #5b00c7, #7700FF);
+      color: white;
+      border-color: transparent;
+    }
+
     .panel-title {
       margin: 0 0 18px;
       font-size: 30px;
@@ -167,10 +193,7 @@
       border: 1px solid var(--border);
     }
 
-    .seg {
-      height: 100%;
-    }
-
+    .seg { height: 100%; }
     .seg-pour { background: var(--success); }
     .seg-contre { background: var(--danger); }
     .seg-abstention { background: var(--warning); }
@@ -225,16 +248,11 @@
     }
 
     @media (max-width: 900px) {
-      .summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 760px) {
-      .summary-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .summary-grid { grid-template-columns: 1fr; }
       .hero h1 { font-size: 30px; }
       main { padding: 18px 12px 36px; }
     }
@@ -250,6 +268,8 @@
   </header>
 
   <main>
+    <div class="panel year-switch" id="yearSwitch"></div>
+
     <section class="panel">
       <h2 class="panel-title">Résumé du scrutin</h2>
       <div id="scrutinSummary"></div>
@@ -289,7 +309,7 @@
         </div>
 
         <div class="small-muted">
-          Les présents, votants et non-votants proviennent du scrutin chargé. Les absents sont calculés par différence avec 577 députés.
+          Les présents, votants et non-votants proviennent du scrutin chargé pour ${new Date().getFullYear()}.
         </div>
       </div>
     </section>
@@ -317,35 +337,61 @@
   </main>
 
   <script>
+    let selectedYear = "";
     let allScrutins = [];
-
-    const pageTitle = document.getElementById("pageTitle");
-    const pageSubtitle = document.getElementById("pageSubtitle");
-    const scrutinSummary = document.getElementById("scrutinSummary");
-    const detailTableBody = document.getElementById("detailTableBody");
-
-    const presentCount = document.getElementById("presentCount");
-    const votedCount = document.getElementById("votedCount");
-    const nonVotantCount = document.getElementById("nonVotantCount");
-    const absentCount = document.getElementById("absentCount");
-    const participationRate = document.getElementById("participationRate");
-    const pourCount = document.getElementById("pourCount");
-    const contreCount = document.getElementById("contreCount");
-
-    const segPour = document.getElementById("segPour");
-    const segContre = document.getElementById("segContre");
-    const segAbstention = document.getElementById("segAbstention");
-    const segNonVotant = document.getElementById("segNonVotant");
-    const segAbsent = document.getElementById("segAbsent");
-
-    const chipPour = document.getElementById("chipPour");
-    const chipContre = document.getElementById("chipContre");
-    const chipAbstention = document.getElementById("chipAbstention");
-    const chipNonVotant = document.getElementById("chipNonVotant");
-    const chipAbsent = document.getElementById("chipAbsent");
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
+    }
+
+    function setParamInUrl(url, key, value) {
+      const u = new URL(url, window.location.origin);
+      if (value) u.searchParams.set(key, value);
+      else u.searchParams.delete(key);
+      return u.pathname + u.search;
+    }
+
+    function buildYearButtons(indexData) {
+      const container = document.getElementById("yearSwitch");
+      const years = (indexData?.available_years || []).map(String);
+      const currentUrl = window.location.pathname + window.location.search;
+
+      container.innerHTML = years.map(year => {
+        const href = setParamInUrl(currentUrl, "year", year);
+        const active = selectedYear === year ? "active" : "";
+        return `<a class="year-btn ${active}" href="${href}">${year}</a>`;
+      }).join("");
+    }
+
+    function getSelectedYear(indexData) {
+      const yearParam = getParam("year");
+      const availableYears = (indexData?.available_years || []).map(String);
+      const defaultYear = String(indexData?.default_year || "");
+      if (yearParam && availableYears.includes(yearParam)) return yearParam;
+      if (defaultYear && availableYears.includes(defaultYear)) return defaultYear;
+      return availableYears[0] || "";
+    }
+
+    function getYearLabel() {
+      return selectedYear || "";
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
+      return response.json();
+    }
+
+    async function loadMonthFile(filePath) {
+      return loadJson("./" + filePath);
+    }
+
+    async function loadYearScrutins(indexData) {
+      selectedYear = getSelectedYear(indexData);
+      const yearInfo = indexData?.years?.[selectedYear];
+      const months = yearInfo?.months || [];
+      const payloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
+      return payloads.flatMap(payload => payload.scrutins || []);
     }
 
     function formatNumber(value) {
@@ -405,16 +451,6 @@
       return `Ce scrutin est classé dans la thématique « ${theme} » et a été enregistré le ${date}.`;
     }
 
-    async function loadJson(path) {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
-      return response.json();
-    }
-
-    async function loadMonthFile(filePath) {
-      return loadJson("./" + filePath);
-    }
-
     function renderScrutin(scrutin) {
       const votes = ensureArray(scrutin.votes);
       const stats = computeStats(votes);
@@ -428,10 +464,10 @@
       const humanTitle = shortHumanTitle(scrutin);
       const humanSummary = longHumanSummary(scrutin);
 
-      pageTitle.textContent = humanTitle;
-      pageSubtitle.textContent = `${scrutin.date || ""} · ${scrutin.theme || "Autres"}`;
+      document.getElementById("pageTitle").textContent = humanTitle;
+      document.getElementById("pageSubtitle").textContent = `${scrutin.date || ""} · ${scrutin.theme || "Autres"} · ${getYearLabel()}`;
 
-      scrutinSummary.innerHTML = `
+      document.getElementById("scrutinSummary").innerHTML = `
         <div class="chips">
           <span class="chip">${scrutin.theme || "Autres"}</span>
           <span class="chip">${scrutin.date || ""}</span>
@@ -440,31 +476,25 @@
         <p class="description">${humanSummary}</p>
       `;
 
-      presentCount.textContent = formatNumber(present);
-      votedCount.textContent = formatNumber(voted);
-      nonVotantCount.textContent = formatNumber(nonVotant);
-      absentCount.textContent = formatNumber(absent);
-      participationRate.textContent = formatPercent(rate);
-      pourCount.textContent = formatNumber(stats.pour);
-      contreCount.textContent = formatNumber(stats.contre);
+      document.getElementById("presentCount").textContent = formatNumber(present);
+      document.getElementById("votedCount").textContent = formatNumber(voted);
+      document.getElementById("nonVotantCount").textContent = formatNumber(nonVotant);
+      document.getElementById("absentCount").textContent = formatNumber(absent);
+      document.getElementById("participationRate").textContent = formatPercent(rate);
+      document.getElementById("pourCount").textContent = formatNumber(stats.pour);
+      document.getElementById("contreCount").textContent = formatNumber(stats.contre);
 
-      const pourRate = (stats.pour / 577) * 100;
-      const contreRate = (stats.contre / 577) * 100;
-      const abstentionRate = (stats.abstention / 577) * 100;
-      const nonVotantRate = (nonVotant / 577) * 100;
-      const absentRate = (absent / 577) * 100;
+      document.getElementById("segPour").style.width = `${(stats.pour / 577) * 100}%`;
+      document.getElementById("segContre").style.width = `${(stats.contre / 577) * 100}%`;
+      document.getElementById("segAbstention").style.width = `${(stats.abstention / 577) * 100}%`;
+      document.getElementById("segNonVotant").style.width = `${(nonVotant / 577) * 100}%`;
+      document.getElementById("segAbsent").style.width = `${(absent / 577) * 100}%`;
 
-      segPour.style.width = `${pourRate}%`;
-      segContre.style.width = `${contreRate}%`;
-      segAbstention.style.width = `${abstentionRate}%`;
-      segNonVotant.style.width = `${nonVotantRate}%`;
-      segAbsent.style.width = `${absentRate}%`;
-
-      chipPour.textContent = `Pour : ${formatNumber(stats.pour)}`;
-      chipContre.textContent = `Contre : ${formatNumber(stats.contre)}`;
-      chipAbstention.textContent = `Abstention : ${formatNumber(stats.abstention)}`;
-      chipNonVotant.textContent = `Non-votant : ${formatNumber(nonVotant)}`;
-      chipAbsent.textContent = `Absents : ${formatNumber(absent)}`;
+      document.getElementById("chipPour").textContent = `Pour : ${formatNumber(stats.pour)}`;
+      document.getElementById("chipContre").textContent = `Contre : ${formatNumber(stats.contre)}`;
+      document.getElementById("chipAbstention").textContent = `Abstention : ${formatNumber(stats.abstention)}`;
+      document.getElementById("chipNonVotant").textContent = `Non-votant : ${formatNumber(nonVotant)}`;
+      document.getElementById("chipAbsent").textContent = `Absents : ${formatNumber(absent)}`;
 
       const sortedVotes = votes.slice().sort((a, b) => {
         const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
@@ -472,10 +502,10 @@
         return (a.nom || "").localeCompare(b.nom || "", "fr");
       });
 
-      detailTableBody.innerHTML = sortedVotes.map(v => `
+      document.getElementById("detailTableBody").innerHTML = sortedVotes.map(v => `
         <tr>
-          <td><a href="depute.html?uid=${encodeURIComponent(v.depute_uid)}">${v.nom || ""}</a></td>
-          <td><a href="groupe.html?name=${encodeURIComponent(v.groupe || "Inconnu")}">${v.groupe || ""}</a></td>
+          <td><a href="depute.html?uid=${encodeURIComponent(v.depute_uid)}&year=${encodeURIComponent(selectedYear)}">${v.nom || ""}</a></td>
+          <td><a href="groupe.html?name=${encodeURIComponent(v.groupe || "Inconnu")}&year=${encodeURIComponent(selectedYear)}">${v.groupe || ""}</a></td>
           <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
           <td>${v.circonscription || v.departement || ""}</td>
         </tr>
@@ -485,21 +515,20 @@
     async function init() {
       try {
         const uid = getParam("uid");
-
         if (!uid) {
           document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Paramètre uid manquant.</div></section>`;
           return;
         }
 
         const indexData = await loadJson("./data/current/index.json");
-        const months = indexData?.months || [];
-        const monthPayloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
-        allScrutins = monthPayloads.flatMap(payload => payload.scrutins || []);
+        selectedYear = getSelectedYear(indexData);
+        buildYearButtons(indexData);
+        allScrutins = await loadYearScrutins(indexData);
 
         const scrutin = allScrutins.find(s => s.uid === uid);
 
         if (!scrutin) {
-          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Scrutin introuvable.</div></section>`;
+          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Scrutin introuvable pour ${selectedYear}.</div></section>`;
           return;
         }
 
