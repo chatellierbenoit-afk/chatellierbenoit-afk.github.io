@@ -272,9 +272,9 @@ def fetch_depute_profile(uid: str) -> dict:
 
     nom = ""
     if " - " in title_text:
-      nom = clean(title_text.split(" - ")[0])
+        nom = clean(title_text.split(" - ")[0])
     elif title_text:
-      nom = clean(title_text)
+        nom = clean(title_text)
 
     if not nom or nom.startswith("PA"):
         h1_match = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.IGNORECASE | re.DOTALL)
@@ -473,6 +473,7 @@ def load_amo():
             continue
 
         active_mandate_uids.add(acteur_ref)
+        actors[acteur_ref]["mandat_en_cours"] = True
 
         type_organe = clean(mandat.get("typeOrgane"))
         organe_refs = extract_organe_refs(mandat.get("organes", {}))
@@ -551,7 +552,7 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     if need_bio and clean(profile.get("bio")):
         actor["bio"] = clean(profile.get("bio"))
 
-    actor["mandat_en_cours"] = bool(profile.get("mandat_en_cours"))
+    actor["mandat_en_cours"] = bool(profile.get("mandat_en_cours")) or bool(actor.get("mandat_en_cours"))
 
     actor = apply_manual_fix(uid, actor)
     return actor
@@ -811,6 +812,8 @@ def build_year_index(scrutins):
 
 
 def main():
+    print("========== BUILD DATA START ==========")
+
     actors, organes = load_amo()
     scrutins = load_scrutins(actors, organes)
 
@@ -868,12 +871,11 @@ def main():
 
     write_json(BASE_DIR / "index.json", index_data)
 
-    print("Scrutins total :", len(scrutins))
-    print("Votes total :", sum(s["stats"]["total_votes"] for s in scrutins))
     print("Composition totale :", composition_data["total"])
     print("Composition valide :", composition_data["is_valid"])
     print("Groupes composition :", [(g["groupe"], g["count"]) for g in composition_data["groupes"]])
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
+    print("========== BUILD DATA END ==========")
 
 
 if __name__ == "__main__":
