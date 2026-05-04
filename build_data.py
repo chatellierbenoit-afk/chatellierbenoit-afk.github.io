@@ -51,22 +51,22 @@ UNKNOWN_GROUPS = set()
 PROFILE_CACHE = {}
 
 
-def ensure_dir(path):
+def ensure_dir(path: Path):
     path.mkdir(parents=True, exist_ok=True)
 
 
-def write_json(path, data):
+def write_json(path: Path, data):
     ensure_dir(path.parent)
     path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
-def download(url):
+def download(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
         return r.read()
 
 
-def download_text(url):
+def download_text(url: str) -> str:
     return download(url).decode("utf-8", errors="ignore")
 
 
@@ -76,17 +76,17 @@ def ensure_list(v):
     return v if isinstance(v, list) else [v]
 
 
-def clean(v):
+def clean(v) -> str:
     if v is None:
         return ""
     return " ".join(str(v).replace("\u00a0", " ").split()).strip()
 
 
-def strip_tags(html_text):
+def strip_tags(html_text: str) -> str:
     return clean(re.sub(r"<[^>]+>", " ", html_text))
 
 
-def get_uid(v):
+def get_uid(v) -> str:
     if isinstance(v, dict):
         return clean(v.get("#text") or v.get("uid") or "")
     return clean(v)
@@ -128,7 +128,7 @@ def extract_organe_refs(node):
     return result
 
 
-def guess_theme(text):
+def guess_theme(text: str) -> str:
     t = clean(text).lower()
     rules = [
         ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
@@ -150,7 +150,7 @@ def guess_theme(text):
     return "Autres"
 
 
-def normalize_group_label(value):
+def normalize_group_label(value: str) -> str:
     raw = clean(value)
 
     if raw in GROUP_LABELS:
@@ -170,7 +170,7 @@ def normalize_group_label(value):
     return raw
 
 
-def apply_manual_fix(uid, actor):
+def apply_manual_fix(uid: str, actor: dict) -> dict:
     fix = MANUAL_NAME_FIXES.get(uid)
     if not fix:
         return actor
@@ -192,7 +192,7 @@ def apply_manual_fix(uid, actor):
     return actor
 
 
-def fetch_depute_profile(uid):
+def fetch_depute_profile(uid: str) -> dict:
     if not uid:
         return {}
     if uid in PROFILE_CACHE:
@@ -274,6 +274,7 @@ def load_amo():
 
     actors = {}
     organes = {}
+    active_mandate_uids = set()
 
     for name in zf.namelist():
         if name.startswith("acteur/") and name.endswith(".json"):
@@ -334,6 +335,12 @@ def load_amo():
         if legislature and legislature != "17":
             continue
 
+        date_fin = clean(mandat.get("dateFin"))
+        if date_fin:
+            continue
+
+        active_mandate_uids.add(acteur_ref)
+
         organe_refs = extract_organe_refs(mandat.get("organes", {}))
 
         for ref in organe_refs:
@@ -361,10 +368,11 @@ def load_amo():
                 if circo:
                     actors[acteur_ref]["circonscription"] = circo
 
-    return actors, organes
+    current_actors = {uid: actors[uid] for uid in active_mandate_uids if uid in actors}
+    return current_actors, organes
 
 
-def enrich_actor_if_needed(uid, actor):
+def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     actor = actor or {
         "uid": uid,
         "nom": "",
@@ -637,6 +645,58 @@ def build_deputes_file(actors, scrutins):
     write_json(BASE_DIR / "deputes.json", {"deputes": deputes})
 
 
+def build_composition_file(actors):
+    current_deputies = []
+    seen = set()
+
+    for uid, actor in actors.items():
+        uid = clean(uid)
+        if not uid or uid in seen:
+            continue
+
+        nom = clean(actor.get("nom"))
+        groupe = normalize_group_label(clean(actor.get("groupe")))
+        circonscription = clean(actor.get("circonscription"))
+        departement = clean(actor.get("departement"))
+
+        if not nom:
+            continue
+
+        if groupe == "Inconnu":
+            continue
+
+        seen.add(uid)
+        current_deputies.append({
+            "uid": uid,
+            "nom": nom,
+            "groupe": groupe,
+            "circonscription": circonscription,
+            "departement": departement,
+        })
+
+    grouped = defaultdict(list)
+    for dep in current_deputies:
+        grouped[dep["groupe"]].append(dep)
+
+    groupes = []
+    total = len(current_deputies)
+
+    for groupe, members in grouped.items():
+        groupes.append({
+            "groupe": groupe,
+            "count": len(members),
+            "pct": round((len(members) / total) * 100, 1) if total else 0,
+            "members": sorted(members, key=lambda x: x["nom"]),
+        })
+
+    groupes.sort(key=lambda x: (-x["count"], x["groupe"]))
+
+    write_json(BASE_DIR / "composition.json", {
+        "total": total,
+        "groupes": groupes,
+    })
+
+
 def build_year_index(scrutins):
     years = defaultdict(list)
     for scrutin in scrutins:
@@ -662,10 +722,7 @@ def build_year_index(scrutins):
             v["groupe"] for s in items for v in s["votes"]
             if v["groupe"] and v["groupe"] != "Inconnu"
         })
-        unique_departements = sorted({
-            v["departement"] for s in items for v in s["votes"]
-            if v["departement"]
-        })
+
         unique_deputes = {v["depute_uid"] for s in items for v in s["votes"]}
 
         result[str(year)] = {
@@ -674,7 +731,6 @@ def build_year_index(scrutins):
                 "votes": total_votes,
                 "deputes": len(unique_deputes),
                 "groupes": len(unique_groupes),
-                "departements": len(unique_departements),
             },
             "months": sorted(month_list, key=lambda x: x["month"], reverse=True),
         }
@@ -711,19 +767,10 @@ def main():
         })
 
     build_deputes_file(actors, scrutins)
-
-    total_votes = sum(s["stats"]["total_votes"] for s in scrutins)
-    unique_groupes = sorted({
-        v["groupe"] for s in scrutins for v in s["votes"]
-        if v["groupe"] and v["groupe"] != "Inconnu"
-    })
-    unique_departements = sorted({
-        v["departement"] for s in scrutins for v in s["votes"]
-        if v["departement"]
-    })
+    build_composition_file(actors)
 
     index_data = {
-        "version": "4.1",
+        "version": "5.0",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -731,15 +778,6 @@ def main():
         "counts": {
             "scrutins": len([s for s in scrutins if s["year"] == CURRENT_YEAR]),
             "votes": sum(s["stats"]["total_votes"] for s in scrutins if s["year"] == CURRENT_YEAR),
-            "deputes": len({v["depute_uid"] for s in scrutins if s["year"] == CURRENT_YEAR for v in s["votes"]}),
-            "groupes": len({
-                v["groupe"] for s in scrutins if s["year"] == CURRENT_YEAR for v in s["votes"]
-                if v["groupe"] and v["groupe"] != "Inconnu"
-            }),
-            "departements": len({
-                v["departement"] for s in scrutins if s["year"] == CURRENT_YEAR for v in s["votes"]
-                if v["departement"]
-            }),
         },
         "months": sorted(
             [m for m in month_list if int(m["month"][:4]) == CURRENT_YEAR],
@@ -759,11 +797,8 @@ def main():
     })
 
     print("Scrutins total :", len(scrutins))
-    print("Votes total :", total_votes)
-    print("Députés total :", len({v['depute_uid'] for s in scrutins for v in s['votes']}))
-    print("Groupes total :", len(unique_groupes))
-    print("Départements total :", len(unique_departements))
-    print("Mois total :", len(month_list))
+    print("Votes total :", sum(s["stats"]["total_votes"] for s in scrutins))
+    print("Composition totale :", json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))["total"])
     print("Années disponibles :", [CURRENT_YEAR, PREVIOUS_YEAR])
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
     print("Noms encore en PA :", remaining_pa_names[:50])
