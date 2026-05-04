@@ -169,7 +169,7 @@
 
     .assembly-pie-slice {
       cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
+      transition: transform 0.15s ease, filter 0.15s ease;
       transform-origin: 160px 160px;
     }
 
@@ -782,23 +782,11 @@
       ].join(" ");
     }
 
-    function renderComposition() {
-      const grouped = new Map();
+    async function renderComposition() {
+      const data = await loadJson("./data/current/composition.json");
 
-      deputyDirectory.forEach(d => {
-        const groupe = (d.groupe || "Inconnu").trim() || "Inconnu";
-        grouped.set(groupe, (grouped.get(groupe) || 0) + 1);
-      });
-
-      const total = deputyDirectory.length || 0;
-
-      const rows = [...grouped.entries()]
-        .map(([groupe, count]) => ({
-          groupe,
-          count,
-          pct: total ? (count / total) * 100 : 0
-        }))
-        .sort((a, b) => b.count - a.count);
+      const rows = data?.groupes || [];
+      const total = data?.total || 0;
 
       const summary = document.getElementById("assemblySummary");
       const legend = document.getElementById("compositionGrid");
@@ -823,7 +811,7 @@
       summary.innerHTML = `
         <div class="assembly-summary-card">
           <strong>${formatNumber(total)}</strong>
-          <span>députés recensés</span>
+          <span>députés en fonction</span>
         </div>
         <div class="assembly-summary-card">
           <strong>${topGroup ? topGroup.groupe : "-"}</strong>
@@ -1066,7 +1054,7 @@
 
         buildFlatVotes();
         renderCounts();
-        renderComposition();
+        await renderComposition();
         renderGroups();
         renderScrutins();
         await searchDeputies();
