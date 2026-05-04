@@ -136,25 +136,100 @@
       text-align: center;
     }
 
-    .assembly-summary {
+    .assembly-pie-layout {
       margin-top: 18px;
-      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: minmax(320px, 460px) 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .assembly-pie-card,
+    .assembly-legend-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      padding: 20px;
+    }
+
+    .assembly-pie-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .assembly-pie-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .assembly-pie-slice {
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
+      transform-origin: 160px 160px;
+    }
+
+    .assembly-pie-slice:hover,
+    .assembly-pie-slice.is-active {
+      transform: scale(1.03);
+      filter: brightness(1.03);
+    }
+
+    .assembly-pie-center {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 20px rgba(57, 22, 119, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .assembly-pie-center strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--violet);
+      margin-bottom: 6px;
+    }
+
+    .assembly-pie-center span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+
+    .assembly-summary {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
     .assembly-summary-card {
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      border-radius: 16px;
+      padding: 16px;
+      background: white;
       text-align: center;
     }
 
     .assembly-summary-card strong {
       display: block;
-      font-size: 30px;
+      font-size: 26px;
       color: var(--violet);
       margin-bottom: 6px;
       line-height: 1.15;
@@ -162,108 +237,60 @@
 
     .assembly-summary-card span {
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
-    .composition-list {
+    .composition-legend {
       display: grid;
-      gap: 14px;
+      gap: 10px;
     }
 
-    .composition-row {
+    .composition-legend-item {
       display: grid;
-      grid-template-columns: minmax(260px, 1.4fr) minmax(120px, 0.5fr) minmax(110px, 0.45fr) minmax(260px, 1.3fr);
-      gap: 16px;
+      grid-template-columns: 18px minmax(0, 1fr) auto auto;
+      gap: 12px;
       align-items: center;
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: white;
       text-decoration: none;
       color: var(--text);
       transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    .composition-row:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+    .composition-legend-item:hover,
+    .composition-legend-item.is-active {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(57, 22, 119, 0.08);
       background: var(--violet-soft);
     }
 
-    .composition-rank {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
+    .composition-legend-color {
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
-      background: #efe8ff;
-      color: #4b1fb6;
+    }
+
+    .composition-legend-name {
       font-weight: 700;
-      font-size: 14px;
-      margin-right: 10px;
-      flex: 0 0 auto;
+      font-size: 16px;
+      line-height: 1.25;
     }
 
-    .composition-name-wrap {
-      display: flex;
-      align-items: center;
-      min-width: 0;
-    }
-
-    .composition-name {
-      font-size: 24px;
+    .composition-legend-count {
       font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .composition-seats {
-      text-align: center;
-    }
-
-    .composition-seats strong {
-      display: block;
-      font-size: 30px;
       color: var(--violet);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .composition-seats span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .composition-percent {
-      text-align: center;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .composition-bar-wrap {
-      width: 100%;
-    }
-
-    .composition-bar-track {
-      width: 100%;
-      height: 16px;
-      border-radius: 999px;
-      background: #eee8f8;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .composition-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-    }
-
-    .composition-bar-label {
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--muted);
+      min-width: 42px;
       text-align: right;
+    }
+
+    .composition-legend-pct {
+      color: var(--muted);
+      min-width: 56px;
+      text-align: right;
+      font-size: 14px;
     }
 
     .tabs {
@@ -444,18 +471,25 @@
       .finder-row {
         grid-template-columns: 1fr;
       }
+    }
 
-      .composition-row {
+    @media (max-width: 1100px) {
+      .assembly-pie-layout {
         grid-template-columns: 1fr;
-        text-align: center;
       }
 
-      .composition-name-wrap {
-        justify-content: center;
+      .assembly-summary {
+        grid-template-columns: 1fr;
       }
 
-      .composition-bar-label {
-        text-align: center;
+      .composition-legend-item {
+        grid-template-columns: 18px minmax(0, 1fr) auto;
+      }
+
+      .composition-legend-pct {
+        grid-column: 2 / -1;
+        text-align: left;
+        min-width: 0;
       }
     }
 
@@ -494,9 +528,24 @@
 
     <section class="panel">
       <h2 class="section-title">Composition de l’Assemblée</h2>
-      <div class="small-muted">Répartition des députés par groupe politique</div>
-      <div class="assembly-summary" id="assemblySummary"></div>
-      <div class="composition-list" id="compositionGrid"></div>
+      <div class="small-muted">Clique sur une part pour ouvrir le groupe politique</div>
+
+      <div class="assembly-pie-layout">
+        <div class="assembly-pie-card">
+          <div class="assembly-pie-wrap">
+            <svg id="assemblyPie" viewBox="0 0 320 320" class="assembly-pie-svg" aria-label="Composition de l’Assemblée"></svg>
+            <div class="assembly-pie-center" id="assemblyPieCenter">
+              <strong id="assemblyPieCenterValue">0</strong>
+              <span id="assemblyPieCenterLabel">députés</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="assembly-legend-card">
+          <div class="assembly-summary" id="assemblySummary"></div>
+          <div class="composition-legend" id="compositionGrid"></div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
@@ -709,6 +758,30 @@
         `Données ${selectedYear} · dernière mise à jour : ${indexData?.updated_at || ""}`;
     }
 
+    function polarToCartesian(cx, cy, r, angleDeg) {
+      const angleRad = (angleDeg - 90) * Math.PI / 180.0;
+      return {
+        x: cx + (r * Math.cos(angleRad)),
+        y: cy + (r * Math.sin(angleRad))
+      };
+    }
+
+    function describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle) {
+      const startOuter = polarToCartesian(cx, cy, outerR, endAngle);
+      const endOuter = polarToCartesian(cx, cy, outerR, startAngle);
+      const startInner = polarToCartesian(cx, cy, innerR, endAngle);
+      const endInner = polarToCartesian(cx, cy, innerR, startAngle);
+      const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+      return [
+        `M ${startOuter.x} ${startOuter.y}`,
+        `A ${outerR} ${outerR} 0 ${largeArcFlag} 0 ${endOuter.x} ${endOuter.y}`,
+        `L ${endInner.x} ${endInner.y}`,
+        `A ${innerR} ${innerR} 0 ${largeArcFlag} 1 ${startInner.x} ${startInner.y}`,
+        "Z"
+      ].join(" ");
+    }
+
     function renderComposition() {
       const grouped = new Map();
 
@@ -728,11 +801,17 @@
         .sort((a, b) => b.count - a.count);
 
       const summary = document.getElementById("assemblySummary");
-      const grid = document.getElementById("compositionGrid");
+      const legend = document.getElementById("compositionGrid");
+      const pie = document.getElementById("assemblyPie");
+      const centerValue = document.getElementById("assemblyPieCenterValue");
+      const centerLabel = document.getElementById("assemblyPieCenterLabel");
 
       if (!rows.length) {
         summary.innerHTML = "";
-        grid.innerHTML = `<div class="empty">Aucune composition disponible.</div>`;
+        legend.innerHTML = `<div class="empty">Aucune composition disponible.</div>`;
+        pie.innerHTML = "";
+        centerValue.textContent = "0";
+        centerLabel.textContent = "députés";
         return;
       }
 
@@ -756,33 +835,87 @@
         </div>
       `;
 
-      grid.innerHTML = rows.map((row, index) => {
+      centerValue.textContent = formatNumber(total);
+      centerLabel.textContent = "députés";
+
+      let currentAngle = 0;
+      const outerR = 140;
+      const innerR = 72;
+      const cx = 160;
+      const cy = 160;
+
+      pie.innerHTML = rows.map((row, index) => {
         const color = GROUP_COLORS[index % GROUP_COLORS.length];
+        const sliceAngle = total ? (row.count / total) * 360 : 0;
+        const startAngle = currentAngle;
+        const endAngle = currentAngle + sliceAngle;
+        currentAngle = endAngle;
+
+        const d = describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle);
+
         return `
-          <a class="composition-row" href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
-            <div class="composition-name-wrap">
-              <span class="composition-rank">${index + 1}</span>
-              <div class="composition-name">${row.groupe}</div>
-            </div>
-
-            <div class="composition-seats">
-              <strong>${formatNumber(row.count)}</strong>
-              <span>député(s)</span>
-            </div>
-
-            <div class="composition-percent">
-              ${formatPercent(row.pct)}
-            </div>
-
-            <div class="composition-bar-wrap">
-              <div class="composition-bar-track">
-                <div class="composition-bar-fill" style="width:${row.pct}%; background:${color};"></div>
-              </div>
-              <div class="composition-bar-label">part dans l’Assemblée</div>
-            </div>
+          <a href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
+            <path
+              class="assembly-pie-slice"
+              data-group="${row.groupe.replace(/"/g, "&quot;")}"
+              data-count="${row.count}"
+              data-pct="${row.pct.toFixed(1)}"
+              d="${d}"
+              fill="${color}"
+              stroke="#ffffff"
+              stroke-width="2"
+            >
+              <title>${row.groupe} · ${formatNumber(row.count)} député(s) · ${formatPercent(row.pct)}</title>
+            </path>
           </a>
         `;
       }).join("");
+
+      legend.innerHTML = rows.map((row, index) => {
+        const color = GROUP_COLORS[index % GROUP_COLORS.length];
+        return `
+          <a class="composition-legend-item"
+             href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}"
+             data-group="${row.groupe.replace(/"/g, "&quot;")}">
+            <span class="composition-legend-color" style="background:${color};"></span>
+            <span class="composition-legend-name">${row.groupe}</span>
+            <span class="composition-legend-count">${formatNumber(row.count)}</span>
+            <span class="composition-legend-pct">${formatPercent(row.pct)}</span>
+          </a>
+        `;
+      }).join("");
+
+      const slices = [...pie.querySelectorAll(".assembly-pie-slice")];
+      const legendItems = [...legend.querySelectorAll(".composition-legend-item")];
+
+      function setActive(group, count, pct) {
+        slices.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
+        legendItems.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
+        centerValue.textContent = formatNumber(count);
+        centerLabel.textContent = `${group} · ${pct}%`;
+      }
+
+      function resetActive() {
+        slices.forEach(el => el.classList.remove("is-active"));
+        legendItems.forEach(el => el.classList.remove("is-active"));
+        centerValue.textContent = formatNumber(total);
+        centerLabel.textContent = "députés";
+      }
+
+      slices.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          setActive(el.dataset.group, Number(el.dataset.count), el.dataset.pct);
+        });
+        el.addEventListener("mouseleave", resetActive);
+      });
+
+      legendItems.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          const row = rows.find(r => r.groupe === el.dataset.group);
+          if (row) setActive(row.groupe, row.count, row.pct.toFixed(1));
+        });
+        el.addEventListener("mouseleave", resetActive);
+      });
     }
 
     function renderGroups() {
