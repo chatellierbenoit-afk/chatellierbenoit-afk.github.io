@@ -30,19 +30,19 @@
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
       text-align: center;
-      padding: 42px 20px 34px;
+      padding: 46px 20px 36px;
       box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
     }
 
     .hero h1 {
       margin: 0;
-      font-size: 38px;
+      font-size: 40px;
       line-height: 1.15;
     }
 
     .hero p {
       margin: 14px auto 0;
-      font-size: 16px;
+      font-size: 17px;
       max-width: 920px;
       line-height: 1.45;
       opacity: 0.98;
@@ -51,7 +51,7 @@
     main {
       max-width: 1480px;
       margin: 0 auto;
-      padding: 22px 16px 52px;
+      padding: 24px 16px 56px;
     }
 
     .panel {
@@ -67,12 +67,11 @@
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 20px;
     }
 
     .year-btn {
       display: inline-block;
-      min-width: 120px;
+      min-width: 104px;
       text-align: center;
       padding: 14px 18px;
       border-radius: 14px;
@@ -130,169 +129,6 @@
       margin-top: 10px;
     }
 
-    .section-title {
-      margin: 0 0 10px;
-      font-size: 30px;
-      text-align: center;
-    }
-
-    .assembly-pie-layout {
-      margin-top: 18px;
-      display: grid;
-      grid-template-columns: minmax(320px, 460px) 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .assembly-pie-card,
-    .assembly-legend-card {
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      padding: 20px;
-    }
-
-    .assembly-pie-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      aspect-ratio: 1 / 1;
-    }
-
-    .assembly-pie-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-      overflow: visible;
-    }
-
-    .assembly-pie-slice {
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
-      transform-origin: 160px 160px;
-    }
-
-    .assembly-pie-slice:hover,
-    .assembly-pie-slice.is-active {
-      transform: scale(1.03);
-      filter: brightness(1.03);
-    }
-
-    .assembly-pie-center {
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      border-radius: 999px;
-      background: white;
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 20px rgba(57, 22, 119, 0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 12px;
-    }
-
-    .assembly-pie-center strong {
-      display: block;
-      font-size: 28px;
-      line-height: 1;
-      color: var(--violet);
-      margin-bottom: 6px;
-    }
-
-    .assembly-pie-center span {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.25;
-    }
-
-    .assembly-summary {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .assembly-summary-card {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      background: white;
-      text-align: center;
-    }
-
-    .assembly-summary-card strong {
-      display: block;
-      font-size: 26px;
-      color: var(--violet);
-      margin-bottom: 6px;
-      line-height: 1.15;
-    }
-
-    .assembly-summary-card span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .composition-legend {
-      display: grid;
-      gap: 10px;
-    }
-
-    .composition-legend-item {
-      display: grid;
-      grid-template-columns: 18px minmax(0, 1fr) auto auto;
-      gap: 12px;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      background: white;
-      text-decoration: none;
-      color: var(--text);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .composition-legend-item:hover,
-    .composition-legend-item.is-active {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(57, 22, 119, 0.08);
-      background: var(--violet-soft);
-    }
-
-    .composition-legend-color {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-    }
-
-    .composition-legend-name {
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.25;
-    }
-
-    .composition-legend-count {
-      font-weight: 700;
-      color: var(--violet);
-      min-width: 42px;
-      text-align: right;
-    }
-
-    .composition-legend-pct {
-      color: var(--muted);
-      min-width: 56px;
-      text-align: right;
-      font-size: 14px;
-    }
-
     .tabs {
       display: flex;
       justify-content: center;
@@ -312,6 +148,12 @@
       text-decoration: none;
       font-weight: 700;
       cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(57, 22, 119, 0.08);
     }
 
     .tab-btn.active {
@@ -329,12 +171,12 @@
 
     .finder-title {
       margin: 0 0 10px;
-      font-size: 30px;
+      font-size: 32px;
     }
 
     .finder-row {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.25fr 0.75fr;
       gap: 14px;
       margin-top: 16px;
     }
@@ -346,6 +188,12 @@
       border-radius: 16px;
       font-size: 18px;
       text-align: center;
+      outline: none;
+    }
+
+    .finder-row input:focus {
+      border-color: #bfa8ef;
+      box-shadow: 0 0 0 4px rgba(119, 0, 255, 0.08);
     }
 
     .finder-row button {
@@ -356,6 +204,18 @@
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .finder-row button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(57, 22, 119, 0.16);
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 32px;
+      text-align: center;
     }
 
     .results-grid {
@@ -393,6 +253,7 @@
       color: var(--muted);
       font-size: 14px;
       margin-bottom: 10px;
+      min-height: 20px;
     }
 
     .card-link .big {
@@ -463,7 +324,6 @@
 
     @media (max-width: 1200px) {
       .counts-grid,
-      .assembly-summary,
       .results-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -473,34 +333,14 @@
       }
     }
 
-    @media (max-width: 1100px) {
-      .assembly-pie-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .assembly-summary {
-        grid-template-columns: 1fr;
-      }
-
-      .composition-legend-item {
-        grid-template-columns: 18px minmax(0, 1fr) auto;
-      }
-
-      .composition-legend-pct {
-        grid-column: 2 / -1;
-        text-align: left;
-        min-width: 0;
-      }
-    }
-
     @media (max-width: 760px) {
       .counts-grid,
-      .assembly-summary,
       .results-grid {
         grid-template-columns: 1fr;
       }
 
       .hero h1 { font-size: 31px; }
+      .finder-title, .section-title { font-size: 28px; }
       .scrutin-card h3 { font-size: 22px; }
       .tab-btn { min-width: auto; width: 100%; }
     }
@@ -516,36 +356,22 @@
   </header>
 
   <main>
-    <div class="panel year-switch" id="yearSwitch"></div>
+    <div class="panel">
+      <div class="year-switch" id="yearSwitch"></div>
+    </div>
 
     <section class="panel">
       <div class="counts-grid">
-        <div class="count-box"><strong id="countScrutins">0</strong><span>Scrutins</span></div>
-        <div class="count-box"><strong id="countVotes">0</strong><span>Votes</span></div>
+        <div class="count-box">
+          <strong id="countScrutins">0</strong>
+          <span>Scrutins</span>
+        </div>
+        <div class="count-box">
+          <strong id="countVotes">0</strong>
+          <span>Votes</span>
+        </div>
       </div>
       <div class="small-muted" id="countsSubtitle">Chargement…</div>
-    </section>
-
-    <section class="panel">
-      <h2 class="section-title">Composition de l’Assemblée</h2>
-      <div class="small-muted">Clique sur une part pour ouvrir le groupe politique</div>
-
-      <div class="assembly-pie-layout">
-        <div class="assembly-pie-card">
-          <div class="assembly-pie-wrap">
-            <svg id="assemblyPie" viewBox="0 0 320 320" class="assembly-pie-svg" aria-label="Composition de l’Assemblée"></svg>
-            <div class="assembly-pie-center" id="assemblyPieCenter">
-              <strong id="assemblyPieCenterValue">0</strong>
-              <span id="assemblyPieCenterLabel">députés</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="assembly-legend-card">
-          <div class="assembly-summary" id="assemblySummary"></div>
-          <div class="composition-legend" id="compositionGrid"></div>
-        </div>
-      </div>
     </section>
 
     <section class="panel">
@@ -562,7 +388,11 @@
           <h2 class="finder-title">Trouver mon député</h2>
           <div><strong>Ville / code postal / département / circonscription / nom du député</strong></div>
           <div class="finder-row">
-            <input id="deputeSearchInput" type="text" placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet">
+            <input
+              id="deputeSearchInput"
+              type="text"
+              placeholder="Ex. Toulouse, 31000, Haute-Garonne, 3e circonscription, Hadrien Clouet"
+            />
             <button id="deputeSearchBtn">Voir ses votes</button>
           </div>
           <div class="small-muted" id="deputeSearchInfo">
@@ -572,21 +402,21 @@
       </section>
 
       <section class="panel">
-        <h2 class="finder-title">Résultats</h2>
+        <h2 class="section-title">Résultats</h2>
         <div id="deputeSearchResults" class="results-grid"></div>
       </section>
     </section>
 
     <section id="tab-groupes" class="tab-content">
       <section class="panel">
-        <h2 class="finder-title">Groupes politiques</h2>
+        <h2 class="section-title">Groupes politiques</h2>
         <div id="groupsContainer" class="results-grid"></div>
       </section>
     </section>
 
     <section id="tab-scrutins" class="tab-content">
       <section class="panel">
-        <h2 class="finder-title">Tous les scrutins</h2>
+        <h2 class="section-title">Tous les scrutins</h2>
         <div id="scrutinsContainer"></div>
       </section>
     </section>
@@ -599,12 +429,6 @@
     let allVotesFlat = [];
     let deputyDirectory = [];
 
-    const GROUP_COLORS = [
-      "#6C2BD9", "#8B5CF6", "#2563EB", "#0EA5E9", "#14B8A6",
-      "#10B981", "#84CC16", "#F59E0B", "#F97316", "#EF4444",
-      "#EC4899", "#A855F7", "#64748B", "#9333EA", "#7C3AED"
-    ];
-
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
     }
@@ -616,9 +440,9 @@
       return u.pathname + u.search;
     }
 
-    function buildYearButtons(indexData) {
+    function buildYearButtons(data) {
       const container = document.getElementById("yearSwitch");
-      const years = (indexData?.available_years || []).map(String);
+      const years = (data?.available_years || []).map(String);
       const currentUrl = window.location.pathname + window.location.search;
 
       container.innerHTML = years.map(year => {
@@ -628,10 +452,11 @@
       }).join("");
     }
 
-    function getSelectedYear(indexData) {
+    function getSelectedYear(data) {
       const yearParam = getParam("year");
-      const availableYears = (indexData?.available_years || []).map(String);
-      const defaultYear = String(indexData?.default_year || "");
+      const availableYears = (data?.available_years || []).map(String);
+      const defaultYear = String(data?.default_year || "");
+
       if (yearParam && availableYears.includes(yearParam)) return yearParam;
       if (defaultYear && availableYears.includes(defaultYear)) return defaultYear;
       return availableYears[0] || "";
@@ -647,9 +472,9 @@
       return loadJson("./" + filePath);
     }
 
-    async function loadYearScrutins(indexData) {
-      selectedYear = getSelectedYear(indexData);
-      const yearInfo = indexData?.years?.[selectedYear];
+    async function loadYearScrutins(data) {
+      selectedYear = getSelectedYear(data);
+      const yearInfo = data?.years?.[selectedYear];
       const months = yearInfo?.months || [];
       const payloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
       return payloads.flatMap(payload => payload.scrutins || []);
@@ -666,7 +491,9 @@
       if (!q) return null;
 
       if (/^\d{5}$/.test(q)) {
-        const communes = await fetchJson(`https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&format=json&geometry=centre`);
+        const communes = await fetchJson(
+          `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&format=json&geometry=centre`
+        );
         if (Array.isArray(communes) && communes.length) {
           return {
             type: "postal",
@@ -677,7 +504,9 @@
         }
       }
 
-      const communesByName = await fetchJson(`https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5&format=json&geometry=centre`);
+      const communesByName = await fetchJson(
+        `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5&format=json&geometry=centre`
+      );
       if (Array.isArray(communesByName) && communesByName.length) {
         return {
           type: "commune",
@@ -692,10 +521,6 @@
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
-    }
-
-    function formatPercent(value) {
-      return `${(value || 0).toFixed(1)}%`;
     }
 
     function normalize(text) {
@@ -758,154 +583,6 @@
         `Données ${selectedYear} · dernière mise à jour : ${indexData?.updated_at || ""}`;
     }
 
-    function polarToCartesian(cx, cy, r, angleDeg) {
-      const angleRad = (angleDeg - 90) * Math.PI / 180.0;
-      return {
-        x: cx + (r * Math.cos(angleRad)),
-        y: cy + (r * Math.sin(angleRad))
-      };
-    }
-
-    function describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle) {
-      const startOuter = polarToCartesian(cx, cy, outerR, endAngle);
-      const endOuter = polarToCartesian(cx, cy, outerR, startAngle);
-      const startInner = polarToCartesian(cx, cy, innerR, endAngle);
-      const endInner = polarToCartesian(cx, cy, innerR, startAngle);
-      const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
-      return [
-        `M ${startOuter.x} ${startOuter.y}`,
-        `A ${outerR} ${outerR} 0 ${largeArcFlag} 0 ${endOuter.x} ${endOuter.y}`,
-        `L ${endInner.x} ${endInner.y}`,
-        `A ${innerR} ${innerR} 0 ${largeArcFlag} 1 ${startInner.x} ${startInner.y}`,
-        "Z"
-      ].join(" ");
-    }
-
-    async function renderComposition() {
-      const data = await loadJson("./data/current/composition.json");
-
-      const rows = data?.groupes || [];
-      const total = data?.total || 0;
-
-      const summary = document.getElementById("assemblySummary");
-      const legend = document.getElementById("compositionGrid");
-      const pie = document.getElementById("assemblyPie");
-      const centerValue = document.getElementById("assemblyPieCenterValue");
-      const centerLabel = document.getElementById("assemblyPieCenterLabel");
-
-      if (!rows.length) {
-        summary.innerHTML = "";
-        legend.innerHTML = `<div class="empty">Aucune composition disponible.</div>`;
-        pie.innerHTML = "";
-        centerValue.textContent = "0";
-        centerLabel.textContent = "députés";
-        return;
-      }
-
-      const topGroup = rows[0];
-      const blocMajoritaire = rows
-        .filter(r => r.count >= 30)
-        .reduce((sum, r) => sum + r.count, 0);
-
-      summary.innerHTML = `
-        <div class="assembly-summary-card">
-          <strong>${formatNumber(total)}</strong>
-          <span>députés en fonction</span>
-        </div>
-        <div class="assembly-summary-card">
-          <strong>${topGroup ? topGroup.groupe : "-"}</strong>
-          <span>premier groupe · ${topGroup ? formatNumber(topGroup.count) : 0} sièges</span>
-        </div>
-        <div class="assembly-summary-card">
-          <strong>${formatNumber(blocMajoritaire)}</strong>
-          <span>sièges pour les groupes d’au moins 30 députés</span>
-        </div>
-      `;
-
-      centerValue.textContent = formatNumber(total);
-      centerLabel.textContent = "députés";
-
-      let currentAngle = 0;
-      const outerR = 140;
-      const innerR = 72;
-      const cx = 160;
-      const cy = 160;
-
-      pie.innerHTML = rows.map((row, index) => {
-        const color = GROUP_COLORS[index % GROUP_COLORS.length];
-        const sliceAngle = total ? (row.count / total) * 360 : 0;
-        const startAngle = currentAngle;
-        const endAngle = currentAngle + sliceAngle;
-        currentAngle = endAngle;
-
-        const d = describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle);
-
-        return `
-          <a href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
-            <path
-              class="assembly-pie-slice"
-              data-group="${row.groupe.replace(/"/g, "&quot;")}"
-              data-count="${row.count}"
-              data-pct="${row.pct.toFixed(1)}"
-              d="${d}"
-              fill="${color}"
-              stroke="#ffffff"
-              stroke-width="2"
-            >
-              <title>${row.groupe} · ${formatNumber(row.count)} député(s) · ${formatPercent(row.pct)}</title>
-            </path>
-          </a>
-        `;
-      }).join("");
-
-      legend.innerHTML = rows.map((row, index) => {
-        const color = GROUP_COLORS[index % GROUP_COLORS.length];
-        return `
-          <a class="composition-legend-item"
-             href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}"
-             data-group="${row.groupe.replace(/"/g, "&quot;")}">
-            <span class="composition-legend-color" style="background:${color};"></span>
-            <span class="composition-legend-name">${row.groupe}</span>
-            <span class="composition-legend-count">${formatNumber(row.count)}</span>
-            <span class="composition-legend-pct">${formatPercent(row.pct)}</span>
-          </a>
-        `;
-      }).join("");
-
-      const slices = [...pie.querySelectorAll(".assembly-pie-slice")];
-      const legendItems = [...legend.querySelectorAll(".composition-legend-item")];
-
-      function setActive(group, count, pct) {
-        slices.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
-        legendItems.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
-        centerValue.textContent = formatNumber(count);
-        centerLabel.textContent = `${group} · ${pct}%`;
-      }
-
-      function resetActive() {
-        slices.forEach(el => el.classList.remove("is-active"));
-        legendItems.forEach(el => el.classList.remove("is-active"));
-        centerValue.textContent = formatNumber(total);
-        centerLabel.textContent = "députés";
-      }
-
-      slices.forEach(el => {
-        el.addEventListener("mouseenter", () => {
-          setActive(el.dataset.group, Number(el.dataset.count), el.dataset.pct);
-        });
-        el.addEventListener("mouseleave", resetActive);
-      });
-
-      legendItems.forEach(el => {
-        el.addEventListener("mouseenter", () => {
-          const row = rows.find(r => r.groupe === el.dataset.group);
-          if (row) setActive(row.groupe, row.count, row.pct.toFixed(1));
-        });
-        el.addEventListener("mouseleave", resetActive);
-      });
-    }
-
     function renderGroups() {
       const grouped = new Map();
 
@@ -933,7 +610,8 @@
         </a>
       `).join("");
 
-      document.getElementById("groupsContainer").innerHTML = html || `<div class="empty">Aucun groupe trouvé.</div>`;
+      document.getElementById("groupsContainer").innerHTML =
+        html || `<div class="empty">Aucun groupe trouvé.</div>`;
     }
 
     function renderScrutins() {
@@ -945,7 +623,9 @@
           <p class="desc">${shortDescription(scrutin)}</p>
         </a>
       `).join("");
-      document.getElementById("scrutinsContainer").innerHTML = html || `<div class="empty">Aucun scrutin trouvé.</div>`;
+
+      document.getElementById("scrutinsContainer").innerHTML =
+        html || `<div class="empty">Aucun scrutin trouvé.</div>`;
     }
 
     function getSearchableDeputies() {
@@ -1054,7 +734,6 @@
 
         buildFlatVotes();
         renderCounts();
-        await renderComposition();
         renderGroups();
         renderScrutins();
         await searchDeputies();
@@ -1062,7 +741,8 @@
         bindSearch();
       } catch (error) {
         console.error(error);
-        document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
+        document.querySelector("main").innerHTML =
+          `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
       }
     }
 
