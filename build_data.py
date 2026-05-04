@@ -21,7 +21,7 @@ MONTHS_DIR = BASE_DIR / "months"
 
 SSL_CONTEXT = ssl.create_default_context()
 
-GROUP_LABELS = {
+GROUP_CODE_TO_LABEL = {
     "PO845401": "Rassemblement National",
     "PO845407": "Ensemble pour la République",
     "PO845413": "La France insoumise - Nouveau Front Populaire",
@@ -36,6 +36,28 @@ GROUP_LABELS = {
     "PO872880": "Union des droites pour la République",
     "PO840056": "Non inscrits",
     "NI": "Non inscrits",
+}
+
+GROUP_TEXT_ALIASES = {
+    "Rassemblement National": "Rassemblement National",
+    "Ensemble pour la République": "Ensemble pour la République",
+    "La France insoumise - Nouveau Front Populaire": "La France insoumise - Nouveau Front Populaire",
+    "Socialistes et apparentés": "Socialistes et apparentés",
+    "Droite Républicaine": "Droite Républicaine",
+    "Les Démocrates": "Les Démocrates",
+    "Écologiste et Social": "Écologiste et Social",
+    "Horizons & Indépendants": "Horizons & Indépendants",
+    "Libertés, indépendants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
+    "Gauche démocrate et républicaine": "Gauche démocrate et républicaine",
+    "UDR": "UDR",
+    "Union des droites pour la République": "Union des droites pour la République",
+    "Non inscrits": "Non inscrits",
+    "Ensemble pour la Republique": "Ensemble pour la République",
+    "La France insoumise - Nouveau Front Populaire ": "La France insoumise - Nouveau Front Populaire",
+    "Ecologiste et Social": "Écologiste et Social",
+    "Libertés, indépendants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
+    "Libertes, independants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
+    "Gauche democrate et republicaine": "Gauche démocrate et républicaine",
 }
 
 MANUAL_NAME_FIXES = {
@@ -128,45 +150,32 @@ def extract_organe_refs(node):
     return result
 
 
-def guess_theme(text: str) -> str:
-    t = clean(text).lower()
-    rules = [
-        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt"]),
-        ("Santé", ["santé", "hôpital", "médical", "soin"]),
-        ("Éducation", ["éducation", "école", "université", "enseignement"]),
-        ("Écologie / Énergie", ["écologie", "climat", "énergie", "environnement"]),
-        ("Travail / Social", ["travail", "emploi", "retraite", "social", "salaires", "chômage"]),
-        ("Justice / Sécurité", ["justice", "sécurité", "police", "prison", "pénal"]),
-        ("Immigration", ["immigration", "asile", "étranger", "mayotte"]),
-        ("Institutions", ["motion", "censure", "constitution", "règlement", "procédure"]),
-        ("Agriculture", ["agriculture", "aliment"]),
-        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
-        ("Défense / International", ["défense", "armée", "international", "europe"]),
-        ("Logement / Transports", ["logement", "transport", "mobilité", "ferroviaire"]),
-    ]
-    for theme, keywords in rules:
-        if any(keyword in t for keyword in keywords):
-            return theme
-    return "Autres"
-
-
 def normalize_group_label(value: str) -> str:
     raw = clean(value)
 
-    if raw in GROUP_LABELS:
-        return GROUP_LABELS[raw]
+    if not raw:
+        return "Inconnu"
 
-    allowed_labels = set(GROUP_LABELS.values())
-    if raw in allowed_labels:
-        return raw
+    if raw in GROUP_CODE_TO_LABEL:
+        return GROUP_CODE_TO_LABEL[raw]
+
+    if raw in GROUP_TEXT_ALIASES:
+        return GROUP_TEXT_ALIASES[raw]
 
     if raw.startswith("PO"):
         UNKNOWN_GROUPS.add(raw)
         return "Inconnu"
 
-    if not raw:
-        return "Inconnu"
+    return raw
 
+
+def normalize_circonscription_label(value: str) -> str:
+    raw = clean(value)
+    if not raw:
+        return ""
+    raw = raw.replace("1ère", "1re").replace("2ème", "2e").replace("3ème", "3e").replace("4ème", "4e")
+    raw = raw.replace("5ème", "5e").replace("6ème", "6e").replace("7ème", "7e").replace("8ème", "8e")
+    raw = raw.replace("9ème", "9e").replace("10ème", "10e")
     return raw
 
 
@@ -219,8 +228,7 @@ def fetch_depute_profile(uid: str) -> dict:
     if not nom or nom.startswith("PA"):
         h1_match = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.IGNORECASE | re.DOTALL)
         if h1_match:
-            h1_text = strip_tags(unescape(h1_match.group(1)))
-            h1_text = clean(h1_text)
+            h1_text = clean(strip_tags(unescape(h1_match.group(1))))
             if h1_text and not h1_text.startswith("PA"):
                 nom = h1_text
 
@@ -235,13 +243,13 @@ def fetch_depute_profile(uid: str) -> dict:
     circonscription = ""
     circ_match = re.search(r"(\d+(?:re|er|e)?\s+circonscription)", text, re.IGNORECASE)
     if circ_match:
-        circonscription = clean(circ_match.group(1))
+        circonscription = normalize_circonscription_label(circ_match.group(1))
 
     po_matches = re.findall(r"PO\d{5,}", html)
     po_code = po_matches[0] if po_matches else ""
 
     groupe_label = ""
-    for label in GROUP_LABELS.values():
+    for label in GROUP_TEXT_ALIASES.values():
         if label and label.lower() in text.lower():
             groupe_label = label
             break
@@ -259,13 +267,87 @@ def fetch_depute_profile(uid: str) -> dict:
 
     profile = {
         "nom": nom if nom and not nom.startswith("PA") else "",
-        "groupe": po_code or groupe_label,
+        "groupe": normalize_group_label(po_code or groupe_label),
         "departement": departement,
         "circonscription": circonscription,
         "bio": bio,
     }
     PROFILE_CACHE[uid] = profile
     return profile
+
+
+def guess_theme(text: str) -> str:
+    t = clean(text).lower()
+    rules = [
+        ("Budget / Finances", ["budget", "finance", "fiscal", "plf", "plfr", "plfss", "taxe", "impôt", "impot"]),
+        ("Santé", ["santé", "hopital", "hôpital", "médical", "medical", "soin"]),
+        ("Éducation", ["éducation", "education", "école", "ecole", "université", "universite", "enseignement"]),
+        ("Écologie / Énergie", ["écologie", "ecologie", "climat", "énergie", "energie", "environnement"]),
+        ("Travail / Social", ["travail", "emploi", "retraite", "social", "salaires", "chômage", "chomage"]),
+        ("Justice / Sécurité", ["justice", "sécurité", "securite", "police", "prison", "pénal", "penal"]),
+        ("Immigration", ["immigration", "asile", "étranger", "etranger", "mayotte"]),
+        ("Institutions", ["motion", "censure", "constitution", "règlement", "reglement", "procédure", "procedure"]),
+        ("Agriculture", ["agriculture", "aliment"]),
+        ("Culture / Médias", ["culture", "audiovisuel", "presse", "patrimoine"]),
+        ("Défense / International", ["défense", "defense", "armée", "armee", "international", "europe"]),
+        ("Logement / Transports", ["logement", "transport", "mobilité", "mobilite", "ferroviaire"]),
+    ]
+    for theme, keywords in rules:
+        if any(keyword in t for keyword in keywords):
+            return theme
+    return "Autres"
+
+
+def compute_stats(votes):
+    return {
+        "pour": sum(1 for v in votes if v["vote"] == "Pour"),
+        "contre": sum(1 for v in votes if v["vote"] == "Contre"),
+        "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
+        "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
+        "total_votes": len(votes),
+    }
+
+
+def compute_groupes(votes):
+    grouped = defaultdict(list)
+    for vote in votes:
+      grouped[vote["groupe"]].append(vote)
+
+    result = []
+    for groupe, items in grouped.items():
+        stats = compute_stats(items)
+        result.append({
+            "groupe": groupe,
+            "pour": stats["pour"],
+            "contre": stats["contre"],
+            "abstention": stats["abstention"],
+            "non_votant": stats["non_votant"],
+            "total": stats["total_votes"],
+        })
+
+    return sorted(result, key=lambda x: (-x["total"], x["groupe"]))
+
+
+def compute_departements(votes):
+    grouped = defaultdict(list)
+    for vote in votes:
+        dep = vote.get("departement", "")
+        if dep:
+            grouped[dep].append(vote)
+
+    result = []
+    for dep, items in grouped.items():
+        stats = compute_stats(items)
+        result.append({
+            "departement": dep,
+            "pour": stats["pour"],
+            "contre": stats["contre"],
+            "abstention": stats["abstention"],
+            "non_votant": stats["non_votant"],
+            "total": stats["total_votes"],
+        })
+
+    return sorted(result, key=lambda x: x["departement"])
 
 
 def load_amo():
@@ -341,6 +423,7 @@ def load_amo():
 
         active_mandate_uids.add(acteur_ref)
 
+        type_organe = clean(mandat.get("typeOrgane"))
         organe_refs = extract_organe_refs(mandat.get("organes", {}))
 
         for ref in organe_refs:
@@ -348,7 +431,7 @@ def load_amo():
             organe = organes.get(ref, {})
             code_type = organe.get("codeType", "")
 
-            if code_type in {"GP", "GRP"} or clean(mandat.get("typeOrgane")) == "GP":
+            if code_type in {"GP", "GRP"} or type_organe in {"GP", "GRP"}:
                 groupe = (
                     organe.get("libelleAbrev")
                     or organe.get("libelleAbrege")
@@ -356,9 +439,7 @@ def load_amo():
                     or ref
                     or ""
                 )
-                groupe = normalize_group_label(groupe)
-                if groupe:
-                    actors[acteur_ref]["groupe"] = groupe
+                actors[acteur_ref]["groupe"] = normalize_group_label(groupe)
 
             if code_type == "CIRCONSCRIPTION":
                 dep = organe.get("departement", "")
@@ -366,9 +447,13 @@ def load_amo():
                 if dep:
                     actors[acteur_ref]["departement"] = dep
                 if circo:
-                    actors[acteur_ref]["circonscription"] = circo
+                    actors[acteur_ref]["circonscription"] = normalize_circonscription_label(circo)
 
     current_actors = {uid: actors[uid] for uid in active_mandate_uids if uid in actors}
+
+    for uid, actor in list(current_actors.items()):
+        current_actors[uid] = apply_manual_fix(uid, actor)
+
     return current_actors, organes
 
 
@@ -384,89 +469,36 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
 
     actor = apply_manual_fix(uid, actor)
 
-    current_name = clean(actor.get("nom"))
-    need_name = (not current_name) or current_name == uid or current_name.startswith("PA")
-    need_group = (not actor.get("groupe")) or clean(actor.get("groupe")).startswith("PO")
-    need_dep = not actor.get("departement")
-    need_circ = not actor.get("circonscription")
-    need_bio = not actor.get("bio")
+    need_name = (not clean(actor.get("nom"))) or clean(actor.get("nom")).startswith("PA")
+    need_group = (not clean(actor.get("groupe"))) or clean(actor.get("groupe")).startswith("PO")
+    need_dep = not clean(actor.get("departement"))
+    need_circ = not clean(actor.get("circonscription"))
+    need_bio = not clean(actor.get("bio"))
 
     if not (need_name or need_group or need_dep or need_circ or need_bio):
         return actor
 
     profile = fetch_depute_profile(uid)
 
-    profile_nom = clean(profile.get("nom"))
-    if need_name and profile_nom and not profile_nom.startswith("PA"):
-        actor["nom"] = profile_nom
+    if need_name:
+        profile_nom = clean(profile.get("nom"))
+        if profile_nom and not profile_nom.startswith("PA"):
+            actor["nom"] = profile_nom
 
     if need_group:
-        fallback_group = normalize_group_label(profile.get("groupe"))
-        if fallback_group:
-            actor["groupe"] = fallback_group
+        actor["groupe"] = normalize_group_label(profile.get("groupe"))
 
-    if profile.get("departement") and need_dep:
-        actor["departement"] = clean(profile["departement"])
+    if need_dep and clean(profile.get("departement")):
+        actor["departement"] = clean(profile.get("departement"))
 
-    if profile.get("circonscription") and need_circ:
-        actor["circonscription"] = clean(profile["circonscription"])
+    if need_circ and clean(profile.get("circonscription")):
+        actor["circonscription"] = normalize_circonscription_label(profile.get("circonscription"))
 
-    if profile.get("bio") and need_bio:
-        actor["bio"] = clean(profile["bio"])
+    if need_bio and clean(profile.get("bio")):
+        actor["bio"] = clean(profile.get("bio"))
 
+    actor = apply_manual_fix(uid, actor)
     return actor
-
-
-def compute_stats(votes):
-    return {
-        "pour": sum(1 for v in votes if v["vote"] == "Pour"),
-        "contre": sum(1 for v in votes if v["vote"] == "Contre"),
-        "abstention": sum(1 for v in votes if v["vote"] == "Abstention"),
-        "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
-        "total_votes": len(votes),
-    }
-
-
-def compute_groupes(votes):
-    grouped = defaultdict(list)
-    for vote in votes:
-        grouped[vote["groupe"]].append(vote)
-
-    result = []
-    for groupe, items in grouped.items():
-        stats = compute_stats(items)
-        result.append({
-            "groupe": groupe,
-            "pour": stats["pour"],
-            "contre": stats["contre"],
-            "abstention": stats["abstention"],
-            "non_votant": stats["non_votant"],
-            "total": stats["total_votes"],
-        })
-
-    return sorted(result, key=lambda x: x["groupe"])
-
-
-def compute_departements(votes):
-    grouped = defaultdict(list)
-    for vote in votes:
-        dep = vote.get("departement", "")
-        if dep:
-            grouped[dep].append(vote)
-
-    result = []
-    for dep, items in grouped.items():
-        stats = compute_stats(items)
-        result.append({
-            "departement": dep,
-            "pour": stats["pour"],
-            "contre": stats["contre"],
-            "abstention": stats["abstention"],
-            "non_votant": stats["non_votant"],
-            "total": stats["total_votes"],
-        })
-
-    return sorted(result, key=lambda x: x["departement"])
 
 
 def load_scrutins(actors, organes):
@@ -531,37 +563,23 @@ def load_scrutins(actors, organes):
 
                 for votant in votants:
                     uid_dep = clean(votant.get("acteurRef"))
-                    actor = actors.get(uid_dep, {})
-                    actor = enrich_actor_if_needed(uid_dep, actor)
+                    actor = enrich_actor_if_needed(uid_dep, actors.get(uid_dep, {}))
                     actor = apply_manual_fix(uid_dep, actor)
                     actors[uid_dep] = actor
 
                     nom = clean(actor.get("nom"))
-
-                    if not nom or nom == uid_dep or nom.startswith("PA"):
-                        profile = fetch_depute_profile(uid_dep)
-                        fallback_nom = clean(profile.get("nom"))
-                        if fallback_nom and not fallback_nom.startswith("PA"):
-                            nom = fallback_nom
-
-                    if not nom or nom.startswith("PA"):
-                        actor = apply_manual_fix(uid_dep, actor)
-                        nom = clean(actor.get("nom"))
-
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
 
                     groupe = normalize_group_label(groupe_nom or actor.get("groupe") or "Inconnu")
-                    departement = actor.get("departement") or ""
-                    circonscription = actor.get("circonscription") or ""
 
                     votes.append({
                         "depute_uid": uid_dep,
                         "nom": nom,
                         "groupe": groupe,
                         "vote": label,
-                        "departement": departement,
-                        "circonscription": circonscription,
+                        "departement": clean(actor.get("departement")),
+                        "circonscription": normalize_circonscription_label(actor.get("circonscription")),
                     })
 
         if not votes:
@@ -595,28 +613,17 @@ def build_deputes_file(actors, scrutins):
 
     deputes = []
     for uid, actor in actors.items():
-        actor_votes = votes_by_uid.get(uid, [])
-        if not actor_votes:
-            continue
-
         actor = enrich_actor_if_needed(uid, actor)
         actor = apply_manual_fix(uid, actor)
         actors[uid] = actor
 
+        actor_votes = votes_by_uid.get(uid, [])
+        if not actor_votes and not clean(actor.get("nom")):
+            continue
+
         nom = clean(actor.get("nom"))
-
         if not nom or nom.startswith("PA"):
-            actor = apply_manual_fix(uid, actor)
-            nom = clean(actor.get("nom"))
-
-        if not nom or nom.startswith("PA"):
-            profile = fetch_depute_profile(uid)
-            profile_nom = clean(profile.get("nom"))
-            if profile_nom and not profile_nom.startswith("PA"):
-                nom = profile_nom
-
-        if not nom or nom.startswith("PA"):
-            nom = f"Député {uid}"
+            continue
 
         observed_group_counts = defaultdict(int)
         for vote in actor_votes:
@@ -636,7 +643,7 @@ def build_deputes_file(actors, scrutins):
             "nom": nom,
             "groupe": observed_main_group or normalize_group_label(clean(actor.get("groupe"))),
             "departement": clean(actor.get("departement")),
-            "circonscription": clean(actor.get("circonscription")),
+            "circonscription": normalize_circonscription_label(actor.get("circonscription")),
             "bio": clean(actor.get("bio")),
             "votes_count": len(actor_votes),
         })
@@ -646,47 +653,44 @@ def build_deputes_file(actors, scrutins):
 
 
 def build_composition_file(actors):
-    current_deputies = []
+    grouped = defaultdict(list)
     seen = set()
 
     for uid, actor in actors.items():
-        uid = clean(uid)
-        if not uid or uid in seen:
-            continue
+        actor = enrich_actor_if_needed(uid, actor)
+        actor = apply_manual_fix(uid, actor)
 
         nom = clean(actor.get("nom"))
         groupe = normalize_group_label(clean(actor.get("groupe")))
-        circonscription = clean(actor.get("circonscription"))
         departement = clean(actor.get("departement"))
+        circonscription = normalize_circonscription_label(actor.get("circonscription"))
 
-        if not nom:
+        if not uid or uid in seen:
             continue
-
-        if groupe == "Inconnu":
+        if not nom or nom.startswith("PA"):
+            continue
+        if not groupe or groupe == "Inconnu":
             continue
 
         seen.add(uid)
-        current_deputies.append({
+        grouped[groupe].append({
             "uid": uid,
             "nom": nom,
             "groupe": groupe,
-            "circonscription": circonscription,
             "departement": departement,
+            "circonscription": circonscription,
         })
 
-    grouped = defaultdict(list)
-    for dep in current_deputies:
-        grouped[dep["groupe"]].append(dep)
-
     groupes = []
-    total = len(current_deputies)
+    total = sum(len(members) for members in grouped.values())
 
     for groupe, members in grouped.items():
+        members_sorted = sorted(members, key=lambda x: x["nom"])
         groupes.append({
             "groupe": groupe,
-            "count": len(members),
-            "pct": round((len(members) / total) * 100, 1) if total else 0,
-            "members": sorted(members, key=lambda x: x["nom"]),
+            "count": len(members_sorted),
+            "pct": round((len(members_sorted) / total) * 100, 1) if total else 0,
+            "members": members_sorted,
         })
 
     groupes.sort(key=lambda x: (-x["count"], x["groupe"]))
@@ -723,13 +727,10 @@ def build_year_index(scrutins):
             if v["groupe"] and v["groupe"] != "Inconnu"
         })
 
-        unique_deputes = {v["depute_uid"] for s in items for v in s["votes"]}
-
         result[str(year)] = {
             "counts": {
                 "scrutins": len(items),
                 "votes": total_votes,
-                "deputes": len(unique_deputes),
                 "groupes": len(unique_groupes),
             },
             "months": sorted(month_list, key=lambda x: x["month"], reverse=True),
@@ -770,7 +771,7 @@ def main():
     build_composition_file(actors)
 
     index_data = {
-        "version": "5.0",
+        "version": "6.0",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -789,20 +790,12 @@ def main():
 
     write_json(BASE_DIR / "index.json", index_data)
 
-    remaining_pa_names = sorted({
-        clean(v["nom"])
-        for s in scrutins
-        for v in s["votes"]
-        if clean(v.get("nom")).startswith("PA")
-    })
-
+    comp = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
     print("Scrutins total :", len(scrutins))
     print("Votes total :", sum(s["stats"]["total_votes"] for s in scrutins))
-    print("Composition totale :", json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))["total"])
-    print("Années disponibles :", [CURRENT_YEAR, PREVIOUS_YEAR])
+    print("Composition totale :", comp["total"])
+    print("Groupes composition :", [(g["groupe"], g["count"]) for g in comp["groupes"]])
     print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
-    print("Noms encore en PA :", remaining_pa_names[:50])
-    print("Total noms encore en PA :", len(remaining_pa_names))
 
 
 if __name__ == "__main__":
