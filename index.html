@@ -129,6 +129,12 @@
       margin-top: 10px;
     }
 
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 32px;
+      text-align: center;
+    }
+
     .tabs {
       display: flex;
       justify-content: center;
@@ -210,12 +216,6 @@
     .finder-row button:hover {
       transform: translateY(-1px);
       box-shadow: 0 12px 22px rgba(57, 22, 119, 0.16);
-    }
-
-    .section-title {
-      margin: 0 0 14px;
-      font-size: 32px;
-      text-align: center;
     }
 
     .results-grid {
@@ -322,6 +322,163 @@
       grid-column: 1 / -1;
     }
 
+    .assembly-pie-layout {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(320px, 460px) 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .assembly-pie-card,
+    .assembly-legend-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      padding: 20px;
+    }
+
+    .assembly-pie-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .assembly-pie-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .assembly-pie-slice {
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+      transform-origin: 160px 160px;
+    }
+
+    .assembly-pie-slice:hover,
+    .assembly-pie-slice.is-active {
+      transform: scale(1.03);
+      filter: brightness(1.03);
+    }
+
+    .assembly-pie-center {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 20px rgba(57, 22, 119, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .assembly-pie-center strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--violet);
+      margin-bottom: 6px;
+    }
+
+    .assembly-pie-center span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+
+    .assembly-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .assembly-summary-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: white;
+      text-align: center;
+    }
+
+    .assembly-summary-card strong {
+      display: block;
+      font-size: 26px;
+      color: var(--violet);
+      margin-bottom: 6px;
+      line-height: 1.15;
+    }
+
+    .assembly-summary-card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .composition-legend {
+      display: grid;
+      gap: 10px;
+    }
+
+    .composition-legend-item {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) auto auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: white;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .composition-legend-item:hover,
+    .composition-legend-item.is-active {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(57, 22, 119, 0.08);
+      background: var(--violet-soft);
+    }
+
+    .composition-legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+    }
+
+    .composition-legend-name {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .composition-legend-count {
+      font-weight: 700;
+      color: var(--violet);
+      min-width: 42px;
+      text-align: right;
+    }
+
+    .composition-legend-pct {
+      color: var(--muted);
+      min-width: 56px;
+      text-align: right;
+      font-size: 14px;
+    }
+
     @media (max-width: 1200px) {
       .counts-grid,
       .results-grid {
@@ -330,6 +487,26 @@
 
       .finder-row {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .assembly-pie-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .assembly-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .composition-legend-item {
+        grid-template-columns: 18px minmax(0, 1fr) auto;
+      }
+
+      .composition-legend-pct {
+        grid-column: 2 / -1;
+        text-align: left;
+        min-width: 0;
       }
     }
 
@@ -372,6 +549,28 @@
         </div>
       </div>
       <div class="small-muted" id="countsSubtitle">Chargement…</div>
+    </section>
+
+    <section class="panel" id="compositionPanel" style="display:none;">
+      <h2 class="section-title">Composition de l’Assemblée</h2>
+      <div class="small-muted">Clique sur une part pour ouvrir le groupe politique</div>
+
+      <div class="assembly-pie-layout">
+        <div class="assembly-pie-card">
+          <div class="assembly-pie-wrap">
+            <svg id="assemblyPie" viewBox="0 0 320 320" class="assembly-pie-svg" aria-label="Composition de l’Assemblée"></svg>
+            <div class="assembly-pie-center">
+              <strong id="assemblyPieCenterValue">0</strong>
+              <span id="assemblyPieCenterLabel">députés</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="assembly-legend-card">
+          <div class="assembly-summary" id="assemblySummary"></div>
+          <div class="composition-legend" id="compositionGrid"></div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
@@ -428,6 +627,12 @@
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
+
+    const GROUP_COLORS = [
+      "#6C2BD9", "#8B5CF6", "#2563EB", "#0EA5E9", "#14B8A6",
+      "#10B981", "#84CC16", "#F59E0B", "#F97316", "#EF4444",
+      "#EC4899", "#A855F7", "#64748B", "#9333EA", "#7C3AED"
+    ];
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
@@ -583,6 +788,157 @@
         `Données ${selectedYear} · dernière mise à jour : ${indexData?.updated_at || ""}`;
     }
 
+    function polarToCartesian(cx, cy, r, angleDeg) {
+      const angleRad = (angleDeg - 90) * Math.PI / 180.0;
+      return {
+        x: cx + (r * Math.cos(angleRad)),
+        y: cy + (r * Math.sin(angleRad))
+      };
+    }
+
+    function describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle) {
+      const startOuter = polarToCartesian(cx, cy, outerR, endAngle);
+      const endOuter = polarToCartesian(cx, cy, outerR, startAngle);
+      const startInner = polarToCartesian(cx, cy, innerR, endAngle);
+      const endInner = polarToCartesian(cx, cy, innerR, startAngle);
+      const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+      return [
+        `M ${startOuter.x} ${startOuter.y}`,
+        `A ${outerR} ${outerR} 0 ${largeArcFlag} 0 ${endOuter.x} ${endOuter.y}`,
+        `L ${endInner.x} ${endInner.y}`,
+        `A ${innerR} ${innerR} 0 ${largeArcFlag} 1 ${startInner.x} ${startInner.y}`,
+        "Z"
+      ].join(" ");
+    }
+
+    async function renderCompositionIfValid() {
+      const panel = document.getElementById("compositionPanel");
+      const compositionMeta = indexData?.composition || {};
+
+      if (!compositionMeta.is_valid) {
+        panel.style.display = "none";
+        return;
+      }
+
+      const data = await loadJson("./data/current/composition.json");
+      const rows = data?.groupes || [];
+      const total = data?.total || 0;
+
+      if (!rows.length) {
+        panel.style.display = "none";
+        return;
+      }
+
+      panel.style.display = "block";
+
+      const summary = document.getElementById("assemblySummary");
+      const legend = document.getElementById("compositionGrid");
+      const pie = document.getElementById("assemblyPie");
+      const centerValue = document.getElementById("assemblyPieCenterValue");
+      const centerLabel = document.getElementById("assemblyPieCenterLabel");
+
+      const topGroup = rows[0];
+      const blocMajoritaire = rows.filter(r => r.count >= 30).reduce((sum, r) => sum + r.count, 0);
+
+      summary.innerHTML = `
+        <div class="assembly-summary-card">
+          <strong>${formatNumber(total)}</strong>
+          <span>députés en fonction</span>
+        </div>
+        <div class="assembly-summary-card">
+          <strong>${topGroup ? topGroup.groupe : "-"}</strong>
+          <span>premier groupe · ${topGroup ? formatNumber(topGroup.count) : 0} sièges</span>
+        </div>
+        <div class="assembly-summary-card">
+          <strong>${formatNumber(blocMajoritaire)}</strong>
+          <span>sièges pour les groupes d’au moins 30 députés</span>
+        </div>
+      `;
+
+      centerValue.textContent = formatNumber(total);
+      centerLabel.textContent = "députés";
+
+      let currentAngle = 0;
+      const outerR = 140;
+      const innerR = 72;
+      const cx = 160;
+      const cy = 160;
+
+      pie.innerHTML = rows.map((row, index) => {
+        const color = GROUP_COLORS[index % GROUP_COLORS.length];
+        const sliceAngle = total ? (row.count / total) * 360 : 0;
+        const startAngle = currentAngle;
+        const endAngle = currentAngle + sliceAngle;
+        currentAngle = endAngle;
+
+        const d = describeDonutArc(cx, cy, outerR, innerR, startAngle, endAngle);
+
+        return `
+          <a href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
+            <path
+              class="assembly-pie-slice"
+              data-group="${row.groupe.replace(/"/g, "&quot;")}"
+              data-count="${row.count}"
+              data-pct="${row.pct.toFixed(1)}"
+              d="${d}"
+              fill="${color}"
+              stroke="#ffffff"
+              stroke-width="2"
+            >
+              <title>${row.groupe} · ${formatNumber(row.count)} député(s) · ${row.pct.toFixed(1)}%</title>
+            </path>
+          </a>
+        `;
+      }).join("");
+
+      legend.innerHTML = rows.map((row, index) => {
+        const color = GROUP_COLORS[index % GROUP_COLORS.length];
+        return `
+          <a class="composition-legend-item"
+             href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}"
+             data-group="${row.groupe.replace(/"/g, "&quot;")}">
+            <span class="composition-legend-color" style="background:${color};"></span>
+            <span class="composition-legend-name">${row.groupe}</span>
+            <span class="composition-legend-count">${formatNumber(row.count)}</span>
+            <span class="composition-legend-pct">${row.pct.toFixed(1)}%</span>
+          </a>
+        `;
+      }).join("");
+
+      const slices = [...pie.querySelectorAll(".assembly-pie-slice")];
+      const legendItems = [...legend.querySelectorAll(".composition-legend-item")];
+
+      function setActive(group, count, pct) {
+        slices.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
+        legendItems.forEach(el => el.classList.toggle("is-active", el.dataset.group === group));
+        centerValue.textContent = formatNumber(count);
+        centerLabel.textContent = `${group} · ${pct}%`;
+      }
+
+      function resetActive() {
+        slices.forEach(el => el.classList.remove("is-active"));
+        legendItems.forEach(el => el.classList.remove("is-active"));
+        centerValue.textContent = formatNumber(total);
+        centerLabel.textContent = "députés";
+      }
+
+      slices.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          setActive(el.dataset.group, Number(el.dataset.count), el.dataset.pct);
+        });
+        el.addEventListener("mouseleave", resetActive);
+      });
+
+      legendItems.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          const row = rows.find(r => r.groupe === el.dataset.group);
+          if (row) setActive(row.groupe, row.count, row.pct.toFixed(1));
+        });
+        el.addEventListener("mouseleave", resetActive);
+      });
+    }
+
     function renderGroups() {
       const grouped = new Map();
 
@@ -734,6 +1090,7 @@
 
         buildFlatVotes();
         renderCounts();
+        await renderCompositionIfValid();
         renderGroups();
         renderScrutins();
         await searchDeputies();
