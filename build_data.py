@@ -17,8 +17,8 @@ CURRENT_YEAR = datetime.utcnow().year
 PREVIOUS_YEAR = CURRENT_YEAR - 1
 MIN_YEAR = PREVIOUS_YEAR
 
-SCRUTINS_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
-AMO50_URL = "http://data.assemblee-nationale.fr/static/openData/repository/17/amo/acteurs_mandats_organes_divises/AMO50_acteurs_mandats_organes_divises.json.zip"
+SCRUTINS_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
+AMO50_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/acteurs_mandats_organes_divises/AMO50_acteurs_mandats_organes_divises.json.zip"
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
@@ -90,33 +90,51 @@ def write_json(path: Path, data):
     path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
-def download(url: str, retries: int = 4, pause: float = 2.0) -> bytes:
+def read_json_if_exists(path: Path, default=None):
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return default
+
+
+def download(url: str, retries: int = 5, pause: float = 3.0, chunk_size: int = 1024 * 256) -> bytes:
     last_error = None
 
     for attempt in range(1, retries + 1):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=180) as r:
-                return r.read()
+            req = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": "Mozilla/5.0",
+                    "Accept": "*/*",
+                    "Connection": "close",
+                },
+            )
 
-        except http.client.IncompleteRead as e:
-            last_error = e
-            print(f"Téléchargement incomplet ({attempt}/{retries}) pour {url} : {e}")
+            with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=240) as r:
+                chunks = []
+                while True:
+                    chunk = r.read(chunk_size)
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+                data = b"".join(chunks)
 
-        except urllib.error.URLError as e:
-            last_error = e
-            print(f"URLError ({attempt}/{retries}) pour {url} : {e}")
+                if not data:
+                    raise ValueError(f"Téléchargement vide pour {url}")
 
-        except socket.timeout as e:
+                return data
+
+        except (http.client.IncompleteRead, urllib.error.URLError, socket.timeout, TimeoutError, ConnectionResetError, ValueError) as e:
             last_error = e
-            print(f"Timeout ({attempt}/{retries}) pour {url} : {e}")
+            print(f"Téléchargement échoué ({attempt}/{retries}) pour {url} : {e}")
+            if attempt < retries:
+                time.sleep(pause * attempt)
 
         except Exception as e:
             last_error = e
-            print(f"Erreur téléchargement ({attempt}/{retries}) pour {url} : {e}")
-
-        if attempt < retries:
-            time.sleep(pause * attempt)
+            print(f"Erreur inattendue ({attempt}/{retries}) pour {url} : {e}")
+            if attempt < retries:
+                time.sleep(pause * attempt)
 
     raise last_error
 
@@ -239,7 +257,7 @@ def extract_meta_description(html: str) -> str:
     m = re.search(
         r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']',
         html,
-        re.IGNORECASE
+        re.IGNORECASE,
     )
     if m:
         return clean(unescape(m.group(1)))
@@ -335,7 +353,7 @@ def fetch_depute_profile(uid: str) -> dict:
     bio_match = re.search(
         r"Biographie(.*?)(Commission|Historique > Anciens mandats et fonctions|Archives des travaux parlementaires|Voir le groupe politique|$)",
         text,
-        re.IGNORECASE | re.DOTALL
+        re.IGNORECASE | re.DOTALL,
     )
     if bio_match:
         bio = clean(bio_match.group(1))
@@ -840,11 +858,18 @@ def build_year_index(scrutins):
     return result
 
 
-def main():
-    print("========== BUILD DATA START ==========")
-
-    actors, organes = load_amo()
-    scrutins = load_scrutins(actors, organes)
+def write_fallback_index(scrutins):
+    existing_index = read_json_if_exists(BASE_DIR / "index.json", {})
+    existing_deputes = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
+    existing_composition = read_json_if_exists(
+        BASE_DIR / "composition.json",
+        {
+            "total": 0,
+            "expected_total": EXPECTED_ASSEMBLY_SIZE,
+            "is_valid": False,
+            "groupes": [],
+        },
+    )
 
     months = defaultdict(list)
     for scrutin in scrutins:
@@ -870,13 +895,8 @@ def main():
             "scrutins": len(items),
         })
 
-    build_deputes_file(actors, scrutins)
-    build_composition_file(actors)
-
-    composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
-
     index_data = {
-        "version": "7.0",
+        "version": "7.1-fallback",
         "year": CURRENT_YEAR,
         "updated_at": datetime.utcnow().isoformat(),
         "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -892,18 +912,102 @@ def main():
         ),
         "years": build_year_index(scrutins),
         "composition": {
-            "is_valid": composition_data.get("is_valid", False),
-            "total": composition_data.get("total", 0),
-            "expected_total": composition_data.get("expected_total", EXPECTED_ASSEMBLY_SIZE),
+            "is_valid": bool(existing_composition.get("is_valid", False)),
+            "total": int(existing_composition.get("total", 0)),
+            "expected_total": int(existing_composition.get("expected_total", EXPECTED_ASSEMBLY_SIZE)),
+            "fallback_used": True,
         }
     }
 
     write_json(BASE_DIR / "index.json", index_data)
+    write_json(BASE_DIR / "deputes.json", existing_deputes)
+    write_json(BASE_DIR / "composition.json", existing_composition)
 
-    print("Composition totale :", composition_data["total"])
-    print("Composition valide :", composition_data["is_valid"])
-    print("Groupes composition :", [(g["groupe"], g["count"]) for g in composition_data["groupes"]])
-    print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
+    print("FALLBACK AMO ACTIVÉ")
+    print("Composition totale (fallback) :", existing_composition.get("total", 0))
+    print("Composition valide (fallback) :", existing_composition.get("is_valid", False))
+    print("Index fallback écrit avec les nouveaux scrutins.")
+    if existing_index:
+        print("Ancien index détecté et remplacé partiellement.")
+
+
+def main():
+    print("========== BUILD DATA START ==========")
+
+    try:
+        scrutins = load_scrutins({}, {})
+    except Exception:
+        # Si ce cas arrive, on laisse l'erreur remonter : sans scrutins, le site ne sert plus à rien.
+        raise
+
+    months = defaultdict(list)
+    for scrutin in scrutins:
+        month_key = scrutin["date"][:7]
+        months[month_key].append(scrutin)
+
+    month_list = []
+    for month_key, items in months.items():
+        file_path = f"data/current/months/{month_key}.json"
+
+        write_json(
+            MONTHS_DIR / f"{month_key}.json",
+            {
+                "month": month_key,
+                "year": int(month_key[:4]),
+                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True),
+            },
+        )
+
+        month_list.append({
+            "month": month_key,
+            "file": file_path,
+            "scrutins": len(items),
+        })
+
+    try:
+        actors, organes = load_amo()
+        scrutins = load_scrutins(actors, organes)
+        build_deputes_file(actors, scrutins)
+        build_composition_file(actors)
+
+        composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
+
+        index_data = {
+            "version": "7.1",
+            "year": CURRENT_YEAR,
+            "updated_at": datetime.utcnow().isoformat(),
+            "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
+            "default_year": CURRENT_YEAR,
+            "counts": {
+                "scrutins": len([s for s in scrutins if s["year"] == CURRENT_YEAR]),
+                "votes": sum(s["stats"]["total_votes"] for s in scrutins if s["year"] == CURRENT_YEAR),
+            },
+            "months": sorted(
+                [m for m in month_list if int(m["month"][:4]) == CURRENT_YEAR],
+                key=lambda x: x["month"],
+                reverse=True
+            ),
+            "years": build_year_index(scrutins),
+            "composition": {
+                "is_valid": composition_data.get("is_valid", False),
+                "total": composition_data.get("total", 0),
+                "expected_total": composition_data.get("expected_total", EXPECTED_ASSEMBLY_SIZE),
+                "fallback_used": False,
+            }
+        }
+
+        write_json(BASE_DIR / "index.json", index_data)
+
+        print("Composition totale :", composition_data["total"])
+        print("Composition valide :", composition_data["is_valid"])
+        print("Groupes composition :", [(g["groupe"], g["count"]) for g in composition_data["groupes"]])
+        print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
+
+    except Exception as e:
+        print("ERREUR AMO / COMPOSITION :", e)
+        print("Bascule sur le fallback avec les derniers fichiers versionnés.")
+        write_fallback_index(scrutins)
+
     print("========== BUILD DATA END ==========")
 
 
