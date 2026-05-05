@@ -1,7 +1,11 @@
 import json
 import re
 import ssl
+import time
+import socket
+import http.client
 import urllib.request
+import urllib.error
 import zipfile
 from collections import defaultdict
 from datetime import datetime
@@ -86,10 +90,35 @@ def write_json(path: Path, data):
     path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
-def download(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=120) as r:
-        return r.read()
+def download(url: str, retries: int = 4, pause: float = 2.0) -> bytes:
+    last_error = None
+
+    for attempt in range(1, retries + 1):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, context=SSL_CONTEXT, timeout=180) as r:
+                return r.read()
+
+        except http.client.IncompleteRead as e:
+            last_error = e
+            print(f"Téléchargement incomplet ({attempt}/{retries}) pour {url} : {e}")
+
+        except urllib.error.URLError as e:
+            last_error = e
+            print(f"URLError ({attempt}/{retries}) pour {url} : {e}")
+
+        except socket.timeout as e:
+            last_error = e
+            print(f"Timeout ({attempt}/{retries}) pour {url} : {e}")
+
+        except Exception as e:
+            last_error = e
+            print(f"Erreur téléchargement ({attempt}/{retries}) pour {url} : {e}")
+
+        if attempt < retries:
+            time.sleep(pause * attempt)
+
+    raise last_error
 
 
 def download_text(url: str) -> str:
