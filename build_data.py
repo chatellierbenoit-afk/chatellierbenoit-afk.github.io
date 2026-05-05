@@ -117,8 +117,8 @@ def download(url: str, retries: int = 5, pause: float = 3.0, chunk_size: int = 1
                     if not chunk:
                         break
                     chunks.append(chunk)
-                data = b"".join(chunks)
 
+                data = b"".join(chunks)
                 if not data:
                     raise ValueError(f"Téléchargement vide pour {url}")
 
@@ -133,6 +133,28 @@ def download(url: str, retries: int = 5, pause: float = 3.0, chunk_size: int = 1
         except Exception as e:
             last_error = e
             print(f"Erreur inattendue ({attempt}/{retries}) pour {url} : {e}")
+            if attempt < retries:
+                time.sleep(pause * attempt)
+
+    raise last_error
+
+
+def download_zip(url: str, retries: int = 5, pause: float = 3.0) -> bytes:
+    last_error = None
+
+    for attempt in range(1, retries + 1):
+        try:
+            data = download(url, retries=1, pause=0)
+
+            if len(data) < 4 or data[:2] != b"PK":
+                preview = data[:200].decode("utf-8", errors="ignore")
+                raise ValueError(f"Réponse non ZIP pour {url}. Début reçu: {preview!r}")
+
+            return data
+
+        except Exception as e:
+            last_error = e
+            print(f"Téléchargement ZIP invalide ({attempt}/{retries}) pour {url} : {e}")
             if attempt < retries:
                 time.sleep(pause * attempt)
 
@@ -448,7 +470,7 @@ def compute_departements(votes):
 
 
 def load_amo():
-    raw = download(AMO50_URL)
+    raw = download_zip(AMO50_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
     actors = {}
@@ -606,7 +628,7 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
 
 
 def load_scrutins(actors, organes):
-    raw = download(SCRUTINS_URL)
+    raw = download_zip(SCRUTINS_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
 
     scrutins = []
@@ -858,7 +880,35 @@ def build_year_index(scrutins):
     return result
 
 
-def write_fallback_index(scrutins):
+def write_month_files(scrutins):
+    months = defaultdict(list)
+    for scrutin in scrutins:
+        month_key = scrutin["date"][:7]
+        months[month_key].append(scrutin)
+
+    month_list = []
+    for month_key, items in months.items():
+        file_path = f"data/current/months/{month_key}.json"
+
+        write_json(
+            MONTHS_DIR / f"{month_key}.json",
+            {
+                "month": month_key,
+                "year": int(month_key[:4]),
+                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True),
+            },
+        )
+
+        month_list.append({
+            "month": month_key,
+            "file": file_path,
+            "scrutins": len(items),
+        })
+
+    return month_list
+
+
+def write_fallback_index():
     existing_index = read_json_if_exists(BASE_DIR / "index.json", {})
     existing_deputes = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
     existing_composition = read_json_if_exists(
@@ -871,109 +921,40 @@ def write_fallback_index(scrutins):
         },
     )
 
-    months = defaultdict(list)
-    for scrutin in scrutins:
-        month_key = scrutin["date"][:7]
-        months[month_key].append(scrutin)
-
-    month_list = []
-    for month_key, items in months.items():
-        file_path = f"data/current/months/{month_key}.json"
-
-        write_json(
-            MONTHS_DIR / f"{month_key}.json",
-            {
-                "month": month_key,
-                "year": int(month_key[:4]),
-                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True),
-            },
-        )
-
-        month_list.append({
-            "month": month_key,
-            "file": file_path,
-            "scrutins": len(items),
-        })
-
-    index_data = {
-        "version": "7.1-fallback",
-        "year": CURRENT_YEAR,
-        "updated_at": datetime.utcnow().isoformat(),
-        "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
-        "default_year": CURRENT_YEAR,
-        "counts": {
-            "scrutins": len([s for s in scrutins if s["year"] == CURRENT_YEAR]),
-            "votes": sum(s["stats"]["total_votes"] for s in scrutins if s["year"] == CURRENT_YEAR),
-        },
-        "months": sorted(
-            [m for m in month_list if int(m["month"][:4]) == CURRENT_YEAR],
-            key=lambda x: x["month"],
-            reverse=True
-        ),
-        "years": build_year_index(scrutins),
-        "composition": {
+    if existing_index:
+        existing_index["updated_at"] = datetime.utcnow().isoformat()
+        existing_index["composition"] = {
             "is_valid": bool(existing_composition.get("is_valid", False)),
             "total": int(existing_composition.get("total", 0)),
             "expected_total": int(existing_composition.get("expected_total", EXPECTED_ASSEMBLY_SIZE)),
             "fallback_used": True,
         }
-    }
+        write_json(BASE_DIR / "index.json", existing_index)
 
-    write_json(BASE_DIR / "index.json", index_data)
     write_json(BASE_DIR / "deputes.json", existing_deputes)
     write_json(BASE_DIR / "composition.json", existing_composition)
 
-    print("FALLBACK AMO ACTIVÉ")
+    print("FALLBACK ACTIVÉ")
     print("Composition totale (fallback) :", existing_composition.get("total", 0))
     print("Composition valide (fallback) :", existing_composition.get("is_valid", False))
-    print("Index fallback écrit avec les nouveaux scrutins.")
-    if existing_index:
-        print("Ancien index détecté et remplacé partiellement.")
 
 
 def main():
     print("========== BUILD DATA START ==========")
 
     try:
-        scrutins = load_scrutins({}, {})
-    except Exception:
-        # Si ce cas arrive, on laisse l'erreur remonter : sans scrutins, le site ne sert plus à rien.
-        raise
-
-    months = defaultdict(list)
-    for scrutin in scrutins:
-        month_key = scrutin["date"][:7]
-        months[month_key].append(scrutin)
-
-    month_list = []
-    for month_key, items in months.items():
-        file_path = f"data/current/months/{month_key}.json"
-
-        write_json(
-            MONTHS_DIR / f"{month_key}.json",
-            {
-                "month": month_key,
-                "year": int(month_key[:4]),
-                "scrutins": sorted(items, key=lambda x: x["date"], reverse=True),
-            },
-        )
-
-        month_list.append({
-            "month": month_key,
-            "file": file_path,
-            "scrutins": len(items),
-        })
-
-    try:
         actors, organes = load_amo()
         scrutins = load_scrutins(actors, organes)
+
+        month_list = write_month_files(scrutins)
+
         build_deputes_file(actors, scrutins)
         build_composition_file(actors)
 
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.1",
+            "version": "7.2",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -1004,9 +985,9 @@ def main():
         print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
     except Exception as e:
-        print("ERREUR AMO / COMPOSITION :", e)
-        print("Bascule sur le fallback avec les derniers fichiers versionnés.")
-        write_fallback_index(scrutins)
+        print("ERREUR BUILD :", e)
+        print("Fallback sur les derniers fichiers versionnés.")
+        write_fallback_index()
 
     print("========== BUILD DATA END ==========")
 
