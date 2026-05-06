@@ -818,9 +818,28 @@ def build_composition_file(actors):
             "circonscription": circonscription,
         })
 
-    groupes = []
     total = sum(len(members) for members in grouped.values())
 
+    if total > EXPECTED_ASSEMBLY_SIZE:
+        print(f"Composition brute trop élevée : {total}. On invalide la composition.")
+        print("Groupes bruts composition :", [(g, len(m)) for g, m in grouped.items()])
+
+        extras = []
+        for groupe, members in grouped.items():
+            for m in members:
+                extras.append((groupe, m["nom"], m["uid"], m["circonscription"], m["departement"]))
+        extras = sorted(extras, key=lambda x: (x[0], x[1]))
+        print("Exemples composition brute :", extras[:80])
+
+        write_json(BASE_DIR / "composition.json", {
+            "total": total,
+            "expected_total": EXPECTED_ASSEMBLY_SIZE,
+            "is_valid": False,
+            "groupes": [],
+        })
+        return
+
+    groupes = []
     for groupe, members in grouped.items():
         members_sorted = sorted(members, key=lambda x: x["nom"])
         groupes.append({
@@ -838,7 +857,7 @@ def build_composition_file(actors):
         "total": total,
         "expected_total": EXPECTED_ASSEMBLY_SIZE,
         "is_valid": is_valid,
-        "groupes": groupes,
+        "groupes": groupes if is_valid else [],
     })
 
 
@@ -954,7 +973,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.2",
+            "version": "7.3",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
