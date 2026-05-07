@@ -787,22 +787,20 @@ def build_deputes_file(actors, scrutins):
 
 
 def build_composition_file(actors):
+    deputes_payload = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
+    deputes = deputes_payload.get("deputes", [])
+
     grouped = defaultdict(list)
     seen = set()
 
-    for uid, actor in actors.items():
-        actor = enrich_actor_if_needed(uid, actor)
-        actor = apply_manual_fix(uid, actor)
-
-        nom = clean(actor.get("nom"))
-        groupe = normalize_group_label(clean(actor.get("groupe")))
-        departement = clean(actor.get("departement"))
-        circonscription = normalize_circonscription_label(actor.get("circonscription"))
-        mandat_en_cours = bool(actor.get("mandat_en_cours"))
+    for d in deputes:
+        uid = clean(d.get("uid"))
+        nom = clean(d.get("nom"))
+        groupe = normalize_group_label(clean(d.get("groupe")))
+        departement = clean(d.get("departement"))
+        circonscription = normalize_circonscription_label(d.get("circonscription"))
 
         if not uid or uid in seen:
-            continue
-        if not mandat_en_cours:
             continue
         if not nom or nom.startswith("PA"):
             continue
@@ -820,25 +818,6 @@ def build_composition_file(actors):
 
     total = sum(len(members) for members in grouped.values())
 
-    if total > EXPECTED_ASSEMBLY_SIZE:
-        print(f"Composition brute trop élevée : {total}. On invalide la composition.")
-        print("Groupes bruts composition :", [(g, len(m)) for g, m in grouped.items()])
-
-        extras = []
-        for groupe, members in grouped.items():
-            for m in members:
-                extras.append((groupe, m["nom"], m["uid"], m["circonscription"], m["departement"]))
-        extras = sorted(extras, key=lambda x: (x[0], x[1]))
-        print("Exemples composition brute :", extras[:80])
-
-        write_json(BASE_DIR / "composition.json", {
-            "total": total,
-            "expected_total": EXPECTED_ASSEMBLY_SIZE,
-            "is_valid": False,
-            "groupes": [],
-        })
-        return
-
     groupes = []
     for groupe, members in grouped.items():
         members_sorted = sorted(members, key=lambda x: x["nom"])
@@ -852,6 +831,9 @@ def build_composition_file(actors):
     groupes.sort(key=lambda x: (-x["count"], x["groupe"]))
 
     is_valid = MIN_VALID_COMPOSITION <= total <= MAX_VALID_COMPOSITION
+
+    print("Composition via deputes.json :", total)
+    print("Groupes composition :", [(g["groupe"], g["count"]) for g in groupes])
 
     write_json(BASE_DIR / "composition.json", {
         "total": total,
@@ -973,7 +955,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.3",
+            "version": "7.4",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
@@ -1013,4 +995,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
