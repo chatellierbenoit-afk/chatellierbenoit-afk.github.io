@@ -771,6 +771,9 @@ def build_deputes_file(actors, scrutins):
         if not groupe_final or groupe_final == "Inconnu":
             continue
 
+        if not clean(actor.get("circonscription")) and not clean(actor.get("departement")):
+            continue
+
         deputes.append({
             "uid": uid,
             "nom": nom,
@@ -783,6 +786,13 @@ def build_deputes_file(actors, scrutins):
         })
 
     deputes.sort(key=lambda x: x["nom"])
+
+    print("Nombre de deputes retenus :", len(deputes))
+    print("Exemples deputes retenus :", [
+        (d["nom"], d["uid"], d["groupe"], d["circonscription"], d["departement"])
+        for d in deputes[:80]
+    ])
+
     write_json(BASE_DIR / "deputes.json", {"deputes": deputes})
 
 
@@ -955,7 +965,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.4",
+            "version": "7.5",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
