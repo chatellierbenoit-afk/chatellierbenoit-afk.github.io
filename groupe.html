@@ -89,6 +89,7 @@
       justify-content: center;
       gap: 12px;
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
     .year-btn {
@@ -391,7 +392,7 @@
             </div>
             <div class="meta-row">
               <strong>Part dans l’Assemblée</strong>
-              <span id="groupCompositionPct">0%</span>
+              <span id="groupCompositionPct">-</span>
             </div>
             <div class="meta-row">
               <strong>Votes recensés en <span id="groupYearInline">année</span></strong>
@@ -420,7 +421,7 @@
 
     <section class="panel">
       <h2 class="panel-title">Députés du groupe</h2>
-      <div class="small-muted">Composition issue des députés actuellement en fonction</div>
+      <div class="small-muted">Liste issue de deputes.json</div>
       <div class="deputies-grid" id="groupDeputiesContainer"></div>
     </section>
 
@@ -607,6 +608,12 @@
       return ensureArray(compositionData?.groupes).find(g => g.groupe === groupName) || null;
     }
 
+    async function loadGroupMembers(groupName) {
+      return ensureArray(deputyDirectory)
+        .filter(d => (d.groupe || "").trim() === groupName.trim())
+        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
+    }
+
     function renderMonthFilter(indexData) {
       const months = indexData?.years?.[selectedYear]?.months || [];
       const select = document.getElementById("monthFilter");
@@ -632,10 +639,12 @@
       });
     }
 
-    function renderGroupHeader() {
+    async function renderGroupHeader() {
       const groupVotes = getGroupVotes();
       const stats = computeStats(groupVotes);
       const compositionEntry = getGroupCompositionEntry();
+      const compositionValid = !!compositionData?.is_valid;
+      const members = await loadGroupMembers(groupName);
 
       const topThemesMap = new Map();
       groupVotes.forEach(v => {
@@ -650,11 +659,17 @@
 
       document.getElementById("pageTitle").textContent = groupName;
       document.getElementById("pageSubtitle").textContent =
-        `${formatNumber(groupVotes.length)} votes recensés en ${selectedYear} · ${compositionEntry ? `${formatNumber(compositionEntry.count)} député(s) en fonction` : "composition indisponible"}`;
+        `${formatNumber(groupVotes.length)} votes recensés en ${selectedYear} · ${formatNumber(members.length)} député(s) listé(s)`;
 
       document.getElementById("groupNameHeading").textContent = groupName;
-      document.getElementById("groupCompositionCount").textContent = compositionEntry ? formatNumber(compositionEntry.count) : "-";
-      document.getElementById("groupCompositionPct").textContent = compositionEntry ? formatPercent(compositionEntry.pct) : "-";
+      document.getElementById("groupCompositionCount").textContent =
+        compositionValid && compositionEntry ? formatNumber(compositionEntry.count) : formatNumber(members.length);
+
+      document.getElementById("groupCompositionPct").textContent =
+        compositionValid && compositionEntry && compositionData?.total
+          ? formatPercent(compositionEntry.pct)
+          : "-";
+
       document.getElementById("groupVotesCount").textContent = formatNumber(groupVotes.length);
       document.getElementById("groupDominantVote").textContent = groupVotes.length ? dominantVoteLabel(stats) : "-";
       document.getElementById("groupYearInline").textContent = selectedYear;
@@ -673,10 +688,9 @@
         : `<span class="theme-badge">Aucune thématique observée</span>`;
     }
 
-    function renderGroupDeputies() {
+    async function renderGroupDeputies() {
       const container = document.getElementById("groupDeputiesContainer");
-      const compositionEntry = getGroupCompositionEntry();
-      const members = ensureArray(compositionEntry?.members);
+      const members = await loadGroupMembers(groupName);
 
       const observedCountByUid = new Map();
       getGroupVotes().forEach(v => {
@@ -688,17 +702,14 @@
         return;
       }
 
-      container.innerHTML = members
-        .slice()
-        .sort((a, b) => a.nom.localeCompare(b.nom, "fr"))
-        .map(d => `
-          <a class="deputy-card" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
-            <h3>${d.nom}</h3>
-            <div class="meta">${d.circonscription || d.departement || "-"}</div>
-            <span class="big">${formatNumber(observedCountByUid.get(d.uid) || 0)}</span>
-            <div class="sub">vote(s) observé(s) en ${selectedYear}</div>
-          </a>
-        `).join("");
+      container.innerHTML = members.map(d => `
+        <a class="deputy-card" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
+          <h3>${d.nom}</h3>
+          <div class="meta">${d.circonscription || d.departement || "-"}</div>
+          <span class="big">${formatNumber(observedCountByUid.get(d.uid) || 0)}</span>
+          <div class="sub">vote(s) observé(s) en ${selectedYear}</div>
+        </a>
+      `).join("");
     }
 
     function renderGroupScrutins() {
@@ -778,8 +789,8 @@
         buildFlatVotes();
         renderMonthFilter(indexData);
         renderThemeFilter();
-        renderGroupHeader();
-        renderGroupDeputies();
+        await renderGroupHeader();
+        await renderGroupDeputies();
         renderGroupScrutins();
         bindFilters();
       } catch (error) {
