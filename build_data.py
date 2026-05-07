@@ -252,6 +252,11 @@ def normalize_circonscription_label(value: str) -> str:
     return raw
 
 
+def is_closed_text(value: str) -> bool:
+    t = clean(value).lower()
+    return "mandat clos" in t or "ancien mandat" in t
+
+
 def apply_manual_fix(uid: str, actor: dict) -> dict:
     fix = MANUAL_NAME_FIXES.get(uid)
     if not fix:
@@ -365,7 +370,9 @@ def fetch_depute_profile(uid: str) -> dict:
     if circ_match:
         circonscription = normalize_circonscription_label(circ_match.group(1))
 
-    mandat_en_cours = ("Mandat en cours" in text) and ("Mandat clos" not in text)
+    has_mandat_en_cours = "Mandat en cours" in text
+    has_mandat_clos = "Mandat clos" in text or "Historique > Anciens mandats et fonctions" in text
+    mandat_en_cours = has_mandat_en_cours and not has_mandat_clos
 
     groupe = extract_group_from_description(meta_description)
     if not groupe:
@@ -596,7 +603,7 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     need_dep = not clean(actor.get("departement"))
     need_circ = not clean(actor.get("circonscription"))
     need_bio = not clean(actor.get("bio"))
-    need_mandat = actor.get("mandat_en_cours") is False
+    need_mandat = True
 
     if not (need_name or need_group or need_dep or need_circ or need_bio or need_mandat):
         return actor
@@ -621,7 +628,7 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     if need_bio and clean(profile.get("bio")):
         actor["bio"] = clean(profile.get("bio"))
 
-    actor["mandat_en_cours"] = bool(profile.get("mandat_en_cours")) or bool(actor.get("mandat_en_cours"))
+    actor["mandat_en_cours"] = bool(profile.get("mandat_en_cours"))
 
     actor = apply_manual_fix(uid, actor)
     return actor
@@ -693,6 +700,9 @@ def load_scrutins(actors, organes):
                     actor = apply_manual_fix(uid_dep, actor)
                     actors[uid_dep] = actor
 
+                    if not actor.get("mandat_en_cours"):
+                        continue
+
                     nom = clean(actor.get("nom"))
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
@@ -746,6 +756,9 @@ def build_deputes_file(actors, scrutins):
         if not actor.get("mandat_en_cours"):
             continue
 
+        if is_closed_text(actor.get("departement")) or is_closed_text(actor.get("circonscription")):
+            continue
+
         actor_votes = votes_by_uid.get(uid, [])
         if not actor_votes and not clean(actor.get("nom")):
             continue
@@ -760,14 +773,11 @@ def build_deputes_file(actors, scrutins):
             if g and g != "Inconnu":
                 observed_group_counts[g] += 1
 
-        observed_main_group = ""
-        if observed_group_counts:
-            observed_main_group = sorted(
-                observed_group_counts.items(),
-                key=lambda x: (-x[1], x[0])
-            )[0][0]
+        groupe_final = observed_group_counts and sorted(
+            observed_group_counts.items(),
+            key=lambda x: (-x[1], x[0])
+        )[0][0] or normalize_group_label(clean(actor.get("groupe")))
 
-        groupe_final = observed_main_group or normalize_group_label(clean(actor.get("groupe")))
         if not groupe_final or groupe_final == "Inconnu":
             continue
 
@@ -815,6 +825,8 @@ def build_composition_file(actors):
         if not nom or nom.startswith("PA"):
             continue
         if not groupe or groupe == "Inconnu":
+            continue
+        if is_closed_text(departement) or is_closed_text(circonscription):
             continue
 
         seen.add(uid)
@@ -965,7 +977,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.5",
+            "version": "7.6",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
