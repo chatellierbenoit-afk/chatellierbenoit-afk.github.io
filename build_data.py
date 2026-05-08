@@ -628,7 +628,8 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     if need_bio and clean(profile.get("bio")):
         actor["bio"] = clean(profile.get("bio"))
 
-    actor["mandat_en_cours"] = bool(profile.get("mandat_en_cours"))
+    if profile.get("mandat_en_cours"):
+        actor["mandat_en_cours"] = True
 
     actor = apply_manual_fix(uid, actor)
     return actor
@@ -699,9 +700,6 @@ def load_scrutins(actors, organes):
                     actor = enrich_actor_if_needed(uid_dep, actors.get(uid_dep, {}))
                     actor = apply_manual_fix(uid_dep, actor)
                     actors[uid_dep] = actor
-
-                    if not actor.get("mandat_en_cours"):
-                        continue
 
                     nom = clean(actor.get("nom"))
                     if not nom or nom.startswith("PA"):
@@ -977,7 +975,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.6",
+            "version": "7.7",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
