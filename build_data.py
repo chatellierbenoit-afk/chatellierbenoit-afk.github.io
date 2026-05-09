@@ -19,6 +19,7 @@ MIN_YEAR = PREVIOUS_YEAR
 
 SCRUTINS_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip"
 AMO50_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/acteurs_mandats_organes_divises/AMO50_acteurs_mandats_organes_divises.json.zip"
+AMENDEMENTS_URL = "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip"
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
@@ -78,10 +79,10 @@ MANUAL_NAME_FIXES = {
 
 UNKNOWN_GROUPS = set()
 PROFILE_CACHE = {}
+AMENDEMENTS_INDEX = None
+AMENDEMENTS_BY_NUM = None
 
 EXPECTED_ASSEMBLY_SIZE = 577
-MIN_VALID_COMPOSITION = 570
-MAX_VALID_COMPOSITION = 577
 
 OFFICIAL_COMPOSITION = {
     "Rassemblement National": 122,
@@ -97,7 +98,6 @@ OFFICIAL_COMPOSITION = {
     "Gauche démocrate et républicaine": 17,
     "Non inscrits": 10,
 }
-# 577 au total
 
 
 def ensure_dir(path: Path):
@@ -200,10 +200,68 @@ def strip_tags(html_text: str) -> str:
     return clean(re.sub(r"<[^>]+>", " ", html_text))
 
 
+def html_to_text(value: str) -> str:
+    if not value:
+        return ""
+    text = unescape(value)
+    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"</p\s*>", "\n\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return clean(text)
+
+
 def get_uid(v) -> str:
     if isinstance(v, dict):
         return clean(v.get("#text") or v.get("uid") or "")
     return clean(v)
+
+
+def deep_find_first(node, target_key):
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if k == target_key:
+                return v
+            found = deep_find_first(v, target_key)
+            if found is not None:
+                return found
+    elif isinstance(node, list):
+        for item in node:
+            found = deep_find_first(item, target_key)
+            if found is not None:
+                return found
+    return None
+
+
+def deep_find_all_dicts_with_key(node, target_key, results=None):
+    if results is None:
+        results = []
+
+    if isinstance(node, dict):
+        if target_key in node:
+            results.append(node)
+        for value in node.values():
+            deep_find_all_dicts_with_key(value, target_key, results)
+    elif isinstance(node, list):
+        for item in node:
+            deep_find_all_dicts_with_key(item, target_key, results)
+
+    return results
+
+
+def extract_text_number(value: str) -> str:
+    raw = clean(value)
+    if not raw:
+        return ""
+
+    m = re.search(r"BTC(\d+[A-Z]?)", raw)
+    if m:
+        return m.group(1)
+
+    m = re.search(r"\b(\d{3,5}[A-Z]?)\b", raw)
+    if m:
+        return m.group(1)
+
+    return ""
 
 
 def extract_votants(node):
@@ -217,7 +275,6 @@ def extract_votants(node):
         else:
             for value in node.values():
                 result.extend(extract_votants(value))
-
     elif isinstance(node, list):
         for item in node:
             result.extend(extract_votants(item))
@@ -234,7 +291,6 @@ def extract_organe_refs(node):
         else:
             for value in node.values():
                 result.extend(extract_organe_refs(value))
-
     elif isinstance(node, list):
         for item in node:
             result.extend(extract_organe_refs(item))
@@ -410,6 +466,175 @@ def fetch_depute_profile(uid: str) -> dict:
     }
     PROFILE_CACHE[uid] = profile
     return profile
+
+
+def extract_amendment_request(scrutin: dict) -> dict:
+    raw = clean(f"{scrutin.get('titre', '')} {scrutin.get('description', '')}")
+
+    req = {
+        "type": "",
+        "numero": "",
+        "article": "",
+        "text_number": "",
+    }
+
+    m_sous = re.search(r"sous-amendement n[°o]\s*([0-9]+(?:\s*rect\.)?)", raw, re.IGNORECASE)
+    m_amdt = re.search(r"amendement n[°o]\s*([0-9]+(?:\s*rect\.)?)", raw, re.IGNORECASE)
+    m_article = re.search(r"article\s+([0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)", raw, re.IGNORECASE)
+    m_text = re.search(r"n[°o]\s*([0-9]{3,5}[A-Z]?)", raw, re.IGNORECASE)
+
+    if m_sous:
+        req["type"] = "sous-amendement"
+        req["numero"] = clean(m_sous.group(1))
+    elif m_amdt:
+        req["type"] = "amendement"
+        req["numero"] = clean(m_amdt.group(1))
+
+    if m_article:
+        req["article"] = clean(m_article.group(1))
+
+    if m_text:
+        req["text_number"] = clean(m_text.group(1))
+
+    return req
+
+
+def normalize_amendment_number(value: str) -> str:
+    raw = clean(value).lower().replace(" ", "")
+    raw = raw.replace("rect.", "rect")
+    return raw
+
+
+def build_amendements_index():
+    global AMENDEMENTS_INDEX, AMENDEMENTS_BY_NUM
+
+    if AMENDEMENTS_INDEX is not None and AMENDEMENTS_BY_NUM is not None:
+        return AMENDEMENTS_INDEX, AMENDEMENTS_BY_NUM
+
+    raw = download_zip(AMENDEMENTS_URL)
+    zf = zipfile.ZipFile(BytesIO(raw))
+
+    index = []
+    by_num = defaultdict(list)
+
+    for name in zf.namelist():
+        if not name.endswith(".json"):
+            continue
+
+        try:
+            data = json.loads(zf.read(name))
+        except Exception:
+            continue
+
+        candidates = deep_find_all_dicts_with_key(data, "identification")
+        for cand in candidates:
+            identification = cand.get("identification", {})
+            if not isinstance(identification, dict):
+                continue
+
+            numero_long = clean(identification.get("numeroLong"))
+            numero_rect = clean(identification.get("numeroRect"))
+            prefixe = clean(identification.get("prefixeOrganeExamen"))
+
+            if not numero_long:
+                continue
+
+            corps = cand.get("corps", {})
+            contenu_auteur = corps.get("contenuAuteur", {}) if isinstance(corps, dict) else {}
+            expose_html = contenu_auteur.get("exposeSommaire") if isinstance(contenu_auteur, dict) else ""
+            expose = html_to_text(expose_html)
+
+            if not expose:
+                continue
+
+            texte_ref = clean(cand.get("texteLegislatifRef"))
+            text_number = extract_text_number(texte_ref or name)
+
+            pointeur = cand.get("pointeurFragmentTexte", {})
+            division = pointeur.get("division", {}) if isinstance(pointeur, dict) else {}
+            article_designation = clean(division.get("articleDesignation") or division.get("articleDesignationCourte") or division.get("titre"))
+
+            cycle = cand.get("cycleDeVie", {})
+            date_publication = clean(cycle.get("datePublication")) if isinstance(cycle, dict) else ""
+
+            uid = clean(cand.get("uid"))
+
+            item = {
+                "uid": uid,
+                "numero": numero_long,
+                "numero_norm": normalize_amendment_number(numero_long),
+                "numero_rect": numero_rect,
+                "prefixe": prefixe,
+                "text_number": text_number,
+                "article_designation": article_designation,
+                "date_publication": date_publication,
+                "expose_sommaire": expose,
+            }
+
+            index.append(item)
+            by_num[item["numero_norm"]].append(item)
+
+    AMENDEMENTS_INDEX = index
+    AMENDEMENTS_BY_NUM = by_num
+
+    print("Amendements indexés :", len(index))
+    return AMENDEMENTS_INDEX, AMENDEMENTS_BY_NUM
+
+
+def find_best_expose_sommaire(scrutin: dict):
+    _, by_num = build_amendements_index()
+    req = extract_amendment_request(scrutin)
+
+    numero = normalize_amendment_number(req.get("numero"))
+    if not numero:
+        return {
+            "amendement_numero": "",
+            "amendement_text_number": "",
+            "amendement_article": "",
+            "expose_sommaire": "",
+        }
+
+    candidates = by_num.get(numero, [])
+    if not candidates:
+        return {
+            "amendement_numero": req.get("numero", ""),
+            "amendement_text_number": req.get("text_number", ""),
+            "amendement_article": req.get("article", ""),
+            "expose_sommaire": "",
+        }
+
+    article_req = normalize(req.get("article"))
+    text_req = normalize(req.get("text_number"))
+    scrutin_date = clean(scrutin.get("date"))
+
+    scored = []
+    for cand in candidates:
+        score = 0
+
+        if text_req and normalize(cand.get("text_number")) == text_req:
+            score += 100
+
+        if article_req and article_req in normalize(cand.get("article_designation")):
+            score += 20
+
+        if cand.get("prefixe") == "AN":
+            score += 10
+
+        cand_date = clean(cand.get("date_publication"))
+        if scrutin_date and cand_date and cand_date <= scrutin_date:
+            score += 5
+
+        scored.append((score, cand))
+
+    scored.sort(key=lambda x: (-x[0], x[1].get("date_publication", ""), x[1].get("uid", "")))
+    best = scored[0][1]
+
+    return {
+        "amendement_numero": best.get("numero", req.get("numero", "")),
+        "amendement_text_number": best.get("text_number", req.get("text_number", "")),
+        "amendement_article": best.get("article_designation", req.get("article", "")),
+        "expose_sommaire": best.get("expose_sommaire", ""),
+    }
 
 
 def guess_theme(text: str) -> str:
@@ -619,9 +844,9 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     profile = fetch_depute_profile(uid)
 
     if need_name:
-      profile_nom = clean(profile.get("nom"))
-      if profile_nom and not profile_nom.startswith("PA"):
-          actor["nom"] = profile_nom
+        profile_nom = clean(profile.get("nom"))
+        if profile_nom and not profile_nom.startswith("PA"):
+            actor["nom"] = profile_nom
 
     profile_group = normalize_group_label(profile.get("groupe"))
     if need_group and profile_group and profile_group != "Inconnu":
@@ -726,6 +951,12 @@ def load_scrutins(actors, organes):
 
         stats = compute_stats(votes)
 
+        amendement_meta = find_best_expose_sommaire({
+            "titre": titre,
+            "description": description,
+            "date": date,
+        })
+
         scrutins.append({
             "uid": uid,
             "numero": numero,
@@ -738,6 +969,10 @@ def load_scrutins(actors, organes):
             "groupes_summary": compute_groupes(votes),
             "departements_summary": compute_departements(votes),
             "votes": votes,
+            "amendement_numero": amendement_meta.get("amendement_numero", ""),
+            "amendement_text_number": amendement_meta.get("amendement_text_number", ""),
+            "amendement_article": amendement_meta.get("amendement_article", ""),
+            "expose_sommaire": amendement_meta.get("expose_sommaire", ""),
         })
 
     return scrutins
@@ -961,6 +1196,7 @@ def main():
     print("========== BUILD DATA START ==========")
 
     try:
+        build_amendements_index()
         actors, organes = load_amo()
         scrutins = load_scrutins(actors, organes)
 
@@ -972,7 +1208,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.8",
+            "version": "7.9",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
