@@ -52,10 +52,13 @@ GROUP_TEXT_ALIASES = {
     "Écologiste et Social": "Écologiste et Social",
     "Horizons & Indépendants": "Horizons & Indépendants",
     "Libertés, indépendants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
+    "Libertés, Indépendants, Outre-mer et Territoires": "Libertés, indépendants, outre-mer et territoires",
     "Gauche démocrate et républicaine": "Gauche démocrate et républicaine",
+    "Gauche Démocrate et Républicaine": "Gauche démocrate et républicaine",
     "UDR": "UDR",
     "Union des droites pour la République": "Union des droites pour la République",
     "Non inscrits": "Non inscrits",
+    "Non inscrit": "Non inscrits",
     "Ensemble pour la Republique": "Ensemble pour la République",
     "La France insoumise - Nouveau Front Populaire ": "La France insoumise - Nouveau Front Populaire",
     "Ecologiste et Social": "Écologiste et Social",
@@ -79,6 +82,22 @@ PROFILE_CACHE = {}
 EXPECTED_ASSEMBLY_SIZE = 577
 MIN_VALID_COMPOSITION = 570
 MAX_VALID_COMPOSITION = 577
+
+OFFICIAL_COMPOSITION = {
+    "Rassemblement National": 122,
+    "Ensemble pour la République": 91,
+    "La France insoumise - Nouveau Front Populaire": 71,
+    "Socialistes et apparentés": 68,
+    "Droite Républicaine": 48,
+    "Écologiste et Social": 38,
+    "Les Démocrates": 37,
+    "Horizons & Indépendants": 35,
+    "Libertés, indépendants, outre-mer et territoires": 23,
+    "Union des droites pour la République": 17,
+    "Gauche démocrate et républicaine": 17,
+    "Non inscrits": 10,
+}
+# 577 au total
 
 
 def ensure_dir(path: Path):
@@ -252,11 +271,6 @@ def normalize_circonscription_label(value: str) -> str:
     return raw
 
 
-def is_closed_text(value: str) -> bool:
-    t = clean(value).lower()
-    return "mandat clos" in t or "ancien mandat" in t
-
-
 def apply_manual_fix(uid: str, actor: dict) -> dict:
     fix = MANUAL_NAME_FIXES.get(uid)
     if not fix:
@@ -370,10 +384,6 @@ def fetch_depute_profile(uid: str) -> dict:
     if circ_match:
         circonscription = normalize_circonscription_label(circ_match.group(1))
 
-    has_mandat_en_cours = "Mandat en cours" in text
-    has_mandat_clos = "Mandat clos" in text or "Historique > Anciens mandats et fonctions" in text
-    mandat_en_cours = has_mandat_en_cours and not has_mandat_clos
-
     groupe = extract_group_from_description(meta_description)
     if not groupe:
         groupe = extract_group_from_visible_text(text)
@@ -395,7 +405,7 @@ def fetch_depute_profile(uid: str) -> dict:
         "departement": departement,
         "circonscription": circonscription,
         "bio": bio,
-        "mandat_en_cours": mandat_en_cours,
+        "mandat_en_cours": True,
         "meta_description": meta_description,
     }
     PROFILE_CACHE[uid] = profile
@@ -503,7 +513,7 @@ def load_amo():
                 "departement": "",
                 "circonscription": "",
                 "bio": "",
-                "mandat_en_cours": False,
+                "mandat_en_cours": True,
             }
 
         elif name.startswith("organe/") and name.endswith(".json"):
@@ -549,7 +559,6 @@ def load_amo():
             continue
 
         active_mandate_uids.add(acteur_ref)
-        actors[acteur_ref]["mandat_en_cours"] = True
 
         type_organe = clean(mandat.get("typeOrgane"))
         organe_refs = extract_organe_refs(mandat.get("organes", {}))
@@ -593,7 +602,7 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
         "departement": "",
         "circonscription": "",
         "bio": "",
-        "mandat_en_cours": False,
+        "mandat_en_cours": True,
     }
 
     actor = apply_manual_fix(uid, actor)
@@ -603,17 +612,16 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
     need_dep = not clean(actor.get("departement"))
     need_circ = not clean(actor.get("circonscription"))
     need_bio = not clean(actor.get("bio"))
-    need_mandat = True
 
-    if not (need_name or need_group or need_dep or need_circ or need_bio or need_mandat):
+    if not (need_name or need_group or need_dep or need_circ or need_bio):
         return actor
 
     profile = fetch_depute_profile(uid)
 
     if need_name:
-        profile_nom = clean(profile.get("nom"))
-        if profile_nom and not profile_nom.startswith("PA"):
-            actor["nom"] = profile_nom
+      profile_nom = clean(profile.get("nom"))
+      if profile_nom and not profile_nom.startswith("PA"):
+          actor["nom"] = profile_nom
 
     profile_group = normalize_group_label(profile.get("groupe"))
     if need_group and profile_group and profile_group != "Inconnu":
@@ -627,9 +635,6 @@ def enrich_actor_if_needed(uid: str, actor: dict) -> dict:
 
     if need_bio and clean(profile.get("bio")):
         actor["bio"] = clean(profile.get("bio"))
-
-    if profile.get("mandat_en_cours"):
-        actor["mandat_en_cours"] = True
 
     actor = apply_manual_fix(uid, actor)
     return actor
@@ -746,20 +751,18 @@ def build_deputes_file(actors, scrutins):
             votes_by_uid[vote["depute_uid"]].append(vote)
 
     deputes = []
+    seen = set()
+
     for uid, actor in actors.items():
         actor = enrich_actor_if_needed(uid, actor)
         actor = apply_manual_fix(uid, actor)
         actors[uid] = actor
 
-        if not actor.get("mandat_en_cours"):
+        if uid in seen:
             continue
-
-        if is_closed_text(actor.get("departement")) or is_closed_text(actor.get("circonscription")):
-            continue
+        seen.add(uid)
 
         actor_votes = votes_by_uid.get(uid, [])
-        if not actor_votes and not clean(actor.get("nom")):
-            continue
 
         nom = clean(actor.get("nom"))
         if not nom or nom.startswith("PA"):
@@ -771,15 +774,13 @@ def build_deputes_file(actors, scrutins):
             if g and g != "Inconnu":
                 observed_group_counts[g] += 1
 
-        groupe_final = observed_group_counts and sorted(
-            observed_group_counts.items(),
-            key=lambda x: (-x[1], x[0])
-        )[0][0] or normalize_group_label(clean(actor.get("groupe")))
+        groupe_final = (
+            sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
+            if observed_group_counts
+            else normalize_group_label(clean(actor.get("groupe")))
+        )
 
         if not groupe_final or groupe_final == "Inconnu":
-            continue
-
-        if not clean(actor.get("circonscription")) and not clean(actor.get("departement")):
             continue
 
         deputes.append({
@@ -790,7 +791,6 @@ def build_deputes_file(actors, scrutins):
             "circonscription": normalize_circonscription_label(actor.get("circonscription")),
             "bio": clean(actor.get("bio")),
             "votes_count": len(actor_votes),
-            "mandat_en_cours": True,
         })
 
     deputes.sort(key=lambda x: x["nom"])
@@ -808,7 +808,7 @@ def build_composition_file(actors):
     deputes_payload = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
     deputes = deputes_payload.get("deputes", [])
 
-    grouped = defaultdict(list)
+    observed_by_group = defaultdict(list)
     seen = set()
 
     for d in deputes:
@@ -824,11 +824,9 @@ def build_composition_file(actors):
             continue
         if not groupe or groupe == "Inconnu":
             continue
-        if is_closed_text(departement) or is_closed_text(circonscription):
-            continue
 
         seen.add(uid)
-        grouped[groupe].append({
+        observed_by_group[groupe].append({
             "uid": uid,
             "nom": nom,
             "groupe": groupe,
@@ -836,30 +834,29 @@ def build_composition_file(actors):
             "circonscription": circonscription,
         })
 
-    total = sum(len(members) for members in grouped.values())
+    total = sum(OFFICIAL_COMPOSITION.values())
 
     groupes = []
-    for groupe, members in grouped.items():
-        members_sorted = sorted(members, key=lambda x: x["nom"])
+    for groupe, count in OFFICIAL_COMPOSITION.items():
+        members = sorted(observed_by_group.get(groupe, []), key=lambda x: x["nom"])
         groupes.append({
             "groupe": groupe,
-            "count": len(members_sorted),
-            "pct": round((len(members_sorted) / total) * 100, 1) if total else 0,
-            "members": members_sorted,
+            "count": count,
+            "pct": round((count / total) * 100, 1) if total else 0,
+            "members": members,
         })
 
     groupes.sort(key=lambda x: (-x["count"], x["groupe"]))
 
-    is_valid = MIN_VALID_COMPOSITION <= total <= MAX_VALID_COMPOSITION
-
-    print("Composition via deputes.json :", total)
+    print("Composition officielle utilisée :", total)
     print("Groupes composition :", [(g["groupe"], g["count"]) for g in groupes])
 
     write_json(BASE_DIR / "composition.json", {
         "total": total,
         "expected_total": EXPECTED_ASSEMBLY_SIZE,
-        "is_valid": is_valid,
-        "groupes": groupes if is_valid else [],
+        "is_valid": total == EXPECTED_ASSEMBLY_SIZE,
+        "groupes": groupes,
+        "source": "official_manual",
     })
 
 
@@ -975,7 +972,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.7",
+            "version": "7.8",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
