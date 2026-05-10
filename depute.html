@@ -38,20 +38,6 @@
       box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: 40px;
-      line-height: 1.12;
-    }
-
-    .hero p {
-      margin: 12px auto 0;
-      font-size: 17px;
-      max-width: 900px;
-      line-height: 1.45;
-      opacity: 0.98;
-    }
-
     .top-links {
       max-width: 1480px;
       margin: 18px auto 0;
@@ -71,6 +57,20 @@
       color: white;
       font-weight: 700;
       background: rgba(255,255,255,0.08);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.12;
+    }
+
+    .hero p {
+      margin: 12px auto 0;
+      font-size: 17px;
+      max-width: 980px;
+      line-height: 1.45;
+      opacity: 0.98;
     }
 
     main {
@@ -93,6 +93,7 @@
       justify-content: center;
       gap: 12px;
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
     .year-btn {
@@ -106,7 +107,6 @@
       color: #1e1c26;
       text-decoration: none;
       font-weight: 700;
-      transition: all 0.15s ease;
     }
 
     .year-btn.active {
@@ -119,46 +119,34 @@
       margin: 0 0 18px;
       font-size: 30px;
       text-align: center;
-      letter-spacing: -0.01em;
     }
 
-    .depute-card {
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 18px;
     }
 
-    .identity-card,
-    .summary-card {
+    .info-card,
+    .stats-card {
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 22px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
     }
 
-    .identity-card h2 {
-      margin: 0 0 12px;
+    .info-card h2,
+    .stats-card h2 {
+      margin: 0 0 14px;
       font-size: 34px;
-      text-align: center;
       line-height: 1.15;
-    }
-
-    .bio-box {
-      margin: 14px 0 0;
-      background: var(--violet-soft);
-      border: 1px solid #e8ddff;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 1.5;
       text-align: center;
-      color: var(--text);
     }
 
-    .identity-meta {
+    .meta-list {
       display: grid;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 10px;
     }
 
     .meta-row {
@@ -171,14 +159,35 @@
       background: white;
     }
 
-    .meta-row strong { font-size: 14px; }
-    .meta-row span { color: var(--muted); text-align: right; }
+    .meta-row strong {
+      font-size: 14px;
+    }
+
+    .meta-row span {
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .theme-badges {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .theme-badge {
+      display: inline-block;
+      margin: 4px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #efe8ff;
+      color: #41178d;
+      font-size: 13px;
+      font-weight: 700;
+    }
 
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 14px;
     }
 
     .summary-box {
@@ -193,6 +202,7 @@
       display: block;
       font-size: 24px;
       margin-bottom: 6px;
+      color: var(--violet);
     }
 
     .summary-box span {
@@ -200,58 +210,12 @@
       font-size: 13px;
     }
 
-    .compare-box {
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      background: var(--violet-soft);
+    .small-muted {
+      margin-top: 12px;
       text-align: center;
-      line-height: 1.5;
-    }
-
-    .themes-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .theme-card {
-      display: block;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      text-align: center;
-      text-decoration: none;
-      color: var(--text);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .theme-card:hover,
-    .theme-card.active {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
-      border-color: #d7c7ff;
-      background: var(--violet-soft);
-    }
-
-    .theme-card h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
-      line-height: 1.25;
-    }
-
-    .theme-card strong {
-      display: block;
-      font-size: 26px;
-      color: var(--violet);
-      margin-bottom: 6px;
-    }
-
-    .theme-card span {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .filters {
@@ -279,28 +243,29 @@
       text-align: center;
     }
 
-    .results-list {
+    .scrutins-list {
       display: grid;
-      gap: 18px;
+      gap: 16px;
     }
 
-    .vote-card {
+    .scrutin-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 20px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    .vote-card:hover {
+    .scrutin-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      background: var(--violet-soft);
     }
 
-    .vote-context {
+    .scrutin-context {
       text-align: center;
       color: var(--muted);
       font-size: 13px;
@@ -308,67 +273,37 @@
       font-weight: 700;
     }
 
-    .vote-card h3 {
+    .scrutin-card h3 {
       margin: 0 0 10px;
       text-align: center;
       font-size: 28px;
       line-height: 1.22;
-      letter-spacing: -0.02em;
     }
 
-    .vote-description {
+    .scrutin-description {
       margin: 0;
       background: var(--violet-soft);
       border: 1px solid #e8ddff;
       border-radius: 14px;
       padding: 14px;
-      font-size: 15px;
+      text-align: center;
       line-height: 1.5;
-      text-align: center;
+      font-size: 15px;
     }
 
-    .chips {
-      text-align: center;
-      margin-top: 16px;
-      margin-bottom: 14px;
-    }
-
-    .chip {
+    .vote-badge {
       display: inline-block;
-      margin: 4px;
+      margin-top: 10px;
       padding: 7px 11px;
       border-radius: 999px;
-      background: #efe8ff;
-      color: #41178d;
       font-size: 13px;
       font-weight: 700;
     }
 
-    .vote-line {
-      margin-top: 14px;
-      text-align: center;
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .vote-Pour { color: var(--success); }
-    .vote-Contre { color: var(--danger); }
-    .vote-Abstention { color: var(--warning); }
-    .vote-Non-votant { color: var(--neutral); }
-
-    .small-muted {
-      margin-top: 12px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .presence-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-    }
+    .vote-pour { background: #e7f6ec; color: var(--success); }
+    .vote-contre { background: #fdecee; color: var(--danger); }
+    .vote-abstention { background: #fff6df; color: var(--warning); }
+    .vote-nonvotant { background: #f0edf7; color: var(--neutral); }
 
     .empty {
       text-align: center;
@@ -376,27 +311,23 @@
       padding: 28px 8px;
     }
 
-    @media (max-width: 1250px) {
-      .depute-card,
-      .themes-grid,
+    @media (max-width: 1200px) {
+      .hero-grid,
       .summary-grid,
-      .filters,
-      .presence-grid {
+      .filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 760px) {
-      .depute-card,
-      .themes-grid,
+      .hero-grid,
       .summary-grid,
-      .filters,
-      .presence-grid {
+      .filters {
         grid-template-columns: 1fr;
       }
 
-      .hero h1 { font-size: 32px; }
-      .vote-card h3 { font-size: 22px; }
+      .hero h1 { font-size: 31px; }
+      .scrutin-card h3 { font-size: 22px; }
       main { padding: 18px 12px 36px; }
     }
   </style>
@@ -405,7 +336,6 @@
   <header class="hero">
     <div class="top-links">
       <a href="index.html">Accueil</a>
-      <a id="groupLink" href="index.html">Groupe</a>
     </div>
     <h1 id="pageTitle">Fiche député</h1>
     <p id="pageSubtitle">Chargement…</p>
@@ -415,52 +345,47 @@
     <div class="panel year-switch" id="yearSwitch"></div>
 
     <section class="panel">
-      <h2 class="panel-title">Fiche député</h2>
-      <div class="depute-card">
-        <div class="identity-card">
-          <h2 id="deputeName">Chargement…</h2>
-          <div id="deputeBio" class="bio-box">Chargement…</div>
-
-          <div class="identity-meta">
+      <h2 class="panel-title">Résumé du député</h2>
+      <div class="hero-grid">
+        <div class="info-card">
+          <h2 id="deputeNameHeading">Chargement…</h2>
+          <div class="meta-list">
             <div class="meta-row">
-              <strong>Groupe observé principal</strong>
+              <strong>Groupe officiel actuel</strong>
               <span id="deputeGroup">-</span>
+            </div>
+            <div class="meta-row" id="observedGroupRow" style="display:none;">
+              <strong>Groupe observé dans les votes</strong>
+              <span id="deputeObservedGroup">-</span>
             </div>
             <div class="meta-row">
               <strong>Circonscription</strong>
               <span id="deputeCirc">-</span>
             </div>
             <div class="meta-row">
-              <strong>Votes recensés</strong>
-              <span id="deputeVotesCount">-</span>
+              <strong>Département</strong>
+              <span id="deputeDep">-</span>
+            </div>
+            <div class="meta-row">
+              <strong>Votes recensés en <span id="deputeYearInline">année</span></strong>
+              <span id="deputeVotesCount">0</span>
             </div>
           </div>
+          <div class="theme-badges" id="deputeThemes"></div>
+          <div class="small-muted" id="deputeBioText"></div>
         </div>
 
-        <div class="summary-card">
-          <h2 class="panel-title" style="font-size:26px; margin-bottom:10px;">Répartition des votes</h2>
+        <div class="stats-card">
+          <h2>Répartition des votes</h2>
           <div class="summary-grid">
             <div class="summary-box"><strong id="deputePour">0</strong><span>Pour</span></div>
             <div class="summary-box"><strong id="deputeContre">0</strong><span>Contre</span></div>
-            <div class="summary-box"><strong id="deputeAbs">0</strong><span>Abstention</span></div>
-            <div class="summary-box"><strong id="deputeNV">0</strong><span>Non-votant</span></div>
+            <div class="summary-box"><strong id="deputeAbstention">0</strong><span>Abstention</span></div>
+            <div class="summary-box"><strong id="deputeNonVotant">0</strong><span>Non-votant</span></div>
           </div>
-          <div class="compare-box" id="deputeCompare">Chargement…</div>
+          <div class="small-muted" id="deputeStatsText">Chargement…</div>
         </div>
       </div>
-    </section>
-
-    <section class="panel">
-      <h2 class="panel-title">Présence observée du député</h2>
-      <div class="presence-grid" id="presenceGrid"></div>
-      <div class="small-muted">
-        Ces chiffres sont calculés uniquement sur l’année sélectionnée.
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2 class="panel-title">Votes par thématique</h2>
-      <div class="themes-grid" id="themesContainer"></div>
     </section>
 
     <section class="panel">
@@ -484,33 +409,31 @@
         </div>
 
         <div class="field">
-          <label for="dateFilter">Date</label>
-          <input id="dateFilter" type="text" placeholder="Laisser vide pour toutes les dates">
+          <label for="themeFilter">Thématique</label>
+          <select id="themeFilter">
+            <option value="">Toutes les thématiques</option>
+          </select>
         </div>
 
         <div class="field">
           <label for="titleFilter">Titre ou mot-clé</label>
-          <input id="titleFilter" type="text" placeholder="Ex. sécurité, budget, agriculture">
+          <input id="titleFilter" type="text" placeholder="Ex. budget, sécurité, agriculture">
         </div>
       </div>
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Historique complet des votes</h2>
-      <div id="activeThemeStatus" class="small-muted"></div>
-      <div id="deputeVotesList" class="results-list"></div>
+      <h2 class="panel-title">Votes du député</h2>
+      <div id="deputeScrutinsContainer" class="scrutins-list"></div>
     </section>
   </main>
 
   <script>
-    let indexData = null;
     let selectedYear = "";
     let allScrutins = [];
     let allVotesFlat = [];
     let deputyDirectory = [];
-    let selectedDeputy = null;
-    let selectedDeputyVotes = [];
-    let activeTheme = "";
+    let deputeUid = "";
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
@@ -544,10 +467,6 @@
       return availableYears[0] || "";
     }
 
-    function getYearLabel() {
-      return selectedYear || "";
-    }
-
     async function loadJson(path) {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Impossible de charger ${path}`);
@@ -568,10 +487,6 @@
 
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
-    }
-
-    function formatDecimal(value) {
-      return Number(value || 0).toFixed(1);
     }
 
     function normalize(text) {
@@ -611,9 +526,21 @@
     }
 
     function shortDescription(scrutin) {
+      const expose = (scrutin.expose_sommaire || "").trim();
+      if (expose) {
+        return expose.length > 260 ? expose.slice(0, 257).trim() + "…" : expose;
+      }
+
       const desc = (scrutin.description || scrutin.titre || "").trim();
       if (desc.length > 220) return desc.slice(0, 217).trim() + "…";
       return desc;
+    }
+
+    function voteBadgeClass(vote) {
+      if (vote === "Pour") return "vote-pour";
+      if (vote === "Contre") return "vote-contre";
+      if (vote === "Abstention") return "vote-abstention";
+      return "vote-nonvotant";
     }
 
     function buildFlatVotes() {
@@ -633,7 +560,15 @@
       });
     }
 
-    function fillMonthFilter() {
+    function getDeputyEntry() {
+      return deputyDirectory.find(d => d.uid === deputeUid) || null;
+    }
+
+    function getDeputyVotes() {
+      return allVotesFlat.filter(v => v.depute_uid === deputeUid);
+    }
+
+    function renderMonthFilter(indexData) {
       const months = indexData?.years?.[selectedYear]?.months || [];
       const select = document.getElementById("monthFilter");
       select.innerHTML = `<option value="">Tous les mois</option>`;
@@ -645,146 +580,132 @@
       });
     }
 
-    function getObservedMainGroup(votes) {
-      const counts = new Map();
-      votes.forEach(v => {
-        const g = (v.groupe || "").trim();
-        if (!g || g === "Inconnu") return;
-        counts.set(g, (counts.get(g) || 0) + 1);
+    function renderThemeFilter() {
+      const deputyVotes = getDeputyVotes();
+      const themes = [...new Set(deputyVotes.map(v => v.scrutin_theme || "Autres"))].sort((a, b) => a.localeCompare(b, "fr"));
+      const select = document.getElementById("themeFilter");
+      select.innerHTML = `<option value="">Toutes les thématiques</option>`;
+      themes.forEach(theme => {
+        const option = document.createElement("option");
+        option.value = theme;
+        option.textContent = theme;
+        select.appendChild(option);
       });
-
-      if (!counts.size) return selectedDeputy?.groupe || "-";
-
-      return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
     }
 
-    function renderDeputyCard() {
-      const stats = computeStats(selectedDeputyVotes);
-      const mainGroup = getObservedMainGroup(selectedDeputyVotes);
+    function renderDeputyHeader() {
+      const deputy = getDeputyEntry();
+      const deputyVotes = getDeputyVotes();
+      const stats = computeStats(deputyVotes);
 
-      document.getElementById("pageTitle").textContent = selectedDeputy.nom || "Député inconnu";
-      document.getElementById("pageSubtitle").textContent = `${mainGroup || "-"} · ${selectedDeputy.circonscription || selectedDeputy.departement || "-"} · ${getYearLabel()}`;
-      document.getElementById("deputeName").textContent = selectedDeputy.nom || "Député inconnu";
-      document.getElementById("deputeBio").textContent = selectedDeputy.bio || "Aucune biographie courte disponible.";
-      document.getElementById("deputeGroup").textContent = mainGroup || "-";
-      document.getElementById("deputeCirc").textContent = selectedDeputy.circonscription || selectedDeputy.departement || "-";
-      document.getElementById("deputeVotesCount").textContent = formatNumber(selectedDeputyVotes.length);
+      const topThemesMap = new Map();
+      deputyVotes.forEach(v => {
+        const theme = v.scrutin_theme || "Autres";
+        topThemesMap.set(theme, (topThemesMap.get(theme) || 0) + 1);
+      });
 
-      if (mainGroup && mainGroup !== "-") {
-        document.getElementById("groupLink").href = `groupe.html?name=${encodeURIComponent(mainGroup)}&year=${encodeURIComponent(selectedYear)}`;
+      const topThemes = [...topThemesMap.entries()]
+        .map(([theme, total]) => ({ theme, total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 6);
+
+      const officialGroup = deputy?.groupe || "-";
+      const observedGroup = deputy?.groupe_observe || "";
+      const showObservedGroup = observedGroup && observedGroup !== officialGroup;
+
+      document.getElementById("pageTitle").textContent = deputy?.nom || "Député";
+      document.getElementById("pageSubtitle").textContent =
+        `${officialGroup} · ${deputy?.circonscription || deputy?.departement || "-"} · ${selectedYear}`;
+
+      document.getElementById("deputeNameHeading").textContent = deputy?.nom || "Député";
+      document.getElementById("deputeGroup").textContent = officialGroup;
+      document.getElementById("deputeCirc").textContent = deputy?.circonscription || "-";
+      document.getElementById("deputeDep").textContent = deputy?.departement || "-";
+      document.getElementById("deputeVotesCount").textContent = formatNumber(deputyVotes.length);
+      document.getElementById("deputeYearInline").textContent = selectedYear;
+
+      const observedRow = document.getElementById("observedGroupRow");
+      if (showObservedGroup) {
+        observedRow.style.display = "flex";
+        document.getElementById("deputeObservedGroup").textContent = observedGroup;
+      } else {
+        observedRow.style.display = "none";
       }
 
       document.getElementById("deputePour").textContent = formatNumber(stats.pour);
       document.getElementById("deputeContre").textContent = formatNumber(stats.contre);
-      document.getElementById("deputeAbs").textContent = formatNumber(stats.abstention);
-      document.getElementById("deputeNV").textContent = formatNumber(stats.non_votant);
+      document.getElementById("deputeAbstention").textContent = formatNumber(stats.abstention);
+      document.getElementById("deputeNonVotant").textContent = formatNumber(stats.non_votant);
 
-      const groupVotes = allVotesFlat.filter(v => v.groupe === mainGroup);
-      const groupStats = computeStats(groupVotes);
+      document.getElementById("deputeStatsText").textContent = deputyVotes.length
+        ? `${deputy?.nom || "Ce député"} totalise ${formatNumber(deputyVotes.length)} votes observés sur ${selectedYear}, avec ${formatNumber(stats.pour)} Pour, ${formatNumber(stats.contre)} Contre, ${formatNumber(stats.abstention)} Abstentions et ${formatNumber(stats.non_votant)} Non-votants.`
+        : `Aucun vote recensé pour ce député sur ${selectedYear}.`;
 
-      document.getElementById("deputeCompare").textContent =
-        mainGroup && groupVotes.length
-          ? `${selectedDeputy.nom} est observé principalement dans le groupe ${mainGroup} en ${selectedYear}. Ce groupe totalise ${formatNumber(groupVotes.length)} votes recensés, avec ${formatNumber(groupStats.pour)} Pour, ${formatNumber(groupStats.contre)} Contre, ${formatNumber(groupStats.abstention)} Abstentions et ${formatNumber(groupStats.non_votant)} Non-votants.`
-          : "Aucun groupe principal observable sur cette année.";
+      document.getElementById("deputeThemes").innerHTML = topThemes.length
+        ? topThemes.map(t => `<span class="theme-badge">${t.theme} · ${formatNumber(t.total)}</span>`).join("")
+        : `<span class="theme-badge">Aucune thématique observée</span>`;
+
+      document.getElementById("deputeBioText").textContent = deputy?.bio || "";
     }
 
-    function renderObservedPresence() {
-      const totalScrutins = allScrutins.length;
-      const present = selectedDeputyVotes.length;
-      const voted = selectedDeputyVotes.filter(v => v.vote !== "Non-votant").length;
-      const nonVotant = selectedDeputyVotes.filter(v => v.vote === "Non-votant").length;
-      const rate = totalScrutins ? (present / totalScrutins) * 100 : 0;
-
-      document.getElementById("presenceGrid").innerHTML = `
-        <div class="summary-box"><strong>${formatNumber(totalScrutins)}</strong><span>Scrutins chargés</span></div>
-        <div class="summary-box"><strong>${formatNumber(present)}</strong><span>Présences observées</span></div>
-        <div class="summary-box"><strong>${formatNumber(voted)}</strong><span>Votes exprimés</span></div>
-        <div class="summary-box"><strong>${formatNumber(nonVotant)}</strong><span>Non-votants observés</span></div>
-        <div class="summary-box"><strong>${formatDecimal(rate)}%</strong><span>Taux de présence observé</span></div>
-      `;
-    }
-
-    function renderThemeSummary() {
-      if (!selectedDeputyVotes.length) {
-        document.getElementById("themesContainer").innerHTML = `<div class="empty">Aucune donnée disponible.</div>`;
-        return;
-      }
-
-      const grouped = new Map();
-      selectedDeputyVotes.forEach(v => {
-        const theme = v.scrutin_theme || "Autres";
-        grouped.set(theme, (grouped.get(theme) || 0) + 1);
-      });
-
-      const ranked = [...grouped.entries()]
-        .map(([theme, total]) => ({ theme, total }))
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 8);
-
-      document.getElementById("themesContainer").innerHTML = ranked.map(item => `
-        <a class="theme-card ${activeTheme === item.theme ? "active" : ""}" href="?uid=${encodeURIComponent(selectedDeputy.uid)}&theme=${encodeURIComponent(item.theme)}&year=${encodeURIComponent(selectedYear)}">
-          <h3>${item.theme}</h3>
-          <strong>${formatNumber(item.total)}</strong>
-          <span>vote(s) sur ce thème</span>
-        </a>
-      `).join("");
-    }
-
-    function renderDeputyVotes() {
-      const selectedMonth = document.getElementById("monthFilter").value;
-      const selectedVote = document.getElementById("voteFilter").value;
-      const dateQuery = normalize(document.getElementById("dateFilter").value);
+    function renderDeputyScrutins() {
+      const month = document.getElementById("monthFilter").value;
+      const voteType = document.getElementById("voteFilter").value;
+      const theme = document.getElementById("themeFilter").value;
       const titleQuery = normalize(document.getElementById("titleFilter").value);
 
-      const filtered = selectedDeputyVotes.filter(v => {
-        const monthMatch = !selectedMonth || (v.scrutin_date || "").startsWith(selectedMonth);
-        const voteMatch = !selectedVote || v.vote === selectedVote;
-        const dateMatch = !dateQuery || normalize(v.scrutin_date || "").includes(dateQuery);
-        const titleMatch = !titleQuery || normalize(v.scrutin_titre || "").includes(titleQuery) || normalize(v.scrutin_description || "").includes(titleQuery);
-        const themeMatch = !activeTheme || (v.scrutin_theme || "Autres") === activeTheme;
-        return monthMatch && voteMatch && dateMatch && titleMatch && themeMatch;
+      const deputyVotes = getDeputyVotes().filter(v => {
+        const monthMatch = !month || (v.scrutin_date || "").startsWith(month);
+        const voteMatch = !voteType || v.vote === voteType;
+        const themeMatch = !theme || (v.scrutin_theme || "Autres") === theme;
+        const titleMatch = !titleQuery
+          || normalize(v.scrutin_titre || "").includes(titleQuery)
+          || normalize(v.scrutin_description || "").includes(titleQuery)
+          || normalize(v.scrutin_full?.expose_sommaire || "").includes(titleQuery);
+        return monthMatch && voteMatch && themeMatch && titleMatch;
       });
 
-      document.getElementById("activeThemeStatus").textContent = activeTheme ? `Filtre thématique actif : ${activeTheme}` : "";
+      const container = document.getElementById("deputeScrutinsContainer");
 
-      if (!filtered.length) {
-        document.getElementById("deputeVotesList").innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
+      if (!deputyVotes.length) {
+        container.innerHTML = `<div class="empty">Aucun vote ne correspond aux filtres choisis.</div>`;
         return;
       }
 
-      document.getElementById("deputeVotesList").innerHTML = filtered.map(v => `
-        <a class="vote-card" href="scrutin.html?uid=${encodeURIComponent(v.scrutin_uid)}&year=${encodeURIComponent(selectedYear)}">
-          <div class="vote-context">${v.scrutin_date || ""} · ${v.scrutin_theme || "Autres"} · ${v.groupe || ""}</div>
+      const sorted = deputyVotes
+        .slice()
+        .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
+
+      container.innerHTML = sorted.map(v => `
+        <a class="scrutin-card" href="scrutin.html?uid=${encodeURIComponent(v.scrutin_uid)}&year=${encodeURIComponent(selectedYear)}">
+          <div class="scrutin-context">${v.scrutin_date || ""} · ${v.scrutin_theme || "Autres"}</div>
           <h3>${shortTitle(v.scrutin_full)}</h3>
-          <p class="vote-description">${shortDescription(v.scrutin_full)}</p>
-          <div class="chips">
-            <span class="chip">${v.scrutin_theme || "Autres"}</span>
-            <span class="chip">${selectedDeputy.nom}</span>
+          <p class="scrutin-description">${shortDescription(v.scrutin_full)}</p>
+          <div style="text-align:center;">
+            <span class="vote-badge ${voteBadgeClass(v.vote)}">${v.vote}</span>
           </div>
-          <div class="vote-line vote-${(v.vote || "").replace(/\s+/g, "-")}">Vote : ${v.vote || "-"}</div>
         </a>
       `).join("");
     }
 
-    function bindEvents() {
-      ["monthFilter", "voteFilter", "dateFilter", "titleFilter"].forEach(id => {
+    function bindFilters() {
+      ["monthFilter", "voteFilter", "themeFilter", "titleFilter"].forEach(id => {
         const el = document.getElementById(id);
-        el.addEventListener("input", renderDeputyVotes);
-        el.addEventListener("change", renderDeputyVotes);
+        el.addEventListener("input", renderDeputyScrutins);
+        el.addEventListener("change", renderDeputyScrutins);
       });
     }
 
     async function init() {
       try {
-        const uid = getParam("uid");
-        activeTheme = getParam("theme");
+        deputeUid = getParam("uid");
 
-        if (!uid) {
-          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Impossible d’ouvrir cette fiche député.</div></section>`;
+        if (!deputeUid) {
+          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Paramètre uid manquant.</div></section>`;
           return;
         }
 
-        indexData = await loadJson("./data/current/index.json");
+        const indexData = await loadJson("./data/current/index.json");
         selectedYear = getSelectedYear(indexData);
         buildYearButtons(indexData);
         allScrutins = await loadYearScrutins(indexData);
@@ -793,24 +714,11 @@
         deputyDirectory = deputesPayload.deputes || [];
 
         buildFlatVotes();
-        fillMonthFilter();
-        bindEvents();
-
-        selectedDeputy = deputyDirectory.find(d => d.uid === uid);
-
-        if (!selectedDeputy) {
-          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Député introuvable dans les données.</div></section>`;
-          return;
-        }
-
-        selectedDeputyVotes = allVotesFlat
-          .filter(v => v.depute_uid === selectedDeputy.uid)
-          .sort((a, b) => (b.scrutin_date || "").localeCompare(a.scrutin_date || ""));
-
-        renderDeputyCard();
-        renderObservedPresence();
-        renderThemeSummary();
-        renderDeputyVotes();
+        renderMonthFilter(indexData);
+        renderThemeFilter();
+        renderDeputyHeader();
+        renderDeputyScrutins();
+        bindFilters();
       } catch (error) {
         console.error(error);
         document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
