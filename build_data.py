@@ -75,6 +75,40 @@ MANUAL_NAME_FIXES = {
         "departement": "Alpes-Maritimes",
         "circonscription": "6e circonscription",
     },
+    "PA721210": {
+        "nom": "Alexis Corbière",
+        "groupe": "Écologiste et Social",
+        "departement": "Seine-Saint-Denis",
+        "circonscription": "7e circonscription",
+    },
+    "PA588884": {
+        "nom": "Clémentine Autain",
+        "groupe": "Écologiste et Social",
+    },
+    "PA796018": {
+        "nom": "Danielle Simonnet",
+        "groupe": "Écologiste et Social",
+    },
+    "PA722142": {
+        "nom": "François Ruffin",
+        "groupe": "Écologiste et Social",
+    },
+    "PA795076": {
+        "nom": "Sandrine Rousseau",
+        "groupe": "Écologiste et Social",
+    },
+    "PA794008": {
+        "nom": "Cyrielle Chatelain",
+        "groupe": "Écologiste et Social",
+    },
+    "PA793780": {
+        "nom": "Christine Arrighi",
+        "groupe": "Écologiste et Social",
+    },
+    "PA793452": {
+        "nom": "Hendrik Davi",
+        "groupe": "Écologiste et Social",
+    },
 }
 
 UNKNOWN_GROUPS = set()
@@ -216,22 +250,6 @@ def get_uid(v) -> str:
     return clean(v)
 
 
-def deep_find_first(node, target_key):
-    if isinstance(node, dict):
-        for k, v in node.items():
-            if k == target_key:
-                return v
-            found = deep_find_first(v, target_key)
-            if found is not None:
-                return found
-    elif isinstance(node, list):
-        for item in node:
-            found = deep_find_first(item, target_key)
-            if found is not None:
-                return found
-    return None
-
-
 def deep_find_all_dicts_with_key(node, target_key, results=None):
     if results is None:
         results = []
@@ -327,6 +345,10 @@ def normalize_circonscription_label(value: str) -> str:
     return raw
 
 
+def normalize_text_loose(value: str) -> str:
+    return clean(value).lower()
+
+
 def apply_manual_fix(uid: str, actor: dict) -> dict:
     fix = MANUAL_NAME_FIXES.get(uid)
     if not fix:
@@ -365,10 +387,9 @@ def extract_group_from_description(description: str) -> str:
     desc = clean(description)
 
     patterns = [
-        r"déput[ée] du groupe\s+(.+?)\s*\.",
-        r"déput[ée] du groupe\s+(.+?)$",
-        r"groupe\s+(.+?)\s*\.",
-        r"groupe\s+(.+?)$",
+        r"déput[ée]\s+du groupe\s+(.+?)(?:\s*[.,]|$)",
+        r"membre du groupe\s+(.+?)(?:\s*[.,]|$)",
+        r"apparent[ée] au groupe\s+(.+?)(?:\s*[.,]|$)",
     ]
 
     for pattern in patterns:
@@ -382,15 +403,19 @@ def extract_group_from_description(description: str) -> str:
     return ""
 
 
-def extract_group_from_visible_text(text: str) -> str:
-    txt = clean(text)
+def extract_group_from_visible_text_precise(html: str) -> str:
+    text = strip_tags(unescape(html))
 
-    for label in GROUP_TEXT_ALIASES.values():
-        if label and label.lower() in txt.lower():
-            return label
+    patterns = [
+        r"groupe politique\s*[:\-]?\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
+        r"membre du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
+        r"déput[ée]\s+du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
+    ]
 
-    if "non inscrit" in txt.lower():
-        return "Non inscrits"
+    for pattern in patterns:
+        m = re.search(pattern, text, re.IGNORECASE)
+        if m:
+            return normalize_group_label(clean(m.group(1)))
 
     return ""
 
@@ -442,7 +467,7 @@ def fetch_depute_profile(uid: str) -> dict:
 
     groupe = extract_group_from_description(meta_description)
     if not groupe:
-        groupe = extract_group_from_visible_text(text)
+        groupe = extract_group_from_visible_text_precise(html)
 
     bio = ""
     bio_match = re.search(
@@ -603,18 +628,18 @@ def find_best_expose_sommaire(scrutin: dict):
             "expose_sommaire": "",
         }
 
-    article_req = normalize(req.get("article"))
-    text_req = normalize(req.get("text_number"))
+    article_req = normalize_text_loose(req.get("article"))
+    text_req = normalize_text_loose(req.get("text_number"))
     scrutin_date = clean(scrutin.get("date"))
 
     scored = []
     for cand in candidates:
         score = 0
 
-        if text_req and normalize(cand.get("text_number")) == text_req:
+        if text_req and normalize_text_loose(cand.get("text_number")) == text_req:
             score += 100
 
-        if article_req and article_req in normalize(cand.get("article_designation")):
+        if article_req and article_req in normalize_text_loose(cand.get("article_designation")):
             score += 20
 
         if cand.get("prefixe") == "AN":
@@ -1218,7 +1243,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "8.0",
+            "version": "8.1",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
