@@ -1009,19 +1009,29 @@ def build_deputes_file(actors, scrutins):
             if g and g != "Inconnu":
                 observed_group_counts[g] += 1
 
-        groupe_final = (
-            sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
-            if observed_group_counts
-            else normalize_group_label(clean(actor.get("groupe")))
-        )
+        groupe_final = normalize_group_label(clean(actor.get("groupe")))
+
+        if not groupe_final or groupe_final == "Inconnu":
+            groupe_final = (
+                sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
+                if observed_group_counts
+                else "Inconnu"
+            )
 
         if not groupe_final or groupe_final == "Inconnu":
             continue
+
+        observed_main_group = (
+            sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
+            if observed_group_counts
+            else ""
+        )
 
         deputes.append({
             "uid": uid,
             "nom": nom,
             "groupe": groupe_final,
+            "groupe_observe": observed_main_group,
             "departement": clean(actor.get("departement")),
             "circonscription": normalize_circonscription_label(actor.get("circonscription")),
             "bio": clean(actor.get("bio")),
@@ -1032,7 +1042,7 @@ def build_deputes_file(actors, scrutins):
 
     print("Nombre de deputes retenus :", len(deputes))
     print("Exemples deputes retenus :", [
-        (d["nom"], d["uid"], d["groupe"], d["circonscription"], d["departement"])
+        (d["nom"], d["uid"], d["groupe"], d.get("groupe_observe", ""), d["circonscription"], d["departement"])
         for d in deputes[:80]
     ])
 
@@ -1208,7 +1218,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "7.9",
+            "version": "8.0",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
