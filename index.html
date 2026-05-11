@@ -940,35 +940,53 @@
       });
     }
 
-    function renderGroups() {
-      const grouped = new Map();
+    async function renderGroups() {
+      try {
+        const composition = await loadJson("./data/current/composition.json");
+        const rows = composition?.groupes || [];
 
-      allVotesFlat.forEach(v => {
-        const g = v.groupe || "Inconnu";
-        if (!grouped.has(g)) grouped.set(g, []);
-        grouped.get(g).push(v);
-      });
+        if (!rows.length) {
+          document.getElementById("groupsContainer").innerHTML =
+            `<div class="empty">Aucun groupe trouvé.</div>`;
+          return;
+        }
 
-      const cards = [...grouped.entries()]
-        .map(([groupe, votes]) => {
-          const counts = { Pour: 0, Contre: 0, Abstention: 0, "Non-votant": 0 };
-          votes.forEach(v => { counts[v.vote] = (counts[v.vote] || 0) + 1; });
-          const dominant = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
-          return { groupe, total: votes.length, dominant };
-        })
-        .sort((a, b) => b.total - a.total);
+        const html = rows
+          .slice()
+          .sort((a, b) => (b.count || 0) - (a.count || 0))
+          .map(row => {
+            const members = Array.isArray(row.members) ? row.members : [];
+            const memberUids = new Set(members.map(m => m.uid));
 
-      const html = cards.map(item => `
-        <a class="card-link" href="groupe.html?name=${encodeURIComponent(item.groupe)}&year=${encodeURIComponent(selectedYear)}">
-          <h3>${item.groupe}</h3>
-          <span class="big">${formatNumber(item.total)}</span>
-          <div class="sub">votes recensés</div>
-          <div class="meta">Vote dominant : ${item.dominant}</div>
-        </a>
-      `).join("");
+            const groupVotes = allVotesFlat.filter(v =>
+              v.groupe === row.groupe && memberUids.has(v.depute_uid)
+            );
 
-      document.getElementById("groupsContainer").innerHTML =
-        html || `<div class="empty">Aucun groupe trouvé.</div>`;
+            const counts = { Pour: 0, Contre: 0, Abstention: 0, "Non-votant": 0 };
+            groupVotes.forEach(v => {
+              counts[v.vote] = (counts[v.vote] || 0) + 1;
+            });
+
+            const dominant = groupVotes.length
+              ? Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]
+              : "—";
+
+            return `
+              <a class="card-link" href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
+                <h3>${row.groupe}</h3>
+                <span class="big">${formatNumber(row.count)}</span>
+                <div class="sub">députés en fonction</div>
+                <div class="meta">${Number(row.pct || 0).toFixed(1)}% de l’Assemblée · Vote dominant : ${dominant}</div>
+              </a>
+            `;
+          }).join("");
+
+        document.getElementById("groupsContainer").innerHTML = html;
+      } catch (error) {
+        console.error(error);
+        document.getElementById("groupsContainer").innerHTML =
+          `<div class="empty">Impossible de charger les groupes politiques.</div>`;
+      }
     }
 
     function renderScrutins() {
@@ -1092,7 +1110,7 @@
         buildFlatVotes();
         renderCounts();
         await renderCompositionIfValid();
-        renderGroups();
+        await renderGroups();
         renderScrutins();
         await searchDeputies();
         bindTabs();
