@@ -54,8 +54,6 @@ GROUP_TEXT_ALIASES = {
     "Horizons et Indépendants": "Horizons & Indépendants",
     "Libertés, indépendants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
     "Libertés, Indépendants, Outre-mer et Territoires": "Libertés, indépendants, outre-mer et territoires",
-    "Libertés": "Libertés, indépendants, outre-mer et territoires",
-    "LIOT": "Libertés, indépendants, outre-mer et territoires",
     "Gauche démocrate et républicaine": "Gauche démocrate et républicaine",
     "Gauche Démocrate et Républicaine": "Gauche démocrate et républicaine",
     "UDR": "UDR",
@@ -359,9 +357,9 @@ def extract_group_from_visible_text_precise(html: str) -> str:
     text = strip_tags(unescape(html))
 
     patterns = [
-        r"groupe politique\s*[:\-]?\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits|LIOT|Libertés)",
-        r"membre du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits|LIOT|Libertés)",
-        r"déput[ée]\s+du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits|LIOT|Libertés)",
+        r"groupe politique\s*[:\-]?\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
+        r"membre du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
+        r"déput[ée]\s+du groupe\s*(Rassemblement National|Ensemble pour la République|La France insoumise - Nouveau Front Populaire|Socialistes et apparentés|Droite Républicaine|Les Démocrates|Écologiste et Social|Horizons\s*&\s*Indépendants|Libertés,\s*indépendants,\s*outre-mer et territoires|Gauche démocrate et républicaine|Union des droites pour la République|UDR|Non inscrits)",
     ]
 
     for pattern in patterns:
@@ -475,6 +473,17 @@ def compute_stats(votes):
         "non_votant": sum(1 for v in votes if v["vote"] == "Non-votant"),
         "total_votes": len(votes),
     }
+
+
+def dominant_vote_label_from_stats(stats):
+    entries = [
+        ("Pour", stats.get("pour", 0)),
+        ("Contre", stats.get("contre", 0)),
+        ("Abstention", stats.get("abstention", 0)),
+        ("Non-votant", stats.get("non_votant", 0)),
+    ]
+    entries.sort(key=lambda x: (-x[1], x[0]))
+    return entries[0][0] if entries else ""
 
 
 def compute_groupes(votes):
@@ -816,9 +825,6 @@ def build_deputes_file(actors, scrutins):
 
         groupe_final = normalize_group_label(clean(actor.get("groupe")))
 
-        if observed_main_group and groupe_final in {"", "Inconnu", "Non inscrits"} and observed_main_group != "Non inscrits":
-            groupe_final = observed_main_group
-
         if not groupe_final or groupe_final == "Inconnu":
             groupe_final = observed_main_group
 
@@ -914,6 +920,68 @@ def build_composition_file():
     })
 
 
+def build_circonscriptions_file(scrutins):
+    deputes_payload = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
+    deputes = deputes_payload.get("deputes", [])
+
+    votes_by_uid = defaultdict(list)
+    for scrutin in scrutins:
+        for vote in scrutin.get("votes", []):
+            uid = clean(vote.get("depute_uid"))
+            if uid:
+                votes_by_uid[uid].append(vote)
+
+    circonscriptions = []
+    seen_keys = set()
+
+    for d in deputes:
+        uid = clean(d.get("uid"))
+        nom = clean(d.get("nom"))
+        groupe = normalize_group_label(clean(d.get("groupe")))
+        departement = clean(d.get("departement"))
+        circonscription = normalize_circonscription_label(d.get("circonscription"))
+
+        if not uid or not nom or not departement or not circonscription:
+            continue
+
+        key = f"{departement}::{circonscription}"
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+
+        actor_votes = votes_by_uid.get(uid, [])
+        stats = compute_stats(actor_votes)
+
+        circonscriptions.append({
+            "key": key,
+            "departement": departement,
+            "circonscription": circonscription,
+            "depute_uid": uid,
+            "depute_nom": nom,
+            "groupe": groupe,
+            "votes_count": len(actor_votes),
+            "stats": stats,
+            "dominant_vote": dominant_vote_label_from_stats(stats),
+        })
+
+    circonscriptions.sort(key=lambda x: (x["departement"], x["circonscription"]))
+
+    groupes_summary = defaultdict(int)
+    for item in circonscriptions:
+        groupes_summary[item["groupe"]] += 1
+
+    groupes_summary_list = [
+        {"groupe": groupe, "count": count}
+        for groupe, count in sorted(groupes_summary.items(), key=lambda x: (-x[1], x[0]))
+    ]
+
+    write_json(BASE_DIR / "circonscriptions.json", {
+        "total": len(circonscriptions),
+        "circonscriptions": circonscriptions,
+        "groupes_summary": groupes_summary_list,
+    })
+
+
 def build_year_index(scrutins):
     years = defaultdict(list)
     for scrutin in scrutins:
@@ -992,6 +1060,14 @@ def write_fallback_index():
             "groupes": [],
         },
     )
+    existing_circonscriptions = read_json_if_exists(
+        BASE_DIR / "circonscriptions.json",
+        {
+            "total": 0,
+            "groupes_summary": [],
+            "circonscriptions": [],
+        },
+    )
 
     if existing_index:
         existing_index["updated_at"] = datetime.utcnow().isoformat()
@@ -1001,14 +1077,20 @@ def write_fallback_index():
             "expected_total": int(existing_composition.get("expected_total", EXPECTED_ASSEMBLY_SIZE)),
             "fallback_used": True,
         }
+        existing_index["circonscriptions"] = {
+            "total": int(existing_circonscriptions.get("total", 0)),
+            "groupes": existing_circonscriptions.get("groupes_summary", []),
+        }
         write_json(BASE_DIR / "index.json", existing_index)
 
     write_json(BASE_DIR / "deputes.json", existing_deputes)
     write_json(BASE_DIR / "composition.json", existing_composition)
+    write_json(BASE_DIR / "circonscriptions.json", existing_circonscriptions)
 
     print("FALLBACK ACTIVÉ")
     print("Composition totale (fallback) :", existing_composition.get("total", 0))
     print("Composition valide (fallback) :", existing_composition.get("is_valid", False))
+    print("Circonscriptions totales (fallback) :", existing_circonscriptions.get("total", 0))
 
 
 def main():
@@ -1022,8 +1104,14 @@ def main():
         month_list = write_month_files(scrutins)
         build_deputes_file(actors, scrutins)
         build_composition_file()
+        build_circonscriptions_file(scrutins)
 
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
+
+        circonscriptions_data = read_json_if_exists(
+            BASE_DIR / "circonscriptions.json",
+            {"total": 0, "groupes_summary": []}
+        )
 
         index_data = {
             "version": "9.0",
@@ -1046,6 +1134,10 @@ def main():
                 "total": composition_data.get("total", 0),
                 "expected_total": composition_data.get("expected_total", EXPECTED_ASSEMBLY_SIZE),
                 "fallback_used": False,
+            },
+            "circonscriptions": {
+                "total": circonscriptions_data.get("total", 0),
+                "groupes": circonscriptions_data.get("groupes_summary", []),
             }
         }
 
@@ -1054,6 +1146,7 @@ def main():
         print("Composition totale :", composition_data["total"])
         print("Composition valide :", composition_data["is_valid"])
         print("Groupes composition :", [(g["groupe"], g["count"]) for g in composition_data["groupes"]])
+        print("Circonscriptions totales :", circonscriptions_data.get("total", 0))
         print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
     except Exception as e:
