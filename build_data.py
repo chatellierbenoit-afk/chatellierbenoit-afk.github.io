@@ -64,6 +64,7 @@ GROUP_TEXT_ALIASES = {
     "Ecologiste et Social": "Écologiste et Social",
     "Libertes, independants, outre-mer et territoires": "Libertés, indépendants, outre-mer et territoires",
     "Gauche democrate et republicaine": "Gauche démocrate et républicaine",
+    "Libertés": "Libertés, indépendants, outre-mer et territoires",
 }
 
 MANUAL_NAME_FIXES = {
@@ -136,7 +137,7 @@ def ensure_dir(path: Path):
 
 def write_json(path: Path, data):
     ensure_dir(path.parent)
-    path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def read_json_if_exists(path: Path, default=None):
@@ -517,6 +518,14 @@ def compute_departements(votes):
     return sorted(result, key=lambda x: x["departement"])
 
 
+def sort_circonscription_key(value: str):
+    raw = clean(value)
+    m = re.match(r"^(\d+)", raw)
+    if m:
+        return (0, int(m.group(1)), raw)
+    return (1, raw)
+
+
 def load_amo():
     raw = download_zip(AMO50_URL)
     zf = zipfile.ZipFile(BytesIO(raw))
@@ -741,19 +750,12 @@ def load_scrutins(actors, organes):
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
 
-                    actor_group = normalize_group_label(actor.get("groupe") or "")
-                    scrutin_group = normalize_group_label(groupe_nom or "")
-
-                    if actor_group and actor_group != "Inconnu":
-                        groupe = actor_group
-                    else:
-                        groupe = scrutin_group or "Inconnu"
+                    groupe = normalize_group_label(groupe_nom or actor.get("groupe") or "Inconnu")
 
                     votes.append({
                         "depute_uid": uid_dep,
                         "nom": nom,
                         "groupe": groupe,
-                        "groupe_scrutin": scrutin_group,
                         "vote": label,
                         "departement": clean(actor.get("departement")),
                         "circonscription": normalize_circonscription_label(actor.get("circonscription")),
@@ -808,26 +810,14 @@ def build_deputes_file(actors, scrutins):
             continue
 
         observed_group_counts = defaultdict(int)
-        observed_scrutin_group_counts = defaultdict(int)
-
         for vote in actor_votes:
             g = clean(vote.get("groupe"))
             if g and g != "Inconnu":
                 observed_group_counts[g] += 1
 
-            gs = clean(vote.get("groupe_scrutin"))
-            if gs and gs != "Inconnu":
-                observed_scrutin_group_counts[gs] += 1
-
         observed_main_group = (
             sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
             if observed_group_counts
-            else ""
-        )
-
-        observed_main_scrutin_group = (
-            sorted(observed_scrutin_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
-            if observed_scrutin_group_counts
             else ""
         )
 
@@ -855,7 +845,6 @@ def build_deputes_file(actors, scrutins):
             "nom": clean(actor_fixed.get("nom")),
             "groupe": groupe_final,
             "groupe_observe": observed_main_group,
-            "groupe_scrutin": observed_main_scrutin_group,
             "departement": clean(actor_fixed.get("departement")),
             "circonscription": normalize_circonscription_label(actor_fixed.get("circonscription")),
             "bio": clean(actor_fixed.get("bio")),
@@ -866,15 +855,7 @@ def build_deputes_file(actors, scrutins):
 
     print("Nombre de deputes retenus :", len(deputes))
     print("Exemples deputes retenus :", [
-        (
-            d["nom"],
-            d["uid"],
-            d["groupe"],
-            d.get("groupe_observe", ""),
-            d.get("groupe_scrutin", ""),
-            d["circonscription"],
-            d["departement"],
-        )
+        (d["nom"], d["uid"], d["groupe"], d.get("groupe_observe", ""), d["circonscription"], d["departement"])
         for d in deputes[:50]
     ])
 
@@ -934,6 +915,73 @@ def build_composition_file():
         "is_valid": total == EXPECTED_ASSEMBLY_SIZE,
         "groupes": groupes,
         "source": "official_manual",
+    })
+
+
+def build_circonscriptions_file():
+    deputes_payload = read_json_if_exists(BASE_DIR / "deputes.json", {"deputes": []})
+    deputes = deputes_payload.get("deputes", [])
+
+    by_departement = defaultdict(list)
+    seen = set()
+    total_circonscriptions = 0
+
+    for d in deputes:
+        uid = clean(d.get("uid"))
+        nom = clean(d.get("nom"))
+        groupe = normalize_group_label(clean(d.get("groupe")))
+        groupe_observe = normalize_group_label(clean(d.get("groupe_observe")))
+        departement = clean(d.get("departement"))
+        circonscription = normalize_circonscription_label(d.get("circonscription"))
+        votes_count = int(d.get("votes_count", 0))
+        bio = clean(d.get("bio"))
+
+        if not uid or uid in seen:
+            continue
+        if not nom or nom.startswith("PA"):
+            continue
+        if not departement or not circonscription:
+            continue
+
+        seen.add(uid)
+        total_circonscriptions += 1
+
+        by_departement[departement].append({
+            "circonscription": circonscription,
+            "depute": {
+                "uid": uid,
+                "nom": nom,
+                "groupe": groupe,
+                "groupe_observe": groupe_observe,
+                "votes_count": votes_count,
+                "bio": bio,
+            }
+        })
+
+    departements = []
+    for departement, items in by_departement.items():
+        sorted_items = sorted(items, key=lambda x: sort_circonscription_key(x["circonscription"]))
+
+        group_counts = defaultdict(int)
+        for item in sorted_items:
+            group_counts[item["depute"]["groupe"]] += 1
+
+        departements.append({
+            "departement": departement,
+            "circonscriptions_count": len(sorted_items),
+            "groupes": [
+                {"groupe": g, "count": c}
+                for g, c in sorted(group_counts.items(), key=lambda x: (-x[1], x[0]))
+            ],
+            "circonscriptions": sorted_items,
+        })
+
+    departements.sort(key=lambda x: x["departement"])
+
+    write_json(BASE_DIR / "circonscriptions.json", {
+        "total_departements": len(departements),
+        "total_circonscriptions": total_circonscriptions,
+        "departements": departements,
     })
 
 
@@ -1015,6 +1063,14 @@ def write_fallback_index():
             "groupes": [],
         },
     )
+    existing_circonscriptions = read_json_if_exists(
+        BASE_DIR / "circonscriptions.json",
+        {
+            "total_departements": 0,
+            "total_circonscriptions": 0,
+            "departements": [],
+        },
+    )
 
     if existing_index:
         existing_index["updated_at"] = datetime.utcnow().isoformat()
@@ -1024,19 +1080,26 @@ def write_fallback_index():
             "expected_total": int(existing_composition.get("expected_total", EXPECTED_ASSEMBLY_SIZE)),
             "fallback_used": True,
         }
+        existing_index["territorial"] = {
+            "departements": int(existing_circonscriptions.get("total_departements", 0)),
+            "circonscriptions": int(existing_circonscriptions.get("total_circonscriptions", 0)),
+            "file": "data/current/circonscriptions.json",
+        }
         write_json(BASE_DIR / "index.json", existing_index)
 
     write_json(BASE_DIR / "deputes.json", existing_deputes)
     write_json(BASE_DIR / "composition.json", existing_composition)
+    write_json(BASE_DIR / "circonscriptions.json", existing_circonscriptions)
 
     print("FALLBACK ACTIVÉ")
     print("Composition totale (fallback) :", existing_composition.get("total", 0))
     print("Composition valide (fallback) :", existing_composition.get("is_valid", False))
+    print("Circonscriptions (fallback) :", existing_circonscriptions.get("total_circonscriptions", 0))
 
 
 def main():
     print("========== BUILD DATA START ==========")
-    print("VERSION BUILD DATA = CORBIERE_FIX_GROUPES_VOTES")
+    print("VERSION BUILD DATA = CORBIERE_FIX_FINAL")
 
     try:
         actors, organes = load_amo()
@@ -1045,8 +1108,10 @@ def main():
         month_list = write_month_files(scrutins)
         build_deputes_file(actors, scrutins)
         build_composition_file()
+        build_circonscriptions_file()
 
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
+        circonscriptions_data = json.loads((BASE_DIR / "circonscriptions.json").read_text(encoding="utf-8"))
 
         index_data = {
             "version": "9.1",
@@ -1069,6 +1134,11 @@ def main():
                 "total": composition_data.get("total", 0),
                 "expected_total": composition_data.get("expected_total", EXPECTED_ASSEMBLY_SIZE),
                 "fallback_used": False,
+            },
+            "territorial": {
+                "departements": circonscriptions_data.get("total_departements", 0),
+                "circonscriptions": circonscriptions_data.get("total_circonscriptions", 0),
+                "file": "data/current/circonscriptions.json",
             }
         }
 
@@ -1077,6 +1147,8 @@ def main():
         print("Composition totale :", composition_data["total"])
         print("Composition valide :", composition_data["is_valid"])
         print("Groupes composition :", [(g["groupe"], g["count"]) for g in composition_data["groupes"]])
+        print("Circonscriptions totales :", circonscriptions_data["total_circonscriptions"])
+        print("Départements couverts :", circonscriptions_data["total_departements"])
         print("Groupes inconnus restants :", sorted(UNKNOWN_GROUPS))
 
     except Exception as e:
