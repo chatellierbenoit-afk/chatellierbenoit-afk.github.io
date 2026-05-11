@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circonscriptions</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    :root {
+      --violet: #7700FF;
+      --violet-dark: #5b00c7;
+      --violet-soft: #f3edff;
+      --card: #ffffff;
+      --text: #1e1c26;
+      --muted: #6f6a7e;
+      --border: #e7e2f2;
+      --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f8f6fd 0%, #f3f0fb 100%);
+      color: var(--text);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+      color: white;
+      text-align: center;
+      padding: 40px 20px 32px;
+      box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 14px auto 0;
+      font-size: 17px;
+      max-width: 920px;
+      line-height: 1.45;
+      opacity: 0.98;
+    }
+
+    main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .small-muted {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      margin-top: 10px;
+    }
+
+    .counts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .count-box {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+    }
+
+    .count-box strong {
+      display: block;
+      font-size: 24px;
+      color: var(--violet);
+      margin-bottom: 6px;
+    }
+
+    .count-box span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .search-row input {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid #d9d2ea;
+      border-radius: 16px;
+      font-size: 18px;
+      text-align: center;
+      outline: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    #map {
+      width: 100%;
+      height: 720px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .list-wrap {
+      display: grid;
+      gap: 14px;
+      max-height: 720px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .card-link {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      cursor: pointer;
+    }
+
+    .card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      background: var(--violet-soft);
+    }
+
+    .card-link h3 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .card-link .meta {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .card-link .big {
+      display: block;
+      text-align: center;
+      color: var(--violet);
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .card-link .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 8px;
+    }
+
+    @media (max-width: 1100px) {
+      .layout,
+      .counts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #map {
+        height: 520px;
+      }
+
+      .list-wrap {
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1>Circonscriptions législatives</h1>
+    <p>
+      Visualisez les circonscriptions, leur député, leur groupe politique
+      et le résumé des votes observés.
+    </p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2 class="section-title">Résumé</h2>
+      <div class="counts-grid">
+        <div class="count-box">
+          <strong id="countCircos">0</strong>
+          <span>Circonscriptions</span>
+        </div>
+        <div class="count-box">
+          <strong id="countGroups">0</strong>
+          <span>Groupes présents</span>
+        </div>
+        <div class="count-box">
+          <strong id="countDeputies">0</strong>
+          <span>Députés affichés</span>
+        </div>
+      </div>
+      <div class="small-muted">Clique sur une circonscription dans la carte ou dans la liste.</div>
+    </section>
+
+    <section class="panel">
+      <h2 class="section-title">Recherche</h2>
+      <div class="search-row">
+        <input id="searchInput" type="text" placeholder="Ex. Haute-Garonne, 3e circonscription, Hadrien Clouet">
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="layout">
+        <div id="map"></div>
+        <div id="circoList" class="list-wrap"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const GROUP_COLORS = {
+      "Rassemblement National": "#1d4ed8",
+      "Ensemble pour la République": "#f97316",
+      "La France insoumise - Nouveau Front Populaire": "#dc2626",
+      "Socialistes et apparentés": "#ec4899",
+      "Droite Républicaine": "#2563eb",
+      "Les Démocrates": "#f59e0b",
+      "Écologiste et Social": "#16a34a",
+      "Horizons & Indépendants": "#0ea5e9",
+      "Libertés, indépendants, outre-mer et territoires": "#8b5cf6",
+      "Gauche démocrate et républicaine": "#b91c1c",
+      "Union des droites pour la République": "#334155",
+      "UDR": "#334155",
+      "Non inscrits": "#6b7280",
+      "Inconnu": "#9ca3af"
+    };
+
+    let map;
+    let geoLayer;
+    let circoRows = [];
+    let featureByKey = new Map();
+    let dataByKey = new Map();
+
+    function normalize(text) {
+      return (text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat("fr-FR").format(value || 0);
+    }
+
+    function makeKey(departement, circonscription) {
+      return `${normalize(departement)}::${normalize(circonscription)}`;
+    }
+
+    async function loadJson(path) {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
+      return response.json();
+    }
+
+    function getFeatureDepartement(props) {
+      return (
+        props.departement ||
+        props.nom_departement ||
+        props.dept_nom ||
+        props.libelle_departement ||
+        ""
+      );
+    }
+
+    function getFeatureCirconscription(props) {
+      if (props.circonscription) return props.circonscription;
+      if (props.nom_circonscription) return props.nom_circonscription;
+      if (props.nom_circo) return props.nom_circo;
+      if (props.libelle) return props.libelle;
+      if (props.numero_circonscription) return `${props.numero_circonscription}e circonscription`;
+      if (props.num_circo) return `${props.num_circo}e circonscription`;
+      return "";
+    }
+
+    function groupColor(group) {
+      return GROUP_COLORS[group] || "#9ca3af";
+    }
+
+    function renderSummary() {
+      const groups = new Set(circoRows.map(r => r.groupe).filter(Boolean));
+      document.getElementById("countCircos").textContent = formatNumber(circoRows.length);
+      document.getElementById("countGroups").textContent = formatNumber(groups.size);
+      document.getElementById("countDeputies").textContent = formatNumber(circoRows.length);
+    }
+
+    function popupHtml(row) {
+      return `
+        <div style="min-width:240px;">
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">${row.circonscription}</div>
+          <div style="margin-bottom:6px;">${row.departement}</div>
+          <div style="margin-bottom:6px;"><strong>Député :</strong> ${row.depute_nom}</div>
+          <div style="margin-bottom:6px;"><strong>Groupe :</strong> ${row.groupe}</div>
+          <div style="margin-bottom:6px;"><strong>Votes observés :</strong> ${formatNumber(row.votes_count)}</div>
+          <div style="margin-bottom:6px;"><strong>Vote dominant :</strong> ${row.dominant_vote || "-"}</div>
+          <div><strong>Pour :</strong> ${formatNumber(row.stats?.pour || 0)} ·
+          <strong>Contre :</strong> ${formatNumber(row.stats?.contre || 0)} ·
+          <strong>Abs. :</strong> ${formatNumber(row.stats?.abstention || 0)} ·
+          <strong>NV :</strong> ${formatNumber(row.stats?.non_votant || 0)}</div>
+        </div>
+      `;
+    }
+
+    function renderList(rows) {
+      const container = document.getElementById("circoList");
+
+      if (!rows.length) {
+        container.innerHTML = `<div class="empty">Aucune circonscription trouvée.</div>`;
+        return;
+      }
+
+      container.innerHTML = rows.map(row => `
+        <div class="card-link" data-key="${row.key}">
+          <h3>${row.circonscription}</h3>
+          <div class="meta">${row.departement}</div>
+          <span class="big">${row.depute_nom}</span>
+          <div class="sub">${row.groupe}</div>
+          <div class="meta">${formatNumber(row.votes_count)} votes observés · ${row.dominant_vote || "-"}</div>
+        </div>
+      `).join("");
+
+      container.querySelectorAll(".card-link").forEach(card => {
+        card.addEventListener("click", () => {
+          const key = card.dataset.key;
+          const feature = featureByKey.get(normalize(key));
+          const row = dataByKey.get(normalize(key));
+          if (feature && geoLayer) {
+            const layer = feature.__layerRef;
+            if (layer) {
+              map.fitBounds(layer.getBounds(), { padding: [20, 20] });
+              layer.openPopup();
+            }
+          } else if (row) {
+            alert(`${row.circonscription} · ${row.departement}\n${row.depute_nom}\n${row.groupe}`);
+          }
+        });
+      });
+    }
+
+    function filterRows(query) {
+      const q = normalize(query);
+      if (!q) return circoRows;
+
+      return circoRows.filter(row => {
+        const hay = [
+          row.departement,
+          row.circonscription,
+          row.depute_nom,
+          row.groupe
+        ].map(normalize).join(" ");
+        return hay.includes(q);
+      });
+    }
+
+    function initMap(geojson) {
+      map = L.map("map").setView([46.6, 2.4], 6);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+
+      geoLayer = L.geoJSON(geojson, {
+        style: feature => {
+          const props = feature.properties || {};
+          const key = makeKey(getFeatureDepartement(props), getFeatureCirconscription(props));
+          const row = dataByKey.get(key);
+          return {
+            color: "#ffffff",
+            weight: 1,
+            fillColor: groupColor(row?.groupe || "Inconnu"),
+            fillOpacity: 0.8
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const props = feature.properties || {};
+          const key = makeKey(getFeatureDepartement(props), getFeatureCirconscription(props));
+          const row = dataByKey.get(key);
+
+          featureByKey.set(key, feature);
+          feature.__layerRef = layer;
+
+          if (row) {
+            layer.bindPopup(popupHtml(row));
+          } else {
+            layer.bindPopup(`
+              <div>
+                <strong>${getFeatureCirconscription(props) || "Circonscription"}</strong><br>
+                ${getFeatureDepartement(props) || ""}
+              </div>
+            `);
+          }
+
+          layer.on("mouseover", function() {
+            this.setStyle({ weight: 2, fillOpacity: 0.95 });
+          });
+
+          layer.on("mouseout", function() {
+            geoLayer.resetStyle(this);
+          });
+        }
+      }).addTo(map);
+
+      try {
+        map.fitBounds(geoLayer.getBounds(), { padding: [20, 20] });
+      } catch (e) {}
+    }
+
+    async function init() {
+      try {
+        const circoData = await loadJson("./data/current/circonscriptions.json");
+        circoRows = circoData.circonscriptions || [];
+
+        dataByKey = new Map(
+          circoRows.map(row => [normalize(row.key), row])
+        );
+
+        renderSummary();
+        renderList(circoRows);
+
+        const geojson = await loadJson("./data/current/circonscriptions-geo.json");
+        initMap(geojson);
+
+        document.getElementById("searchInput").addEventListener("input", e => {
+          renderList(filterRows(e.target.value));
+        });
+
+      } catch (error) {
+        console.error(error);
+        document.querySelector("main").innerHTML =
+          `<section class="panel"><div class="empty">Erreur de chargement des circonscriptions.</div></section>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
