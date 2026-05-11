@@ -741,12 +741,19 @@ def load_scrutins(actors, organes):
                     if not nom or nom.startswith("PA"):
                         nom = f"Député {uid_dep}"
 
-                    groupe = normalize_group_label(groupe_nom or actor.get("groupe") or "Inconnu")
+                    actor_group = normalize_group_label(actor.get("groupe") or "")
+                    scrutin_group = normalize_group_label(groupe_nom or "")
+
+                    if actor_group and actor_group != "Inconnu":
+                        groupe = actor_group
+                    else:
+                        groupe = scrutin_group or "Inconnu"
 
                     votes.append({
                         "depute_uid": uid_dep,
                         "nom": nom,
                         "groupe": groupe,
+                        "groupe_scrutin": scrutin_group,
                         "vote": label,
                         "departement": clean(actor.get("departement")),
                         "circonscription": normalize_circonscription_label(actor.get("circonscription")),
@@ -801,14 +808,26 @@ def build_deputes_file(actors, scrutins):
             continue
 
         observed_group_counts = defaultdict(int)
+        observed_scrutin_group_counts = defaultdict(int)
+
         for vote in actor_votes:
             g = clean(vote.get("groupe"))
             if g and g != "Inconnu":
                 observed_group_counts[g] += 1
 
+            gs = clean(vote.get("groupe_scrutin"))
+            if gs and gs != "Inconnu":
+                observed_scrutin_group_counts[gs] += 1
+
         observed_main_group = (
             sorted(observed_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
             if observed_group_counts
+            else ""
+        )
+
+        observed_main_scrutin_group = (
+            sorted(observed_scrutin_group_counts.items(), key=lambda x: (-x[1], x[0]))[0][0]
+            if observed_scrutin_group_counts
             else ""
         )
 
@@ -836,6 +855,7 @@ def build_deputes_file(actors, scrutins):
             "nom": clean(actor_fixed.get("nom")),
             "groupe": groupe_final,
             "groupe_observe": observed_main_group,
+            "groupe_scrutin": observed_main_scrutin_group,
             "departement": clean(actor_fixed.get("departement")),
             "circonscription": normalize_circonscription_label(actor_fixed.get("circonscription")),
             "bio": clean(actor_fixed.get("bio")),
@@ -846,7 +866,15 @@ def build_deputes_file(actors, scrutins):
 
     print("Nombre de deputes retenus :", len(deputes))
     print("Exemples deputes retenus :", [
-        (d["nom"], d["uid"], d["groupe"], d.get("groupe_observe", ""), d["circonscription"], d["departement"])
+        (
+            d["nom"],
+            d["uid"],
+            d["groupe"],
+            d.get("groupe_observe", ""),
+            d.get("groupe_scrutin", ""),
+            d["circonscription"],
+            d["departement"],
+        )
         for d in deputes[:50]
     ])
 
@@ -1008,7 +1036,7 @@ def write_fallback_index():
 
 def main():
     print("========== BUILD DATA START ==========")
-    print("VERSION BUILD DATA = CORBIERE_FIX_FINAL")
+    print("VERSION BUILD DATA = CORBIERE_FIX_GROUPES_VOTES")
 
     try:
         actors, organes = load_amo()
@@ -1021,7 +1049,7 @@ def main():
         composition_data = json.loads((BASE_DIR / "composition.json").read_text(encoding="utf-8"))
 
         index_data = {
-            "version": "9.0",
+            "version": "9.1",
             "year": CURRENT_YEAR,
             "updated_at": datetime.utcnow().isoformat(),
             "available_years": [CURRENT_YEAR, PREVIOUS_YEAR],
