@@ -692,39 +692,6 @@
       return response.json();
     }
 
-    async function resolveGeoQuery(query) {
-      const q = (query || "").trim();
-      if (!q) return null;
-
-      if (/^\d{5}$/.test(q)) {
-        const communes = await fetchJson(
-          `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&format=json&geometry=centre`
-        );
-        if (Array.isArray(communes) && communes.length) {
-          return {
-            type: "postal",
-            commune: communes[0].nom || "",
-            departement: communes[0]?.departement?.nom || "",
-            departementCode: communes[0]?.departement?.code || ""
-          };
-        }
-      }
-
-      const communesByName = await fetchJson(
-        `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5&format=json&geometry=centre`
-      );
-      if (Array.isArray(communesByName) && communesByName.length) {
-        return {
-          type: "commune",
-          commune: communesByName[0].nom || "",
-          departement: communesByName[0]?.departement?.nom || "",
-          departementCode: communesByName[0]?.departement?.code || ""
-        };
-      }
-
-      return null;
-    }
-
     function formatNumber(value) {
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
@@ -733,7 +700,9 @@
       return (text || "")
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
     function ensureArray(v) {
@@ -940,53 +909,35 @@
       });
     }
 
-    async function renderGroups() {
-      try {
-        const composition = await loadJson("./data/current/composition.json");
-        const rows = composition?.groupes || [];
+    function renderGroups() {
+      const grouped = new Map();
 
-        if (!rows.length) {
-          document.getElementById("groupsContainer").innerHTML =
-            `<div class="empty">Aucun groupe trouvé.</div>`;
-          return;
-        }
+      allVotesFlat.forEach(v => {
+        const g = v.groupe || "Inconnu";
+        if (!grouped.has(g)) grouped.set(g, []);
+        grouped.get(g).push(v);
+      });
 
-        const html = rows
-          .slice()
-          .sort((a, b) => (b.count || 0) - (a.count || 0))
-          .map(row => {
-            const members = Array.isArray(row.members) ? row.members : [];
-            const memberUids = new Set(members.map(m => m.uid));
+      const cards = [...grouped.entries()]
+        .map(([groupe, votes]) => {
+          const counts = { Pour: 0, Contre: 0, Abstention: 0, "Non-votant": 0 };
+          votes.forEach(v => { counts[v.vote] = (counts[v.vote] || 0) + 1; });
+          const dominant = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+          return { groupe, total: votes.length, dominant };
+        })
+        .sort((a, b) => b.total - a.total);
 
-            const groupVotes = allVotesFlat.filter(v =>
-              v.groupe === row.groupe && memberUids.has(v.depute_uid)
-            );
+      const html = cards.map(item => `
+        <a class="card-link" href="groupe.html?name=${encodeURIComponent(item.groupe)}&year=${encodeURIComponent(selectedYear)}">
+          <h3>${item.groupe}</h3>
+          <span class="big">${formatNumber(item.total)}</span>
+          <div class="sub">votes recensés</div>
+          <div class="meta">Vote dominant : ${item.dominant}</div>
+        </a>
+      `).join("");
 
-            const counts = { Pour: 0, Contre: 0, Abstention: 0, "Non-votant": 0 };
-            groupVotes.forEach(v => {
-              counts[v.vote] = (counts[v.vote] || 0) + 1;
-            });
-
-            const dominant = groupVotes.length
-              ? Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]
-              : "—";
-
-            return `
-              <a class="card-link" href="groupe.html?name=${encodeURIComponent(row.groupe)}&year=${encodeURIComponent(selectedYear)}">
-                <h3>${row.groupe}</h3>
-                <span class="big">${formatNumber(row.count)}</span>
-                <div class="sub">députés en fonction</div>
-                <div class="meta">${Number(row.pct || 0).toFixed(1)}% de l’Assemblée · Vote dominant : ${dominant}</div>
-              </a>
-            `;
-          }).join("");
-
-        document.getElementById("groupsContainer").innerHTML = html;
-      } catch (error) {
-        console.error(error);
-        document.getElementById("groupsContainer").innerHTML =
-          `<div class="empty">Impossible de charger les groupes politiques.</div>`;
-      }
+      document.getElementById("groupsContainer").innerHTML =
+        html || `<div class="empty">Aucun groupe trouvé.</div>`;
     }
 
     function renderScrutins() {
@@ -1012,7 +963,7 @@
           seen.set(v.depute_uid, {
             uid: v.depute_uid,
             nom: full?.nom || v.nom || v.depute_uid,
-            groupe: v.groupe || full?.groupe || "",
+            groupe: full?.groupe || v.groupe || "",
             circonscription: full?.circonscription || v.circonscription || "",
             departement: full?.departement || v.departement || "",
             votes_count: 0
@@ -1024,9 +975,63 @@
       return [...seen.values()].sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
     }
 
+    async function resolveGeoQuery(query) {
+      const q = (query || "").trim();
+      if (!q) return null;
+
+      if (/^\d{5}$/.test(q)) {
+        const communes = await fetchJson(
+          `https://geo.api.gouv.fr/communes?codePostal=${encodeURIComponent(q)}&fields=nom,departement&format=json`
+        );
+
+        if (Array.isArray(communes) && communes.length) {
+          const first = communes[0];
+          return {
+            type: "postal",
+            commune: first.nom || "",
+            departement: first?.departement?.nom || "",
+            departementCode: first?.departement?.code || ""
+          };
+        }
+      }
+
+      const communesByName = await fetchJson(
+        `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&fields=nom,departement&boost=population&limit=5&format=json`
+      );
+
+      if (Array.isArray(communesByName) && communesByName.length) {
+        const first = communesByName[0];
+        return {
+          type: "commune",
+          commune: first.nom || "",
+          departement: first?.departement?.nom || "",
+          departementCode: first?.departement?.code || ""
+        };
+      }
+
+      return null;
+    }
+
     async function searchDeputies() {
       const rawQuery = document.getElementById("deputeSearchInput").value.trim();
       const query = normalize(rawQuery);
+      const searchableDeputies = getSearchableDeputies();
+
+      if (!rawQuery) {
+        const html = searchableDeputies.slice(0, 40).map(d => `
+          <a class="card-link" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
+            <h3>${d.nom}</h3>
+            <div class="meta">${d.circonscription || d.departement || "-"}</div>
+            <span class="big">${formatNumber(d.votes_count)}</span>
+            <div class="sub">votes recensés</div>
+          </a>
+        `).join("");
+
+        document.getElementById("deputeSearchResults").innerHTML = html;
+        document.getElementById("deputeSearchInfo").textContent =
+          `La recherche se fait uniquement sur les données de l’année sélectionnée.`;
+        return;
+      }
 
       let geo = null;
       try {
@@ -1035,24 +1040,19 @@
         console.warn("Recherche géographique impossible :", e);
       }
 
-      const expandedQueries = [query];
+      let results = [];
 
-      if (geo) {
-        if (geo.commune) expandedQueries.push(normalize(geo.commune));
-        if (geo.departement) expandedQueries.push(normalize(geo.departement));
-        if (geo.departementCode) expandedQueries.push(normalize(geo.departementCode));
+      if (geo && geo.departement) {
+        const depNorm = normalize(geo.departement);
+
+        results = searchableDeputies.filter(d =>
+          normalize(d.departement || "") === depNorm
+        );
 
         document.getElementById("deputeSearchInfo").textContent =
-          `Recherche géographique reconnue : ${geo.commune || rawQuery}${geo.departement ? `, ${geo.departement}` : ""} · données ${selectedYear}`;
+          `Recherche reconnue : ${rawQuery} → ${geo.departement}${geo.commune ? ` (${geo.commune})` : ""} · données ${selectedYear}`;
       } else {
-        document.getElementById("deputeSearchInfo").textContent =
-          `La recherche se fait uniquement sur les données de l’année sélectionnée.`;
-      }
-
-      const results = getSearchableDeputies()
-        .filter(d => {
-          if (!query) return true;
-
+        results = searchableDeputies.filter(d => {
           const haystacks = [
             d.nom,
             d.groupe,
@@ -1060,11 +1060,14 @@
             d.departement
           ].map(normalize);
 
-          return expandedQueries.some(q =>
-            q && haystacks.some(value => value.includes(q))
-          );
-        })
-        .slice(0, 40);
+          return haystacks.some(value => value.includes(query));
+        });
+
+        document.getElementById("deputeSearchInfo").textContent =
+          `Recherche texte sur nom, département, circonscription et groupe · données ${selectedYear}`;
+      }
+
+      results = results.slice(0, 60);
 
       const html = results.map(d => `
         <a class="card-link" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
@@ -1110,7 +1113,7 @@
         buildFlatVotes();
         renderCounts();
         await renderCompositionIfValid();
-        await renderGroups();
+        renderGroups();
         renderScrutins();
         await searchDeputies();
         bindTabs();
