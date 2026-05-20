@@ -2,76 +2,30 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Recherche député</title>
+<title>Députés</title>
 
 <style>
-body {
-  font-family: Arial;
-  padding: 40px;
-  background: #f5f5f5;
-}
-
-input {
-  padding: 12px;
-  width: 320px;
-  font-size: 16px;
-}
-
-button {
-  padding: 12px 20px;
-  font-size: 16px;
-  background: #7700FF;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-#results {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 15px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.card:hover {
-  background: #eee;
-}
+body { font-family: Arial; padding: 40px; background:#f5f5f5; }
+input { padding:10px; width:300px; }
+button { padding:10px; background:#7700FF; color:white; border:none; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:30px;}
+.card { background:white; padding:20px; border-radius:10px; }
 </style>
-
 </head>
 
 <body>
 
 <h1>Trouver un député</h1>
 
-<input id="search" placeholder="Ex: 31000, Toulouse, Dupont">
+<input id="search" placeholder="Ville, code postal, nom...">
 <button onclick="search()">Rechercher</button>
 
-<div id="results"></div>
+<div id="results" class="grid"></div>
 
 <script>
-
-// ======================
-// VARIABLES
-// ======================
-
-let indexData = null;
-let selectedYear = "";
-let allScrutins = [];
-let allVotesFlat = [];
-let deputyDirectory = [];
-let circoMap = {};
-
-// ======================
-// UTILS
-// ======================
+let deputes = [];
+let votes = [];
+let circoData = {};
 
 function normalize(text){
   return (text||"")
@@ -80,229 +34,112 @@ function normalize(text){
     .replace(/[\u0300-\u036f]/g,"");
 }
 
-function ensureArray(v){
-  return Array.isArray(v) ? v : [];
+async function load(){
+  deputes = (await fetch("./data/current/deputes.json")).then(r=>r.json()).then(d=>d.deputes);
+  votes = (await fetch("./data/current/index.json")).then(r=>r.json());
+  circoData = await fetch("./data/circos_officiel.json").then(r=>r.json());
 }
-
-function formatNumber(v){
-  return new Intl.NumberFormat("fr-FR").format(v||0);
-}
-
-function getParam(name){
-  return new URLSearchParams(window.location.search).get(name) || "";
-}
-
-// ======================
-// LOAD DATA
-// ======================
-
-async function loadJson(path){
-  const r = await fetch(path);
-  return r.json();
-}
-
-async function loadMonthFile(file){
-  return loadJson("./"+file);
-}
-
-async function loadYearScrutins(data){
-  const year = selectedYear;
-  const months = data?.years?.[year]?.months || [];
-  const payloads = await Promise.all(months.map(m=>loadMonthFile(m.file)));
-  return payloads.flatMap(p=>p.scrutins || []);
-}
-
-// ======================
-// BUILD VOTES
-// ======================
-
-function buildFlatVotes(){
-  allVotesFlat = [];
-
-  allScrutins.forEach(scrutin=>{
-    ensureArray(scrutin.votes).forEach(v=>{
-      allVotesFlat.push({
-        ...v,
-        scrutin_uid: scrutin.uid,
-        scrutin_date: scrutin.date
-      });
-    });
-  });
-}
-
-// ======================
-// GEO API
-// ======================
 
 async function resolveGeo(query){
 
-  const q = query.trim();
-
   // CODE POSTAL
-  if (/^\d{5}$/.test(q)){
+  if(/^\d{5}$/.test(query)){
+    const res = await fetch(`https://geo.api.gouv.fr/communes?codePostal=${query}&fields=nom,code,departement`);
+    const data = await res.json();
 
-    const res = await fetch(
-      `https://geo.api.gouv.fr/communes?codePostal=${q}&fields=nom,departement&limit=5`
-    ).then(r=>r.json());
-
-    if (res.length){
+    if(data.length){
       return {
-        departement: res[0].departement.nom
-      };
+        code: data[0].code,
+        departement: data[0].departement.nom,
+        commune: data[0].nom
+      }
     }
   }
 
   // VILLE
-  const res2 = await fetch(
-    `https://geo.api.gouv.fr/communes?nom=${q}&fields=nom,departement&boost=population&limit=5`
-  ).then(r=>r.json());
+  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${query}&limit=1&fields=nom,code,departement`);
+  const data = await res.json();
 
-  if (res2.length){
+  if(data.length){
     return {
-      departement: res2[0].departement.nom
-    };
+      code: data[0].code,
+      departement: data[0].departement.nom,
+      commune: data[0].nom
+    }
   }
 
   return null;
 }
 
-// ======================
-// DATA DEPUTES
-// ======================
+function getVotesCount(uid){
+  let count = 0;
 
-function getDeputies(){
-
-  const map = new Map();
-
-  allVotesFlat.forEach(v=>{
-
-    if (!map.has(v.depute_uid)){
-
-      const full = deputyDirectory.find(d=>d.uid===v.depute_uid);
-
-      map.set(v.depute_uid,{
-        uid: v.depute_uid,
-        nom: full?.nom || v.nom,
-        departement: full?.departement || v.departement,
-        circonscription: full?.circonscription || v.circonscription,
-        votes: 0
-      });
-    }
-
-    map.get(v.depute_uid).votes++;
+  Object.values(votes.years || {}).forEach(y=>{
+    (y.months||[]).forEach(m=>{
+      // ici tu pourrais charger les fichiers mois si besoin
+    })
   });
 
-  return [...map.values()];
+  return count;
 }
-
-// ======================
-// SEARCH
-// ======================
 
 async function search(){
 
-  const raw = document.getElementById("search").value.trim();
-  const query = normalize(raw);
+  const q = document.getElementById("search").value.trim();
+  const nq = normalize(q);
+
+  let results = [...deputes];
 
   let geo = null;
 
   try{
-    geo = await resolveGeo(raw);
+    geo = await resolveGeo(q);
   }catch(e){}
 
-  const list = getDeputies();
+  // 🔥 MATCH EXACT CIRCO
+  if(geo){
+    const circo = circoData[geo.code];
 
-  let results = list;
-
-  // 🔥 PRIORITÉ CIRCO EXACTE
-  if (circoMap[raw]){
-
-    const c = circoMap[raw];
-
-    results = list.filter(d =>
-      normalize(d.departement) === normalize(c.departement) &&
-      normalize(d.circonscription).includes(normalize(c.circo))
-    );
+    if(circo){
+      results = results.filter(d =>
+        normalize(d.departement) === normalize(geo.departement) &&
+        normalize(d.circonscription).includes(normalize(circo))
+      );
+    }else{
+      // fallback département
+      results = results.filter(d =>
+        normalize(d.departement) === normalize(geo.departement)
+      );
+    }
   }
 
-  else {
-
-    results = list.filter(d=>{
-
-      const fields = [
+  // 🔥 MODE GOOGLE TEXTE
+  if(nq){
+    results = results.filter(d=>{
+      const txt = [
         d.nom,
+        d.groupe,
         d.departement,
         d.circonscription
-      ].map(normalize);
+      ].map(normalize).join(" ");
 
-      const textMatch = fields.some(f=>f.includes(query));
-
-      const geoMatch = geo
-        ? normalize(d.departement) === normalize(geo.departement)
-        : false;
-
-      return textMatch || geoMatch;
+      return txt.includes(nq);
     });
   }
 
-  // ouverture directe si 1 résultat
-  if (results.length === 1){
-    go(results[0].uid);
-    return;
-  }
+  results = results.slice(0,12);
 
-  renderResults(results);
+  document.getElementById("results").innerHTML =
+    results.map(d=>`
+      <div class="card">
+        <h3>${d.nom}</h3>
+        <p>${d.departement}</p>
+        <p>${d.circonscription}</p>
+      </div>
+    `).join("") || "Aucun résultat";
 }
 
-// ======================
-// UI
-// ======================
-
-function go(uid){
-  window.location.href = `depute.html?uid=${uid}&year=${selectedYear}`;
-}
-
-function renderResults(list){
-
-  const container = document.getElementById("results");
-
-  if (!list.length){
-    container.innerHTML = "<p>Aucun résultat</p>";
-    return;
-  }
-
-  container.innerHTML = list.map(d=>`
-    <div class="card" onclick="go('${d.uid}')">
-      <h3>${d.nom}</h3>
-      <p>${d.departement}</p>
-      <strong>${formatNumber(d.votes)} votes</strong>
-    </div>
-  `).join("");
-}
-
-// ======================
-// INIT
-// ======================
-
-async function init(){
-
-  indexData = await loadJson("./data/current/index.json");
-
-  selectedYear = getParam("year") || indexData.default_year;
-
-  allScrutins = await loadYearScrutins(indexData);
-
-  const dep = await loadJson("./data/current/deputes.json");
-  deputyDirectory = dep.deputes || [];
-
-  // 🔥 CHARGEMENT CIRCO
-  circoMap = await loadJson("./data/circonscriptions.json");
-
-  buildFlatVotes();
-}
-
-init();
-
+load();
 </script>
 
 </body>
