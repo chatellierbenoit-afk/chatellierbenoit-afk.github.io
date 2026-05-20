@@ -1,285 +1,57 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comment vote votre député ?</title>
-
-<style>
-body {
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f6f3fb;
-}
-
-.hero {
-  background:#7700FF;
-  color:white;
-  text-align:center;
-  padding:40px;
-}
-
-.container {
-  max-width:1200px;
-  margin:20px auto;
-  padding:20px;
-}
-
-.card {
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-}
-
-.result {
-  border:1px solid #ddd;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-}
-
-.result:hover {
-  background:#f3edff;
-}
-
-input {
-  width:100%;
-  padding:15px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:16px;
-}
-
-button {
-  margin-top:10px;
-  padding:15px;
-  width:100%;
-  background:#7700FF;
-  color:white;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-  <h1>Comment vote votre député ?</h1>
-</div>
-
-<div class="container">
-
-  <div class="card">
-    <input id="deputeSearchInput" placeholder="Ville, code postal, département, nom…">
-    <button id="deputeSearchBtn">Rechercher</button>
-    <p id="deputeSearchInfo"></p>
-  </div>
-
-  <div class="card">
-    <div id="deputeSearchResults" class="grid"></div>
-  </div>
-
-</div>
-
 <script>
-
-let deputyDirectory = [];
-let allScrutins = [];
-let allVotesFlat = [];
-let selectedYear = "";
-
-// ---------------- utils ----------------
-
-function normalize(text) {
-  return (text || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function formatNumber(n) {
-  return new Intl.NumberFormat("fr-FR").format(n || 0);
-}
-
-async function loadJson(path) {
-  const r = await fetch(path);
-  return r.json();
-}
-
-// ---------------- GEO API ----------------
-
-async function resolveGeoQuery(query) {
-
-  const q = query.trim();
-
-  // CODE POSTAL
-  if (/^\d{5}$/.test(q)) {
-    const r = await fetch(
-      `https://geo.api.gouv.fr/communes?codePostal=${q}&fields=nom,departement&format=json`
-    );
-    const data = await r.json();
-
-    if (data.length) {
-      return {
-        commune: data[0].nom,
-        departement: data[0].departement.nom,
-        departementCode: data[0].departement.code
-      };
-    }
-  }
-
-  // NOM VILLE
-  const r = await fetch(
-    `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&limit=1`
-  );
-  const data = await r.json();
-
-  if (data.length) {
-    return {
-      commune: data[0].nom,
-      departement: data[0].departement.nom,
-      departementCode: data[0].departement.code
-    };
-  }
-
-  return null;
-}
-
-// ---------------- votes ----------------
-
-function buildFlatVotes() {
-  allVotesFlat = [];
-
-  allScrutins.forEach(s => {
-    (s.votes || []).forEach(v => {
-      allVotesFlat.push({
-        ...v
-      });
-    });
-  });
-}
-
-function getSearchableDeputies() {
-  const map = new Map();
-
-  allVotesFlat.forEach(v => {
-    if (!map.has(v.depute_uid)) {
-      const full = deputyDirectory.find(d => d.uid === v.depute_uid);
-
-      map.set(v.depute_uid, {
-        uid: v.depute_uid,
-        nom: full?.nom || v.nom,
-        groupe: v.groupe,
-        circonscription: full?.circonscription || "",
-        departement: full?.departement || "",
-        votes_count: 0
-      });
-    }
-
-    map.get(v.depute_uid).votes_count++;
-  });
-
-  return [...map.values()];
-}
-
-// ---------------- SEARCH (FIX ICI) ----------------
-
 async function searchDeputies() {
-
   const rawQuery = document.getElementById("deputeSearchInput").value.trim();
   const query = normalize(rawQuery);
 
   let geo = null;
-
   try {
     geo = await resolveGeoQuery(rawQuery);
-  } catch(e) {}
+  } catch (e) {
+    console.warn("Erreur geo API", e);
+  }
 
   const expandedQueries = [query];
 
+  // 🔥 enrichissement avec données geo
   if (geo) {
     if (geo.commune) expandedQueries.push(normalize(geo.commune));
     if (geo.departement) expandedQueries.push(normalize(geo.departement));
     if (geo.departementCode) expandedQueries.push(normalize(geo.departementCode));
-
-    document.getElementById("deputeSearchInfo").textContent =
-      `${geo.commune}, ${geo.departement}`;
   }
 
-  const results = getSearchableDeputies().filter(d => {
+  const results = getSearchableDeputies()
+    .filter(d => {
+      if (!query) return true;
 
-    const haystack = [
-      d.nom,
-      d.groupe,
-      d.circonscription,
-      d.departement,
+      const haystacks = [
+        d.nom,
+        d.groupe,
+        d.circonscription,
+        d.departement,
 
-      // 🔥 FIX CRITIQUE
-      d.departement?.replace(/-/g, " "),
-      d.departement?.replace(/ /g, "-"),
-      d.departement?.toUpperCase()
-    ].map(normalize);
+        // 🔥 AJOUT CRITIQUE
+        geo?.departement,
+        geo?.departementCode
+      ]
+      .filter(Boolean)
+      .map(normalize);
 
-    return expandedQueries.some(q =>
-      q && haystack.some(h => h.includes(q))
-    );
-  });
+      return expandedQueries.some(q =>
+        q && haystacks.some(value => value.includes(q))
+      );
+    })
+    .slice(0, 40);
 
   const html = results.map(d => `
-    <div class="result" onclick="window.location='depute.html?uid=${d.uid}&year=${selectedYear}'">
+    <a class="card-link" href="depute.html?uid=${encodeURIComponent(d.uid)}&year=${encodeURIComponent(selectedYear)}">
       <h3>${d.nom}</h3>
-      <p>${d.circonscription || d.departement}</p>
-      <strong>${formatNumber(d.votes_count)} votes</strong>
-    </div>
+      <div class="meta">${d.circonscription || d.departement || "-"}</div>
+      <span class="big">${formatNumber(d.votes_count)}</span>
+      <div class="sub">votes recensés</div>
+    </a>
   `).join("");
 
   document.getElementById("deputeSearchResults").innerHTML =
-    html || "Aucun résultat";
+    html || `<div class="empty">Aucun député trouvé.</div>`;
 }
-
-// ---------------- INIT ----------------
-
-async function init() {
-
-  const index = await loadJson("./data/current/index.json");
-  selectedYear = index.default_year;
-
-  const months = index.years[selectedYear].months;
-
-  for (let m of months) {
-    const data = await loadJson("./" + m.file);
-    allScrutins = allScrutins.concat(data.scrutins);
-  }
-
-  const dep = await loadJson("./data/current/deputes.json");
-  deputyDirectory = dep.deputes;
-
-  buildFlatVotes();
-
-  searchDeputies();
-}
-
-// ---------------- events ----------------
-
-document.getElementById("deputeSearchBtn").addEventListener("click", searchDeputies);
-document.getElementById("deputeSearchInput").addEventListener("keydown", e => {
-  if (e.key === "Enter") searchDeputies();
-});
-
-init();
-
 </script>
-
-</body>
-</html>
