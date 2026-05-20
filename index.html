@@ -2,303 +2,286 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comment vote votre député ?</title>
+<title>Recherche député</title>
 
 <style>
 body {
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f6f3fb;
-}
-
-.hero {
-  background:#7700FF;
-  color:white;
-  text-align:center;
-  padding:40px;
-}
-
-.container {
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
-}
-
-.card {
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-}
-
-.result {
-  border:1px solid #ddd;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-}
-
-.result:hover {
-  background:#f3edff;
+  font-family: Arial;
+  padding: 40px;
+  background: #f5f5f5;
 }
 
 input {
-  width:100%;
-  padding:15px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:16px;
+  padding: 12px;
+  width: 300px;
+  font-size: 16px;
 }
 
 button {
-  margin-top:10px;
-  padding:15px;
-  width:100%;
-  background:#7700FF;
-  color:white;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  cursor:pointer;
+  padding: 12px 20px;
+  font-size: 16px;
+  background: #7700FF;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-#mapWrap {
-  max-width:800px;
-  margin:auto;
+#results {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
 }
 
-#franceMap path {
-  stroke:#fff;
-  stroke-width:1;
-  cursor:pointer;
-  transition:all .2s;
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-#franceMap path:hover {
-  opacity:.8;
+.card:hover {
+  background: #eee;
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="hero">
-  <h1>Comment vote votre député ?</h1>
-</div>
+<h1>Trouver un député</h1>
 
-<div class="container">
+<input id="search" placeholder="Ex: 31000, Toulouse, Dupont">
+<button id="btn">Rechercher</button>
 
-  <!-- SEARCH -->
-  <div class="card">
-    <input id="search" placeholder="Ville, code postal, département, nom…">
-    <button onclick="search()">Rechercher</button>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="card">
-    <div id="results" class="grid"></div>
-  </div>
-
-  <!-- MAP -->
-  <div class="card">
-    <h2>Carte politique</h2>
-    <div id="mapWrap">
-      <svg id="franceMap" viewBox="0 0 1000 1000"></svg>
-    </div>
-  </div>
-
-</div>
+<div id="results"></div>
 
 <script>
 
-let deputes = [];
-let scrutins = [];
-let votesFlat = [];
-let circoMap = {};
+// ======================
+// VARIABLES
+// ======================
 
-function normalize(t){
-  return (t||"").toLowerCase()
+let indexData = null;
+let selectedYear = "";
+let allScrutins = [];
+let allVotesFlat = [];
+let deputyDirectory = [];
+
+// ======================
+// UTILS
+// ======================
+
+function normalize(text){
+  return (text||"")
+    .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"");
 }
 
-function format(n){
-  return new Intl.NumberFormat("fr-FR").format(n||0);
+function ensureArray(v){
+  return Array.isArray(v) ? v : [];
 }
 
-async function load(){
-  const index = await fetch("./data/current/index.json").then(r=>r.json());
-
-  const months = index.years[index.default_year].months;
-
-  for(let m of months){
-    const data = await fetch("./"+m.file).then(r=>r.json());
-    scrutins = scrutins.concat(data.scrutins);
-  }
-
-  deputes = (await fetch("./data/current/deputes.json").then(r=>r.json())).deputes;
-  circoMap = await fetch("./data/current/circonscriptions.json").then(r=>r.json());
-
-  buildVotes();
-  renderMap();
-  search();
+function formatNumber(v){
+  return new Intl.NumberFormat("fr-FR").format(v||0);
 }
 
-function buildVotes(){
-  votesFlat = [];
-  scrutins.forEach(s=>{
-    (s.votes||[]).forEach(v=>{
-      votesFlat.push(v);
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
+
+// ======================
+// LOAD
+// ======================
+
+async function loadJson(path){
+  const r = await fetch(path);
+  return r.json();
+}
+
+async function loadMonthFile(file){
+  return loadJson("./"+file);
+}
+
+async function loadYearScrutins(data){
+  const year = selectedYear;
+  const months = data?.years?.[year]?.months || [];
+  const payloads = await Promise.all(months.map(m=>loadMonthFile(m.file)));
+  return payloads.flatMap(p=>p.scrutins || []);
+}
+
+// ======================
+// BUILD VOTES
+// ======================
+
+function buildFlatVotes(){
+  allVotesFlat = [];
+
+  allScrutins.forEach(scrutin=>{
+    ensureArray(scrutin.votes).forEach(v=>{
+      allVotesFlat.push({
+        ...v,
+        scrutin_uid: scrutin.uid,
+        scrutin_date: scrutin.date
+      });
     });
   });
 }
 
-function getDeputes(){
+// ======================
+// GEO API FIX
+// ======================
+
+async function resolveGeo(query){
+
+  const q = query.trim();
+
+  // code postal
+  if (/^\d{5}$/.test(q)){
+
+    const res = await fetch(
+      `https://geo.api.gouv.fr/communes?codePostal=${q}&fields=departement&limit=1`
+    ).then(r=>r.json());
+
+    if (res.length){
+      return res[0].departement.nom;
+    }
+  }
+
+  // ville
+  const res2 = await fetch(
+    `https://geo.api.gouv.fr/communes?nom=${q}&fields=departement&limit=1`
+  ).then(r=>r.json());
+
+  if (res2.length){
+    return res2[0].departement.nom;
+  }
+
+  return null;
+}
+
+// ======================
+// DATA DEPUTES
+// ======================
+
+function getDeputies(){
+
   const map = new Map();
 
-  votesFlat.forEach(v=>{
-    if(!map.has(v.depute_uid)){
-      const d = deputes.find(x=>x.uid===v.depute_uid);
+  allVotesFlat.forEach(v=>{
+
+    if (!map.has(v.depute_uid)){
+
+      const full = deputyDirectory.find(d=>d.uid===v.depute_uid);
 
       map.set(v.depute_uid,{
-        uid:v.depute_uid,
-        nom:d?.nom||v.nom,
-        departement:d?.departement||"",
-        circonscription:d?.circonscription||"",
-        groupe:v.groupe,
-        count:0
+        uid: v.depute_uid,
+        nom: full?.nom || v.nom,
+        departement: full?.departement || v.departement,
+        circonscription: full?.circonscription || v.circonscription,
+        votes: 0
       });
     }
-    map.get(v.depute_uid).count++;
+
+    map.get(v.depute_uid).votes++;
   });
 
   return [...map.values()];
 }
 
-function fuzzy(text,query){
-  return text.includes(query) ||
-    query.split(" ").every(w=>text.includes(w));
-}
+// ======================
+// SEARCH
+// ======================
 
 async function search(){
 
-  const input = document.getElementById("search").value.trim();
-  const q = normalize(input);
+  const raw = document.getElementById("search").value.trim();
+  const query = normalize(raw);
 
-  let circoMatches = [];
+  let geoDept = null;
 
-  if(/^\d{5}$/.test(input) && circoMap[input]){
-    circoMatches = circoMap[input];
-  }
+  try{
+    geoDept = await resolveGeo(raw);
+  }catch(e){}
 
-  const res = getDeputes().filter(d=>{
+  const list = getDeputies();
 
-    const hay = [
+  const results = list.filter(d=>{
+
+    if (!query) return true;
+
+    const fields = [
       d.nom,
       d.departement,
-      d.circonscription,
-      d.groupe
+      d.circonscription
     ].map(normalize);
 
-    const textMatch = hay.some(v=>fuzzy(v,q));
+    const textMatch = fields.some(f=>f.includes(query));
 
-    const circoMatch = circoMatches.some(c =>
-      normalize(d.departement).includes(normalize(c.departement)) &&
-      normalize(d.circonscription).includes(normalize(c.circonscription))
-    );
+    const geoMatch = geoDept
+      ? normalize(d.departement) === normalize(geoDept)
+      : false;
 
-    return textMatch || circoMatch;
-  }).slice(0,40);
+    return textMatch || geoMatch;
+  });
 
-  document.getElementById("results").innerHTML =
-    res.map(d=>`
-      <div class="result" onclick="go('${d.uid}')">
-        <h3>${d.nom}</h3>
-        <p>${d.circonscription}</p>
-        <strong>${format(d.count)} votes</strong>
-      </div>
-    `).join("") || "Aucun résultat";
+  // ouverture directe si 1
+  if (results.length === 1){
+    go(results[0].uid);
+    return;
+  }
+
+  renderResults(results);
 }
+
+// ======================
+// UI
+// ======================
 
 function go(uid){
-  window.location = `depute.html?uid=${uid}`;
+  window.location.href = `depute.html?uid=${uid}&year=${selectedYear}`;
 }
 
-async function renderMap(){
+function renderResults(list){
 
-  const geo = await fetch(
-    "https://france-geojson.gregoiredavid.fr/repo/departements.geojson"
-  ).then(r=>r.json());
+  const container = document.getElementById("results");
 
-  const svg = document.getElementById("franceMap");
-
-  function project([lon,lat]){
-    return [(lon+5)*80,(51-lat)*80];
+  if (!list.length){
+    container.innerHTML = "<p>Aucun résultat</p>";
+    return;
   }
 
-  function path(coords){
-    return coords.map(r =>
-      r.map((p,i)=>{
-        const [x,y]=project(p);
-        return (i?"L":"M")+x+" "+y;
-      }).join(" ")+" Z"
-    ).join(" ");
-  }
-
-  const stats={};
-
-  votesFlat.forEach(v=>{
-    if(!v.departement) return;
-    stats[v.departement]=stats[v.departement]||{};
-    stats[v.departement][v.groupe]=(stats[v.departement][v.groupe]||0)+1;
-  });
-
-  function dominant(dep){
-    const g=stats[dep];
-    if(!g) return null;
-    return Object.entries(g).sort((a,b)=>b[1]-a[1])[0][0];
-  }
-
-  const colors={
-    "Rassemblement National":"#002395",
-    "La France insoumise - Nouveau Front Populaire":"#ff0000",
-    "Écologiste et Social":"#00a86b",
-    "Ensemble pour la République":"#f5c542"
-  };
-
-  svg.innerHTML = geo.features.map(f=>{
-
-    const dep = f.properties.nom;
-    const g = dominant(dep);
-    const col = colors[g] || "#ccc";
-
-    let d="";
-    if(f.geometry.type==="Polygon"){
-      d = path(f.geometry.coordinates);
-    }else{
-      d = f.geometry.coordinates.map(p=>path(p)).join(" ");
-    }
-
-    return `<path d="${d}" fill="${col}" data="${dep}"/>`;
-  }).join("");
-
-  document.querySelectorAll("#franceMap path").forEach(el=>{
-    el.onclick = ()=>{
-      document.getElementById("search").value = el.getAttribute("data");
-      search();
-    };
-  });
+  container.innerHTML = list.map(d=>`
+    <div class="card" onclick="go('${d.uid}')">
+      <h3>${d.nom}</h3>
+      <p>${d.departement}</p>
+      <strong>${formatNumber(d.votes)} votes</strong>
+    </div>
+  `).join("");
 }
 
-load();
+// ======================
+// INIT
+// ======================
+
+async function init(){
+
+  indexData = await loadJson("./data/current/index.json");
+
+  selectedYear = getParam("year") || indexData.default_year;
+
+  allScrutins = await loadYearScrutins(indexData);
+
+  const dep = await loadJson("./data/current/deputes.json");
+  deputyDirectory = dep.deputes || [];
+
+  buildFlatVotes();
+
+  document.getElementById("btn").onclick = search;
+}
+
+init();
 
 </script>
 
