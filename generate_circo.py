@@ -7,30 +7,28 @@ result = {}
 print("Récupération des communes...")
 
 communes = requests.get(
-    "https://geo.api.gouv.fr/communes?fields=code,nom,codePostal,departement&format=json"
+    "https://geo.api.gouv.fr/communes?fields=code,codePostal,departement,nom&format=json"
 ).json()
 
-print("Total communes:", len(communes))
+print(f"Total communes : {len(communes)}")
 
 for c in communes:
-
-    cp_list = c.get("codePostal")
+    cp_list = c.get("codePostal", [])
 
     if not cp_list:
         continue
 
-    cp = cp_list if isinstance(cp_list, str) else cp_list[0]
-
+    cp = cp_list[0]
     departement = c.get("departement", {}).get("nom", "")
 
-    # ⚠️ approximation initiale (on améliorera après)
-    result[cp] = {
+    # ⚠️ ici on ne connait PAS la vraie circo → placeholder
+    result[str(cp)] = {
         "departement": departement,
-        "circo": ""
+        "circo": ""  # on remplira plus tard
     }
 
 # sauvegarde
-with open("data/circonscriptions.json", "w", encoding="utf-8") as f:
+with open("circonscriptions.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print("Fichier généré !")
+print("Fichier complet généré !")
