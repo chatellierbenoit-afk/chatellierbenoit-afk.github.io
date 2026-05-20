@@ -1,0 +1,24 @@
+{
+  "31000": { "departement": "Haute-Garonne", "circo": "3e circonscription" },
+  "31100": { "departement": "Haute-Garonne", "circo": "6e circonscription" },
+  "31200": { "departement": "Haute-Garonne", "circo": "1re circonscription" },
+
+  "75001": { "departement": "Paris", "circo": "1re circonscription" },
+  "75002": { "departement": "Paris", "circo": "2e circonscription" },
+  "75003": { "departement": "Paris", "circo": "3e circonscription" },
+  "75004": { "departement": "Paris", "circo": "4e circonscription" },
+  "75005": { "departement": "Paris", "circo": "5e circonscription" },
+  "75006": { "departement": "Paris", "circo": "6e circonscription" },
+  "75007": { "departement": "Paris", "circo": "7e circonscription" },
+  "75008": { "departement": "Paris", "circo": "8e circonscription" },
+
+  "13000": { "departement": "Bouches-du-Rhône", "circo": "2e circonscription" },
+  "13001": { "departement": "Bouches-du-Rhône", "circo": "1re circonscription" },
+  "13002": { "departement": "Bouches-du-Rhône", "circo": "2e circonscription" },
+
+  "33000": { "departement": "Gironde", "circo": "2e circonscription" },
+  "34000": { "departement": "Hérault", "circo": "3e circonscription" },
+  "44000": { "departement": "Loire-Atlantique", "circo": "1re circonscription" },
+  "59000": { "departement": "Nord", "circo": "1re circonscription" },
+  "69000": { "departement": "Rhône", "circo": "3e circonscription" }
+}
