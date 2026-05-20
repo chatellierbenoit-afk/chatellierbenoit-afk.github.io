@@ -28,10 +28,6 @@ button {
   cursor: pointer;
 }
 
-#map button{
-  margin:5px;
-}
-
 #results {
   margin-top: 30px;
   display: grid;
@@ -60,13 +56,6 @@ button {
 <input id="search" placeholder="Ex: 31000, Toulouse, Dupont">
 <button id="btn">Rechercher</button>
 
-<h2>Carte rapide</h2>
-<div id="map">
-  <button onclick="searchFromCP('31000')">Toulouse</button>
-  <button onclick="searchFromCP('75000')">Paris</button>
-  <button onclick="searchFromCP('13000')">Marseille</button>
-</div>
-
 <div id="results"></div>
 
 <script>
@@ -80,7 +69,6 @@ let selectedYear = "";
 let allScrutins = [];
 let allVotesFlat = [];
 let deputyDirectory = [];
-let franceMap = {};
 
 // ======================
 // UTILS
@@ -106,7 +94,7 @@ function getParam(name){
 }
 
 // ======================
-// LOAD
+// LOAD DATA
 // ======================
 
 async function loadJson(path){
@@ -144,29 +132,40 @@ function buildFlatVotes(){
 }
 
 // ======================
-// GEO API
+// GEO API (FULL FRANCE)
 // ======================
 
 async function resolveGeo(query){
 
   const q = query.trim();
 
+  // 🔥 CODE POSTAL
   if (/^\d{5}$/.test(q)){
+
     const res = await fetch(
-      `https://geo.api.gouv.fr/communes?codePostal=${q}&fields=departement&limit=1`
+      `https://geo.api.gouv.fr/communes?codePostal=${q}&fields=nom,departement&limit=5`
     ).then(r=>r.json());
 
     if (res.length){
-      return res[0].departement.nom;
+      return {
+        type: "postal",
+        departement: res[0].departement.nom,
+        communes: res.map(c=>c.nom)
+      };
     }
   }
 
+  // 🔥 VILLE
   const res2 = await fetch(
-    `https://geo.api.gouv.fr/communes?nom=${q}&fields=departement&limit=1`
+    `https://geo.api.gouv.fr/communes?nom=${q}&fields=nom,departement&boost=population&limit=5`
   ).then(r=>r.json());
 
   if (res2.length){
-    return res2[0].departement.nom;
+    return {
+      type: "ville",
+      departement: res2[0].departement.nom,
+      commune: res2[0].nom
+    };
   }
 
   return null;
@@ -210,21 +209,12 @@ async function search(){
   const raw = document.getElementById("search").value.trim();
   const query = normalize(raw);
 
-  let geoDept = null;
-  let geoCirc = null;
+  let geo = null;
 
-  // 🔥 MAP LOCALE
-  if (franceMap[raw]){
-    geoDept = franceMap[raw].departement;
-    geoCirc = franceMap[raw].circonscription;
-  }
-
-  // 🔥 FALLBACK API
-  if (!geoDept){
-    try{
-      geoDept = await resolveGeo(raw);
-    }catch(e){}
-  }
+  try{
+    geo = await resolveGeo(raw);
+    if (geo) console.log("Geo détecté :", geo);
+  }catch(e){}
 
   const list = getDeputies();
 
@@ -240,17 +230,14 @@ async function search(){
 
     const textMatch = fields.some(f=>f.includes(query));
 
-    const geoMatch = geoDept
-      ? normalize(d.departement) === normalize(geoDept)
+    const geoMatch = geo
+      ? normalize(d.departement) === normalize(geo.departement)
       : false;
 
-    const circMatch = geoCirc
-      ? normalize(d.circonscription).includes(normalize(geoCirc))
-      : false;
-
-    return textMatch || geoMatch || circMatch;
+    return textMatch || geoMatch;
   });
 
+  // 🔥 ouverture directe si 1
   if (results.length === 1){
     go(results[0].uid);
     return;
@@ -285,11 +272,6 @@ function renderResults(list){
   `).join("");
 }
 
-function searchFromCP(cp){
-  document.getElementById("search").value = cp;
-  search();
-}
-
 // ======================
 // INIT
 // ======================
@@ -304,9 +286,6 @@ async function init(){
 
   const dep = await loadJson("./data/current/deputes.json");
   deputyDirectory = dep.deputes || [];
-
-  // 🔥 NOUVEAU
-  franceMap = await loadJson("./data/france-map.json");
 
   buildFlatVotes();
 
