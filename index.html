@@ -11,8 +11,6 @@ body {
   background: #f5f5f5;
 }
 
-h1 { margin-bottom:20px; }
-
 input {
   padding: 12px;
   width: 320px;
@@ -54,7 +52,7 @@ button {
 <h1>Trouver un député</h1>
 
 <input id="search" placeholder="Ex: 31000, Toulouse, Dupont">
-<button id="btn">Rechercher</button>
+<button onclick="search()">Rechercher</button>
 
 <div id="results"></div>
 
@@ -69,6 +67,7 @@ let selectedYear = "";
 let allScrutins = [];
 let allVotesFlat = [];
 let deputyDirectory = [];
+let circoMap = {};
 
 // ======================
 // UTILS
@@ -132,14 +131,14 @@ function buildFlatVotes(){
 }
 
 // ======================
-// GEO API (FULL FRANCE)
+// GEO API
 // ======================
 
 async function resolveGeo(query){
 
   const q = query.trim();
 
-  // 🔥 CODE POSTAL
+  // CODE POSTAL
   if (/^\d{5}$/.test(q)){
 
     const res = await fetch(
@@ -148,23 +147,19 @@ async function resolveGeo(query){
 
     if (res.length){
       return {
-        type: "postal",
-        departement: res[0].departement.nom,
-        communes: res.map(c=>c.nom)
+        departement: res[0].departement.nom
       };
     }
   }
 
-  // 🔥 VILLE
+  // VILLE
   const res2 = await fetch(
     `https://geo.api.gouv.fr/communes?nom=${q}&fields=nom,departement&boost=population&limit=5`
   ).then(r=>r.json());
 
   if (res2.length){
     return {
-      type: "ville",
-      departement: res2[0].departement.nom,
-      commune: res2[0].nom
+      departement: res2[0].departement.nom
     };
   }
 
@@ -213,31 +208,44 @@ async function search(){
 
   try{
     geo = await resolveGeo(raw);
-    if (geo) console.log("Geo détecté :", geo);
   }catch(e){}
 
   const list = getDeputies();
 
-  const results = list.filter(d=>{
+  let results = list;
 
-    if (!query) return true;
+  // 🔥 PRIORITÉ CIRCO EXACTE
+  if (circoMap[raw]){
 
-    const fields = [
-      d.nom,
-      d.departement,
-      d.circonscription
-    ].map(normalize);
+    const c = circoMap[raw];
 
-    const textMatch = fields.some(f=>f.includes(query));
+    results = list.filter(d =>
+      normalize(d.departement) === normalize(c.departement) &&
+      normalize(d.circonscription).includes(normalize(c.circo))
+    );
+  }
 
-    const geoMatch = geo
-      ? normalize(d.departement) === normalize(geo.departement)
-      : false;
+  else {
 
-    return textMatch || geoMatch;
-  });
+    results = list.filter(d=>{
 
-  // 🔥 ouverture directe si 1
+      const fields = [
+        d.nom,
+        d.departement,
+        d.circonscription
+      ].map(normalize);
+
+      const textMatch = fields.some(f=>f.includes(query));
+
+      const geoMatch = geo
+        ? normalize(d.departement) === normalize(geo.departement)
+        : false;
+
+      return textMatch || geoMatch;
+    });
+  }
+
+  // ouverture directe si 1 résultat
   if (results.length === 1){
     go(results[0].uid);
     return;
@@ -287,9 +295,10 @@ async function init(){
   const dep = await loadJson("./data/current/deputes.json");
   deputyDirectory = dep.deputes || [];
 
-  buildFlatVotes();
+  // 🔥 CHARGEMENT CIRCO
+  circoMap = await loadJson("./data/circonscriptions.json");
 
-  document.getElementById("btn").onclick = search;
+  buildFlatVotes();
 }
 
 init();
