@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Détail du scrutin</title>
+  <title>Fiche scrutin</title>
   <style>
     :root {
       --violet: #7700FF;
@@ -13,11 +13,6 @@
       --text: #1e1c26;
       --muted: #6f6a7e;
       --border: #e7e2f2;
-      --success: #0b7a36;
-      --danger: #b31c2f;
-      --warning: #946200;
-      --neutral: #7b728d;
-      --absent: #d7d0e6;
       --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
       --radius: 22px;
     }
@@ -31,11 +26,11 @@
       color: var(--text);
     }
 
-    header.hero {
+    .hero {
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
       color: white;
-      padding: 36px 20px 30px;
       text-align: center;
+      padding: 36px 20px 30px;
       box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
     }
 
@@ -122,97 +117,57 @@
       text-align: center;
     }
 
-    .chips {
-      text-align: center;
-      margin-top: 12px;
-      margin-bottom: 14px;
-    }
-
-    .chip {
-      display: inline-block;
-      margin: 4px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: #efe8ff;
-      color: #41178d;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .description {
-      margin: 0 auto;
-      max-width: 1100px;
-      background: var(--violet-soft);
-      border: 1px solid #e8ddff;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 16px;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .intro-grid {
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 18px;
     }
 
-    .soft-card {
+    .info-card,
+    .stats-card {
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 20px;
+      padding: 22px;
       background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
     }
 
-    .soft-card h3 {
+    .info-card h2,
+    .stats-card h2 {
       margin: 0 0 14px;
+      font-size: 34px;
+      line-height: 1.15;
       text-align: center;
-      font-size: 24px;
     }
 
-    .brief-grid {
+    .meta-list {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
+      margin-top: 10px;
     }
 
-    .brief-box {
-      background: white;
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
+      border-radius: 12px;
+      background: white;
     }
 
-    .brief-box strong {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 6px;
-      color: var(--violet);
+    .meta-row strong {
+      font-size: 14px;
     }
 
-    .brief-box span {
+    .meta-row span {
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .highlight-line {
-      text-align: center;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--text);
-    }
-
-    .highlight-line strong {
-      color: var(--violet);
+      text-align: right;
     }
 
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 14px;
     }
 
     .summary-box {
@@ -233,125 +188,20 @@
     .summary-box span {
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.35;
     }
 
-    .participation-wrap {
-      display: grid;
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .participation-bar {
-      width: 100%;
-      height: 22px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #efeaf8;
-      display: flex;
-      border: 1px solid var(--border);
-    }
-
-    .seg { height: 100%; }
-    .seg-pour { background: var(--success); }
-    .seg-contre { background: var(--danger); }
-    .seg-abstention { background: var(--warning); }
-    .seg-nonvotant { background: var(--neutral); }
-    .seg-absent { background: var(--absent); }
-
-    .analysis-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    .group-cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .group-card {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      padding: 16px;
-    }
-
-    .group-card-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .group-card-head a {
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 1.3;
-    }
-
-    .group-card-head strong {
-      color: var(--violet);
-      font-size: 18px;
-      white-space: nowrap;
-    }
-
-    .group-bars {
-      display: grid;
-      gap: 8px;
-    }
-
-    .group-bar-row {
-      display: grid;
-      grid-template-columns: 92px 1fr 52px;
-      gap: 10px;
-      align-items: center;
-      font-size: 14px;
-    }
-
-    .group-bar-label {
-      color: var(--muted);
-      text-align: right;
-      font-weight: 700;
-    }
-
-    .group-bar-track {
-      height: 12px;
-      border-radius: 999px;
-      background: #efeaf8;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .group-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-    }
-
-    .fill-pour { background: var(--success); }
-    .fill-contre { background: var(--danger); }
-    .fill-abstention { background: var(--warning); }
-    .fill-nonvotant { background: var(--neutral); }
-
-    .group-dominant {
+    .small-muted {
       margin-top: 12px;
       text-align: center;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .filters {
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
-      margin-bottom: 16px;
     }
 
     .field label {
@@ -373,45 +223,85 @@
       text-align: center;
     }
 
-    .detail-table {
-      max-height: 900px;
-      overflow: auto;
+    .votes-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .vote-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
+    .vote-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
+      background: var(--violet-soft);
     }
 
-    th, td {
-      padding: 11px 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 14px;
-      vertical-align: top;
+    .vote-card h3 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 24px;
+      line-height: 1.2;
     }
 
-    th {
-      position: sticky;
-      top: 0;
-      background: #f6f2ff;
-      z-index: 1;
-    }
-
-    .vote-Pour { color: var(--success); font-weight: 700; }
-    .vote-Contre { color: var(--danger); font-weight: 700; }
-    .vote-Abstention { color: var(--warning); font-weight: 700; }
-    .vote-Non-votant { color: var(--neutral); font-weight: 700; }
-
-    .small-muted {
-      margin-top: 12px;
+    .vote-card .meta {
       text-align: center;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .vote-badge {
+      display: inline-block;
+      margin: 0 auto 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .vote-badge-wrap {
+      text-align: center;
+    }
+
+    .vote-pour {
+      background: #e8fff1;
+      color: #0a8f49;
+      border: 1px solid #bce7cf;
+    }
+
+    .vote-contre {
+      background: #fff0f0;
+      color: #c53737;
+      border: 1px solid #efc2c2;
+    }
+
+    .vote-abstention {
+      background: #fff9e8;
+      color: #9b7600;
+      border: 1px solid #ead796;
+    }
+
+    .vote-non-votant {
+      background: #f1f1f4;
+      color: #666a73;
+      border: 1px solid #d9dbe3;
+    }
+
+    .vote-card .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
     }
 
     .empty {
@@ -420,30 +310,25 @@
       padding: 28px 8px;
     }
 
-    @media (max-width: 1100px) {
-      .intro-grid,
-      .group-cards,
-      .filters {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 900px) {
+    @media (max-width: 1200px) {
+      .hero-grid,
       .summary-grid,
-      .brief-grid {
+      .votes-grid,
+      .filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 760px) {
+      .hero-grid,
       .summary-grid,
-      .brief-grid {
+      .votes-grid,
+      .filters {
         grid-template-columns: 1fr;
       }
 
-      .hero h1 { font-size: 30px; }
+      .hero h1 { font-size: 31px; }
       main { padding: 18px 12px 36px; }
-      .group-bar-row { grid-template-columns: 78px 1fr 44px; }
     }
   </style>
 </head>
@@ -451,8 +336,10 @@
   <header class="hero">
     <div class="top-links">
       <a href="index.html">Accueil</a>
+      <a id="backGroupLink" href="#" style="display:none;">Voir le groupe</a>
+      <a id="backDeputyLink" href="#" style="display:none;">Voir le député</a>
     </div>
-    <h1 id="pageTitle">Détail du scrutin</h1>
+    <h1 id="pageTitle">Fiche scrutin</h1>
     <p id="pageSubtitle">Chargement…</p>
   </header>
 
@@ -461,83 +348,49 @@
 
     <section class="panel">
       <h2 class="panel-title">Résumé du scrutin</h2>
-      <div id="scrutinSummary"></div>
-    </section>
-
-    <section class="panel">
-      <div class="intro-grid">
-        <div class="soft-card">
-          <h3>En bref</h3>
-          <div class="brief-grid">
-            <div class="brief-box"><strong id="briefOutcome">-</strong><span>Issue</span></div>
-            <div class="brief-box"><strong id="briefCloseness">-</strong><span>Lecture du rapport de force</span></div>
-            <div class="brief-box"><strong id="briefParticipation">-</strong><span>Participation observée</span></div>
-            <div class="brief-box"><strong id="briefGroups">0</strong><span>Groupes représentés</span></div>
+      <div class="hero-grid">
+        <div class="info-card">
+          <h2 id="scrutinTitleHeading">Chargement…</h2>
+          <div class="meta-list">
+            <div class="meta-row">
+              <strong>Date</strong>
+              <span id="scrutinDate">-</span>
+            </div>
+            <div class="meta-row">
+              <strong>Thématique</strong>
+              <span id="scrutinTheme">-</span>
+            </div>
+            <div class="meta-row">
+              <strong>UID</strong>
+              <span id="scrutinUid">-</span>
+            </div>
+            <div class="meta-row">
+              <strong>Total des votes recensés</strong>
+              <span id="scrutinVotesCount">0</span>
+            </div>
           </div>
+          <div class="small-muted" id="scrutinDescription">-</div>
         </div>
 
-        <div class="soft-card">
-          <h3>Lecture politique</h3>
-          <div class="analysis-box" id="politicalReading">Chargement…</div>
+        <div class="stats-card">
+          <h2>Répartition des votes</h2>
+          <div class="summary-grid">
+            <div class="summary-box"><strong id="scrutinPour">0</strong><span>Pour</span></div>
+            <div class="summary-box"><strong id="scrutinContre">0</strong><span>Contre</span></div>
+            <div class="summary-box"><strong id="scrutinAbstention">0</strong><span>Abstention</span></div>
+            <div class="summary-box"><strong id="scrutinNonVotant">0</strong><span>Non-votant</span></div>
+          </div>
+          <div class="small-muted" id="scrutinStatsText">Chargement…</div>
         </div>
       </div>
     </section>
 
     <section class="panel">
-      <h2 class="panel-title">Résultat global</h2>
-      <div class="participation-wrap">
-        <div class="summary-grid">
-          <div class="summary-box"><strong id="presentCount">0</strong><span>Présents recensés</span></div>
-          <div class="summary-box"><strong id="votedCount">0</strong><span>Votants</span></div>
-          <div class="summary-box"><strong id="nonVotantCount">0</strong><span>Non-votants</span></div>
-          <div class="summary-box"><strong id="absentCount">0</strong><span>Absents par différence avec 577</span></div>
-        </div>
-
-        <div class="summary-grid">
-          <div class="summary-box"><strong id="participationRate">0%</strong><span>Taux de présence observé</span></div>
-          <div class="summary-box"><strong>577</strong><span>Base Assemblée</span></div>
-          <div class="summary-box"><strong id="pourCount">0</strong><span>Pour</span></div>
-          <div class="summary-box"><strong id="contreCount">0</strong><span>Contre</span></div>
-        </div>
-
-        <div class="participation-bar">
-          <div id="segPour" class="seg seg-pour" style="width:0%"></div>
-          <div id="segContre" class="seg seg-contre" style="width:0%"></div>
-          <div id="segAbstention" class="seg seg-abstention" style="width:0%"></div>
-          <div id="segNonVotant" class="seg seg-nonvotant" style="width:0%"></div>
-          <div id="segAbsent" class="seg seg-absent" style="width:100%"></div>
-        </div>
-
-        <div class="chips">
-          <span class="chip" id="chipPour">Pour : 0</span>
-          <span class="chip" id="chipContre">Contre : 0</span>
-          <span class="chip" id="chipAbstention">Abstention : 0</span>
-          <span class="chip" id="chipNonVotant">Non-votant : 0</span>
-          <span class="chip" id="chipAbsent">Absents : 0</span>
-        </div>
-
-        <div class="small-muted" id="globalSummaryText">Chargement…</div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2 class="panel-title">Votes par groupe</h2>
-      <div class="group-cards" id="groupCardsContainer"></div>
-    </section>
-
-    <section class="panel">
-      <h2 class="panel-title">Votes nominatifs</h2>
-
       <div class="filters">
-        <div class="field">
-          <label for="searchInput">Député, groupe, circonscription</label>
-          <input id="searchInput" type="text" placeholder="Ex. Panot, RN, 3e circonscription">
-        </div>
-
         <div class="field">
           <label for="voteFilter">Vote</label>
           <select id="voteFilter">
-            <option value="">Tous</option>
+            <option value="">Tous les votes</option>
             <option value="Pour">Pour</option>
             <option value="Contre">Contre</option>
             <option value="Abstention">Abstention</option>
@@ -553,41 +406,30 @@
         </div>
 
         <div class="field">
-          <label for="sortFilter">Tri</label>
-          <select id="sortFilter">
-            <option value="groupe_nom">Groupe puis nom</option>
-            <option value="nom">Nom</option>
-            <option value="vote">Vote</option>
+          <label for="departementFilter">Département</label>
+          <select id="departementFilter">
+            <option value="">Tous les départements</option>
           </select>
         </div>
-      </div>
 
-      <div class="detail-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Député</th>
-              <th>Groupe</th>
-              <th>Vote</th>
-              <th>Circonscription</th>
-            </tr>
-          </thead>
-          <tbody id="detailTableBody">
-            <tr>
-              <td colspan="4" class="empty">Chargement…</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="field">
+          <label for="nameFilter">Nom du député</label>
+          <input id="nameFilter" type="text" placeholder="Ex. Clouet, Panot, Ruffin">
+        </div>
       </div>
+    </section>
 
-      <div class="small-muted" id="tableSummary">Chargement…</div>
+    <section class="panel">
+      <h2 class="panel-title">Votes nominatif</h2>
+      <div id="votesContainer" class="votes-grid"></div>
     </section>
   </main>
 
   <script>
     let selectedYear = "";
     let allScrutins = [];
-    let currentScrutin = null;
+    let scrutin = null;
+    let scrutinUid = "";
 
     function getParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
@@ -643,19 +485,15 @@
       return new Intl.NumberFormat("fr-FR").format(value || 0);
     }
 
-    function formatPercent(value) {
-      return `${(value || 0).toFixed(1)}%`;
-    }
-
-    function ensureArray(v) {
-      return Array.isArray(v) ? v : [];
-    }
-
     function normalize(text) {
       return (text || "")
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function ensureArray(v) {
+      return Array.isArray(v) ? v : [];
     }
 
     function computeStats(votes) {
@@ -667,356 +505,156 @@
       };
     }
 
-    function shortHumanTitle(scrutin) {
+    function shortTitle(scrutin) {
       const title = (scrutin.titre || "").trim();
+      const mSous = title.match(/(sous-amendement n°\s*\d+)/i);
+      const mAmend = title.match(/(amendement n°\s*\d+)/i);
+      const mArticle = title.match(/(article\s+[0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
 
-      const mSous = title.match(/sous-amendement n°\s*([0-9]+)/i);
-      if (mSous) return `Vote sur le sous-amendement n°${mSous[1]}`;
-
-      const mAmend = title.match(/amendement n°\s*([0-9]+)/i);
-      if (mAmend) return `Vote sur l’amendement n°${mAmend[1]}`;
-
-      const mArticle = title.match(/article\s+([0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
+      if (mSous && mArticle) return `${mSous[1]} sur ${mArticle[1]}`;
+      if (mSous) return mSous[1];
+      if (mAmend && mArticle) return `${mAmend[1]} sur ${mArticle[1]}`;
+      if (mAmend) return mAmend[1];
       if (mArticle) return `Vote sur l’article ${mArticle[1].trim()}`;
 
-      if (/motion de censure/i.test(title)) return "Motion de censure";
-      if (/ensemble de la proposition de loi/i.test(title)) return "Vote sur l’ensemble du texte";
-      if (/ensemble du projet de loi/i.test(title)) return "Vote sur l’ensemble du texte";
-
-      if (title.length > 90) return title.slice(0, 87).trim() + "…";
-      return title || "Scrutin";
+      if (title.length > 140) return title.slice(0, 137).trim() + "…";
+      return title || "Scrutin sans titre";
     }
 
-    function longHumanSummary(scrutin) {
-      const desc = (scrutin.description || "").trim();
-      const title = (scrutin.titre || "").trim();
-      const theme = scrutin.theme || "Autres";
-      const date = scrutin.date || "";
-
-      if (desc && desc !== title) {
-        const sentence = desc.charAt(0).toLowerCase() + desc.slice(1);
-        return `Ce scrutin, enregistré le ${date} et classé dans la thématique « ${theme} », porte sur ${sentence}.`;
-      }
-
-      if (title) {
-        const sentence = title.charAt(0).toLowerCase() + title.slice(1);
-        return `Ce scrutin, enregistré le ${date} et classé dans la thématique « ${theme} », concerne ${sentence}.`;
-      }
-
-      return `Ce scrutin a été enregistré le ${date} dans la thématique « ${theme} ».`;
+    function getVoteBadgeClass(vote) {
+      if (vote === "Pour") return "vote-pour";
+      if (vote === "Contre") return "vote-contre";
+      if (vote === "Abstention") return "vote-abstention";
+      return "vote-non-votant";
     }
 
-    function computeOutcome(stats) {
-      if (stats.pour > stats.contre) return "Plutôt adopté";
-      if (stats.contre > stats.pour) return "Plutôt rejeté";
-      return "Résultat très équilibré";
-    }
+    function renderFilters() {
+      const groups = [...new Set(ensureArray(scrutin?.votes).map(v => v.groupe).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "fr"));
 
-    function computeCloseness(stats) {
-      const gap = Math.abs((stats.pour || 0) - (stats.contre || 0));
-      if (gap <= 10) return "Très serré";
-      if (gap <= 40) return "Assez serré";
-      if (gap <= 100) return "Écart net";
-      return "Écart très large";
-    }
+      const departements = [...new Set(ensureArray(scrutin?.votes).map(v => v.departement).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "fr"));
 
-    function computeParticipationLabel(rate) {
-      if (rate >= 85) return "Très forte";
-      if (rate >= 70) return "Élevée";
-      if (rate >= 55) return "Moyenne";
-      return "Faible";
-    }
+      const groupSelect = document.getElementById("groupFilter");
+      const depSelect = document.getElementById("departementFilter");
 
-    function dominantVoteLabel(stats) {
-      const entries = [
-        ["Pour", stats.pour || 0],
-        ["Contre", stats.contre || 0],
-        ["Abstention", stats.abstention || 0],
-        ["Non-votant", stats.non_votant || 0]
-      ];
-      return entries.sort((a, b) => b[1] - a[1])[0][0];
-    }
+      groupSelect.innerHTML = `<option value="">Tous les groupes</option>`;
+      depSelect.innerHTML = `<option value="">Tous les départements</option>`;
 
-    function buildPoliticalReading(scrutin, votes, stats, present, absent) {
-      const groups = ensureArray(scrutin.groupes_summary || []);
-      const strongFor = [];
-      const strongAgainst = [];
-      const strongAbstention = [];
-
-      groups.forEach(g => {
-        const total = g.total || 0;
-        if (!total) return;
-
-        const forPct = (g.pour || 0) / total;
-        const againstPct = (g.contre || 0) / total;
-        const abstPct = (g.abstention || 0) / total;
-
-        if (forPct >= 0.6) strongFor.push(g.groupe);
-        if (againstPct >= 0.6) strongAgainst.push(g.groupe);
-        if (abstPct >= 0.35) strongAbstention.push(g.groupe);
+      groups.forEach(group => {
+        const option = document.createElement("option");
+        option.value = group;
+        option.textContent = group;
+        groupSelect.appendChild(option);
       });
 
-      const parts = [];
-
-      parts.push(`Le scrutin compte ${formatNumber(votes.length)} votes nominatifs recensés, soit ${formatPercent((present / 577) * 100)} de présence observée et ${formatNumber(absent)} absence(s) estimée(s) par différence avec les 577 sièges.`);
-
-      if ((stats.pour || 0) > (stats.contre || 0)) {
-        parts.push(`Le camp du « pour » arrive devant avec ${formatNumber(stats.pour)} voix, contre ${formatNumber(stats.contre)} « contre ».`);
-      } else if ((stats.contre || 0) > (stats.pour || 0)) {
-        parts.push(`Le camp du « contre » domine avec ${formatNumber(stats.contre)} voix, contre ${formatNumber(stats.pour)} « pour ».`);
-      } else {
-        parts.push(`Les voix « pour » et « contre » sont à égalité parfaite dans les données chargées.`);
-      }
-
-      if (strongFor.length) {
-        parts.push(`Les groupes les plus nettement favorables sont : ${strongFor.slice(0, 4).join(", ")}${strongFor.length > 4 ? "…" : ""}.`);
-      }
-
-      if (strongAgainst.length) {
-        parts.push(`Les groupes les plus nettement opposés sont : ${strongAgainst.slice(0, 4).join(", ")}${strongAgainst.length > 4 ? "…" : ""}.`);
-      }
-
-      if (strongAbstention.length) {
-        parts.push(`Une part notable d’abstentions apparaît notamment chez : ${strongAbstention.slice(0, 4).join(", ")}${strongAbstention.length > 4 ? "…" : ""}.`);
-      }
-
-      if (!strongFor.length && !strongAgainst.length && !strongAbstention.length) {
-        parts.push(`Aucun bloc très homogène ne se détache nettement, ce qui suggère un vote plus dispersé selon les groupes.`);
-      }
-
-      return parts.join(" ");
+      departements.forEach(dep => {
+        const option = document.createElement("option");
+        option.value = dep;
+        option.textContent = dep;
+        depSelect.appendChild(option);
+      });
     }
 
-    function renderScrutin(scrutin) {
-      currentScrutin = scrutin;
-
-      const votes = ensureArray(scrutin.votes);
+    function renderHeader() {
+      const votes = ensureArray(scrutin?.votes);
       const stats = computeStats(votes);
 
-      const present = votes.length;
-      const voted = stats.pour + stats.contre + stats.abstention;
-      const nonVotant = stats.non_votant;
-      const absent = Math.max(0, 577 - present);
-      const rate = (present / 577) * 100;
+      document.getElementById("pageTitle").textContent = shortTitle(scrutin);
+      document.getElementById("pageSubtitle").textContent =
+        `${formatNumber(votes.length)} votes recensés · ${scrutin?.date || "-"} · ${scrutin?.theme || "Autres"}`;
 
-      const humanTitle = shortHumanTitle(scrutin);
-      const humanSummary = longHumanSummary(scrutin);
-      const groupCount = ensureArray(scrutin.groupes_summary).length;
+      document.getElementById("scrutinTitleHeading").textContent = shortTitle(scrutin);
+      document.getElementById("scrutinDate").textContent = scrutin?.date || "-";
+      document.getElementById("scrutinTheme").textContent = scrutin?.theme || "Autres";
+      document.getElementById("scrutinUid").textContent = scrutin?.uid || "-";
+      document.getElementById("scrutinVotesCount").textContent = formatNumber(votes.length);
+      document.getElementById("scrutinDescription").textContent = scrutin?.description || scrutin?.titre || "-";
 
-      document.getElementById("pageTitle").textContent = humanTitle;
-      document.getElementById("pageSubtitle").textContent = `${scrutin.date || ""} · ${scrutin.theme || "Autres"} · ${selectedYear}`;
+      document.getElementById("scrutinPour").textContent = formatNumber(stats.pour);
+      document.getElementById("scrutinContre").textContent = formatNumber(stats.contre);
+      document.getElementById("scrutinAbstention").textContent = formatNumber(stats.abstention);
+      document.getElementById("scrutinNonVotant").textContent = formatNumber(stats.non_votant);
 
-      document.getElementById("scrutinSummary").innerHTML = `
-        <div class="chips">
-          <span class="chip">${scrutin.theme || "Autres"}</span>
-          <span class="chip">${scrutin.date || ""}</span>
-          <span class="chip">UID : ${scrutin.uid || "-"}</span>
-          <span class="chip">N° ${scrutin.numero || "-"}</span>
-        </div>
-        <p class="description">${humanSummary}</p>
-      `;
-
-      document.getElementById("briefOutcome").textContent = computeOutcome(stats);
-      document.getElementById("briefCloseness").textContent = computeCloseness(stats);
-      document.getElementById("briefParticipation").textContent = computeParticipationLabel(rate);
-      document.getElementById("briefGroups").textContent = formatNumber(groupCount);
-
-      document.getElementById("politicalReading").textContent =
-        buildPoliticalReading(scrutin, votes, stats, present, absent);
-
-      document.getElementById("presentCount").textContent = formatNumber(present);
-      document.getElementById("votedCount").textContent = formatNumber(voted);
-      document.getElementById("nonVotantCount").textContent = formatNumber(nonVotant);
-      document.getElementById("absentCount").textContent = formatNumber(absent);
-      document.getElementById("participationRate").textContent = formatPercent(rate);
-      document.getElementById("pourCount").textContent = formatNumber(stats.pour);
-      document.getElementById("contreCount").textContent = formatNumber(stats.contre);
-
-      document.getElementById("segPour").style.width = `${(stats.pour / 577) * 100}%`;
-      document.getElementById("segContre").style.width = `${(stats.contre / 577) * 100}%`;
-      document.getElementById("segAbstention").style.width = `${(stats.abstention / 577) * 100}%`;
-      document.getElementById("segNonVotant").style.width = `${(nonVotant / 577) * 100}%`;
-      document.getElementById("segAbsent").style.width = `${(absent / 577) * 100}%`;
-
-      document.getElementById("chipPour").textContent = `Pour : ${formatNumber(stats.pour)}`;
-      document.getElementById("chipContre").textContent = `Contre : ${formatNumber(stats.contre)}`;
-      document.getElementById("chipAbstention").textContent = `Abstention : ${formatNumber(stats.abstention)}`;
-      document.getElementById("chipNonVotant").textContent = `Non-votant : ${formatNumber(nonVotant)}`;
-      document.getElementById("chipAbsent").textContent = `Absents : ${formatNumber(absent)}`;
-
-      document.getElementById("globalSummaryText").textContent =
-        `Dans les données chargées pour ${selectedYear}, ce scrutin rassemble ${formatNumber(present)} présents recensés, dont ${formatNumber(voted)} votants effectifs. Le vote dominant est « ${dominantVoteLabel(stats)} ».`;
-
-      renderGroupCards(scrutin);
-      buildGroupFilter(votes);
-      renderVoteTable();
+      document.getElementById("scrutinStatsText").textContent =
+        `${formatNumber(votes.length)} votes observés : ${formatNumber(stats.pour)} Pour, ${formatNumber(stats.contre)} Contre, ${formatNumber(stats.abstention)} Abstentions, ${formatNumber(stats.non_votant)} Non-votants.`;
     }
 
-    function renderGroupCards(scrutin) {
-      const rows = ensureArray(scrutin.groupes_summary || []);
-      const container = document.getElementById("groupCardsContainer");
+    function renderVotes() {
+      const voteType = document.getElementById("voteFilter").value;
+      const group = document.getElementById("groupFilter").value;
+      const departement = document.getElementById("departementFilter").value;
+      const nameQuery = normalize(document.getElementById("nameFilter").value);
 
-      if (!rows.length) {
-        container.innerHTML = `<div class="empty">Aucune synthèse par groupe disponible.</div>`;
-        return;
-      }
-
-      container.innerHTML = rows.map(g => {
-        const total = g.total || 0;
-        const forPct = total ? ((g.pour || 0) / total) * 100 : 0;
-        const againstPct = total ? ((g.contre || 0) / total) * 100 : 0;
-        const abstPct = total ? ((g.abstention || 0) / total) * 100 : 0;
-        const nvPct = total ? ((g.non_votant || 0) / total) * 100 : 0;
-
-        const dominant = dominantVoteLabel({
-          pour: g.pour || 0,
-          contre: g.contre || 0,
-          abstention: g.abstention || 0,
-          non_votant: g.non_votant || 0
-        });
-
-        return `
-          <div class="group-card">
-            <div class="group-card-head">
-              <a href="groupe.html?name=${encodeURIComponent(g.groupe)}&year=${encodeURIComponent(selectedYear)}">${g.groupe}</a>
-              <strong>${formatNumber(total)}</strong>
-            </div>
-
-            <div class="group-bars">
-              <div class="group-bar-row">
-                <div class="group-bar-label">Pour</div>
-                <div class="group-bar-track"><div class="group-bar-fill fill-pour" style="width:${forPct}%"></div></div>
-                <div>${formatNumber(g.pour || 0)}</div>
-              </div>
-
-              <div class="group-bar-row">
-                <div class="group-bar-label">Contre</div>
-                <div class="group-bar-track"><div class="group-bar-fill fill-contre" style="width:${againstPct}%"></div></div>
-                <div>${formatNumber(g.contre || 0)}</div>
-              </div>
-
-              <div class="group-bar-row">
-                <div class="group-bar-label">Abst.</div>
-                <div class="group-bar-track"><div class="group-bar-fill fill-abstention" style="width:${abstPct}%"></div></div>
-                <div>${formatNumber(g.abstention || 0)}</div>
-              </div>
-
-              <div class="group-bar-row">
-                <div class="group-bar-label">Non-vot.</div>
-                <div class="group-bar-track"><div class="group-bar-fill fill-nonvotant" style="width:${nvPct}%"></div></div>
-                <div>${formatNumber(g.non_votant || 0)}</div>
-              </div>
-            </div>
-
-            <div class="group-dominant">Vote dominant : ${dominant}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function buildGroupFilter(votes) {
-      const select = document.getElementById("groupFilter");
-      const groups = [...new Set(votes.map(v => v.groupe || "Inconnu"))].sort((a, b) => a.localeCompare(b, "fr"));
-      select.innerHTML = `<option value="">Tous les groupes</option>` +
-        groups.map(g => `<option value="${g}">${g}</option>`).join("");
-    }
-
-    function getFilteredVotes() {
-      const votes = ensureArray(currentScrutin?.votes || []);
-      const query = normalize(document.getElementById("searchInput").value);
-      const voteFilter = document.getElementById("voteFilter").value;
-      const groupFilter = document.getElementById("groupFilter").value;
-      const sortFilter = document.getElementById("sortFilter").value;
-
-      let filtered = votes.filter(v => {
-        const textMatch = !query || [
-          v.nom,
-          v.groupe,
-          v.circonscription,
-          v.departement
-        ].some(x => normalize(x).includes(query));
-
-        const voteMatch = !voteFilter || v.vote === voteFilter;
-        const groupMatch = !groupFilter || v.groupe === groupFilter;
-
-        return textMatch && voteMatch && groupMatch;
+      const filtered = ensureArray(scrutin?.votes).filter(v => {
+        const voteMatch = !voteType || v.vote === voteType;
+        const groupMatch = !group || v.groupe === group;
+        const depMatch = !departement || v.departement === departement;
+        const nameMatch = !nameQuery || normalize(v.nom || "").includes(nameQuery);
+        return voteMatch && groupMatch && depMatch && nameMatch;
       });
 
-      if (sortFilter === "nom") {
-        filtered.sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"));
-      } else if (sortFilter === "vote") {
-        filtered.sort((a, b) => {
-          const va = (a.vote || "").localeCompare(b.vote || "", "fr");
-          if (va !== 0) return va;
-          return (a.nom || "").localeCompare(b.nom || "", "fr");
-        });
-      } else {
-        filtered.sort((a, b) => {
-          const g = (a.groupe || "").localeCompare(b.groupe || "", "fr");
-          if (g !== 0) return g;
-          return (a.nom || "").localeCompare(b.nom || "", "fr");
-        });
-      }
+      const container = document.getElementById("votesContainer");
 
-      return filtered;
-    }
-
-    function renderVoteTable() {
-      const rows = getFilteredVotes();
-      const tbody = document.getElementById("detailTableBody");
-
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="4" class="empty">Aucun vote nominatif ne correspond aux filtres.</td></tr>`;
-        document.getElementById("tableSummary").textContent = "0 résultat affiché.";
+      if (!filtered.length) {
+        container.innerHTML = `<div class="empty">Aucun vote nominatif ne correspond aux filtres choisis.</div>`;
         return;
       }
 
-      tbody.innerHTML = rows.map(v => `
-        <tr>
-          <td><a href="depute.html?uid=${encodeURIComponent(v.depute_uid)}&year=${encodeURIComponent(selectedYear)}">${v.nom || ""}</a></td>
-          <td><a href="groupe.html?name=${encodeURIComponent(v.groupe || "Inconnu")}&year=${encodeURIComponent(selectedYear)}">${v.groupe || ""}</a></td>
-          <td class="vote-${(v.vote || "").replace(/\s+/g, "-")}">${v.vote || ""}</td>
-          <td>${v.circonscription || v.departement || ""}</td>
-        </tr>
-      `).join("");
-
-      document.getElementById("tableSummary").textContent =
-        `${formatNumber(rows.length)} résultat(s) affiché(s) sur ${formatNumber(ensureArray(currentScrutin?.votes || []).length)} vote(s) nominatif(s).`;
+      container.innerHTML = filtered
+        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"))
+        .map(v => `
+          <a class="vote-card" href="depute.html?uid=${encodeURIComponent(v.depute_uid)}&year=${encodeURIComponent(selectedYear)}">
+            <h3>${v.nom || "-"}</h3>
+            <div class="vote-badge-wrap">
+              <span class="vote-badge ${getVoteBadgeClass(v.vote)}">${v.vote || "-"}</span>
+            </div>
+            <div class="meta">${v.groupe || "-"}</div>
+            <div class="meta">${v.circonscription || v.departement || "-"}</div>
+            <div class="sub">${v.departement || "-"}</div>
+          </a>
+        `).join("");
     }
 
     function bindFilters() {
-      ["searchInput", "voteFilter", "groupFilter", "sortFilter"].forEach(id => {
+      ["voteFilter", "groupFilter", "departementFilter", "nameFilter"].forEach(id => {
         const el = document.getElementById(id);
-        el.addEventListener("input", renderVoteTable);
-        el.addEventListener("change", renderVoteTable);
+        el.addEventListener("input", renderVotes);
+        el.addEventListener("change", renderVotes);
       });
     }
 
     async function init() {
       try {
-        const uid = getParam("uid");
-        if (!uid) {
-          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Paramètre uid manquant.</div></section>`;
+        scrutinUid = getParam("uid");
+
+        if (!scrutinUid) {
+          document.querySelector("main").innerHTML =
+            `<section class="panel"><div class="empty">UID scrutin manquant.</div></section>`;
           return;
         }
 
         const indexData = await loadJson("./data/current/index.json");
         selectedYear = getSelectedYear(indexData);
         buildYearButtons(indexData);
-        allScrutins = await loadYearScrutins(indexData);
 
-        const scrutin = allScrutins.find(s => s.uid === uid);
+        allScrutins = await loadYearScrutins(indexData);
+        scrutin = allScrutins.find(s => s.uid === scrutinUid);
 
         if (!scrutin) {
-          document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Scrutin introuvable pour ${selectedYear}.</div></section>`;
+          document.querySelector("main").innerHTML =
+            `<section class="panel"><div class="empty">Scrutin introuvable pour cette année.</div></section>`;
           return;
         }
 
-        renderScrutin(scrutin);
+        renderHeader();
+        renderFilters();
+        renderVotes();
         bindFilters();
       } catch (error) {
         console.error(error);
-        document.querySelector("main").innerHTML = `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
+        document.querySelector("main").innerHTML =
+          `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
       }
     }
 
