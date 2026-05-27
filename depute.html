@@ -2,166 +2,46 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiche député</title>
-
+<title>Député</title>
 <style>
-body {
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f6f3fb;
-}
-
-.hero {
-  background:#7700FF;
-  color:white;
-  padding:40px;
-  text-align:center;
-}
-
-.container {
-  max-width:1100px;
-  margin:20px auto;
-  padding:20px;
-}
-
-.card {
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-}
-
-h2 {
-  text-align:center;
-}
-
-.stat {
-  text-align:center;
-  font-size:28px;
-  color:#7700FF;
-}
-
-.scrutin {
-  border:1px solid #ddd;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:10px;
-}
+body { font-family:Arial; padding:30px; background:#f5f5f5; }
+.card { background:white; padding:20px; border-radius:10px; }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-  <h1 id="nom">Député</h1>
-  <p id="meta"></p>
-</div>
-
-<div class="container">
-
-  <div class="card">
-    <h2>Résumé</h2>
-    <div class="stat" id="votesCount">0</div>
-    <p style="text-align:center">votes recensés</p>
-  </div>
-
-  <div class="card">
-    <h2>Votes</h2>
-    <div id="votesContainer"></div>
-  </div>
-
-</div>
+<div id="content"></div>
 
 <script>
-
-let uid = new URLSearchParams(window.location.search).get("uid");
-let year = new URLSearchParams(window.location.search).get("year") || "";
-
-let allScrutins = [];
-
-async function loadJson(path) {
-  const r = await fetch(path);
-  return r.json();
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name);
 }
 
-async function loadAllScrutins() {
-  const index = await loadJson("./data/current/index.json");
+async function init(){
+  const deputes = await fetch("data/current/deputes.json").then(r=>r.json()).then(d=>d.deputes);
 
-  if (!year) year = index.default_year;
+  const uid = getParam("uid");
 
-  const months = index.years[year].months;
+  const d = deputes.find(x=>x.uid === uid);
 
-  let all = [];
-
-  for (let m of months) {
-    const data = await loadJson("./" + m.file);
-    all = all.concat(data.scrutins);
-  }
-
-  return all;
-}
-
-function flattenVotes(scrutins) {
-  let votes = [];
-
-  scrutins.forEach(s => {
-    (s.votes || []).forEach(v => {
-      votes.push({
-        ...v,
-        date: s.date,
-        titre: s.titre,
-        description: s.description
-      });
-    });
-  });
-
-  return votes;
-}
-
-function renderDeputy(votes) {
-
-  const myVotes = votes.filter(v => v.depute_uid === uid);
-
-  if (!myVotes.length) {
-    document.getElementById("votesContainer").innerHTML =
-      "<p style='text-align:center'>Aucun vote trouvé</p>";
+  if(!d){
+    document.getElementById("content").innerHTML = "Introuvable";
     return;
   }
 
-  const first = myVotes[0];
-
-  document.getElementById("nom").textContent = first.nom;
-  document.getElementById("meta").textContent =
-    (first.circonscription || "") + " • " + (first.departement || "");
-
-  document.getElementById("votesCount").textContent = myVotes.length;
-
-  const html = myVotes
-    .sort((a,b)=>b.date.localeCompare(a.date))
-    .map(v => `
-      <div class="scrutin">
-        <strong>${v.date}</strong><br>
-        ${v.titre}<br>
-        <b>${v.vote}</b>
-      </div>
-    `)
-    .join("");
-
-  document.getElementById("votesContainer").innerHTML = html;
-}
-
-async function init() {
-
-  allScrutins = await loadAllScrutins();
-
-  const votes = flattenVotes(allScrutins);
-
-  renderDeputy(votes);
+  document.getElementById("content").innerHTML = `
+    <div class="card">
+      <h1>${d.nom}</h1>
+      <p><strong>Groupe :</strong> ${d.groupe}</p>
+      <p><strong>Département :</strong> ${d.departement}</p>
+      <p><strong>Circonscription :</strong> ${d.circonscription}</p>
+      <p><strong>Votes :</strong> ${d.votes_count}</p>
+    </div>
+  `;
 }
 
 init();
-
 </script>
 
 </body>
