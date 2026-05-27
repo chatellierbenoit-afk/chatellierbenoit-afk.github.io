@@ -1014,6 +1014,7 @@
       const query = normalize(rawQuery);
 
       let geo = null;
+
       try {
         geo = await resolveGeoQuery(rawQuery);
       } catch (e) {
@@ -1024,11 +1025,13 @@
 
       if (geo) {
         const circoExact = circoExactData?.[geo.code] || "";
+
         if (circoExact) {
           results = results.filter(d =>
             normalize(d.departement) === normalize(geo.departement) &&
             normalize(d.circonscription).includes(normalize(circoExact))
           );
+
           document.getElementById("deputeSearchInfo").textContent =
             `Recherche géographique reconnue : ${geo.commune || rawQuery}${geo.departement ? `, ${geo.departement}` : ""} · circonscription exacte détectée · données ${selectedYear}`;
         } else {
@@ -1036,28 +1039,29 @@
             normalize(d.departement).includes(normalize(geo.departement)) ||
             normalize(d.circonscription).includes(normalize(geo.commune))
           );
+
           document.getElementById("deputeSearchInfo").textContent =
             `Recherche géographique reconnue : ${geo.commune || rawQuery}${geo.departement ? `, ${geo.departement}` : ""} · données ${selectedYear}`;
         }
       } else {
         document.getElementById("deputeSearchInfo").textContent =
           `La recherche se fait uniquement sur les données de l’année sélectionnée.`;
+
+        if (query) {
+          results = results.filter(d => {
+            const text = [
+              d.nom,
+              d.groupe,
+              d.departement,
+              d.circonscription
+            ].map(normalize).join(" ");
+
+            return text.includes(query);
+          });
+        }
       }
 
-      if (query) {
-        results = results.filter(d => {
-          const text = [
-            d.nom,
-            d.groupe,
-            d.departement,
-            d.circonscription
-          ].map(normalize).join(" ");
-
-          return text.includes(query);
-        });
-      }
-
-      results = results.sort((a, b) => b.votes_count - a.votes_count);
+      results.sort((a, b) => b.votes_count - a.votes_count);
 
       if (results.length === 1) {
         window.location.href = `depute.html?uid=${encodeURIComponent(results[0].uid)}&year=${encodeURIComponent(selectedYear)}`;
