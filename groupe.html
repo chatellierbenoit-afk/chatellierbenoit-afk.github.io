@@ -1,48 +1,2473 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Groupe</title>
-<style>
-body { font-family:Arial; padding:30px; background:#f5f5f5; }
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.card { background:white; padding:20px; border-radius:10px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Votes du groupe politique</title>
+
+  <style>
+    :root {
+      --violet: #7700ff;
+      --violet-dark: #5600bd;
+      --violet-soft: #f2eaff;
+
+      --text: #1d1b22;
+      --muted: #6f6a78;
+
+      --bg: #f7f5fb;
+      --card: #ffffff;
+      --border: #e6e0ef;
+
+      --green: #168550;
+      --green-bg: #eaf8f0;
+
+      --red: #c43b43;
+      --red-bg: #fff0f1;
+
+      --orange: #a66b00;
+      --orange-bg: #fff7df;
+
+      --grey: #6b7280;
+      --grey-bg: #f2f3f5;
+
+      --radius: 22px;
+
+      --shadow:
+        0 10px 30px
+        rgba(54, 24, 105, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #faf9fd 0%,
+          var(--bg) 100%
+        );
+
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    /* ======================================================
+       HERO
+    ====================================================== */
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          var(--violet-dark),
+          var(--violet)
+        );
+
+      color: white;
+
+      text-align: center;
+
+      padding:
+        38px
+        20px
+        42px;
+    }
+
+    .hero-inner {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    .home-link {
+      display: inline-flex;
+
+      margin-bottom: 24px;
+
+      padding:
+        10px
+        15px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.35);
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,0.08);
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      font-weight: 800;
+    }
+
+    .hero-kicker {
+      margin-bottom: 10px;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+
+      opacity: 0.8;
+    }
+
+    .hero h1 {
+      margin: 0;
+
+      font-size:
+        clamp(
+          34px,
+          6vw,
+          55px
+        );
+
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 780px;
+
+      margin:
+        18px
+        auto
+        0;
+
+      font-size: 17px;
+
+      line-height: 1.5;
+
+      opacity: 0.94;
+    }
+
+    /* ======================================================
+       GENERAL
+    ====================================================== */
+
+    main {
+      max-width: 1450px;
+
+      margin: 0 auto;
+
+      padding:
+        26px
+        18px
+        70px;
+    }
+
+    .panel {
+      margin-bottom: 22px;
+
+      padding: 24px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        var(--card);
+
+      box-shadow:
+        var(--shadow);
+    }
+
+    .section-title {
+      margin:
+        0
+        0
+        8px;
+
+      text-align: center;
+
+      font-size:
+        clamp(
+          27px,
+          4vw,
+          35px
+        );
+
+      line-height: 1.15;
+    }
+
+    .section-intro {
+      max-width: 850px;
+
+      margin:
+        0
+        auto
+        22px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      line-height: 1.5;
+    }
+
+    .small-muted {
+      color:
+        var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+    .empty {
+      padding:
+        30px
+        10px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+    }
+
+    .error {
+      padding: 22px;
+
+      border:
+        1px solid
+        #f3c7ca;
+
+      border-radius: 15px;
+
+      background:
+        #fff3f4;
+
+      color:
+        #a42931;
+
+      text-align: center;
+    }
+
+    /* ======================================================
+       ANNÉES
+    ====================================================== */
+
+    .year-switch {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+    }
+
+    .year-button {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 105px;
+
+      padding:
+        13px
+        18px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 14px;
+
+      background: white;
+
+      color:
+        var(--text);
+
+      text-decoration: none;
+
+      font-weight: 800;
+    }
+
+    .year-button.active {
+      color: white;
+
+      border-color: transparent;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--violet-dark),
+          var(--violet)
+        );
+    }
+
+    /* ======================================================
+       RÉSUMÉ
+    ====================================================== */
+
+    .summary-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          5,
+          minmax(0,1fr)
+        );
+
+      gap: 13px;
+    }
+
+    .summary-card {
+      padding: 19px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 17px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fff,
+          #fcfbff
+        );
+
+      text-align: center;
+    }
+
+    .summary-value {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color:
+        var(--violet);
+
+      font-size: 28px;
+
+      font-weight: 900;
+    }
+
+    .summary-label {
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.3;
+    }
+
+    /* ======================================================
+       POSITION
+    ====================================================== */
+
+    .position-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0,1fr)
+        );
+
+      gap: 13px;
+    }
+
+    .position-card {
+      padding: 20px;
+
+      border-radius: 17px;
+
+      text-align: center;
+    }
+
+    .position-card strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      font-size: 29px;
+    }
+
+    .position-card span {
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    .position-Pour {
+      color:
+        var(--green);
+
+      background:
+        var(--green-bg);
+
+      border:
+        1px solid
+        #bfe5cf;
+    }
+
+    .position-Contre {
+      color:
+        var(--red);
+
+      background:
+        var(--red-bg);
+
+      border:
+        1px solid
+        #f1c8cb;
+    }
+
+    .position-Abstention {
+      color:
+        var(--orange);
+
+      background:
+        var(--orange-bg);
+
+      border:
+        1px solid
+        #ead9a2;
+    }
+
+    .position-Partagé {
+      color:
+        var(--grey);
+
+      background:
+        var(--grey-bg);
+
+      border:
+        1px solid
+        #dfe1e5;
+    }
+
+    /* ======================================================
+       THEMES
+    ====================================================== */
+
+    .themes-grid {
+      display: flex;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 9px;
+    }
+
+    .theme-button {
+      border:
+        1px solid
+        #ddd4eb;
+
+      border-radius:
+        999px;
+
+      padding:
+        10px
+        14px;
+
+      background: white;
+
+      color:
+        var(--text);
+
+      cursor: pointer;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+      transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .theme-button:hover {
+      background:
+        var(--violet-soft);
+    }
+
+    .theme-button.active {
+      border-color:
+        var(--violet);
+
+      background:
+        var(--violet);
+
+      color: white;
+    }
+
+    /* ======================================================
+       FILTRES
+    ====================================================== */
+
+    .filters {
+      display: grid;
+
+      grid-template-columns:
+        1.5fr
+        0.75fr
+        0.75fr;
+
+      gap: 12px;
+    }
+
+    .filter-field label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-align: center;
+    }
+
+    .filter-field input,
+    .filter-field select {
+      width: 100%;
+
+      min-height: 50px;
+
+      padding:
+        0
+        14px;
+
+      border:
+        1px solid
+        #dcd5e8;
+
+      border-radius: 14px;
+
+      background: white;
+
+      outline: none;
+    }
+
+    .filter-field input:focus,
+    .filter-field select:focus {
+      border-color:
+        #b597e8;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(119,0,255,0.06);
+    }
+
+    /* ======================================================
+       SCRUTINS
+    ====================================================== */
+
+    .votes-list {
+      display: grid;
+
+      gap: 17px;
+    }
+
+    .vote-card {
+      display: block;
+
+      padding: 22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fff,
+          #fcfbff
+        );
+
+      color:
+        var(--text);
+
+      text-decoration: none;
+
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .vote-card:hover {
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 10px 25px
+        rgba(54,24,105,0.09);
+    }
+
+    .vote-meta {
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      font-weight: 700;
+    }
+
+    .theme-badge {
+      display: inline-block;
+
+      padding:
+        6px
+        10px;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--violet-soft);
+
+      color:
+        var(--violet-dark);
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+    .vote-title {
+      max-width: 1050px;
+
+      margin:
+        0
+        auto
+        11px;
+
+      text-align: center;
+
+      font-size:
+        clamp(
+          21px,
+          3vw,
+          29px
+        );
+
+      line-height: 1.2;
+    }
+
+    .vote-description {
+      max-width: 1050px;
+
+      margin:
+        0
+        auto
+        17px;
+
+      padding:
+        14px
+        17px;
+
+      border-radius: 14px;
+
+      background:
+        var(--violet-soft);
+
+      color:
+        #3b3542;
+
+      text-align: center;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+    .vote-bottom {
+      display: grid;
+
+      grid-template-columns:
+        auto
+        minmax(0,1fr)
+        auto;
+
+      align-items: center;
+
+      gap: 15px;
+
+      max-width: 1000px;
+
+      margin: 0 auto;
+    }
+
+    .vote-position {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 120px;
+
+      padding:
+        10px
+        14px;
+
+      border-radius:
+        999px;
+
+      font-size: 14px;
+
+      font-weight: 900;
+    }
+
+    .position-text-Pour {
+      color:
+        var(--green);
+
+      background:
+        var(--green-bg);
+    }
+
+    .position-text-Contre {
+      color:
+        var(--red);
+
+      background:
+        var(--red-bg);
+    }
+
+    .position-text-Abstention {
+      color:
+        var(--orange);
+
+      background:
+        var(--orange-bg);
+    }
+
+    .position-text-Partagé,
+    .position-text-Non-votant {
+      color:
+        var(--grey);
+
+      background:
+        var(--grey-bg);
+    }
+
+    .vote-breakdown {
+      display: flex;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+    .breakdown-item {
+      padding:
+        7px
+        9px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 999px;
+
+      background: white;
+    }
+
+    .cohesion {
+      text-align: right;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+    .cohesion strong {
+      display: block;
+
+      color:
+        var(--text);
+
+      font-size: 16px;
+    }
+
+    /* ======================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 1100px) {
+
+      .summary-grid {
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(0,1fr)
+          );
+      }
+
+      .position-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+      }
+
+      .filters {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+    @media (max-width: 720px) {
+
+      main {
+        padding:
+          18px
+          11px
+          45px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .summary-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+      }
+
+      .position-grid {
+        grid-template-columns:
+          1fr
+          1fr;
+      }
+
+      .vote-bottom {
+        grid-template-columns:
+          1fr;
+
+        text-align: center;
+      }
+
+      .cohesion {
+        text-align: center;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-<h1 id="title"></h1>
+  <header class="hero">
 
-<div id="list" class="grid"></div>
+    <div class="hero-inner">
 
-<script>
-function getParam(name){
-  return new URLSearchParams(window.location.search).get(name);
-}
+      <a
+        id="homeLink"
+        href="index.html"
+        class="home-link"
+      >
+        ← Retour à la recherche
+      </a>
 
-let deputes = [];
-
-async function init(){
-  deputes = await fetch("data/current/deputes.json").then(r=>r.json()).then(d=>d.deputes);
-
-  const groupe = getParam("name");
-  document.getElementById("title").textContent = groupe;
-
-  const list = deputes.filter(d=>d.groupe === groupe);
-
-  document.getElementById("list").innerHTML =
-    list.map(d=>`
-      <div class="card">
-        <h3>${d.nom}</h3>
-        <p>${d.departement}</p>
-        <p>${d.circonscription}</p>
+      <div class="hero-kicker">
+        Groupe politique
       </div>
-    `).join("");
-}
 
-init();
-</script>
+      <h1 id="groupTitle">
+        Chargement…
+      </h1>
+
+      <p id="groupSubtitle">
+        Analyse des votes du groupe.
+      </p>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- ANNÉES -->
+
+    <section class="panel">
+
+      <div
+        id="yearSwitch"
+        class="year-switch"
+      ></div>
+
+    </section>
+
+
+    <!-- RÉSUMÉ -->
+
+    <section class="panel">
+
+      <h2 class="section-title">
+        En un coup d'œil
+      </h2>
+
+      <p class="section-intro">
+        Les chiffres ci-dessous concernent l'année sélectionnée.
+        Le nombre de députés correspond à la composition actuelle de l'Assemblée.
+      </p>
+
+      <div
+        id="summaryGrid"
+        class="summary-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- POSITIONS -->
+
+    <section class="panel">
+
+      <h2 class="section-title">
+        Position dominante du groupe
+      </h2>
+
+      <p class="section-intro">
+        Pour chaque scrutin, nous regardons la position majoritaire des députés du groupe.
+        C'est plus parlant que d'additionner tous les « Pour » et « Contre » sans tenir compte du sujet.
+      </p>
+
+      <div
+        id="positionGrid"
+        class="position-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- THEMES -->
+
+    <section class="panel">
+
+      <h2 class="section-title">
+        Sur quels sujets vote ce groupe ?
+      </h2>
+
+      <p class="section-intro">
+        Cliquez sur un thème pour ne voir que les votes correspondants.
+      </p>
+
+      <div
+        id="themesGrid"
+        class="themes-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- FILTRES -->
+
+    <section class="panel">
+
+      <div class="filters">
+
+        <div class="filter-field">
+
+          <label for="searchFilter">
+            Rechercher dans les sujets
+          </label>
+
+          <input
+            id="searchFilter"
+            type="search"
+            placeholder="Ex. retraite, immigration, budget, agriculture…"
+          >
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label for="positionFilter">
+            Position
+          </label>
+
+          <select id="positionFilter">
+
+            <option value="">
+              Toutes
+            </option>
+
+            <option value="Pour">
+              Pour
+            </option>
+
+            <option value="Contre">
+              Contre
+            </option>
+
+            <option value="Abstention">
+              Abstention
+            </option>
+
+            <option value="Partagé">
+              Groupe partagé
+            </option>
+
+            <option value="Non-votant">
+              Non-votant
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label for="sortFilter">
+            Trier
+          </label>
+
+          <select id="sortFilter">
+
+            <option value="recent">
+              Plus récents
+            </option>
+
+            <option value="old">
+              Plus anciens
+            </option>
+
+            <option value="cohesion">
+              Groupe le plus uni
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- VOTES -->
+
+    <section class="panel">
+
+      <h2 class="section-title">
+        Les votes du groupe
+      </h2>
+
+      <p
+        id="resultsInfo"
+        class="section-intro"
+      >
+        Chargement…
+      </p>
+
+      <div
+        id="votesList"
+        class="votes-list"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    let indexData = null;
+
+    let compositionData = null;
+
+    let groupesData = null;
+
+    let groupData = null;
+
+    let selectedYear = "";
+
+    let groupName = "";
+
+    let activeTheme = "";
+
+
+    /* ======================================================
+       OUTILS
+    ====================================================== */
+
+
+    function getParam(name) {
+
+      return new URLSearchParams(
+        window.location.search
+      ).get(name) || "";
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function normalize(value) {
+
+      return String(
+        value || ""
+      )
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        )
+        .replace(
+          /œ/g,
+          "oe"
+        )
+        .replace(
+          /æ/g,
+          "ae"
+        )
+        .replace(
+          /[^a-z0-9\s-]/g,
+          " "
+        )
+        .replace(
+          /\s+/g,
+          " "
+        )
+        .trim();
+
+    }
+
+
+    function formatNumber(value) {
+
+      return new Intl.NumberFormat(
+        "fr-FR"
+      ).format(
+        Number(value || 0)
+      );
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      return new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      ).format(
+        new Date(
+          `${value}T12:00:00`
+        )
+      );
+
+    }
+
+
+    async function loadJson(path) {
+
+      const response =
+        await fetch(path);
+
+      if (!response.ok) {
+
+        throw new Error(
+          `Impossible de charger ${path}`
+        );
+
+      }
+
+      return response.json();
+
+    }
+
+
+    function linkWithYear(
+      page,
+      params = {}
+    ) {
+
+      const url =
+        new URL(
+          page,
+          window.location.origin
+        );
+
+      Object.entries(
+        params
+      ).forEach(
+        ([key,value]) => {
+
+          if (
+            value !== undefined
+            && value !== null
+            && value !== ""
+          ) {
+
+            url.searchParams.set(
+              key,
+              value
+            );
+
+          }
+
+        }
+      );
+
+      if (selectedYear) {
+
+        url.searchParams.set(
+          "year",
+          selectedYear
+        );
+
+      }
+
+      return (
+        url.pathname
+        + url.search
+      );
+
+    }
+
+
+    /* ======================================================
+       ANNÉE
+    ====================================================== */
+
+
+    function determineSelectedYear() {
+
+      const years =
+        (
+          indexData
+            ?.available_years
+          || []
+        ).map(String);
+
+
+      const requested =
+        getParam(
+          "year"
+        );
+
+
+      if (
+        requested
+        && years.includes(
+          requested
+        )
+      ) {
+
+        return requested;
+
+      }
+
+
+      const defaultYear =
+        String(
+          indexData
+            ?.default_year
+          || ""
+        );
+
+
+      if (
+        defaultYear
+        && years.includes(
+          defaultYear
+        )
+      ) {
+
+        return defaultYear;
+
+      }
+
+
+      return years[0] || "";
+
+    }
+
+
+    function renderYearSwitch() {
+
+      const container =
+        document.getElementById(
+          "yearSwitch"
+        );
+
+
+      const years =
+        (
+          indexData
+            ?.available_years
+          || []
+        ).map(String);
+
+
+      container.innerHTML =
+        years.map(
+          year => {
+
+            const url =
+              new URL(
+                window.location.href
+              );
+
+            url.searchParams.set(
+              "year",
+              year
+            );
+
+
+            return `
+              <a
+                href="${
+                  escapeHtml(
+                    url.pathname
+                    + url.search
+                  )
+                }"
+                class="
+                  year-button
+                  ${
+                    year === selectedYear
+                      ? "active"
+                      : ""
+                  }
+                "
+              >
+                ${escapeHtml(year)}
+              </a>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /* ======================================================
+       GROUPE
+    ====================================================== */
+
+
+    function findGroupData() {
+
+      const entries =
+        groupesData
+          ?.groupes
+        || [];
+
+
+      groupData =
+        entries.find(
+          entry =>
+            String(
+              entry.year
+            )
+            ===
+            String(
+              selectedYear
+            )
+            &&
+            normalize(
+              entry.groupe
+            )
+            ===
+            normalize(
+              groupName
+            )
+        );
+
+
+      if (!groupData) {
+
+        groupData =
+          entries.find(
+            entry =>
+              normalize(
+                entry.groupe
+              )
+              ===
+              normalize(
+                groupName
+              )
+          );
+
+      }
+
+    }
+
+
+    function getCurrentCompositionEntry() {
+
+      return (
+        compositionData
+          ?.groupes
+        || []
+      ).find(
+        group =>
+          normalize(
+            group.groupe
+          )
+          ===
+          normalize(
+            groupName
+          )
+      ) || null;
+
+    }
+
+
+    function renderHeader() {
+
+      const compositionEntry =
+        getCurrentCompositionEntry();
+
+
+      const currentDeputies =
+        compositionEntry
+          ?.count
+        ??
+        groupData
+          ?.deputes_actuels
+        ??
+        0;
+
+
+      document.title =
+        `${groupName} — Votes à l'Assemblée nationale`;
+
+
+      document.getElementById(
+        "groupTitle"
+      ).textContent =
+        groupName;
+
+
+      document.getElementById(
+        "groupSubtitle"
+      ).textContent =
+        `${formatNumber(currentDeputies)} député(s) aujourd'hui · analyse des votes de ${selectedYear}`;
+
+
+      document.getElementById(
+        "homeLink"
+      ).href =
+        linkWithYear(
+          "index.html"
+        );
+
+    }
+
+
+    /* ======================================================
+       RÉSUMÉ
+    ====================================================== */
+
+
+    function countPositions() {
+
+      const result = {
+        Pour: 0,
+        Contre: 0,
+        Abstention: 0,
+        Partagé: 0,
+        "Non-votant": 0
+      };
+
+
+      (
+        groupData?.scrutins
+        || []
+      ).forEach(
+        scrutin => {
+
+          const position =
+            scrutin.position
+            || "Partagé";
+
+
+          result[position] =
+            (
+              result[position]
+              || 0
+            )
+            + 1;
+
+        }
+      );
+
+
+      return result;
+
+    }
+
+
+    function averageCohesion() {
+
+      const scrutins =
+        groupData?.scrutins
+        || [];
+
+
+      const values =
+        scrutins
+          .map(
+            scrutin =>
+              Number(
+                scrutin.cohesion_pct
+              )
+          )
+          .filter(
+            value =>
+              Number.isFinite(
+                value
+              )
+          );
+
+
+      if (!values.length) {
+        return 0;
+      }
+
+
+      return (
+        values.reduce(
+          (
+            sum,
+            value
+          ) =>
+            sum + value,
+          0
+        )
+        / values.length
+      );
+
+    }
+
+
+    function renderSummary() {
+
+      const compositionEntry =
+        getCurrentCompositionEntry();
+
+
+      const deputies =
+        compositionEntry
+          ?.count
+        ??
+        groupData
+          ?.deputes_actuels
+        ??
+        0;
+
+
+      const scrutinsCount =
+        groupData
+          ?.scrutins_count
+        ||
+        groupData
+          ?.scrutins
+          ?.length
+        ||
+        0;
+
+
+      const themesCount =
+        groupData
+          ?.themes
+          ?.length
+        ||
+        0;
+
+
+      const cohesion =
+        averageCohesion();
+
+
+      const totalAssembly =
+        Number(
+          compositionData
+            ?.total
+          || 0
+        );
+
+
+      const assemblyPct =
+        totalAssembly
+          ? (
+              deputies
+              /
+              totalAssembly
+              * 100
+            )
+          : 0;
+
+
+      document.getElementById(
+        "summaryGrid"
+      ).innerHTML =
+        `
+          <div class="summary-card">
+
+            <strong class="summary-value">
+              ${formatNumber(deputies)}
+            </strong>
+
+            <span class="summary-label">
+              députés aujourd'hui
+            </span>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <strong class="summary-value">
+              ${assemblyPct.toFixed(1)} %
+            </strong>
+
+            <span class="summary-label">
+              de l'Assemblée actuelle
+            </span>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <strong class="summary-value">
+              ${formatNumber(scrutinsCount)}
+            </strong>
+
+            <span class="summary-label">
+              scrutins analysés en ${escapeHtml(selectedYear)}
+            </span>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <strong class="summary-value">
+              ${formatNumber(themesCount)}
+            </strong>
+
+            <span class="summary-label">
+              thèmes identifiés
+            </span>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <strong class="summary-value">
+              ${cohesion.toFixed(0)} %
+            </strong>
+
+            <span class="summary-label">
+              cohésion moyenne du groupe
+            </span>
+
+          </div>
+        `;
+
+    }
+
+
+    function renderPositionSummary() {
+
+      const counts =
+        countPositions();
+
+
+      document.getElementById(
+        "positionGrid"
+      ).innerHTML =
+        `
+          <div class="position-card position-Pour">
+
+            <strong>
+              ${formatNumber(counts.Pour)}
+            </strong>
+
+            <span>
+              scrutins majoritairement POUR
+            </span>
+
+          </div>
+
+
+          <div class="position-card position-Contre">
+
+            <strong>
+              ${formatNumber(counts.Contre)}
+            </strong>
+
+            <span>
+              scrutins majoritairement CONTRE
+            </span>
+
+          </div>
+
+
+          <div class="position-card position-Abstention">
+
+            <strong>
+              ${formatNumber(counts.Abstention)}
+            </strong>
+
+            <span>
+              scrutins majoritairement en ABSTENTION
+            </span>
+
+          </div>
+
+
+          <div class="position-card position-Partagé">
+
+            <strong>
+              ${
+                formatNumber(
+                  (
+                    counts.Partagé
+                    || 0
+                  )
+                  +
+                  (
+                    counts["Non-votant"]
+                    || 0
+                  )
+                )
+              }
+            </strong>
+
+            <span>
+              votes partagés ou non-votants
+            </span>
+
+          </div>
+        `;
+
+    }
+
+
+    /* ======================================================
+       THEMES
+    ====================================================== */
+
+
+    function renderThemes() {
+
+      const container =
+        document.getElementById(
+          "themesGrid"
+        );
+
+
+      const themes =
+        groupData
+          ?.themes
+        || [];
+
+
+      container.innerHTML =
+        `
+          <button
+            class="
+              theme-button
+              ${
+                !activeTheme
+                  ? "active"
+                  : ""
+              }
+            "
+            data-theme=""
+          >
+            Tous les sujets
+            ·
+            ${
+              formatNumber(
+                groupData
+                  ?.scrutins
+                  ?.length
+                || 0
+              )
+            }
+          </button>
+
+          ${
+            themes.map(
+              theme => `
+                <button
+                  class="
+                    theme-button
+                    ${
+                      activeTheme
+                      ===
+                      theme.theme
+                        ? "active"
+                        : ""
+                    }
+                  "
+                  data-theme="${
+                    escapeHtml(
+                      theme.theme
+                    )
+                  }"
+                >
+                  ${
+                    escapeHtml(
+                      theme.theme
+                    )
+                  }
+                  ·
+                  ${
+                    formatNumber(
+                      theme.scrutins
+                    )
+                  }
+                </button>
+              `
+            ).join("")
+          }
+        `;
+
+
+      container
+        .querySelectorAll(
+          "[data-theme]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                activeTheme =
+                  button.dataset
+                    .theme
+                  || "";
+
+
+                renderThemes();
+
+                renderVotes();
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ======================================================
+       VOTES
+    ====================================================== */
+
+
+    function getFilteredVotes() {
+
+      const query =
+        normalize(
+          document.getElementById(
+            "searchFilter"
+          ).value
+        );
+
+
+      const position =
+        document.getElementById(
+          "positionFilter"
+        ).value;
+
+
+      const sort =
+        document.getElementById(
+          "sortFilter"
+        ).value;
+
+
+      let votes =
+        (
+          groupData?.scrutins
+          || []
+        ).filter(
+          scrutin => {
+
+            const themeOk =
+              !activeTheme
+              ||
+              scrutin.theme
+              ===
+              activeTheme;
+
+
+            const positionOk =
+              !position
+              ||
+              scrutin.position
+              ===
+              position;
+
+
+            const searchable =
+              normalize(
+                [
+                  scrutin.sujet,
+                  scrutin.titre,
+                  scrutin.description,
+                  scrutin.theme
+                ].join(" ")
+              );
+
+
+            const queryOk =
+              !query
+              ||
+              searchable.includes(
+                query
+              );
+
+
+            return (
+              themeOk
+              &&
+              positionOk
+              &&
+              queryOk
+            );
+
+          }
+        );
+
+
+      votes =
+        votes.slice();
+
+
+      if (
+        sort === "old"
+      ) {
+
+        votes.sort(
+          (
+            a,
+            b
+          ) =>
+            String(
+              a.date || ""
+            ).localeCompare(
+              String(
+                b.date || ""
+              )
+            )
+        );
+
+      }
+
+      else if (
+        sort
+        === "cohesion"
+      ) {
+
+        votes.sort(
+          (
+            a,
+            b
+          ) =>
+            Number(
+              b.cohesion_pct
+              || 0
+            )
+            -
+            Number(
+              a.cohesion_pct
+              || 0
+            )
+        );
+
+      }
+
+      else {
+
+        votes.sort(
+          (
+            a,
+            b
+          ) =>
+            String(
+              b.date || ""
+            ).localeCompare(
+              String(
+                a.date || ""
+              )
+            )
+        );
+
+      }
+
+
+      return votes;
+
+    }
+
+
+    function renderVotes() {
+
+      const votes =
+        getFilteredVotes();
+
+
+      const container =
+        document.getElementById(
+          "votesList"
+        );
+
+
+      document.getElementById(
+        "resultsInfo"
+      ).textContent =
+        `${formatNumber(votes.length)} scrutin(s) affiché(s).`;
+
+
+      if (!votes.length) {
+
+        container.innerHTML =
+          `
+            <div class="empty">
+              Aucun vote ne correspond aux filtres sélectionnés.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        votes.map(
+          scrutin => {
+
+            const subject =
+              scrutin.sujet
+              || scrutin.titre
+              || "Scrutin";
+
+
+            const description =
+              scrutin.description
+              || scrutin.titre
+              || "";
+
+
+            const position =
+              scrutin.position
+              || "Partagé";
+
+
+            const positionClass =
+              `position-text-${position}`;
+
+
+            const href =
+              linkWithYear(
+                "scrutin.html",
+                {
+                  uid:
+                    scrutin.uid
+                }
+              );
+
+
+            const cohesion =
+              Number(
+                scrutin.cohesion_pct
+                || 0
+              );
+
+
+            return `
+              <a
+                href="${
+                  escapeHtml(
+                    href
+                  )
+                }"
+                class="vote-card"
+              >
+
+                <div class="vote-meta">
+
+                  <span>
+                    ${
+                      escapeHtml(
+                        formatDate(
+                          scrutin.date
+                        )
+                      )
+                    }
+                  </span>
+
+                  <span>
+                    ·
+                  </span>
+
+                  <span class="theme-badge">
+                    ${
+                      escapeHtml(
+                        scrutin.theme
+                        || "Autres"
+                      )
+                    }
+                  </span>
+
+                </div>
+
+
+                <h3 class="vote-title">
+
+                  ${
+                    escapeHtml(
+                      subject
+                    )
+                  }
+
+                </h3>
+
+
+                ${
+                  description
+                  &&
+                  normalize(
+                    description
+                  )
+                  !==
+                  normalize(
+                    subject
+                  )
+
+                    ? `
+                      <div class="vote-description">
+                        ${
+                          escapeHtml(
+                            description
+                          )
+                        }
+                      </div>
+                    `
+
+                    : ""
+                }
+
+
+                <div class="vote-bottom">
+
+                  <span
+                    class="
+                      vote-position
+                      ${positionClass}
+                    "
+                  >
+                    ${
+                      escapeHtml(
+                        position
+                      )
+                    }
+                  </span>
+
+
+                  <div class="vote-breakdown">
+
+                    <span class="breakdown-item">
+                      Pour :
+                      ${formatNumber(scrutin.pour)}
+                    </span>
+
+                    <span class="breakdown-item">
+                      Contre :
+                      ${formatNumber(scrutin.contre)}
+                    </span>
+
+                    <span class="breakdown-item">
+                      Abst. :
+                      ${formatNumber(scrutin.abstention)}
+                    </span>
+
+                    <span class="breakdown-item">
+                      Non-votant :
+                      ${formatNumber(scrutin.non_votant)}
+                    </span>
+
+                  </div>
+
+
+                  <div class="cohesion">
+
+                    <strong>
+                      ${cohesion.toFixed(0)} %
+                    </strong>
+
+                    cohésion
+
+                  </div>
+
+                </div>
+
+              </a>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    function bindFilters() {
+
+      document.getElementById(
+        "searchFilter"
+      ).addEventListener(
+        "input",
+        renderVotes
+      );
+
+
+      document.getElementById(
+        "positionFilter"
+      ).addEventListener(
+        "change",
+        renderVotes
+      );
+
+
+      document.getElementById(
+        "sortFilter"
+      ).addEventListener(
+        "change",
+        renderVotes
+      );
+
+    }
+
+
+    /* ======================================================
+       INIT
+    ====================================================== */
+
+
+    async function init() {
+
+      try {
+
+        groupName =
+          getParam(
+            "name"
+          );
+
+
+        if (!groupName) {
+
+          throw new Error(
+            "Aucun groupe politique indiqué."
+          );
+
+        }
+
+
+        const [
+          indexPayload,
+          compositionPayload,
+          groupesPayload
+        ] =
+          await Promise.all([
+
+            loadJson(
+              "./data/current/index.json"
+            ),
+
+            loadJson(
+              "./data/current/composition.json"
+            ),
+
+            loadJson(
+              "./data/current/groupes.json"
+            )
+
+          ]);
+
+
+        indexData =
+          indexPayload;
+
+
+        compositionData =
+          compositionPayload;
+
+
+        groupesData =
+          groupesPayload;
+
+
+        selectedYear =
+          determineSelectedYear();
+
+
+        findGroupData();
+
+
+        if (!groupData) {
+
+          throw new Error(
+            `Aucune donnée trouvée pour ${groupName}.`
+          );
+
+        }
+
+
+        renderYearSwitch();
+
+        renderHeader();
+
+        renderSummary();
+
+        renderPositionSummary();
+
+        renderThemes();
+
+        renderVotes();
+
+        bindFilters();
+
+      }
+
+      catch(error) {
+
+        console.error(
+          error
+        );
+
+
+        document.querySelector(
+          "main"
+        ).innerHTML =
+          `
+            <section class="panel">
+
+              <div class="error">
+
+                Impossible de charger cette fiche de groupe.
+
+                <br><br>
+
+                ${
+                  escapeHtml(
+                    error.message
+                    || ""
+                  )
+                }
+
+              </div>
+
+            </section>
+          `;
+
+      }
+
+    }
+
+
+    init();
+
+  </script>
 
 </body>
 </html>
