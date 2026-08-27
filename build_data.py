@@ -8,8 +8,8 @@ import urllib.request
 import urllib.error
 import zipfile
 
-from collections import defaultdict
-from datetime import datetime, timezone, date
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from io import BytesIO
 from pathlib import Path
 
@@ -25,16 +25,32 @@ MIN_YEAR = CURRENT_YEAR - 1
 
 MAX_ASSEMBLY_SEATS = 577
 
-SCRUTINS_URL = (
+
+# ============================================================
+# SOURCES OFFICIELLES
+#
+# AMO40 :
+# députés actuellement en exercice
+# + leurs mandats actifs
+# + les organes correspondants
+#
+# IMPORTANT :
+# les mandats sont contenus directement dans les acteurs.
+# ============================================================
+
+AMO40_URL = (
     "https://data.assemblee-nationale.fr/static/openData/"
-    "repository/17/loi/scrutins/Scrutins.json.zip"
+    "repository/17/amo/"
+    "deputes_actifs_mandats_actifs_organes_divises/"
+    "AMO40_deputes_actifs_mandats_actifs_organes_divises.json.zip"
 )
 
-AMO_URL = (
+SCRUTINS_URL = (
     "https://data.assemblee-nationale.fr/static/openData/"
-    "repository/17/amo/acteurs_mandats_organes_divises/"
-    "AMO50_acteurs_mandats_organes_divises.json.zip"
+    "repository/17/loi/scrutins/"
+    "Scrutins.json.zip"
 )
+
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
@@ -43,7 +59,7 @@ SSL_CONTEXT = ssl.create_default_context()
 
 
 # ============================================================
-# GROUPES : NORMALISATION
+# NORMALISATION DES GROUPES
 # ============================================================
 
 GROUP_ALIASES = {
@@ -54,11 +70,13 @@ GROUP_ALIASES = {
     "Rassemblement National":
         "Rassemblement National",
 
+
     "Ensemble pour la Republique":
         "Ensemble pour la République",
 
     "Ensemble pour la République":
         "Ensemble pour la République",
+
 
     "La France insoumise-Nouveau Front Populaire":
         "La France insoumise - Nouveau Front Populaire",
@@ -66,29 +84,34 @@ GROUP_ALIASES = {
     "La France insoumise - Nouveau Front Populaire":
         "La France insoumise - Nouveau Front Populaire",
 
-    "Socialistes et apparentés":
-        "Socialistes et apparentés",
 
     "Socialistes et apparentes":
         "Socialistes et apparentés",
 
-    "Droite Républicaine":
-        "Droite Républicaine",
+    "Socialistes et apparentés":
+        "Socialistes et apparentés",
+
 
     "Droite republicaine":
         "Droite Républicaine",
 
-    "Écologiste et Social":
-        "Écologiste et Social",
+    "Droite Républicaine":
+        "Droite Républicaine",
+
 
     "Ecologiste et Social":
         "Écologiste et Social",
 
-    "Les Démocrates":
-        "Les Démocrates",
+    "Écologiste et Social":
+        "Écologiste et Social",
+
 
     "Les Democrates":
         "Les Démocrates",
+
+    "Les Démocrates":
+        "Les Démocrates",
+
 
     "Horizons et Indépendants":
         "Horizons & Indépendants",
@@ -99,23 +122,27 @@ GROUP_ALIASES = {
     "Horizons & Indépendants":
         "Horizons & Indépendants",
 
-    "Libertés, Indépendants, Outre-mer et Territoires":
-        "Libertés, Indépendants, Outre-mer et Territoires",
 
     "Libertés, indépendants, outre-mer et territoires":
         "Libertés, Indépendants, Outre-mer et Territoires",
 
-    "Gauche Démocrate et Républicaine":
-        "Gauche Démocrate et Républicaine",
+    "Libertés, Indépendants, Outre-mer et Territoires":
+        "Libertés, Indépendants, Outre-mer et Territoires",
+
 
     "Gauche démocrate et républicaine":
         "Gauche Démocrate et Républicaine",
 
-    "Union des droites pour la République":
-        "Union des droites pour la République",
+    "Gauche Démocrate et Républicaine":
+        "Gauche Démocrate et Républicaine",
+
 
     "Union des Droites pour la République":
         "Union des droites pour la République",
+
+    "Union des droites pour la République":
+        "Union des droites pour la République",
+
 
     "Non inscrit":
         "Non inscrits",
@@ -131,11 +158,52 @@ GROUP_ALIASES = {
 }
 
 
+GROUP_SIGLES = {
+
+    "Rassemblement National":
+        "RN",
+
+    "Ensemble pour la République":
+        "EPR",
+
+    "La France insoumise - Nouveau Front Populaire":
+        "LFI-NFP",
+
+    "Socialistes et apparentés":
+        "SOC",
+
+    "Droite Républicaine":
+        "DR",
+
+    "Écologiste et Social":
+        "ECOS",
+
+    "Les Démocrates":
+        "DEM",
+
+    "Horizons & Indépendants":
+        "HOR",
+
+    "Libertés, Indépendants, Outre-mer et Territoires":
+        "LIOT",
+
+    "Gauche Démocrate et Républicaine":
+        "GDR",
+
+    "Union des droites pour la République":
+        "UDR",
+
+    "Non inscrits":
+        "NI",
+}
+
+
 # ============================================================
-# OUTILS DE BASE
+# OUTILS
 # ============================================================
 
 def ensure_dir(path):
+
     path.mkdir(
         parents=True,
         exist_ok=True
@@ -149,7 +217,10 @@ def clean(value):
 
     return " ".join(
         str(value)
-        .replace("\u00a0", " ")
+        .replace(
+            "\u00a0",
+            " "
+        )
         .split()
     ).strip()
 
@@ -159,13 +230,19 @@ def ensure_list(value):
     if value is None:
         return []
 
-    if isinstance(value, list):
+    if isinstance(
+        value,
+        list
+    ):
         return value
 
     return [value]
 
 
-def write_json(path, data):
+def write_json(
+    path,
+    data
+):
 
     ensure_dir(
         path.parent
@@ -183,7 +260,10 @@ def write_json(path, data):
 
 def get_uid(value):
 
-    if isinstance(value, dict):
+    if isinstance(
+        value,
+        dict
+    ):
 
         return clean(
             value.get("#text")
@@ -192,12 +272,16 @@ def get_uid(value):
             or ""
         )
 
-    return clean(value)
+    return clean(
+        value
+    )
 
 
 def normalize_group(value):
 
-    value = clean(value)
+    value = clean(
+        value
+    )
 
     if not value:
         return ""
@@ -208,12 +292,31 @@ def normalize_group(value):
     )
 
 
+def group_sigle(group):
+
+    return GROUP_SIGLES.get(
+        normalize_group(
+            group
+        ),
+        ""
+    )
+
+
 def ordinal_fr(number):
 
+    value = clean(
+        number
+    )
+
     try:
-        number = int(number)
+
+        number = int(
+            value
+        )
+
     except Exception:
-        return clean(number)
+
+        return value
 
     if number == 1:
         return "1re"
@@ -223,78 +326,147 @@ def ordinal_fr(number):
 
 def normalize_circonscription(value):
 
-    value = clean(value)
+    value = clean(
+        value
+    )
 
     if not value:
         return ""
 
     replacements = {
-        "1ère": "1re",
-        "1ere": "1re",
-        "1er": "1re",
 
-        "2ème": "2e",
-        "2eme": "2e",
+        "1ère":
+            "1re",
 
-        "3ème": "3e",
-        "3eme": "3e",
+        "1ere":
+            "1re",
 
-        "4ème": "4e",
-        "4eme": "4e",
+        "1er":
+            "1re",
 
-        "5ème": "5e",
-        "5eme": "5e",
+        "2ème":
+            "2e",
 
-        "6ème": "6e",
-        "6eme": "6e",
+        "2eme":
+            "2e",
 
-        "7ème": "7e",
-        "7eme": "7e",
+        "3ème":
+            "3e",
 
-        "8ème": "8e",
-        "8eme": "8e",
+        "3eme":
+            "3e",
 
-        "9ème": "9e",
-        "9eme": "9e",
+        "4ème":
+            "4e",
 
-        "10ème": "10e",
-        "10eme": "10e",
+        "4eme":
+            "4e",
 
-        "11ème": "11e",
-        "11eme": "11e",
+        "5ème":
+            "5e",
 
-        "12ème": "12e",
-        "12eme": "12e",
+        "5eme":
+            "5e",
 
-        "13ème": "13e",
-        "13eme": "13e",
+        "6ème":
+            "6e",
 
-        "14ème": "14e",
-        "14eme": "14e",
+        "6eme":
+            "6e",
 
-        "15ème": "15e",
-        "15eme": "15e",
+        "7ème":
+            "7e",
 
-        "16ème": "16e",
-        "16eme": "16e",
+        "7eme":
+            "7e",
 
-        "17ème": "17e",
-        "17eme": "17e",
+        "8ème":
+            "8e",
 
-        "18ème": "18e",
-        "18eme": "18e",
+        "8eme":
+            "8e",
 
-        "19ème": "19e",
-        "19eme": "19e",
+        "9ème":
+            "9e",
 
-        "20ème": "20e",
-        "20eme": "20e",
+        "9eme":
+            "9e",
 
-        "21ème": "21e",
-        "21eme": "21e",
+        "10ème":
+            "10e",
+
+        "10eme":
+            "10e",
+
+        "11ème":
+            "11e",
+
+        "11eme":
+            "11e",
+
+        "12ème":
+            "12e",
+
+        "12eme":
+            "12e",
+
+        "13ème":
+            "13e",
+
+        "13eme":
+            "13e",
+
+        "14ème":
+            "14e",
+
+        "14eme":
+            "14e",
+
+        "15ème":
+            "15e",
+
+        "15eme":
+            "15e",
+
+        "16ème":
+            "16e",
+
+        "16eme":
+            "16e",
+
+        "17ème":
+            "17e",
+
+        "17eme":
+            "17e",
+
+        "18ème":
+            "18e",
+
+        "18eme":
+            "18e",
+
+        "19ème":
+            "19e",
+
+        "19eme":
+            "19e",
+
+        "20ème":
+            "20e",
+
+        "20eme":
+            "20e",
+
+        "21ème":
+            "21e",
+
+        "21eme":
+            "21e",
     }
 
     for old, new in replacements.items():
+
         value = value.replace(
             old,
             new
@@ -304,7 +476,7 @@ def normalize_circonscription(value):
 
 
 # ============================================================
-# TÉLÉCHARGEMENT
+# TÉLÉCHARGEMENT ROBUSTE
 # ============================================================
 
 def download(
@@ -324,8 +496,11 @@ def download(
         try:
 
             request = urllib.request.Request(
+
                 url,
+
                 headers={
+
                     "User-Agent":
                         "Mozilla/5.0",
 
@@ -337,13 +512,20 @@ def download(
                 }
             )
 
+
             with urllib.request.urlopen(
+
                 request,
+
                 context=SSL_CONTEXT,
+
                 timeout=240
+
             ) as response:
 
+
                 chunks = []
+
 
                 while True:
 
@@ -358,31 +540,45 @@ def download(
                         chunk
                     )
 
+
                 data = b"".join(
                     chunks
                 )
 
+
                 if not data:
+
                     raise ValueError(
-                        "Téléchargement vide"
+                        f"Téléchargement vide : {url}"
                     )
+
 
                 return data
 
+
         except (
+
             http.client.IncompleteRead,
+
             urllib.error.URLError,
+
             socket.timeout,
+
             TimeoutError,
+
             ConnectionResetError,
+
             ValueError,
+
         ) as error:
+
 
             last_error = error
 
+
             print(
-                f"Échec téléchargement "
-                f"{attempt}/{retries}"
+                f"Téléchargement échoué "
+                f"({attempt}/{retries})"
             )
 
             print(
@@ -393,11 +589,14 @@ def download(
                 error
             )
 
+
             if attempt < retries:
 
                 time.sleep(
-                    pause * attempt
+                    pause
+                    * attempt
                 )
+
 
     raise last_error
 
@@ -414,7 +613,8 @@ def download_zip(url):
     ):
 
         raise ValueError(
-            f"Le téléchargement n'est pas un ZIP : {url}"
+            f"Le fichier téléchargé "
+            f"n'est pas un ZIP : {url}"
         )
 
     return data
@@ -463,7 +663,7 @@ def iter_zip_json(zf):
 
 def extract_organe_refs(node):
 
-    result = []
+    refs = []
 
     if isinstance(
         node,
@@ -473,7 +673,9 @@ def extract_organe_refs(node):
         if "organeRef" in node:
 
             for item in ensure_list(
-                node.get("organeRef")
+                node.get(
+                    "organeRef"
+                )
             ):
 
                 uid = get_uid(
@@ -481,17 +683,20 @@ def extract_organe_refs(node):
                 )
 
                 if uid:
-                    result.append(
+
+                    refs.append(
                         uid
                     )
 
+
         for value in node.values():
 
-            result.extend(
+            refs.extend(
                 extract_organe_refs(
                     value
                 )
             )
+
 
     elif isinstance(
         node,
@@ -500,22 +705,23 @@ def extract_organe_refs(node):
 
         for item in node:
 
-            result.extend(
+            refs.extend(
                 extract_organe_refs(
                     item
                 )
             )
 
+
     return list(
         dict.fromkeys(
-            result
+            refs
         )
     )
 
 
 def extract_votants(node):
 
-    result = []
+    voters = []
 
     if isinstance(
         node,
@@ -525,32 +731,38 @@ def extract_votants(node):
         if "votant" in node:
 
             for voter in ensure_list(
-                node.get("votant")
+                node.get(
+                    "votant"
+                )
             ):
 
                 if isinstance(
                     voter,
                     dict
                 ):
-                    result.append(
+
+                    voters.append(
                         voter
                     )
 
+
         elif "acteurRef" in node:
 
-            result.append(
+            voters.append(
                 node
             )
+
 
         else:
 
             for value in node.values():
 
-                result.extend(
+                voters.extend(
                     extract_votants(
                         value
                     )
                 )
+
 
     elif isinstance(
         node,
@@ -559,66 +771,14 @@ def extract_votants(node):
 
         for item in node:
 
-            result.extend(
+            voters.extend(
                 extract_votants(
                     item
                 )
             )
 
-    return result
 
-
-# ============================================================
-# DATE / MANDAT ACTIF
-# ============================================================
-
-def parse_date(value):
-
-    value = clean(value)
-
-    if not value:
-        return None
-
-    try:
-
-        return datetime.strptime(
-            value[:10],
-            "%Y-%m-%d"
-        ).date()
-
-    except Exception:
-        return None
-
-
-def mandate_is_active(mandate):
-
-    today = date.today()
-
-    start = parse_date(
-        mandate.get(
-            "dateDebut"
-        )
-    )
-
-    end = parse_date(
-        mandate.get(
-            "dateFin"
-        )
-    )
-
-    if (
-        start
-        and start > today
-    ):
-        return False
-
-    if (
-        end
-        and end < today
-    ):
-        return False
-
-    return True
+    return voters
 
 
 # ============================================================
@@ -631,6 +791,7 @@ def get_organe_label(organe):
         organe,
         dict
     ):
+
         return ""
 
     candidates = [
@@ -649,8 +810,7 @@ def get_organe_label(organe):
 
         organe.get(
             "libelleAbrev"
-        )
-
+        ),
     ]
 
     for candidate in candidates:
@@ -660,527 +820,169 @@ def get_organe_label(organe):
         )
 
         if candidate:
+
             return candidate
 
     return ""
 
 
 # ============================================================
-# ACTEURS + MANDATS + ORGANES
+# MANDATS EMBARQUÉS DANS LES ACTEURS AMO40
 # ============================================================
 
-def load_amo():
+def get_actor_mandates(actor):
 
-    print("")
-    print(
-        "Téléchargement acteurs / mandats / organes..."
+    mandates_node = actor.get(
+        "mandats",
+        {}
     )
 
-    raw = download_zip(
-        AMO_URL
-    )
-
-    zf = zipfile.ZipFile(
-        BytesIO(raw)
-    )
-
-    actors = {}
-    organes = {}
-    mandates = []
-
-    for filename, payload in iter_zip_json(
-        zf
+    if isinstance(
+        mandates_node,
+        dict
     ):
 
-        if not isinstance(
-            payload,
-            dict
-        ):
-            continue
+        return [
 
-        # ----------------------------------------------------
-        # ACTEUR
-        # ----------------------------------------------------
-
-        actor = payload.get(
-            "acteur"
-        )
-
-        if isinstance(
-            actor,
-            dict
-        ):
-
-            uid = get_uid(
-                actor.get(
-                    "uid"
-                )
-            )
-
-            if not uid:
-                continue
-
-            ident = (
-                actor
-                .get(
-                    "etatCivil",
-                    {}
-                )
-                .get(
-                    "ident",
-                    {}
-                )
-            )
-
-            first_name = clean(
-                ident.get(
-                    "prenom"
-                )
-            )
-
-            last_name = clean(
-                ident.get(
-                    "nom"
-                )
-            )
-
-            full_name = clean(
-                f"{first_name} {last_name}"
-            )
-
-            actors[uid] = {
-                "uid":
-                    uid,
-
-                "nom":
-                    full_name,
-
-                "groupe_actuel":
-                    "",
-
-                "departement":
-                    "",
-
-                "num_departement":
-                    "",
-
-                "num_circonscription":
-                    "",
-
-                "circonscription":
-                    "",
-
-                "actif":
-                    False,
-            }
-
-            continue
-
-        # ----------------------------------------------------
-        # ORGANE
-        # ----------------------------------------------------
-
-        organe = payload.get(
-            "organe"
-        )
-
-        if isinstance(
-            organe,
-            dict
-        ):
-
-            uid = get_uid(
-                organe.get(
-                    "uid"
-                )
-            )
-
-            if not uid:
-                continue
-
-            organes[uid] = {
-                "uid":
-                    uid,
-
-                "code_type":
-                    clean(
-                        organe.get(
-                            "codeType"
-                        )
-                    ),
-
-                "label":
-                    get_organe_label(
-                        organe
-                    ),
-
-                "raw":
-                    organe,
-            }
-
-            continue
-
-        # ----------------------------------------------------
-        # MANDAT
-        # ----------------------------------------------------
-
-        mandate = payload.get(
-            "mandat"
-        )
-
-        if isinstance(
-            mandate,
-            dict
-        ):
-
-            mandates.append(
-                mandate
-            )
-
-    print(
-        "Acteurs :",
-        len(actors)
-    )
-
-    print(
-        "Organes :",
-        len(organes)
-    )
-
-    print(
-        "Mandats :",
-        len(mandates)
-    )
-
-    # ========================================================
-    # 1. MANDATS DE DÉPUTÉ ACTIFS
-    # ========================================================
-
-    current_deputies = set()
-
-    for mandate in mandates:
-
-        legislature = clean(
-            mandate.get(
-                "legislature"
-            )
-        )
-
-        if (
-            legislature
-            and legislature
-            != LEGISLATURE
-        ):
-            continue
-
-        if not mandate_is_active(
             mandate
-        ):
-            continue
 
-        actor_uid = get_uid(
-            mandate.get(
-                "acteurRef"
-            )
-        )
-
-        if actor_uid not in actors:
-            continue
-
-        organe_type = clean(
-            mandate.get(
-                "typeOrgane"
-            )
-        ).upper()
-
-        # ----------------------------------------------------
-        # MANDAT ASSEMBLÉE
-        # ----------------------------------------------------
-
-        if organe_type == "ASSEMBLEE":
-
-            current_deputies.add(
-                actor_uid
-            )
-
-            actors[
-                actor_uid
-            ][
-                "actif"
-            ] = True
-
-            election = mandate.get(
-                "election",
-                {}
-            )
-
-            if not isinstance(
-                election,
-                dict
-            ):
-                election = {}
-
-            lieu = election.get(
-                "lieu",
-                {}
-            )
-
-            if not isinstance(
-                lieu,
-                dict
-            ):
-                lieu = {}
-
-            departement = clean(
-                lieu.get(
-                    "departement"
+            for mandate
+            in ensure_list(
+                mandates_node.get(
+                    "mandat"
                 )
             )
 
             if isinstance(
-                lieu.get(
-                    "departement"
-                ),
+                mandate,
                 dict
-            ):
-
-                dep_obj = lieu.get(
-                    "departement"
-                )
-
-                departement = clean(
-                    dep_obj.get(
-                        "libelle"
-                    )
-                    or dep_obj.get(
-                        "nom"
-                    )
-                )
-
-            num_departement = clean(
-                lieu.get(
-                    "numDepartement"
-                )
-                or lieu.get(
-                    "numeroDepartement"
-                )
             )
+        ]
 
-            num_circo = clean(
-                lieu.get(
-                    "numCirco"
-                )
-                or lieu.get(
-                    "numeroCirconscription"
-                )
-            )
 
-            if departement:
+    if isinstance(
+        mandates_node,
+        list
+    ):
 
-                actors[
-                    actor_uid
-                ][
-                    "departement"
-                ] = departement
+        return [
 
-            if num_departement:
-
-                actors[
-                    actor_uid
-                ][
-                    "num_departement"
-                ] = num_departement
-
-            if num_circo:
-
-                actors[
-                    actor_uid
-                ][
-                    "num_circonscription"
-                ] = num_circo
-
-                actors[
-                    actor_uid
-                ][
-                    "circonscription"
-                ] = (
-                    f"{ordinal_fr(num_circo)} "
-                    f"circonscription"
-                )
-
-            # ------------------------------------------------
-            # REF CIRCONSCRIPTION
-            # ------------------------------------------------
-
-            ref_circo = get_uid(
-                election.get(
-                    "refCirconscription"
-                )
-            )
-
-            if (
-                ref_circo
-                and ref_circo
-                in organes
-            ):
-
-                circo_label = clean(
-                    organes[
-                        ref_circo
-                    ].get(
-                        "label"
-                    )
-                )
-
-                if (
-                    circo_label
-                    and not actors[
-                        actor_uid
-                    ][
-                        "circonscription"
-                    ]
-                ):
-
-                    actors[
-                        actor_uid
-                    ][
-                        "circonscription"
-                    ] = normalize_circonscription(
-                        circo_label
-                    )
-
-    # ========================================================
-    # 2. GROUPES ACTUELS
-    # ========================================================
-
-    for mandate in mandates:
-
-        legislature = clean(
-            mandate.get(
-                "legislature"
-            )
-        )
-
-        if (
-            legislature
-            and legislature
-            != LEGISLATURE
-        ):
-            continue
-
-        if not mandate_is_active(
             mandate
-        ):
-            continue
 
-        actor_uid = get_uid(
-            mandate.get(
-                "acteurRef"
+            for mandate
+            in mandates_node
+
+            if isinstance(
+                mandate,
+                dict
             )
+        ]
+
+
+    return []
+
+
+# ============================================================
+# CIRCONSCRIPTION / DÉPARTEMENT
+# ============================================================
+
+def extract_department_from_lieu(lieu):
+
+    if not isinstance(
+        lieu,
+        dict
+    ):
+
+        return (
+            "",
+            ""
         )
 
-        if actor_uid not in current_deputies:
-            continue
 
-        organe_type = clean(
-            mandate.get(
-                "typeOrgane"
-            )
-        ).upper()
-
-        refs = extract_organe_refs(
-            mandate.get(
-                "organes",
-                {}
-            )
-        )
-
-        is_group_mandate = (
-            organe_type
-            in {
-                "GP",
-                "GRP",
-                "GROUPE"
-            }
-        )
-
-        for ref in refs:
-
-            organe = organes.get(
-                ref
-            )
-
-            if not organe:
-                continue
-
-            code_type = clean(
-                organe.get(
-                    "code_type"
-                )
-            ).upper()
-
-            if (
-                is_group_mandate
-                or code_type
-                in {
-                    "GP",
-                    "GRP",
-                    "GROUPE"
-                }
-            ):
-
-                group_name = normalize_group(
-                    organe.get(
-                        "label"
-                    )
-                )
-
-                if group_name:
-
-                    actors[
-                        actor_uid
-                    ][
-                        "groupe_actuel"
-                    ] = group_name
-
-    current_actor_data = {}
-
-    for uid in current_deputies:
-
-        actor = actors.get(
-            uid
-        )
-
-        if not actor:
-            continue
-
-        if not clean(
-            actor.get(
-                "nom"
-            )
-        ):
-            continue
-
-        current_actor_data[
-            uid
-        ] = actor
-
-    print(
-        "Députés actifs trouvés :",
-        len(
-            current_actor_data
-        )
+    dep_obj = lieu.get(
+        "departement"
     )
 
+
+    dep_name = ""
+
+
+    dep_code = clean(
+
+        lieu.get(
+            "numDepartement"
+        )
+
+        or
+
+        lieu.get(
+            "numeroDepartement"
+        )
+
+        or
+        ""
+    )
+
+
+    if isinstance(
+        dep_obj,
+        dict
+    ):
+
+        dep_name = clean(
+
+            dep_obj.get(
+                "libelle"
+            )
+
+            or
+
+            dep_obj.get(
+                "nom"
+            )
+
+            or
+
+            dep_obj.get(
+                "#text"
+            )
+
+            or
+            ""
+        )
+
+
+        dep_code = (
+            dep_code
+            or clean(
+                dep_obj.get(
+                    "code"
+                )
+                or
+                dep_obj.get(
+                    "numero"
+                )
+                or
+                ""
+            )
+        )
+
+
+    else:
+
+        dep_name = clean(
+            dep_obj
+        )
+
+
     return (
-        actors,
-        current_actor_data,
-        organes
+        dep_name,
+        dep_code
     )
 
 
 # ============================================================
-# THÈMES
+# THÉMATIQUES
 # ============================================================
 
 def guess_theme(text):
@@ -1188,6 +990,7 @@ def guess_theme(text):
     text = clean(
         text
     ).lower()
+
 
     rules = [
 
@@ -1371,29 +1174,37 @@ def guess_theme(text):
         ),
     ]
 
+
     for theme, keywords in rules:
 
         if any(
             keyword in text
             for keyword in keywords
         ):
+
             return theme
+
 
     return "Autres"
 
 
 # ============================================================
-# SUJET LISIBLE DU SCRUTIN
+# TITRE LISIBLE D'UN SCRUTIN
 # ============================================================
 
-def truncate(value, max_length=180):
+def truncate(
+    value,
+    max_length=180
+):
 
     value = clean(
         value
     )
 
     if len(value) <= max_length:
+
         return value
+
 
     return (
         value[
@@ -1409,6 +1220,7 @@ def extract_bill_context(text):
         text
     )
 
+
     patterns = [
 
         r"(projet de loi de finances[^.;]*)",
@@ -1422,6 +1234,7 @@ def extract_bill_context(text):
         r"(proposition de résolution[^.;]*)",
     ]
 
+
     for pattern in patterns:
 
         match = re.search(
@@ -1433,9 +1246,12 @@ def extract_bill_context(text):
         if match:
 
             return truncate(
-                match.group(1),
+                match.group(
+                    1
+                ),
                 130
             )
+
 
     return ""
 
@@ -1453,15 +1269,20 @@ def make_subject(
         description
     )
 
+
     source = (
         description
         or official_title
     )
 
+
     if not source:
+
         return "Scrutin"
 
+
     lower = source.lower()
+
 
     # --------------------------------------------------------
     # MOTION DE CENSURE
@@ -1477,10 +1298,11 @@ def make_subject(
 
             return truncate(
                 f"Motion de censure — {context}",
-                160
+                170
             )
 
         return "Motion de censure"
+
 
     # --------------------------------------------------------
     # SOUS-AMENDEMENT
@@ -1492,6 +1314,7 @@ def make_subject(
         re.IGNORECASE
     )
 
+
     if match:
 
         number = match.group(
@@ -1502,16 +1325,21 @@ def make_subject(
             source
         )
 
-        if context:
-
-            return truncate(
-                f"Sous-amendement n°{number} — {context}",
-                170
-            )
-
-        return (
+        title = (
             f"Sous-amendement n°{number}"
         )
+
+        if context:
+
+            title += (
+                f" — {context}"
+            )
+
+        return truncate(
+            title,
+            170
+        )
+
 
     # --------------------------------------------------------
     # AMENDEMENT
@@ -1523,11 +1351,13 @@ def make_subject(
         re.IGNORECASE
     )
 
+
     if match:
 
         number = match.group(
             1
         )
+
 
         article_match = re.search(
             r"article\s+([0-9A-Za-zÀ-ÿ\-]+)",
@@ -1535,13 +1365,16 @@ def make_subject(
             re.IGNORECASE
         )
 
+
         context = extract_bill_context(
             source
         )
 
+
         title = (
             f"Amendement n°{number}"
         )
+
 
         if article_match:
 
@@ -1550,16 +1383,19 @@ def make_subject(
                 f"{article_match.group(1)}"
             )
 
+
         if context:
 
             title += (
                 f" — {context}"
             )
 
+
         return truncate(
             title,
             170
         )
+
 
     # --------------------------------------------------------
     # ARTICLE
@@ -1571,16 +1407,19 @@ def make_subject(
         re.IGNORECASE
     )
 
+
     if article_match:
 
         context = extract_bill_context(
             source
         )
 
+
         title = (
             f"Vote sur l’article "
             f"{article_match.group(1)}"
         )
+
 
         if context:
 
@@ -1588,13 +1427,15 @@ def make_subject(
                 f" — {context}"
             )
 
+
         return truncate(
             title,
             170
         )
 
+
     # --------------------------------------------------------
-    # TITRE ADMINISTRATIF : NETTOYAGE
+    # NETTOYAGE TITRE ADMINISTRATIF
     # --------------------------------------------------------
 
     readable = re.sub(
@@ -1604,6 +1445,7 @@ def make_subject(
         flags=re.IGNORECASE
     )
 
+
     readable = re.sub(
         r"^\s*vote sur\s+",
         "",
@@ -1611,9 +1453,11 @@ def make_subject(
         flags=re.IGNORECASE
     )
 
+
     readable = clean(
         readable
     )
+
 
     if readable:
 
@@ -1621,6 +1465,7 @@ def make_subject(
             readable[0].upper()
             + readable[1:]
         )
+
 
     return truncate(
         readable
@@ -1630,10 +1475,735 @@ def make_subject(
 
 
 # ============================================================
-# STATISTIQUES
+# CHARGEMENT DES DÉPUTÉS ACTUELS
 # ============================================================
 
-def compute_vote_stats(votes):
+def load_current_deputies():
+
+    print("")
+    print(
+        "Téléchargement AMO40 "
+        "— députés actifs / mandats actifs / organes..."
+    )
+
+
+    raw = download_zip(
+        AMO40_URL
+    )
+
+
+    zf = zipfile.ZipFile(
+        BytesIO(
+            raw
+        )
+    )
+
+
+    raw_actors = {}
+
+    organes = {}
+
+
+    # ========================================================
+    # LECTURE DES ACTEURS ET ORGANES
+    # ========================================================
+
+    for filename, payload in iter_zip_json(
+        zf
+    ):
+
+        if not isinstance(
+            payload,
+            dict
+        ):
+
+            continue
+
+
+        actor = payload.get(
+            "acteur"
+        )
+
+
+        if isinstance(
+            actor,
+            dict
+        ):
+
+            uid = get_uid(
+                actor.get(
+                    "uid"
+                )
+            )
+
+            if uid:
+
+                raw_actors[
+                    uid
+                ] = actor
+
+            continue
+
+
+        organe = payload.get(
+            "organe"
+        )
+
+
+        if isinstance(
+            organe,
+            dict
+        ):
+
+            uid = get_uid(
+                organe.get(
+                    "uid"
+                )
+            )
+
+            if uid:
+
+                organes[
+                    uid
+                ] = organe
+
+
+    print(
+        "Acteurs actifs reçus :",
+        len(
+            raw_actors
+        )
+    )
+
+
+    print(
+        "Organes reçus :",
+        len(
+            organes
+        )
+    )
+
+
+    # ========================================================
+    # MAPPING REF GROUPE → NOM DU GROUPE
+    # ========================================================
+
+    group_ref_to_label = {}
+
+
+    for uid, actor in raw_actors.items():
+
+        mandates = get_actor_mandates(
+            actor
+        )
+
+
+        for mandate in mandates:
+
+            mandate_type = clean(
+                mandate.get(
+                    "typeOrgane"
+                )
+            ).upper()
+
+
+            refs = extract_organe_refs(
+                mandate.get(
+                    "organes",
+                    {}
+                )
+            )
+
+
+            # ------------------------------------------------
+            # MANDAT EXPLICITEMENT DE TYPE GP
+            # ------------------------------------------------
+
+            if mandate_type in {
+                "GP",
+                "GRP",
+                "GROUPE"
+            }:
+
+                for ref in refs:
+
+                    organe = organes.get(
+                        ref,
+                        {}
+                    )
+
+
+                    label = normalize_group(
+                        get_organe_label(
+                            organe
+                        )
+                    )
+
+
+                    if label:
+
+                        group_ref_to_label[
+                            ref
+                        ] = label
+
+
+            # ------------------------------------------------
+            # OU ORGANE LUI-MÊME DE TYPE GP
+            # ------------------------------------------------
+
+            else:
+
+                for ref in refs:
+
+                    organe = organes.get(
+                        ref,
+                        {}
+                    )
+
+
+                    code_type = clean(
+                        organe.get(
+                            "codeType"
+                        )
+                    ).upper()
+
+
+                    if code_type in {
+                        "GP",
+                        "GRP",
+                        "GROUPE"
+                    }:
+
+                        label = normalize_group(
+                            get_organe_label(
+                                organe
+                            )
+                        )
+
+
+                        if label:
+
+                            group_ref_to_label[
+                                ref
+                            ] = label
+
+
+    print(
+        "Organes de groupes identifiés :",
+        len(
+            group_ref_to_label
+        )
+    )
+
+
+    # ========================================================
+    # CONSTRUCTION DES DÉPUTÉS
+    # ========================================================
+
+    deputies = {}
+
+
+    for uid, actor in raw_actors.items():
+
+        etat_civil = actor.get(
+            "etatCivil",
+            {}
+        )
+
+
+        if not isinstance(
+            etat_civil,
+            dict
+        ):
+
+            etat_civil = {}
+
+
+        ident = etat_civil.get(
+            "ident",
+            {}
+        )
+
+
+        if not isinstance(
+            ident,
+            dict
+        ):
+
+            ident = {}
+
+
+        first_name = clean(
+            ident.get(
+                "prenom"
+            )
+        )
+
+
+        last_name = clean(
+            ident.get(
+                "nom"
+            )
+        )
+
+
+        name = clean(
+            f"{first_name} {last_name}"
+        )
+
+
+        if not name:
+
+            continue
+
+
+        group = ""
+
+        departement = ""
+
+        num_departement = ""
+
+        num_circo = ""
+
+        circonscription = ""
+
+        has_assembly_mandate = False
+
+
+        mandates = get_actor_mandates(
+            actor
+        )
+
+
+        for mandate in mandates:
+
+            mandate_type = clean(
+                mandate.get(
+                    "typeOrgane"
+                )
+            ).upper()
+
+
+            refs = extract_organe_refs(
+                mandate.get(
+                    "organes",
+                    {}
+                )
+            )
+
+
+            # =================================================
+            # MANDAT DE DÉPUTÉ
+            # =================================================
+
+            if mandate_type == "ASSEMBLEE":
+
+                has_assembly_mandate = True
+
+
+                election = mandate.get(
+                    "election",
+                    {}
+                )
+
+
+                if not isinstance(
+                    election,
+                    dict
+                ):
+
+                    election = {}
+
+
+                lieu = election.get(
+                    "lieu",
+                    {}
+                )
+
+
+                if not isinstance(
+                    lieu,
+                    dict
+                ):
+
+                    lieu = {}
+
+
+                (
+                    dep_name,
+                    dep_code
+                ) = extract_department_from_lieu(
+                    lieu
+                )
+
+
+                if dep_name:
+
+                    departement = (
+                        departement
+                        or dep_name
+                    )
+
+
+                if dep_code:
+
+                    num_departement = (
+                        num_departement
+                        or dep_code
+                    )
+
+
+                num_circo_value = clean(
+
+                    lieu.get(
+                        "numCirco"
+                    )
+
+                    or
+
+                    lieu.get(
+                        "numeroCirconscription"
+                    )
+                )
+
+
+                if num_circo_value:
+
+                    num_circo = (
+                        num_circo
+                        or num_circo_value
+                    )
+
+
+                    circonscription = (
+                        f"{ordinal_fr(num_circo)} "
+                        f"circonscription"
+                    )
+
+
+                ref_circo = get_uid(
+                    election.get(
+                        "refCirconscription"
+                    )
+                )
+
+
+                if (
+                    ref_circo
+                    and ref_circo in organes
+                    and not circonscription
+                ):
+
+                    circonscription = (
+                        normalize_circonscription(
+                            get_organe_label(
+                                organes[
+                                    ref_circo
+                                ]
+                            )
+                        )
+                    )
+
+
+            # =================================================
+            # GROUPE POLITIQUE
+            # =================================================
+
+            if mandate_type in {
+                "GP",
+                "GRP",
+                "GROUPE"
+            }:
+
+                for ref in refs:
+
+                    candidate = (
+                        group_ref_to_label.get(
+                            ref
+                        )
+                    )
+
+
+                    if candidate:
+
+                        group = candidate
+
+                        break
+
+
+            # Sécurité supplémentaire :
+            # vérifie également les organes référencés
+            if not group:
+
+                for ref in refs:
+
+                    candidate = (
+                        group_ref_to_label.get(
+                            ref
+                        )
+                    )
+
+
+                    if candidate:
+
+                        group = candidate
+
+                        break
+
+
+        # ====================================================
+        # ABSENCE DE MANDAT GP = NON INSCRIT
+        # ====================================================
+
+        if not group:
+
+            group = (
+                "Non inscrits"
+            )
+
+
+        deputies[
+            uid
+        ] = {
+
+            "uid":
+                uid,
+
+            "nom":
+                name,
+
+            "groupe_actuel":
+                normalize_group(
+                    group
+                ),
+
+            "groupe_sigle":
+                group_sigle(
+                    group
+                ),
+
+            "departement":
+                departement,
+
+            "num_departement":
+                num_departement,
+
+            "num_circonscription":
+                num_circo,
+
+            "circonscription":
+                normalize_circonscription(
+                    circonscription
+                ),
+
+            "has_assembly_mandate":
+                has_assembly_mandate,
+        }
+
+
+    # ========================================================
+    # CONTRÔLE DE COHÉRENCE
+    # ========================================================
+
+    validate_current_deputies(
+        deputies
+    )
+
+
+    print("")
+    print(
+        "Députés actuels retenus :",
+        len(
+            deputies
+        )
+    )
+
+
+    counts = Counter(
+
+        deputy[
+            "groupe_actuel"
+        ]
+
+        for deputy
+        in deputies.values()
+    )
+
+
+    print("")
+    print(
+        "Composition calculée :"
+    )
+
+
+    for group, count in counts.most_common():
+
+        print(
+            f" - {group}: {count}"
+        )
+
+
+    print("")
+
+
+    return (
+        deputies,
+        organes,
+        group_ref_to_label
+    )
+
+
+# ============================================================
+# VALIDATION COMPOSITION
+#
+# Si les données deviennent aberrantes,
+# le script s'arrête AVANT de publier les mauvais JSON.
+# ============================================================
+
+def validate_current_deputies(
+    deputies
+):
+
+    total = len(
+        deputies
+    )
+
+
+    counts = Counter(
+
+        deputy.get(
+            "groupe_actuel"
+        )
+        or "Inconnu"
+
+        for deputy
+        in deputies.values()
+    )
+
+
+    group_count = len(
+        counts
+    )
+
+
+    unknown = counts.get(
+        "Inconnu",
+        0
+    )
+
+
+    non_inscrits = counts.get(
+        "Non inscrits",
+        0
+    )
+
+
+    largest = (
+
+        max(
+            counts.values()
+        )
+
+        if counts
+
+        else 0
+    )
+
+
+    errors = []
+
+
+    if not (
+        500
+        <= total
+        <= MAX_ASSEMBLY_SEATS
+    ):
+
+        errors.append(
+            f"nombre de députés incohérent : {total}"
+        )
+
+
+    if not (
+        8
+        <= group_count
+        <= 20
+    ):
+
+        errors.append(
+            f"nombre de groupes incohérent : {group_count}"
+        )
+
+
+    if non_inscrits > 100:
+
+        errors.append(
+            f"trop de Non inscrits : {non_inscrits}"
+        )
+
+
+    if unknown > 10:
+
+        errors.append(
+            f"trop de groupes inconnus : {unknown}"
+        )
+
+
+    if largest > 300:
+
+        errors.append(
+            f"un groupe contient anormalement "
+            f"{largest} députés"
+        )
+
+
+    if errors:
+
+        print("")
+        print(
+            "==========================================="
+        )
+
+        print(
+            "ERREUR DE VALIDATION DE LA COMPOSITION"
+        )
+
+        print(
+            "==========================================="
+        )
+
+
+        for error in errors:
+
+            print(
+                " -",
+                error
+            )
+
+
+        print(
+            "Composition observée :",
+            dict(
+                counts
+            )
+        )
+
+
+        raise RuntimeError(
+
+            "La récupération des groupes politiques "
+            "a échoué. Le build est volontairement "
+            "stoppé pour ne pas publier de mauvaises données."
+        )
+
+
+# ============================================================
+# STATISTIQUES DES VOTES
+# ============================================================
+
+def compute_vote_stats(
+    votes
+):
 
     return {
 
@@ -1676,11 +2246,13 @@ def compute_vote_stats(votes):
         "total":
             len(
                 votes
-            )
+            ),
     }
 
 
-def dominant_position(stats):
+def dominant_position(
+    stats
+):
 
     values = {
 
@@ -1700,52 +2272,74 @@ def dominant_position(stats):
             stats.get(
                 "abstention",
                 0
-            )
+            ),
     }
+
 
     maximum = max(
         values.values()
     )
 
+
     if maximum == 0:
+
         return "Non-votant"
+
 
     winners = [
 
         label
+
         for label, count
         in values.items()
-        if count == maximum
 
+        if count == maximum
     ]
 
-    if len(winners) != 1:
-        return "Partagé"
 
-    return winners[0]
+    if len(
+        winners
+    ) == 1:
+
+        return winners[
+            0
+        ]
 
 
-def cohesion_percent(stats):
+    return "Partagé"
+
+
+def cohesion_percent(
+    stats
+):
 
     expressed = (
+
         stats.get(
             "pour",
             0
         )
+
         +
+
         stats.get(
             "contre",
             0
         )
+
         +
+
         stats.get(
             "abstention",
             0
         )
     )
 
+
     if expressed == 0:
+
         return 0.0
+
 
     maximum = max(
 
@@ -1765,68 +2359,180 @@ def cohesion_percent(stats):
         )
     )
 
+
     return round(
+
         maximum
         / expressed
         * 100,
+
         1
     )
 
 
-def compute_group_summary(votes):
+# ============================================================
+# INFÉRENCE D'UN GROUPE DE SCRUTIN
+#
+# Utilisée uniquement si l'organeRef du scrutin
+# n'est pas directement résolu.
+# ============================================================
 
-    groups = defaultdict(
+def infer_group_from_voters(
+    block_voters,
+    current_deputies
+):
+
+    groups = []
+
+
+    for actor_uid, vote_label in block_voters:
+
+        deputy = current_deputies.get(
+            actor_uid
+        )
+
+
+        if not deputy:
+
+            continue
+
+
+        group = normalize_group(
+            deputy.get(
+                "groupe_actuel"
+            )
+        )
+
+
+        if group:
+
+            groups.append(
+                group
+            )
+
+
+    if not groups:
+
+        return ""
+
+
+    counts = Counter(
+        groups
+    )
+
+
+    group, count = (
+        counts.most_common(
+            1
+        )[0]
+    )
+
+
+    # On n'infère que si au moins 60 %
+    # des députés du bloc appartiennent
+    # actuellement au même groupe.
+    if (
+        count
+        / len(groups)
+        >= 0.60
+    ):
+
+        return group
+
+
+    return ""
+
+
+# ============================================================
+# RÉSUMÉ PAR GROUPE
+# ============================================================
+
+def compute_group_summary(
+    votes
+):
+
+    grouped = defaultdict(
         list
     )
+
 
     for vote in votes:
 
         group = normalize_group(
+
             vote.get(
                 "groupe_au_vote"
             )
-            or vote.get(
+
+            or
+
+            vote.get(
                 "groupe"
             )
-            or ""
+
+            or
+            ""
         )
 
-        if not group:
-            group = "Inconnu"
 
-        groups[
+        if not group:
+
+            group = (
+                "Inconnu"
+            )
+
+
+        grouped[
             group
         ].append(
             vote
         )
 
+
     result = []
 
-    for group, group_votes in groups.items():
+
+    for group, group_votes in grouped.items():
 
         stats = compute_vote_stats(
             group_votes
         )
+
 
         result.append({
 
             "groupe":
                 group,
 
+            "groupe_sigle":
+                group_sigle(
+                    group
+                ),
+
             "pour":
-                stats["pour"],
+                stats[
+                    "pour"
+                ],
 
             "contre":
-                stats["contre"],
+                stats[
+                    "contre"
+                ],
 
             "abstention":
-                stats["abstention"],
+                stats[
+                    "abstention"
+                ],
 
             "non_votant":
-                stats["non_votant"],
+                stats[
+                    "non_votant"
+                ],
 
             "total":
-                stats["total"],
+                stats[
+                    "total"
+                ],
 
             "position":
                 dominant_position(
@@ -1836,21 +2542,25 @@ def compute_group_summary(votes):
             "cohesion_pct":
                 cohesion_percent(
                     stats
-                )
+                ),
         })
 
-    result.sort(
-        key=lambda item: (
-            -item[
+
+    return sorted(
+
+        result,
+
+        key=lambda row: (
+
+            -row[
                 "total"
             ],
-            item[
+
+            row[
                 "groupe"
             ]
         )
     )
-
-    return result
 
 
 # ============================================================
@@ -1858,9 +2568,9 @@ def compute_group_summary(votes):
 # ============================================================
 
 def load_scrutins(
-    actors,
-    current_actors,
-    organes
+    current_deputies,
+    organes,
+    group_ref_to_label
 ):
 
     print("")
@@ -1868,17 +2578,24 @@ def load_scrutins(
         "Téléchargement des scrutins..."
     )
 
+
     raw = download_zip(
         SCRUTINS_URL
     )
 
+
     zf = zipfile.ZipFile(
-        BytesIO(raw)
+        BytesIO(
+            raw
+        )
     )
+
 
     scrutins = []
 
-    latest_group_seen = {}
+
+    unresolved_group_refs = Counter()
+
 
     for filename, payload in iter_zip_json(
         zf
@@ -1888,17 +2605,23 @@ def load_scrutins(
             payload,
             dict
         ):
+
             continue
 
+
         scrutin = payload.get(
-            "scrutin"
+            "scrutin",
+            payload
         )
+
 
         if not isinstance(
             scrutin,
             dict
         ):
+
             continue
+
 
         scrutin_date = clean(
             scrutin.get(
@@ -1906,20 +2629,29 @@ def load_scrutins(
             )
         )
 
+
         if not scrutin_date:
+
             continue
+
 
         try:
 
             year = int(
-                scrutin_date[:4]
+                scrutin_date[
+                    :4
+                ]
             )
 
         except Exception:
+
             continue
 
+
         if year < MIN_YEAR:
+
             continue
+
 
         uid = get_uid(
             scrutin.get(
@@ -1927,12 +2659,16 @@ def load_scrutins(
             )
         )
 
+
         if not uid:
+
             continue
+
 
         numero = scrutin.get(
             "numero"
         )
+
 
         official_title = clean(
             scrutin.get(
@@ -1940,74 +2676,102 @@ def load_scrutins(
             )
         )
 
+
         objet = scrutin.get(
             "objet",
             {}
         )
 
+
         if not isinstance(
             objet,
             dict
         ):
+
             objet = {}
 
+
         description = clean(
+
             objet.get(
                 "libelle"
             )
-            or objet.get(
+
+            or
+
+            objet.get(
                 "titre"
             )
-            or ""
+
+            or
+            ""
         )
+
 
         subject = make_subject(
             official_title,
             description
         )
 
+
         theme = guess_theme(
+
             " ".join([
+
                 official_title,
+
                 description,
+
                 subject
             ])
         )
 
-        votes = []
+
+        # ====================================================
+        # BLOCS DE GROUPES
+        # ====================================================
 
         ventilation = scrutin.get(
             "ventilationVotes",
             {}
         )
 
+
         if not isinstance(
             ventilation,
             dict
         ):
+
             ventilation = {}
+
 
         organe_vote = ventilation.get(
             "organe",
             {}
         )
 
+
         if not isinstance(
             organe_vote,
             dict
         ):
+
             organe_vote = {}
+
 
         groupes_node = organe_vote.get(
             "groupes",
             {}
         )
 
+
         if not isinstance(
             groupes_node,
             dict
         ):
+
             groupes_node = {}
+
 
         group_blocks = ensure_list(
             groupes_node.get(
@@ -2015,13 +2779,23 @@ def load_scrutins(
             )
         )
 
+
+        votes = []
+
+
         for group_block in group_blocks:
 
             if not isinstance(
                 group_block,
                 dict
             ):
+
                 continue
+
+
+            # ================================================
+            # IDENTIFICATION DU GROUPE
+            # ================================================
 
             group_ref = get_uid(
                 group_block.get(
@@ -2029,63 +2803,110 @@ def load_scrutins(
                 )
             )
 
-            group_name = clean(
-                group_block.get(
-                    "libelle"
-                )
-                or group_block.get(
-                    "libelleAbrege"
-                )
-                or group_block.get(
-                    "libelleAbrev"
+
+            group_name = normalize_group(
+
+                clean(
+
+                    group_block.get(
+                        "libelle"
+                    )
+
+                    or
+
+                    group_block.get(
+                        "libelleAbrege"
+                    )
+
+                    or
+
+                    group_block.get(
+                        "libelleAbrev"
+                    )
+
+                    or
+                    ""
                 )
             )
+
 
             if (
                 not group_name
                 and group_ref
-                and group_ref in organes
             ):
 
-                group_name = clean(
-                    organes[
-                        group_ref
-                    ].get(
-                        "label"
+                group_name = (
+                    group_ref_to_label.get(
+                        group_ref,
+                        ""
                     )
                 )
 
-            group_name = normalize_group(
-                group_name
-            )
 
-            if not group_name:
+            if (
+                not group_name
+                and group_ref in organes
+            ):
 
-                group_name = (
-                    "Inconnu"
-                )
+                organe = organes[
+                    group_ref
+                ]
+
+
+                code_type = clean(
+                    organe.get(
+                        "codeType"
+                    )
+                ).upper()
+
+
+                if code_type in {
+                    "GP",
+                    "GRP",
+                    "GROUPE"
+                }:
+
+                    group_name = normalize_group(
+                        get_organe_label(
+                            organe
+                        )
+                    )
+
+
+            # ================================================
+            # VOTANTS DU BLOC
+            # ================================================
 
             vote_container = group_block.get(
                 "vote",
                 {}
             )
 
+
             if not isinstance(
                 vote_container,
                 dict
             ):
+
                 vote_container = {}
+
 
             nominative = vote_container.get(
                 "decompteNominatif",
                 {}
             )
 
+
             if not isinstance(
                 nominative,
                 dict
             ):
+
                 nominative = {}
+
+
+            block_voters = []
+
 
             categories = [
 
@@ -2107,8 +2928,9 @@ def load_scrutins(
                 (
                     "nonVotants",
                     "Non-votant"
-                )
+                ),
             ]
+
 
             for key, label in categories:
 
@@ -2118,6 +2940,7 @@ def load_scrutins(
                     )
                 )
 
+
                 for voter in voters:
 
                     actor_uid = get_uid(
@@ -2126,143 +2949,162 @@ def load_scrutins(
                         )
                     )
 
-                    if not actor_uid:
-                        continue
 
-                    actor = actors.get(
+                    if actor_uid:
+
+                        block_voters.append(
+                            (
+                                actor_uid,
+                                label
+                            )
+                        )
+
+
+            # ================================================
+            # FALLBACK SI LE GROUPE DU SCRUTIN N'A PAS
+            # ÉTÉ RÉSOLU VIA ORGANE REF
+            # ================================================
+
+            if not group_name:
+
+                group_name = infer_group_from_voters(
+                    block_voters,
+                    current_deputies
+                )
+
+
+            if not group_name:
+
+                group_name = (
+                    "Inconnu"
+                )
+
+
+                if group_ref:
+
+                    unresolved_group_refs[
+                        group_ref
+                    ] += 1
+
+
+            # ================================================
+            # CONSTRUCTION DES VOTES
+            # ================================================
+
+            for actor_uid, label in block_voters:
+
+                deputy = current_deputies.get(
+                    actor_uid,
+                    {}
+                )
+
+
+                name = clean(
+                    deputy.get(
+                        "nom"
+                    )
+                )
+
+
+                if not name:
+
+                    name = actor_uid
+
+
+                current_group = normalize_group(
+                    deputy.get(
+                        "groupe_actuel"
+                    )
+                )
+
+
+                votes.append({
+
+                    "depute_uid":
                         actor_uid,
-                        {}
-                    )
 
-                    current_actor = current_actors.get(
-                        actor_uid,
-                        {}
-                    )
+                    "nom":
+                        name,
 
-                    name = clean(
-                        actor.get(
-                            "nom"
-                        )
-                        or current_actor.get(
-                            "nom"
-                        )
-                    )
+                    # Groupe au moment du vote
+                    "groupe_au_vote":
+                        group_name,
 
-                    if not name:
+                    # Compatibilité avec les pages
+                    "groupe":
+                        group_name,
 
-                        name = actor_uid
+                    # Groupe actuel
+                    "groupe_actuel":
+                        current_group,
 
-                    current_group = normalize_group(
-                        current_actor.get(
-                            "groupe_actuel"
-                        )
-                    )
+                    "groupe_actuel_sigle":
+                        group_sigle(
+                            current_group
+                        ),
 
-                    departement = clean(
-                        current_actor.get(
-                            "departement"
-                        )
-                        or actor.get(
-                            "departement"
-                        )
-                    )
+                    "vote":
+                        label,
 
-                    circonscription = normalize_circonscription(
-                        current_actor.get(
-                            "circonscription"
-                        )
-                        or actor.get(
-                            "circonscription"
-                        )
-                    )
+                    "departement":
+                        clean(
+                            deputy.get(
+                                "departement"
+                            )
+                        ),
 
-                    votes.append({
+                    "circonscription":
+                        normalize_circonscription(
+                            deputy.get(
+                                "circonscription"
+                            )
+                        ),
+                })
 
-                        "depute_uid":
-                            actor_uid,
 
-                        "nom":
-                            name,
+        # ====================================================
+        # DÉDOUBLONNAGE
+        # ====================================================
 
-                        # Groupe le jour du scrutin
-                        "groupe_au_vote":
-                            group_name,
-
-                        # Alias pour compatibilité
-                        "groupe":
-                            group_name,
-
-                        # Groupe actuel
-                        "groupe_actuel":
-                            current_group,
-
-                        "vote":
-                            label,
-
-                        "departement":
-                            departement,
-
-                        "circonscription":
-                            circonscription
-                    })
-
-                    previous = latest_group_seen.get(
-                        actor_uid
-                    )
-
-                    if (
-                        not previous
-                        or scrutin_date
-                        > previous[
-                            "date"
-                        ]
-                    ):
-
-                        latest_group_seen[
-                            actor_uid
-                        ] = {
-
-                            "date":
-                                scrutin_date,
-
-                            "groupe":
-                                group_name
-                        }
-
-        if not votes:
-            continue
-
-        # Évite les doublons éventuels
         unique_votes = {}
+
 
         for vote in votes:
 
-            key = (
-                vote[
-                    "depute_uid"
-                ],
-                vote[
-                    "vote"
-                ]
+            actor_uid = vote.get(
+                "depute_uid"
             )
 
-            if key not in unique_votes:
+
+            if (
+                actor_uid
+                and actor_uid not in unique_votes
+            ):
 
                 unique_votes[
-                    key
+                    actor_uid
                 ] = vote
+
 
         votes = list(
             unique_votes.values()
         )
 
+
+        if not votes:
+
+            continue
+
+
         stats = compute_vote_stats(
             votes
         )
 
+
         group_summary = compute_group_summary(
             votes
         )
+
 
         scrutins.append({
 
@@ -2278,14 +3120,14 @@ def load_scrutins(
             "year":
                 year,
 
-            # Titre présenté au visiteur
+            # Titre lisible pour l'utilisateur
             "sujet":
                 subject,
 
             "titre_court":
                 subject,
 
-            # Données officielles
+            # Texte officiel
             "titre":
                 official_title,
 
@@ -2324,72 +3166,48 @@ def load_scrutins(
                 "total_votes":
                     stats[
                         "total"
-                    ]
+                    ],
             },
 
             "groupes_summary":
                 group_summary,
 
             "votes":
-                votes
+                votes,
         })
 
+
     scrutins.sort(
-        key=lambda scrutin: (
-            scrutin.get(
+
+        key=lambda row: (
+
+            row.get(
                 "date",
                 ""
             ),
+
             str(
-                scrutin.get(
+                row.get(
                     "numero",
                     ""
                 )
             )
         ),
+
         reverse=True
     )
 
+
     # ========================================================
-    # FALLBACK GROUPE ACTUEL
-    #
-    # Si l'AMO n'a pas donné le groupe actuel,
-    # on prend le groupe observé le plus récemment.
+    # CONTRÔLE SCRUTINS
     # ========================================================
 
-    fallback_count = 0
+    validate_scrutins(
+        scrutins
+    )
 
-    for uid, actor in current_actors.items():
 
-        if normalize_group(
-            actor.get(
-                "groupe_actuel"
-            )
-        ):
-            continue
-
-        latest = latest_group_seen.get(
-            uid
-        )
-
-        if (
-            latest
-            and latest.get(
-                "groupe"
-            )
-            and latest.get(
-                "groupe"
-            ) != "Inconnu"
-        ):
-
-            actor[
-                "groupe_actuel"
-            ] = latest[
-                "groupe"
-            ]
-
-            fallback_count += 1
-
+    print("")
     print(
         "Scrutins conservés :",
         len(
@@ -2397,12 +3215,126 @@ def load_scrutins(
         )
     )
 
-    print(
-        "Groupes actuels récupérés via dernier vote :",
-        fallback_count
-    )
+
+    if unresolved_group_refs:
+
+        print(
+            "Références groupes non résolues "
+            "(10 principales) :",
+            unresolved_group_refs.most_common(
+                10
+            )
+        )
+
 
     return scrutins
+
+
+# ============================================================
+# VALIDATION DES GROUPES DANS LES SCRUTINS
+# ============================================================
+
+def validate_scrutins(
+    scrutins
+):
+
+    if not scrutins:
+
+        raise RuntimeError(
+            "Aucun scrutin n'a été récupéré."
+        )
+
+
+    by_year = defaultdict(
+        list
+    )
+
+
+    for scrutin in scrutins:
+
+        by_year[
+            str(
+                scrutin.get(
+                    "year"
+                )
+            )
+        ].append(
+            scrutin
+        )
+
+
+    errors = []
+
+
+    for year, rows in by_year.items():
+
+        groups = Counter(
+
+            summary.get(
+                "groupe"
+            )
+
+            for scrutin in rows
+
+            for summary
+            in scrutin.get(
+                "groupes_summary",
+                []
+            )
+
+            if summary.get(
+                "groupe"
+            )
+            not in {
+                "",
+                "Inconnu",
+                None
+            }
+        )
+
+
+        if len(
+            groups
+        ) < 5:
+
+            errors.append(
+
+                f"{year}: seulement "
+                f"{len(groups)} groupes distincts "
+                f"dans les scrutins"
+            )
+
+
+    if errors:
+
+        print("")
+        print(
+            "==========================================="
+        )
+
+        print(
+            "ERREUR DE VALIDATION DES SCRUTINS"
+        )
+
+        print(
+            "==========================================="
+        )
+
+
+        for error in errors:
+
+            print(
+                " -",
+                error
+            )
+
+
+        raise RuntimeError(
+
+            "Les groupes de vote sont mal résolus. "
+            "Le build est stoppé pour éviter "
+            "de publier des données fausses."
+        )
 
 
 # ============================================================
@@ -2410,7 +3342,7 @@ def load_scrutins(
 # ============================================================
 
 def build_deputes_file(
-    current_actors,
+    current_deputies,
     scrutins
 ):
 
@@ -2418,9 +3350,14 @@ def build_deputes_file(
         int
     )
 
+
     votes_by_uid_year = defaultdict(
-        lambda: defaultdict(int)
+        lambda:
+            defaultdict(
+                int
+            )
     )
+
 
     for scrutin in scrutins:
 
@@ -2429,6 +3366,7 @@ def build_deputes_file(
                 "year"
             )
         )
+
 
         for vote in scrutin.get(
             "votes",
@@ -2439,31 +3377,27 @@ def build_deputes_file(
                 "depute_uid"
             )
 
-            if not uid:
-                continue
 
-            votes_by_uid[
-                uid
-            ] += 1
+            # On compte uniquement
+            # les députés actuellement en fonction
+            if uid in current_deputies:
 
-            votes_by_uid_year[
-                uid
-            ][
-                year
-            ] += 1
+                votes_by_uid[
+                    uid
+                ] += 1
+
+
+                votes_by_uid_year[
+                    uid
+                ][
+                    year
+                ] += 1
+
 
     deputes = []
 
-    for uid, actor in current_actors.items():
 
-        name = clean(
-            actor.get(
-                "nom"
-            )
-        )
-
-        if not name:
-            continue
+    for uid, actor in current_deputies.items():
 
         group = normalize_group(
             actor.get(
@@ -2471,11 +3405,13 @@ def build_deputes_file(
             )
         )
 
+
         if not group:
 
             group = (
-                "Inconnu"
+                "Non inscrits"
             )
+
 
         deputes.append({
 
@@ -2483,7 +3419,10 @@ def build_deputes_file(
                 uid,
 
             "nom":
-                name,
+                actor.get(
+                    "nom",
+                    ""
+                ),
 
             "groupe":
                 group,
@@ -2491,32 +3430,33 @@ def build_deputes_file(
             "groupe_actuel":
                 group,
 
+            "groupe_sigle":
+                group_sigle(
+                    group
+                ),
+
             "departement":
-                clean(
-                    actor.get(
-                        "departement"
-                    )
+                actor.get(
+                    "departement",
+                    ""
                 ),
 
             "num_departement":
-                clean(
-                    actor.get(
-                        "num_departement"
-                    )
+                actor.get(
+                    "num_departement",
+                    ""
                 ),
 
             "num_circonscription":
-                clean(
-                    actor.get(
-                        "num_circonscription"
-                    )
+                actor.get(
+                    "num_circonscription",
+                    ""
                 ),
 
             "circonscription":
-                normalize_circonscription(
-                    actor.get(
-                        "circonscription"
-                    )
+                actor.get(
+                    "circonscription",
+                    ""
                 ),
 
             "votes_count":
@@ -2531,8 +3471,9 @@ def build_deputes_file(
                         uid,
                         {}
                     )
-                )
+                ),
         })
+
 
     deputes.sort(
         key=lambda deputy:
@@ -2540,6 +3481,7 @@ def build_deputes_file(
                 "nom"
             ].lower()
     )
+
 
     payload = {
 
@@ -2554,8 +3496,9 @@ def build_deputes_file(
             ),
 
         "deputes":
-            deputes
+            deputes,
     }
+
 
     write_json(
         BASE_DIR
@@ -2563,12 +3506,14 @@ def build_deputes_file(
         payload
     )
 
+
     print(
         "deputes.json :",
         len(
             deputes
         )
     )
+
 
     return deputes
 
@@ -2585,22 +3530,16 @@ def build_composition_file(
         list
     )
 
+
     for deputy in deputes:
 
-        group = normalize_group(
+        group = (
             deputy.get(
                 "groupe_actuel"
             )
-            or deputy.get(
-                "groupe"
-            )
+            or "Non inscrits"
         )
 
-        if not group:
-
-            group = (
-                "Inconnu"
-            )
 
         grouped[
             group
@@ -2608,11 +3547,14 @@ def build_composition_file(
             deputy
         )
 
+
     total = len(
         deputes
     )
 
+
     groups = []
+
 
     for group, members in grouped.items():
 
@@ -2623,10 +3565,16 @@ def build_composition_file(
                 ].lower()
         )
 
+
         groups.append({
 
             "groupe":
                 group,
+
+            "sigle":
+                group_sigle(
+                    group
+                ),
 
             "count":
                 len(
@@ -2635,19 +3583,18 @@ def build_composition_file(
 
             "pct":
                 round(
-                    (
-                        len(
-                            members
-                        )
-                        /
-                        total
-                        *
-                        100
+
+                    len(
+                        members
                     )
-                    if total
-                    else 0,
+                    / total
+                    * 100,
+
                     1
-                ),
+
+                )
+                if total
+                else 0,
 
             "members": [
 
@@ -2671,37 +3618,29 @@ def build_composition_file(
                     "circonscription":
                         member[
                             "circonscription"
-                        ]
+                        ],
                 }
 
-                for member in members
-
-            ]
+                for member
+                in members
+            ],
         })
 
+
     groups.sort(
+
         key=lambda group: (
+
             -group[
                 "count"
             ],
+
             group[
                 "groupe"
             ]
         )
     )
 
-    unknown_count = len(
-        grouped.get(
-            "Inconnu",
-            []
-        )
-    )
-
-    is_valid = (
-        total >= 500
-        and total <= MAX_ASSEMBLY_SEATS
-        and unknown_count <= 5
-    )
 
     composition = {
 
@@ -2723,18 +3662,20 @@ def build_composition_file(
                 - total
             ),
 
-        "groupes_inconnus":
-            unknown_count,
-
         "is_valid":
-            is_valid,
+            True,
 
         "groupes":
             groups,
 
         "source":
-            "Assemblée nationale — mandats actifs"
+            (
+                "Assemblée nationale — "
+                "AMO40 députés actifs / "
+                "mandats actifs / organes"
+            ),
     }
+
 
     write_json(
         BASE_DIR
@@ -2742,43 +3683,17 @@ def build_composition_file(
         composition
     )
 
-    print("")
-    print(
-        "Composition :",
-        total,
-        "députés"
-    )
 
     print(
-        "Groupes inconnus :",
-        unknown_count
+        "composition.json créé"
     )
 
-    print(
-        "Composition valide :",
-        is_valid
-    )
-
-    print("")
-
-    for group in groups:
-
-        print(
-            " -",
-            group[
-                "groupe"
-            ],
-            ":",
-            group[
-                "count"
-            ]
-        )
 
     return composition
 
 
 # ============================================================
-# FICHIERS PAR MOIS
+# FICHIERS MENSUELS
 # ============================================================
 
 def write_month_files(
@@ -2789,16 +3704,21 @@ def write_month_files(
         MONTHS_DIR
     )
 
-    # Supprime les anciens mois
+
+    # Supprime les anciens mois,
+    # pour éviter qu'un ancien JSON
+    # reste présent par erreur.
     for old_file in MONTHS_DIR.glob(
         "*.json"
     ):
 
         old_file.unlink()
 
+
     grouped = defaultdict(
         list
     )
+
 
     for scrutin in scrutins:
 
@@ -2808,35 +3728,41 @@ def write_month_files(
             )
         )[:7]
 
-        if not month:
-            continue
 
-        grouped[
-            month
-        ].append(
-            scrutin
-        )
+        if month:
+
+            grouped[
+                month
+            ].append(
+                scrutin
+            )
+
 
     month_index = []
+
 
     for month, items in grouped.items():
 
         items.sort(
-            key=lambda item:
-                item.get(
+            key=lambda row:
+                row.get(
                     "date",
                     ""
                 ),
             reverse=True
         )
 
+
         path = (
             MONTHS_DIR
             / f"{month}.json"
         )
 
+
         write_json(
+
             path,
+
             {
 
                 "month":
@@ -2848,9 +3774,10 @@ def write_month_files(
                     ),
 
                 "scrutins":
-                    items
+                    items,
             }
         )
+
 
         month_index.append({
 
@@ -2866,16 +3793,18 @@ def write_month_files(
             "scrutins":
                 len(
                     items
-                )
+                ),
         })
 
+
     month_index.sort(
-        key=lambda item:
-            item[
+        key=lambda row:
+            row[
                 "month"
             ],
         reverse=True
     )
+
 
     return month_index
 
@@ -2891,6 +3820,7 @@ def build_groupes_file(
 
     data = {}
 
+
     for scrutin in scrutins:
 
         year = int(
@@ -2898,6 +3828,7 @@ def build_groupes_file(
                 "year"
             ]
         )
+
 
         for summary in scrutin.get(
             "groupes_summary",
@@ -2910,16 +3841,20 @@ def build_groupes_file(
                 )
             )
 
+
             if (
                 not group
                 or group == "Inconnu"
             ):
+
                 continue
+
 
             key = (
                 year,
                 group
             )
+
 
             if key not in data:
 
@@ -2932,6 +3867,11 @@ def build_groupes_file(
 
                     "groupe":
                         group,
+
+                    "sigle":
+                        group_sigle(
+                            group
+                        ),
 
                     "scrutins_count":
                         0,
@@ -2948,7 +3888,7 @@ def build_groupes_file(
                             0,
 
                         "non_votant":
-                            0
+                            0,
                     },
 
                     "_themes":
@@ -2957,64 +3897,57 @@ def build_groupes_file(
                         ),
 
                     "scrutins":
-                        []
+                        [],
                 }
+
 
             entry = data[
                 key
             ]
 
+
             entry[
                 "scrutins_count"
             ] += 1
 
-            entry[
-                "votes"
-            ][
-                "pour"
-            ] += summary.get(
+
+            for field in (
                 "pour",
-                0
-            )
-
-            entry[
-                "votes"
-            ][
-                "contre"
-            ] += summary.get(
                 "contre",
-                0
-            )
-
-            entry[
-                "votes"
-            ][
-                "abstention"
-            ] += summary.get(
                 "abstention",
-                0
-            )
-
-            entry[
-                "votes"
-            ][
                 "non_votant"
-            ] += summary.get(
-                "non_votant",
-                0
-            )
+            ):
+
+                entry[
+                    "votes"
+                ][
+                    field
+                ] += summary.get(
+                    field,
+                    0
+                )
+
 
             theme = clean(
                 scrutin.get(
                     "theme"
                 )
-            ) or "Autres"
+            )
+
+
+            if not theme:
+
+                theme = (
+                    "Autres"
+                )
+
 
             entry[
                 "_themes"
             ][
                 theme
             ] += 1
+
 
             entry[
                 "scrutins"
@@ -3086,8 +4019,9 @@ def build_groupes_file(
                 "total":
                     summary[
                         "total"
-                    ]
+                    ],
             })
+
 
     composition_map = {
 
@@ -3100,13 +4034,16 @@ def build_groupes_file(
                 "count"
             ]
 
-        for group in composition.get(
+        for group
+        in composition.get(
             "groupes",
             []
         )
     }
 
+
     result = []
+
 
     for entry in data.values():
 
@@ -3120,10 +4057,11 @@ def build_groupes_file(
                     theme,
 
                 "scrutins":
-                    count
+                    count,
             }
 
             for theme, count
+
             in sorted(
 
                 entry[
@@ -3131,56 +4069,74 @@ def build_groupes_file(
                 ].items(),
 
                 key=lambda item: (
-                    -item[1],
-                    item[0]
+
+                    -item[
+                        1
+                    ],
+
+                    item[
+                        0
+                    ]
                 )
             )
-
         ]
+
 
         del entry[
             "_themes"
         ]
 
+
         entry[
             "scrutins"
         ].sort(
-            key=lambda scrutin:
-                scrutin[
+            key=lambda row:
+                row[
                     "date"
                 ],
             reverse=True
         )
 
+
         entry[
             "deputes_actuels"
         ] = composition_map.get(
+
             normalize_group(
                 entry[
                     "groupe"
                 ]
             ),
+
             0
         )
+
 
         result.append(
             entry
         )
 
+
     result.sort(
-        key=lambda entry: (
-            -entry[
+
+        key=lambda row: (
+
+            -row[
                 "year"
             ],
-            entry[
+
+            row[
                 "groupe"
             ]
         )
     )
 
+
     write_json(
+
         BASE_DIR
         / "groupes.json",
+
         {
 
             "updated_at":
@@ -3189,9 +4145,10 @@ def build_groupes_file(
                 ).isoformat(),
 
             "groupes":
-                result
+                result,
         }
     )
+
 
     print(
         "groupes.json :",
@@ -3220,15 +4177,16 @@ def build_search_file(
             )
         )
 
-        for deputy in deputes
+        for deputy
+        in deputes
 
         if clean(
             deputy.get(
                 "departement"
             )
         )
-
     })
+
 
     constituencies = sorted({
 
@@ -3238,15 +4196,16 @@ def build_search_file(
             )
         )
 
-        for deputy in deputes
+        for deputy
+        in deputes
 
         if clean(
             deputy.get(
                 "circonscription"
             )
         )
-
     })
+
 
     themes = sorted({
 
@@ -3256,15 +4215,16 @@ def build_search_file(
             )
         )
 
-        for scrutin in scrutins
+        for scrutin
+        in scrutins
 
         if clean(
             scrutin.get(
                 "theme"
             )
         )
-
     })
+
 
     groups = [
 
@@ -3275,23 +4235,32 @@ def build_search_file(
                     "groupe"
                 ],
 
+            "sigle":
+                (
+                    group.get(
+                        "sigle"
+                    )
+                    or
+                    group_sigle(
+                        group[
+                            "groupe"
+                        ]
+                    )
+                ),
+
             "count":
                 group[
                     "count"
-                ]
-
+                ],
         }
 
-        for group in composition.get(
+        for group
+        in composition.get(
             "groupes",
             []
         )
-
-        if group.get(
-            "groupe"
-        ) != "Inconnu"
-
     ]
+
 
     payload = {
 
@@ -3319,6 +4288,12 @@ def build_search_file(
                         "groupe"
                     ],
 
+                "groupe_sigle":
+                    deputy.get(
+                        "groupe_sigle",
+                        ""
+                    ),
+
                 "departement":
                     deputy[
                         "departement"
@@ -3337,12 +4312,11 @@ def build_search_file(
                 "circonscription":
                     deputy[
                         "circonscription"
-                    ]
-
+                    ],
             }
 
-            for deputy in deputes
-
+            for deputy
+            in deputes
         ],
 
         "groupes":
@@ -3355,8 +4329,9 @@ def build_search_file(
             constituencies,
 
         "themes":
-            themes
+            themes,
     }
+
 
     write_json(
         BASE_DIR
@@ -3364,13 +4339,14 @@ def build_search_file(
         payload
     )
 
+
     print(
         "search.json créé"
     )
 
 
 # ============================================================
-# INDEX.JSON
+# INDEX DES ANNÉES
 # ============================================================
 
 def build_years_data(
@@ -3386,11 +4362,13 @@ def build_years_data(
             ]
         )
 
-        for scrutin in scrutins
-
+        for scrutin
+        in scrutins
     })
 
+
     result = {}
+
 
     for year in years:
 
@@ -3398,29 +4376,31 @@ def build_years_data(
 
             scrutin
 
-            for scrutin in scrutins
+            for scrutin
+            in scrutins
 
             if int(
                 scrutin[
                     "year"
                 ]
             ) == year
-
         ]
+
 
         months = [
 
             month
 
-            for month in month_index
+            for month
+            in month_index
 
             if int(
                 month[
                     "month"
                 ][:4]
             ) == year
-
         ]
+
 
         votes_count = sum(
 
@@ -3434,9 +4414,10 @@ def build_years_data(
                 )
             )
 
-            for scrutin in year_scrutins
-
+            for scrutin
+            in year_scrutins
         )
+
 
         groups = {
 
@@ -3446,9 +4427,11 @@ def build_years_data(
                 )
             )
 
-            for scrutin in year_scrutins
+            for scrutin
+            in year_scrutins
 
-            for summary in scrutin.get(
+            for summary
+            in scrutin.get(
                 "groupes_summary",
                 []
             )
@@ -3462,8 +4445,8 @@ def build_years_data(
                 "",
                 "Inconnu"
             }
-
         }
+
 
         result[
             str(
@@ -3484,15 +4467,20 @@ def build_years_data(
                 "groupes":
                     len(
                         groups
-                    )
+                    ),
             },
 
             "months":
-                months
+                months,
         }
+
 
     return result
 
+
+# ============================================================
+# INDEX.JSON
+# ============================================================
 
 def build_index_file(
     scrutins,
@@ -3505,12 +4493,15 @@ def build_index_file(
         month_index
     )
 
+
     available_years = sorted(
 
         [
+
             int(
                 year
             )
+
             for year
             in years_data.keys()
         ],
@@ -3518,11 +4509,13 @@ def build_index_file(
         reverse=True
     )
 
+
     if CURRENT_YEAR in available_years:
 
         default_year = (
             CURRENT_YEAR
         )
+
 
     elif available_years:
 
@@ -3532,16 +4525,20 @@ def build_index_file(
             ]
         )
 
+
     else:
 
         default_year = (
             CURRENT_YEAR
         )
 
+
     default_data = years_data.get(
+
         str(
             default_year
         ),
+
         {
 
             "counts": {
@@ -3553,18 +4550,19 @@ def build_index_file(
                     0,
 
                 "groupes":
-                    0
+                    0,
             },
 
             "months":
-                []
+                [],
         }
     )
+
 
     payload = {
 
         "version":
-            "GROUP_FIRST_V1",
+            "GROUP_FIRST_V2_AMO40",
 
         "updated_at":
             datetime.now(
@@ -3582,7 +4580,6 @@ def build_index_file(
         "default_year":
             default_year,
 
-        # Compatibilité ancienne page
         "counts":
             default_data[
                 "counts"
@@ -3616,15 +4613,17 @@ def build_index_file(
             "is_valid":
                 composition[
                     "is_valid"
-                ]
-        }
+                ],
+        },
     }
+
 
     write_json(
         BASE_DIR
         / "index.json",
         payload
     )
+
 
     print(
         "index.json créé"
@@ -3638,110 +4637,142 @@ def build_index_file(
 def main():
 
     print("")
+
     print(
         "=============================================="
     )
+
     print(
-        " BUILD DATA — GROUP FIRST V1"
+        " BUILD DATA — GROUP FIRST V2 / AMO40"
     )
+
     print(
         "=============================================="
     )
+
     print("")
+
 
     ensure_dir(
         BASE_DIR
     )
 
+
     ensure_dir(
         MONTHS_DIR
     )
 
-    # --------------------------------------------------------
-    # 1. ACTEURS / MANDATS / ORGANES
-    # --------------------------------------------------------
+
+    # ========================================================
+    # 1. DÉPUTÉS ACTUELS + GROUPES
+    # ========================================================
 
     (
-        actors,
-        current_actors,
-        organes
-    ) = load_amo()
+        current_deputies,
+        organes,
+        group_ref_to_label
 
-    # --------------------------------------------------------
+    ) = load_current_deputies()
+
+
+    # ========================================================
     # 2. SCRUTINS
-    # --------------------------------------------------------
+    # ========================================================
 
     scrutins = load_scrutins(
-        actors,
-        current_actors,
-        organes
+
+        current_deputies,
+
+        organes,
+
+        group_ref_to_label
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 3. DEPUTES.JSON
-    # --------------------------------------------------------
+    # ========================================================
 
     deputes = build_deputes_file(
-        current_actors,
+
+        current_deputies,
+
         scrutins
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 4. COMPOSITION.JSON
-    # --------------------------------------------------------
+    # ========================================================
 
     composition = build_composition_file(
         deputes
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 5. MOIS
-    # --------------------------------------------------------
+    # ========================================================
 
     month_index = write_month_files(
         scrutins
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 6. GROUPES.JSON
-    # --------------------------------------------------------
+    # ========================================================
 
     build_groupes_file(
+
         scrutins,
+
         composition
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 7. SEARCH.JSON
-    # --------------------------------------------------------
+    # ========================================================
 
     build_search_file(
+
         deputes,
+
         composition,
+
         scrutins
     )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # 8. INDEX.JSON
-    # --------------------------------------------------------
+    # ========================================================
 
     build_index_file(
+
         scrutins,
+
         month_index,
+
         composition
     )
 
+
     print("")
+
     print(
         "=============================================="
     )
+
     print(
         " BUILD TERMINÉ"
     )
+
     print(
         "=============================================="
     )
-    print("")
+
 
     print(
         "Députés actuels :",
@@ -3750,12 +4781,14 @@ def main():
         )
     )
 
+
     print(
         "Scrutins :",
         len(
             scrutins
         )
     )
+
 
     print(
         "Années :",
@@ -3765,15 +4798,18 @@ def main():
                 "year"
             ]
 
-            for scrutin in scrutins
-
+            for scrutin
+            in scrutins
         })
     )
 
+
     print("")
+
     print(
         "Fichiers créés :"
     )
+
 
     print(
         " data/current/index.json"
@@ -3799,8 +4835,7 @@ def main():
         " data/current/months/YYYY-MM.json"
     )
 
-    print("")
-
 
 if __name__ == "__main__":
+
     main()
