@@ -3,6 +3,7 @@ import re
 import ssl
 import time
 import socket
+import shutil
 import http.client
 import urllib.request
 import urllib.error
@@ -41,6 +42,8 @@ GROUP_LIST_URL = (
 
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
+GROUPS_DIR = BASE_DIR / "groupes"
+DEPUTE_VOTES_DIR = BASE_DIR / "deputes_votes"
 SSL_CONTEXT = ssl.create_default_context()
 
 
@@ -181,11 +184,66 @@ def normalize_circonscription(value):
 
 
 def write_json(path, data):
+    """
+    JSON compact volontairement :
+    les données sont destinées au site, pas à être lues à la main.
+    Cela réduit fortement le poids du dépôt et les temps de chargement.
+    """
     ensure_dir(path.parent)
     path.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2),
+        json.dumps(
+            data,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ),
         encoding="utf-8",
     )
+
+
+def safe_slug(value):
+    value = clean(value).lower()
+    value = (
+        value
+        .replace("é", "e")
+        .replace("è", "e")
+        .replace("ê", "e")
+        .replace("ë", "e")
+        .replace("à", "a")
+        .replace("â", "a")
+        .replace("ä", "a")
+        .replace("î", "i")
+        .replace("ï", "i")
+        .replace("ô", "o")
+        .replace("ö", "o")
+        .replace("ù", "u")
+        .replace("û", "u")
+        .replace("ü", "u")
+        .replace("ç", "c")
+        .replace("œ", "oe")
+    )
+    value = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
+    return value or "groupe"
+
+
+def public_scrutin_summary(scrutin):
+    """
+    Version légère d'un scrutin pour l'accueil, la recherche et les groupes.
+    Les centaines de votes individuels NE sont plus dupliqués dans les mois.
+    """
+    return {
+        "uid": scrutin.get("uid"),
+        "numero": scrutin.get("numero"),
+        "date": scrutin.get("date"),
+        "year": scrutin.get("year"),
+        "sujet": scrutin.get("sujet"),
+        "titre_court": scrutin.get("titre_court"),
+        "titre": truncate(scrutin.get("titre"), 350),
+        "titre_officiel": truncate(scrutin.get("titre_officiel"), 350),
+        "description": truncate(scrutin.get("description"), 700),
+        "theme": scrutin.get("theme"),
+        "stats": scrutin.get("stats", {}),
+        "groupes_summary": scrutin.get("groupes_summary", []),
+    }
 
 
 def download(url, retries=5, pause=3, chunk_size=1024 * 256):
@@ -1326,6 +1384,11 @@ def build_composition_file(deputes):
 
 
 def write_month_files(scrutins):
+    """
+    Les fichiers mensuels servent à l'accueil et aux pages de synthèse.
+    Ils ne contiennent plus les votes individuels : c'était la cause
+    des fichiers de 50 à 120 Mo.
+    """
     ensure_dir(MONTHS_DIR)
 
     for old_file in MONTHS_DIR.glob("*.json"):
@@ -1336,15 +1399,17 @@ def write_month_files(scrutins):
     for scrutin in scrutins:
         month = clean(scrutin.get("date"))[:7]
         if month:
-            grouped[month].append(scrutin)
+            grouped[month].append(public_scrutin_summary(scrutin))
 
     month_index = []
 
     for month, items in grouped.items():
-        items.sort(key=lambda row: row["date"], reverse=True)
+        items.sort(key=lambda row: row.get("date", ""), reverse=True)
+
+        path = MONTHS_DIR / f"{month}.json"
 
         write_json(
-            MONTHS_DIR / f"{month}.json",
+            path,
             {
                 "month": month,
                 "year": int(month[:4]),
@@ -1356,13 +1421,79 @@ def write_month_files(scrutins):
             "month": month,
             "file": f"data/current/months/{month}.json",
             "scrutins": len(items),
+            "bytes": path.stat().st_size,
         })
 
     month_index.sort(key=lambda row: row["month"], reverse=True)
     return month_index
 
 
+def build_depute_votes_files(current_deputies, scrutins):
+    """
+    Historique individuel minimal, séparé par député et par année.
+
+    On ne répète pas ici les titres/descriptions des scrutins :
+    la page député les retrouve dans les fichiers mensuels via scrutin_uid.
+    """
+    if DEPUTE_VOTES_DIR.exists():
+        shutil.rmtree(DEPUTE_VOTES_DIR)
+
+    ensure_dir(DEPUTE_VOTES_DIR)
+
+    by_year_uid = defaultdict(list)
+
+    for scrutin in scrutins:
+        year = str(scrutin.get("year") or "")
+        scrutin_uid = scrutin.get("uid")
+
+        for vote in scrutin.get("votes", []):
+            deputy_uid = vote.get("depute_uid")
+
+            if deputy_uid not in current_deputies:
+                continue
+
+            # Clés courtes volontairement : ces fichiers représentent
+            # potentiellement des centaines de milliers de lignes.
+            # u = UID scrutin, v = vote, g = groupe au moment du vote.
+            by_year_uid[(year, deputy_uid)].append({
+                "u": scrutin_uid,
+                "v": vote.get("vote"),
+                "g": vote.get("groupe_au_vote") or vote.get("groupe"),
+            })
+
+    files_count = 0
+
+    for (year, deputy_uid), votes in by_year_uid.items():
+        path = DEPUTE_VOTES_DIR / year / f"{deputy_uid}.json"
+
+        write_json(
+            path,
+            {
+                "uid": deputy_uid,
+                "year": int(year),
+                "votes": votes,
+            },
+        )
+
+        files_count += 1
+
+    print("Fichiers de votes par député :", files_count)
+
+
 def build_groupes_file(scrutins, composition):
+    """
+    groupes.json devient un INDEX léger.
+
+    Les listes détaillées de scrutins sont séparées dans :
+      data/current/groupes/<année>/<groupe>.json
+
+    Ainsi aucun fichier géant de 80+ Mo n'est publié.
+    """
+    if GROUPS_DIR.exists():
+        shutil.rmtree(GROUPS_DIR)
+
+    ensure_dir(GROUPS_DIR)
+
     data = {}
 
     for scrutin in scrutins:
@@ -1405,9 +1536,8 @@ def build_groupes_file(scrutins, composition):
                 "uid": scrutin["uid"],
                 "date": scrutin["date"],
                 "sujet": scrutin["sujet"],
-                "titre": scrutin["titre"],
-                "titre_officiel": scrutin["titre_officiel"],
-                "description": scrutin["description"],
+                "titre": truncate(scrutin.get("titre"), 300),
+                "description": truncate(scrutin.get("description"), 700),
                 "theme": theme,
                 "position": summary["position"],
                 "cohesion_pct": summary["cohesion_pct"],
@@ -1423,7 +1553,7 @@ def build_groupes_file(scrutins, composition):
         for row in composition.get("groupes", [])
     }
 
-    result = []
+    index_entries = []
 
     for entry in data.values():
         entry["themes"] = [
@@ -1446,19 +1576,35 @@ def build_groupes_file(scrutins, composition):
             0,
         )
 
-        result.append(entry)
+        slug = group_sigle(entry["groupe"]).lower() or safe_slug(entry["groupe"])
+        relative_file = f"data/current/groupes/{entry['year']}/{slug}.json"
+        path = BASE_DIR.parent.parent / relative_file
 
-    result.sort(key=lambda row: (-row["year"], row["groupe"]))
+        # BASE_DIR.parent.parent = racine du dépôt quand BASE_DIR=data/current
+        write_json(path, entry)
+
+        index_entries.append({
+            "year": entry["year"],
+            "groupe": entry["groupe"],
+            "sigle": entry["sigle"],
+            "scrutins_count": entry["scrutins_count"],
+            "votes": entry["votes"],
+            "themes": entry["themes"],
+            "deputes_actuels": entry["deputes_actuels"],
+            "file": relative_file,
+        })
+
+    index_entries.sort(key=lambda row: (-row["year"], row["groupe"]))
 
     write_json(
         BASE_DIR / "groupes.json",
         {
             "updated_at": datetime.now(timezone.utc).isoformat(),
-            "groupes": result,
+            "groupes": index_entries,
         },
     )
 
-    print("groupes.json :", len(result), "fiches groupe/année")
+    print("groupes.json :", len(index_entries), "fiches groupe/année (index léger)")
 
 
 def build_search_file(deputes, composition, scrutins):
@@ -1582,7 +1728,7 @@ def build_index_file(scrutins, month_index, composition):
     write_json(
         BASE_DIR / "index.json",
         {
-            "version": "GROUP_FIRST_V3_OFFICIAL_GROUP_LIST",
+            "version": "GROUP_FIRST_V4_LIGHT_DATA",
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "legislature": int(LEGISLATURE),
             "available_years": available_years,
@@ -1603,18 +1749,52 @@ def build_index_file(scrutins, month_index, composition):
 
 
 # ============================================================
+# CONTRÔLE DE TAILLE AVANT PUSH
+# ============================================================
+
+def validate_generated_file_sizes():
+    """
+    GitHub refuse un fichier > 100 Mo.
+    On vise volontairement beaucoup plus bas : 45 Mo maximum.
+    """
+    limit = 45 * 1024 * 1024
+    largest = []
+
+    for path in BASE_DIR.rglob("*.json"):
+        size = path.stat().st_size
+        largest.append((size, path))
+
+        if size > limit:
+            raise RuntimeError(
+                f"Fichier généré trop lourd : {path} "
+                f"({size / 1024 / 1024:.2f} Mo). "
+                "Le build est stoppé avant le commit."
+            )
+
+    largest.sort(reverse=True, key=lambda item: item[0])
+
+    print("")
+    print("Plus gros fichiers générés :")
+
+    for size, path in largest[:10]:
+        print(f" - {path}: {size / 1024 / 1024:.2f} Mo")
+
+
+# ============================================================
 # MAIN
 # ============================================================
 
 def main():
     print("")
     print("======================================================")
-    print(" BUILD DATA — GROUP FIRST V3 / OFFICIAL GROUP LIST")
+    print(" BUILD DATA — GROUP FIRST V4 / LIGHT DATA")
     print("======================================================")
     print("")
 
     ensure_dir(BASE_DIR)
     ensure_dir(MONTHS_DIR)
+    ensure_dir(GROUPS_DIR)
+    ensure_dir(DEPUTE_VOTES_DIR)
 
     current_deputies, organes, group_ref_to_label = load_current_deputies()
 
@@ -1630,8 +1810,17 @@ def main():
     )
 
     composition = build_composition_file(deputes)
+
+    # Fichiers mensuels LÉGERS : pas de votes individuels.
     month_index = write_month_files(scrutins)
 
+    # Historique individuel minimal, séparé par député.
+    build_depute_votes_files(
+        current_deputies,
+        scrutins,
+    )
+
+    # Index groupes léger + un petit fichier par groupe/année.
     build_groupes_file(
         scrutins,
         composition,
@@ -1649,6 +1838,8 @@ def main():
         composition,
     )
 
+    validate_generated_file_sizes()
+
     print("")
     print("======================================================")
     print(" BUILD TERMINÉ")
@@ -1657,13 +1848,15 @@ def main():
     print("Scrutins :", len(scrutins))
     print("Années :", sorted({s["year"] for s in scrutins}))
     print("")
-    print("Fichiers créés :")
+    print("Architecture publiée :")
     print(" data/current/index.json")
     print(" data/current/search.json")
     print(" data/current/composition.json")
     print(" data/current/deputes.json")
-    print(" data/current/groupes.json")
-    print(" data/current/months/YYYY-MM.json")
+    print(" data/current/groupes.json                 (index léger)")
+    print(" data/current/groupes/YYYY/<groupe>.json   (détail groupe)")
+    print(" data/current/months/YYYY-MM.json           (scrutins sans votes individuels)")
+    print(" data/current/deputes_votes/YYYY/PA....json (votes individuels minimaux)")
 
 
 if __name__ == "__main__":
