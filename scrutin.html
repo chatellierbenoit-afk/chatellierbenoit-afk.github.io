@@ -1,664 +1,1767 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fiche scrutin</title>
-  <style>
-    :root {
-      --violet: #7700FF;
-      --violet-dark: #5b00c7;
-      --violet-soft: #f3edff;
-      --card: #ffffff;
-      --text: #1e1c26;
-      --muted: #6f6a7e;
-      --border: #e7e2f2;
-      --shadow: 0 12px 28px rgba(57, 22, 119, 0.08);
-      --radius: 22px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrutin — Assemblée nationale</title>
 
-    * { box-sizing: border-box; }
+<style>
+:root{
+  --violet:#7700ff;
+  --violet-dark:#5900bf;
+  --violet-soft:#f2eaff;
+  --bg:#f7f5fb;
+  --card:#fff;
+  --text:#1d1b22;
+  --muted:#6f6a78;
+  --border:#e5dfef;
+  --green:#168550;
+  --green-bg:#eaf8f0;
+  --red:#c43b43;
+  --red-bg:#fff0f1;
+  --orange:#a66b00;
+  --orange-bg:#fff7df;
+  --grey:#6b7280;
+  --grey-bg:#f1f2f5;
+  --shadow:0 10px 28px rgba(54,24,105,.07);
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #f8f6fd 0%, #f3f0fb 100%);
-      color: var(--text);
-    }
+*{box-sizing:border-box}
 
-    .hero {
-      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
-      color: white;
-      text-align: center;
-      padding: 36px 20px 30px;
-      box-shadow: 0 12px 30px rgba(90, 0, 199, 0.18);
-    }
+body{
+  margin:0;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    .top-links {
-      max-width: 1480px;
-      margin: 18px auto 0;
-      padding: 0 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
 
-    .top-links a {
-      display: inline-block;
-      text-decoration: none;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.35);
-      color: white;
-      font-weight: 700;
-      background: rgba(255,255,255,0.08);
-    }
+.hero{
+  padding:32px 18px 38px;
+  color:white;
+  text-align:center;
+  background:linear-gradient(135deg,var(--violet-dark),var(--violet));
+}
 
-    .hero h1 {
-      margin: 0;
-      font-size: 40px;
-      line-height: 1.12;
-    }
+.hero-inner{max-width:1100px;margin:auto}
 
-    .hero p {
-      margin: 12px auto 0;
-      font-size: 17px;
-      max-width: 980px;
-      line-height: 1.45;
-      opacity: 0.98;
-    }
+.top-links{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-bottom:23px;
+}
 
-    main {
-      max-width: 1480px;
-      margin: 0 auto;
-      padding: 24px 16px 52px;
-    }
+.top-links a{
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  font-weight:800;
+}
 
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
-      margin-bottom: 20px;
-    }
+.kicker{
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  opacity:.82;
+}
 
-    .year-switch {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
+.hero h1{
+  max-width:1000px;
+  margin:12px auto 0;
+  font-size:clamp(2rem,5vw,3.5rem);
+  line-height:1.08;
+  letter-spacing:-.03em;
+}
 
-    .year-btn {
-      display: inline-block;
-      min-width: 120px;
-      text-align: center;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: 1px solid #d9d2ea;
-      background: white;
-      color: #1e1c26;
-      text-decoration: none;
-      font-weight: 700;
-    }
+.hero p{
+  max-width:920px;
+  margin:15px auto 0;
+  line-height:1.55;
+  opacity:.93;
+}
 
-    .year-btn.active {
-      background: linear-gradient(135deg, #5b00c7, #7700FF);
-      color: white;
-      border-color: transparent;
-    }
+main{
+  max-width:1450px;
+  margin:auto;
+  padding:24px 16px 60px;
+}
 
-    .panel-title {
-      margin: 0 0 18px;
-      font-size: 30px;
-      text-align: center;
-    }
+.panel{
+  margin-bottom:20px;
+  padding:24px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-    }
+.panel h2{
+  margin:0 0 10px;
+  text-align:center;
+  font-size:clamp(1.6rem,3vw,2.2rem);
+}
 
-    .info-card,
-    .stats-card {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-    }
+.intro{
+  max-width:850px;
+  margin:0 auto 21px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.5;
+}
 
-    .info-card h2,
-    .stats-card h2 {
-      margin: 0 0 14px;
-      font-size: 34px;
-      line-height: 1.15;
-      text-align: center;
-    }
+.info-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:16px;
+}
 
-    .meta-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
+.info-box,.stats-box{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  background:linear-gradient(180deg,#fff,#fcfbff);
+}
 
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: white;
-    }
+.meta-grid{
+  display:grid;
+  gap:9px;
+  margin-top:17px;
+}
 
-    .meta-row strong {
-      font-size: 14px;
-    }
+.meta-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:11px 13px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#fff;
+}
 
-    .meta-row span {
-      color: var(--muted);
-      text-align: right;
-    }
+.meta-row span:last-child{
+  color:var(--muted);
+  text-align:right;
+}
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
+.description{
+  margin-top:15px;
+  padding:15px;
+  border-radius:14px;
+  background:var(--violet-soft);
+  color:#40364a;
+  line-height:1.5;
+}
 
-    .summary-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-    }
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
 
-    .summary-box strong {
-      display: block;
-      font-size: 24px;
-      margin-bottom: 6px;
-      color: var(--violet);
-    }
+.stat{
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  text-align:center;
+  background:#fff;
+}
 
-    .summary-box span {
-      color: var(--muted);
-      font-size: 13px;
-    }
+.stat strong{
+  display:block;
+  color:var(--violet);
+  font-size:1.8rem;
+}
 
-    .small-muted {
-      margin-top: 12px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
-    }
+.stat span{
+  color:var(--muted);
+  font-size:.82rem;
+}
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
+.group-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
 
-    .field label {
-      display: block;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 8px;
-      text-align: center;
-    }
+.group-card{
+  display:block;
+  padding:17px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:#fff;
+  transition:.15s;
+}
 
-    .field input,
-    .field select {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid #d9d2ea;
-      border-radius: 14px;
-      font-size: 16px;
-      background: white;
-      text-align: center;
-    }
+.group-card:hover{
+  transform:translateY(-1px);
+  border-color:#cdb7ff;
+}
 
-    .votes-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
+.group-name{
+  min-height:42px;
+  font-weight:900;
+  line-height:1.25;
+}
 
-    .vote-card {
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
+.position{
+  display:inline-block;
+  margin-top:10px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:950;
+}
 
-    .vote-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(57, 22, 119, 0.10);
-      background: var(--violet-soft);
-    }
+.position.Pour{color:var(--green);background:var(--green-bg)}
+.position.Contre{color:var(--red);background:var(--red-bg)}
+.position.Abstention{color:var(--orange);background:var(--orange-bg)}
+.position.Partagé,.position.Non-votant{color:var(--grey);background:var(--grey-bg)}
 
-    .vote-card h3 {
-      margin: 0 0 8px;
-      text-align: center;
-      font-size: 24px;
-      line-height: 1.2;
-    }
+.group-numbers{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:11px;
+  color:var(--muted);
+  font-size:.76rem;
+}
 
-    .vote-card .meta {
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+.group-numbers span{
+  padding:6px 8px;
+  border-radius:9px;
+  background:#faf9fd;
+  border:1px solid var(--border);
+}
 
-    .vote-badge {
-      display: inline-block;
-      margin: 0 auto 10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: center;
-    }
+.cohesion{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:800;
+}
 
-    .vote-badge-wrap {
-      text-align: center;
-    }
+.filters{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1.3fr;
+  gap:12px;
+}
 
-    .vote-pour {
-      background: #e8fff1;
-      color: #0a8f49;
-      border: 1px solid #bce7cf;
-    }
+.field label{
+  display:block;
+  margin-bottom:7px;
+  text-align:center;
+  font-size:.8rem;
+  font-weight:900;
+}
 
-    .vote-contre {
-      background: #fff0f0;
-      color: #c53737;
-      border: 1px solid #efc2c2;
-    }
+.field input,.field select{
+  width:100%;
+  min-height:48px;
+  padding:0 12px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
+}
 
-    .vote-abstention {
-      background: #fff9e8;
-      color: #9b7600;
-      border: 1px solid #ead796;
-    }
+.result-info{
+  margin:10px 0 20px;
+  color:var(--muted);
+  text-align:center;
+}
 
-    .vote-non-votant {
-      background: #f1f1f4;
-      color: #666a73;
-      border: 1px solid #d9dbe3;
-    }
+.votes-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
 
-    .vote-card .sub {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
+.vote-card{
+  display:block;
+  padding:17px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  text-align:center;
+  background:#fff;
+}
 
-    .empty {
-      text-align: center;
-      color: var(--muted);
-      padding: 28px 8px;
-    }
+.vote-card:hover{
+  border-color:#ccb6fb;
+  background:#fdfcff;
+}
 
-    @media (max-width: 1200px) {
-      .hero-grid,
-      .summary-grid,
-      .votes-grid,
-      .filters {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
+.vote-card h3{
+  margin:0 0 8px;
+  font-size:1rem;
+}
 
-    @media (max-width: 760px) {
-      .hero-grid,
-      .summary-grid,
-      .votes-grid,
-      .filters {
-        grid-template-columns: 1fr;
-      }
+.vote-badge{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:950;
+}
 
-      .hero h1 { font-size: 31px; }
-      main { padding: 18px 12px 36px; }
-    }
-  </style>
+.vote-badge.Pour{color:var(--green);background:var(--green-bg)}
+.vote-badge.Contre{color:var(--red);background:var(--red-bg)}
+.vote-badge.Abstention{color:var(--orange);background:var(--orange-bg)}
+.vote-badge.Non-votant{color:var(--grey);background:var(--grey-bg)}
+
+.vote-meta{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.4;
+}
+
+.error,.empty{
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.error{
+  color:#a32b31;
+  background:#fff2f3;
+  border:1px solid #efc8cb;
+  border-radius:15px;
+}
+
+@media(max-width:1100px){
+  .group-grid{grid-template-columns:repeat(2,1fr)}
+  .votes-grid{grid-template-columns:repeat(3,1fr)}
+  .filters{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:760px){
+  .info-grid,.group-grid,.votes-grid,.filters{grid-template-columns:1fr}
+  .panel{padding:18px}
+}
+</style>
 </head>
+
 <body>
-  <header class="hero">
+
+<header class="hero">
+  <div class="hero-inner">
+
     <div class="top-links">
-      <a href="index.html">Accueil</a>
-      <a id="backGroupLink" href="#" style="display:none;">Voir le groupe</a>
-      <a id="backDeputyLink" href="#" style="display:none;">Voir le député</a>
+      <a href="./index.html">← Accueil</a>
     </div>
-    <h1 id="pageTitle">Fiche scrutin</h1>
-    <p id="pageSubtitle">Chargement…</p>
-  </header>
 
-  <main>
-    <div class="panel year-switch" id="yearSwitch"></div>
+    <div class="kicker">
+      Scrutin de l'Assemblée nationale
+    </div>
 
-    <section class="panel">
-      <h2 class="panel-title">Résumé du scrutin</h2>
-      <div class="hero-grid">
-        <div class="info-card">
-          <h2 id="scrutinTitleHeading">Chargement…</h2>
-          <div class="meta-list">
-            <div class="meta-row">
-              <strong>Date</strong>
-              <span id="scrutinDate">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>Thématique</strong>
-              <span id="scrutinTheme">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>UID</strong>
-              <span id="scrutinUid">-</span>
-            </div>
-            <div class="meta-row">
-              <strong>Total des votes recensés</strong>
-              <span id="scrutinVotesCount">0</span>
-            </div>
-          </div>
-          <div class="small-muted" id="scrutinDescription">-</div>
+    <h1 id="pageTitle">
+      Chargement…
+    </h1>
+
+    <p id="pageSubtitle">
+      Chargement des données du scrutin…
+    </p>
+
+  </div>
+</header>
+
+<main>
+
+<section class="panel">
+
+  <div class="info-grid">
+
+    <div class="info-box">
+
+      <h2>
+        Résumé du scrutin
+      </h2>
+
+      <div class="meta-grid">
+
+        <div class="meta-row">
+          <strong>Date</strong>
+          <span id="date">—</span>
         </div>
 
-        <div class="stats-card">
-          <h2>Répartition des votes</h2>
-          <div class="summary-grid">
-            <div class="summary-box"><strong id="scrutinPour">0</strong><span>Pour</span></div>
-            <div class="summary-box"><strong id="scrutinContre">0</strong><span>Contre</span></div>
-            <div class="summary-box"><strong id="scrutinAbstention">0</strong><span>Abstention</span></div>
-            <div class="summary-box"><strong id="scrutinNonVotant">0</strong><span>Non-votant</span></div>
-          </div>
-          <div class="small-muted" id="scrutinStatsText">Chargement…</div>
+        <div class="meta-row">
+          <strong>Thématique</strong>
+          <span id="theme">—</span>
         </div>
+
+        <div class="meta-row">
+          <strong>UID</strong>
+          <span id="uid">—</span>
+        </div>
+
+        <div class="meta-row">
+          <strong>Votes recensés</strong>
+          <span id="totalVotes">—</span>
+        </div>
+
       </div>
-    </section>
 
-    <section class="panel">
-      <div class="filters">
-        <div class="field">
-          <label for="voteFilter">Vote</label>
-          <select id="voteFilter">
-            <option value="">Tous les votes</option>
-            <option value="Pour">Pour</option>
-            <option value="Contre">Contre</option>
-            <option value="Abstention">Abstention</option>
-            <option value="Non-votant">Non-votant</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="groupFilter">Groupe</label>
-          <select id="groupFilter">
-            <option value="">Tous les groupes</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="departementFilter">Département</label>
-          <select id="departementFilter">
-            <option value="">Tous les départements</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="nameFilter">Nom du député</label>
-          <input id="nameFilter" type="text" placeholder="Ex. Clouet, Panot, Ruffin">
-        </div>
+      <div
+        class="description"
+        id="description"
+      >
+        —
       </div>
-    </section>
 
-    <section class="panel">
-      <h2 class="panel-title">Votes nominatif</h2>
-      <div id="votesContainer" class="votes-grid"></div>
-    </section>
-  </main>
+    </div>
 
-  <script>
-    let selectedYear = "";
-    let allScrutins = [];
-    let scrutin = null;
-    let scrutinUid = "";
+    <div class="stats-box">
 
-    function getParam(name) {
-      return new URLSearchParams(window.location.search).get(name) || "";
+      <h2>
+        Répartition
+      </h2>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="pour">0</strong>
+          <span>Pour</span>
+        </div>
+
+        <div class="stat">
+          <strong id="contre">0</strong>
+          <span>Contre</span>
+        </div>
+
+        <div class="stat">
+          <strong id="abstention">0</strong>
+          <span>Abstention</span>
+        </div>
+
+        <div class="stat">
+          <strong id="nonVotant">0</strong>
+          <span>Non-votant</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="panel">
+
+  <h2>
+    Comment ont voté les groupes ?
+  </h2>
+
+  <p class="intro">
+    Position majoritaire de chaque groupe au moment de ce scrutin.
+  </p>
+
+  <div
+    id="groupsGrid"
+    class="group-grid"
+  ></div>
+
+</section>
+
+<section class="panel">
+
+  <h2>
+    Votes nominatifs
+  </h2>
+
+  <p class="intro">
+    Retrouvez le vote de chaque député recensé pour ce scrutin.
+  </p>
+
+  <div class="filters">
+
+    <div class="field">
+
+      <label for="voteFilter">
+        Vote
+      </label>
+
+      <select id="voteFilter">
+
+        <option value="">
+          Tous les votes
+        </option>
+
+        <option value="Pour">
+          Pour
+        </option>
+
+        <option value="Contre">
+          Contre
+        </option>
+
+        <option value="Abstention">
+          Abstention
+        </option>
+
+        <option value="Non-votant">
+          Non-votant
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label for="groupFilter">
+        Groupe au moment du vote
+      </label>
+
+      <select id="groupFilter">
+
+        <option value="">
+          Tous les groupes
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label for="departmentFilter">
+        Département
+      </label>
+
+      <select id="departmentFilter">
+
+        <option value="">
+          Tous les départements
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label for="nameFilter">
+        Nom du député
+      </label>
+
+      <input
+        id="nameFilter"
+        type="search"
+        placeholder="Ex. Panot, Clouet, Ruffin…"
+      >
+
+    </div>
+
+  </div>
+
+  <div
+    id="resultInfo"
+    class="result-info"
+  >
+    Chargement…
+  </div>
+
+  <div
+    id="votesGrid"
+    class="votes-grid"
+  ></div>
+
+</section>
+
+</main>
+
+<script>
+
+(() => {
+
+  "use strict";
+
+  const ROOT =
+    "./data/current/";
+
+
+  let indexData =
+    null;
+
+  let deputiesData =
+    null;
+
+  let deputyMap =
+    new Map();
+
+  let scrutin =
+    null;
+
+  let nominativeVotes =
+    [];
+
+  let scrutinUid =
+    "";
+
+  let selectedYear =
+    "";
+
+
+  const $ =
+    id =>
+      document.getElementById(
+        id
+      );
+
+
+  function getParam(
+    name
+  ) {
+
+    return (
+      new URLSearchParams(
+        location.search
+      )
+      .get(
+        name
+      )
+      || ""
+    );
+
+  }
+
+
+  function fmt(
+    value
+  ) {
+
+    return (
+      new Intl.NumberFormat(
+        "fr-FR"
+      )
+      .format(
+        Number(
+          value || 0
+        )
+      )
+    );
+
+  }
+
+
+  function norm(
+    value
+  ) {
+
+    return (
+      String(
+        value || ""
+      )
+      .normalize(
+        "NFD"
+      )
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+      .toLowerCase()
+      .trim()
+    );
+
+  }
+
+
+  function esc(
+    value
+  ) {
+
+    return (
+      String(
+        value ?? ""
+      )
+      .replaceAll(
+        "&",
+        "&amp;"
+      )
+      .replaceAll(
+        "<",
+        "&lt;"
+      )
+      .replaceAll(
+        ">",
+        "&gt;"
+      )
+      .replaceAll(
+        '"',
+        "&quot;"
+      )
+      .replaceAll(
+        "'",
+        "&#039;"
+      )
+    );
+
+  }
+
+
+  function dateFr(
+    value
+  ) {
+
+    if (!value) {
+      return "—";
     }
 
-    function setParamInUrl(url, key, value) {
-      const u = new URL(url, window.location.origin);
-      if (value) u.searchParams.set(key, value);
-      else u.searchParams.delete(key);
-      return u.pathname + u.search;
+
+    const date =
+      new Date(
+        `${value}T12:00:00`
+      );
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return value;
+
     }
 
-    function buildYearButtons(indexData) {
-      const container = document.getElementById("yearSwitch");
-      const years = (indexData?.available_years || []).map(String);
-      const currentUrl = window.location.pathname + window.location.search;
 
-      container.innerHTML = years.map(year => {
-        const href = setParamInUrl(currentUrl, "year", year);
-        const active = selectedYear === year ? "active" : "";
-        return `<a class="year-btn ${active}" href="${href}">${year}</a>`;
-      }).join("");
+    return (
+      new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+          day:"numeric",
+          month:"long",
+          year:"numeric"
+        }
+      )
+      .format(
+        date
+      )
+    );
+
+  }
+
+
+  async function loadJson(
+    path
+  ) {
+
+    const response =
+      await fetch(
+        path,
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        `Impossible de charger ${path} (${response.status})`
+      );
+
     }
 
-    function getSelectedYear(indexData) {
-      const yearParam = getParam("year");
-      const availableYears = (indexData?.available_years || []).map(String);
-      const defaultYear = String(indexData?.default_year || "");
-      if (yearParam && availableYears.includes(yearParam)) return yearParam;
-      if (defaultYear && availableYears.includes(defaultYear)) return defaultYear;
-      return availableYears[0] || "";
+
+    return response.json();
+
+  }
+
+
+  function availableYears() {
+
+    return (
+      indexData
+        ?.available_years
+      || []
+    )
+    .map(
+      String
+    );
+
+  }
+
+
+  function requestedYear() {
+
+    const value =
+      getParam(
+        "year"
+      );
+
+
+    const years =
+      availableYears();
+
+
+    if (
+      value
+      &&
+      years.includes(
+        value
+      )
+    ) {
+
+      return value;
+
     }
 
-    async function loadJson(path) {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`Impossible de charger ${path}`);
-      return response.json();
+
+    const fallback =
+      String(
+        indexData
+          ?.default_year
+        || ""
+      );
+
+
+    if (
+      fallback
+      &&
+      years.includes(
+        fallback
+      )
+    ) {
+
+      return fallback;
+
     }
 
-    async function loadMonthFile(filePath) {
-      return loadJson("./" + filePath);
+
+    return (
+      years[0]
+      || ""
+    );
+
+  }
+
+
+  async function loadYearScrutins(
+    year
+  ) {
+
+    const info =
+      indexData
+        ?.years
+        ?.[year];
+
+
+    const months =
+      info
+        ?.months
+      || [];
+
+
+    const payloads =
+      await Promise.all(
+
+        months.map(
+          month =>
+            loadJson(
+              "./"
+              +
+              month.file
+            )
+        )
+
+      );
+
+
+    return (
+      payloads.flatMap(
+        payload =>
+          payload.scrutins
+          || []
+      )
+    );
+
+  }
+
+
+  async function findScrutin() {
+
+    selectedYear =
+      requestedYear();
+
+
+    let scrutins =
+      await loadYearScrutins(
+        selectedYear
+      );
+
+
+    scrutin =
+      scrutins.find(
+        row =>
+          row.uid
+          ===
+          scrutinUid
+      )
+      || null;
+
+
+    if (scrutin) {
+      return;
     }
 
-    async function loadYearScrutins(indexData) {
-      selectedYear = getSelectedYear(indexData);
-      const yearInfo = indexData?.years?.[selectedYear];
-      const months = yearInfo?.months || [];
-      const payloads = await Promise.all(months.map(m => loadMonthFile(m.file)));
-      return payloads.flatMap(payload => payload.scrutins || []);
-    }
 
-    function formatNumber(value) {
-      return new Intl.NumberFormat("fr-FR").format(value || 0);
-    }
+    /*
+      Si l'année de l'URL est mauvaise,
+      on cherche aussi dans les autres années.
+    */
 
-    function normalize(text) {
-      return (text || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-    }
+    for (
+      const year
+      of availableYears()
+    ) {
 
-    function ensureArray(v) {
-      return Array.isArray(v) ? v : [];
-    }
+      if (
+        year
+        ===
+        selectedYear
+      ) {
 
-    function computeStats(votes) {
-      return {
-        pour: votes.filter(v => v.vote === "Pour").length,
-        contre: votes.filter(v => v.vote === "Contre").length,
-        abstention: votes.filter(v => v.vote === "Abstention").length,
-        non_votant: votes.filter(v => v.vote === "Non-votant").length,
-      };
-    }
+        continue;
 
-    function shortTitle(scrutin) {
-      const title = (scrutin.titre || "").trim();
-      const mSous = title.match(/(sous-amendement n°\s*\d+)/i);
-      const mAmend = title.match(/(amendement n°\s*\d+)/i);
-      const mArticle = title.match(/(article\s+[0-9a-zàâçéèêëîïôûùüÿñæœ\- ]+)/i);
+      }
 
-      if (mSous && mArticle) return `${mSous[1]} sur ${mArticle[1]}`;
-      if (mSous) return mSous[1];
-      if (mAmend && mArticle) return `${mAmend[1]} sur ${mArticle[1]}`;
-      if (mAmend) return mAmend[1];
-      if (mArticle) return `Vote sur l’article ${mArticle[1].trim()}`;
 
-      if (title.length > 140) return title.slice(0, 137).trim() + "…";
-      return title || "Scrutin sans titre";
-    }
+      scrutins =
+        await loadYearScrutins(
+          year
+        );
 
-    function getVoteBadgeClass(vote) {
-      if (vote === "Pour") return "vote-pour";
-      if (vote === "Contre") return "vote-contre";
-      if (vote === "Abstention") return "vote-abstention";
-      return "vote-non-votant";
-    }
 
-    function renderFilters() {
-      const groups = [...new Set(ensureArray(scrutin?.votes).map(v => v.groupe).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b, "fr"));
+      scrutin =
+        scrutins.find(
+          row =>
+            row.uid
+            ===
+            scrutinUid
+        )
+        || null;
 
-      const departements = [...new Set(ensureArray(scrutin?.votes).map(v => v.departement).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b, "fr"));
 
-      const groupSelect = document.getElementById("groupFilter");
-      const depSelect = document.getElementById("departementFilter");
+      if (scrutin) {
 
-      groupSelect.innerHTML = `<option value="">Tous les groupes</option>`;
-      depSelect.innerHTML = `<option value="">Tous les départements</option>`;
+        selectedYear =
+          year;
 
-      groups.forEach(group => {
-        const option = document.createElement("option");
-        option.value = group;
-        option.textContent = group;
-        groupSelect.appendChild(option);
-      });
-
-      departements.forEach(dep => {
-        const option = document.createElement("option");
-        option.value = dep;
-        option.textContent = dep;
-        depSelect.appendChild(option);
-      });
-    }
-
-    function renderHeader() {
-      const votes = ensureArray(scrutin?.votes);
-      const stats = computeStats(votes);
-
-      document.getElementById("pageTitle").textContent = shortTitle(scrutin);
-      document.getElementById("pageSubtitle").textContent =
-        `${formatNumber(votes.length)} votes recensés · ${scrutin?.date || "-"} · ${scrutin?.theme || "Autres"}`;
-
-      document.getElementById("scrutinTitleHeading").textContent = shortTitle(scrutin);
-      document.getElementById("scrutinDate").textContent = scrutin?.date || "-";
-      document.getElementById("scrutinTheme").textContent = scrutin?.theme || "Autres";
-      document.getElementById("scrutinUid").textContent = scrutin?.uid || "-";
-      document.getElementById("scrutinVotesCount").textContent = formatNumber(votes.length);
-      document.getElementById("scrutinDescription").textContent = scrutin?.description || scrutin?.titre || "-";
-
-      document.getElementById("scrutinPour").textContent = formatNumber(stats.pour);
-      document.getElementById("scrutinContre").textContent = formatNumber(stats.contre);
-      document.getElementById("scrutinAbstention").textContent = formatNumber(stats.abstention);
-      document.getElementById("scrutinNonVotant").textContent = formatNumber(stats.non_votant);
-
-      document.getElementById("scrutinStatsText").textContent =
-        `${formatNumber(votes.length)} votes observés : ${formatNumber(stats.pour)} Pour, ${formatNumber(stats.contre)} Contre, ${formatNumber(stats.abstention)} Abstentions, ${formatNumber(stats.non_votant)} Non-votants.`;
-    }
-
-    function renderVotes() {
-      const voteType = document.getElementById("voteFilter").value;
-      const group = document.getElementById("groupFilter").value;
-      const departement = document.getElementById("departementFilter").value;
-      const nameQuery = normalize(document.getElementById("nameFilter").value);
-
-      const filtered = ensureArray(scrutin?.votes).filter(v => {
-        const voteMatch = !voteType || v.vote === voteType;
-        const groupMatch = !group || v.groupe === group;
-        const depMatch = !departement || v.departement === departement;
-        const nameMatch = !nameQuery || normalize(v.nom || "").includes(nameQuery);
-        return voteMatch && groupMatch && depMatch && nameMatch;
-      });
-
-      const container = document.getElementById("votesContainer");
-
-      if (!filtered.length) {
-        container.innerHTML = `<div class="empty">Aucun vote nominatif ne correspond aux filtres choisis.</div>`;
         return;
+
       }
 
-      container.innerHTML = filtered
-        .sort((a, b) => (a.nom || "").localeCompare(b.nom || "", "fr"))
-        .map(v => `
-          <a class="vote-card" href="depute.html?uid=${encodeURIComponent(v.depute_uid)}&year=${encodeURIComponent(selectedYear)}">
-            <h3>${v.nom || "-"}</h3>
-            <div class="vote-badge-wrap">
-              <span class="vote-badge ${getVoteBadgeClass(v.vote)}">${v.vote || "-"}</span>
-            </div>
-            <div class="meta">${v.groupe || "-"}</div>
-            <div class="meta">${v.circonscription || v.departement || "-"}</div>
-            <div class="sub">${v.departement || "-"}</div>
-          </a>
-        `).join("");
     }
 
-    function bindFilters() {
-      ["voteFilter", "groupFilter", "departementFilter", "nameFilter"].forEach(id => {
-        const el = document.getElementById(id);
-        el.addEventListener("input", renderVotes);
-        el.addEventListener("change", renderVotes);
-      });
+  }
+
+
+  function buildDeputyMap() {
+
+    const rows =
+      Array.isArray(
+        deputiesData
+          ?.deputes
+      )
+      ?
+      deputiesData.deputes
+      :
+      Array.isArray(
+        deputiesData
+      )
+      ?
+      deputiesData
+      :
+      [];
+
+
+    deputyMap =
+      new Map(
+
+        rows.map(
+          row =>
+            [
+              row.uid,
+              row
+            ]
+        )
+
+      );
+
+  }
+
+
+  function renderSummary() {
+
+    const stats =
+      scrutin
+        ?.stats
+      || {};
+
+
+    document.title =
+      `${scrutin?.sujet || "Scrutin"} — Assemblée nationale`;
+
+
+    $("pageTitle").textContent =
+
+      scrutin
+        ?.sujet
+
+      ||
+
+      scrutin
+        ?.titre_court
+
+      ||
+
+      scrutin
+        ?.titre
+
+      ||
+
+      "Scrutin";
+
+
+    $("pageSubtitle").textContent =
+
+      `${dateFr(scrutin?.date)} · ${scrutin?.theme || "Autres"}`;
+
+
+    $("date").textContent =
+      dateFr(
+        scrutin
+          ?.date
+      );
+
+
+    $("theme").textContent =
+      scrutin
+        ?.theme
+      ||
+      "Autres";
+
+
+    $("uid").textContent =
+      scrutin
+        ?.uid
+      ||
+      "—";
+
+
+    $("totalVotes").textContent =
+      fmt(
+        stats.total_votes
+      );
+
+
+    $("pour").textContent =
+      fmt(
+        stats.pour
+      );
+
+
+    $("contre").textContent =
+      fmt(
+        stats.contre
+      );
+
+
+    $("abstention").textContent =
+      fmt(
+        stats.abstention
+      );
+
+
+    $("nonVotant").textContent =
+      fmt(
+        stats.non_votant
+      );
+
+
+    $("description").textContent =
+
+      scrutin
+        ?.description
+
+      ||
+
+      scrutin
+        ?.titre_officiel
+
+      ||
+
+      scrutin
+        ?.titre
+
+      ||
+
+      "—";
+
+  }
+
+
+  function renderGroups() {
+
+    const groups =
+      Array.isArray(
+        scrutin
+          ?.groupes_summary
+      )
+      ?
+      [
+        ...scrutin.groupes_summary
+      ]
+      :
+      [];
+
+
+    groups.sort(
+      (
+        a,
+        b
+      ) =>
+        Number(
+          b.total || 0
+        )
+        -
+        Number(
+          a.total || 0
+        )
+    );
+
+
+    $("groupsGrid").innerHTML =
+
+      groups.map(
+        group => {
+
+          const url =
+
+            `./groupe.html?name=${encodeURIComponent(group.groupe || "")}`
+
+            +
+
+            `&year=${encodeURIComponent(selectedYear)}`;
+
+
+          const position =
+            group.position
+            ||
+            "Partagé";
+
+
+          return `
+
+            <a
+              class="group-card"
+              href="${url}"
+            >
+
+              <div class="group-name">
+                ${esc(group.groupe || "Groupe")}
+              </div>
+
+
+              <span
+                class="position ${esc(position)}"
+              >
+                ${esc(position)}
+              </span>
+
+
+              <div class="group-numbers">
+
+                <span>
+                  ${fmt(group.pour)}
+                  pour
+                </span>
+
+                <span>
+                  ${fmt(group.contre)}
+                  contre
+                </span>
+
+                <span>
+                  ${fmt(group.abstention)}
+                  abst.
+                </span>
+
+                <span>
+                  ${fmt(group.non_votant)}
+                  non-votant
+                </span>
+
+              </div>
+
+
+              <div class="cohesion">
+
+                Cohésion :
+                ${Number(group.cohesion_pct || 0).toFixed(0)}
+                %
+
+              </div>
+
+            </a>
+
+          `;
+
+        }
+      )
+      .join("");
+
+  }
+
+
+  async function loadNominativeVotes() {
+
+    const month =
+      String(
+        scrutin
+          ?.date
+        || ""
+      )
+      .slice(
+        0,
+        7
+      );
+
+
+    if (!month) {
+
+      throw new Error(
+        "Mois du scrutin introuvable."
+      );
+
     }
 
-    async function init() {
-      try {
-        scrutinUid = getParam("uid");
 
-        if (!scrutinUid) {
-          document.querySelector("main").innerHTML =
-            `<section class="panel"><div class="empty">UID scrutin manquant.</div></section>`;
-          return;
+    const payload =
+      await loadJson(
+        `${ROOT}scrutin_votes/${month}.json`
+      );
+
+
+    const compactRows =
+
+      payload
+        ?.scrutins
+        ?.[scrutinUid]
+
+      ||
+
+      [];
+
+
+    const groups =
+      payload
+        ?.groupes
+      || [];
+
+
+    const voteCodes = {
+      P:"Pour",
+      C:"Contre",
+      A:"Abstention",
+      N:"Non-votant"
+    };
+
+
+    nominativeVotes =
+
+      compactRows.map(
+        row => {
+
+          const deputyUid =
+            row[0];
+
+
+          const vote =
+            voteCodes[
+              row[1]
+            ]
+            ||
+            "Non-votant";
+
+
+          const group =
+            groups[
+              row[2]
+            ]
+            ||
+            "Inconnu";
+
+
+          const deputy =
+            deputyMap.get(
+              deputyUid
+            )
+            ||
+            {};
+
+
+          return {
+
+            depute_uid:
+              deputyUid,
+
+            nom:
+              deputy.nom
+              ||
+              deputyUid,
+
+            vote:
+              vote,
+
+            groupe:
+              group,
+
+            departement:
+              deputy.departement
+              ||
+              "",
+
+            circonscription:
+              deputy.circonscription
+              ||
+              ""
+
+          };
+
         }
+      );
 
-        const indexData = await loadJson("./data/current/index.json");
-        selectedYear = getSelectedYear(indexData);
-        buildYearButtons(indexData);
+  }
 
-        allScrutins = await loadYearScrutins(indexData);
-        scrutin = allScrutins.find(s => s.uid === scrutinUid);
 
-        if (!scrutin) {
-          document.querySelector("main").innerHTML =
-            `<section class="panel"><div class="empty">Scrutin introuvable pour cette année.</div></section>`;
-          return;
+  function renderFilterOptions() {
+
+    const groups =
+
+      [
+        ...new Set(
+          nominativeVotes
+          .map(
+            vote =>
+              vote.groupe
+          )
+          .filter(
+            Boolean
+          )
+        )
+      ]
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          a.localeCompare(
+            b,
+            "fr"
+          )
+      );
+
+
+    const departments =
+
+      [
+        ...new Set(
+          nominativeVotes
+          .map(
+            vote =>
+              vote.departement
+          )
+          .filter(
+            Boolean
+          )
+        )
+      ]
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          a.localeCompare(
+            b,
+            "fr"
+          )
+      );
+
+
+    $("groupFilter").innerHTML =
+
+      `
+        <option value="">
+          Tous les groupes
+        </option>
+      `
+
+      +
+
+      groups.map(
+        group =>
+          `
+            <option value="${esc(group)}">
+              ${esc(group)}
+            </option>
+          `
+      )
+      .join("");
+
+
+    $("departmentFilter").innerHTML =
+
+      `
+        <option value="">
+          Tous les départements
+        </option>
+      `
+
+      +
+
+      departments.map(
+        department =>
+          `
+            <option value="${esc(department)}">
+              ${esc(department)}
+            </option>
+          `
+      )
+      .join("");
+
+  }
+
+
+  function renderVotes() {
+
+    const wantedVote =
+      $("voteFilter").value;
+
+
+    const wantedGroup =
+      $("groupFilter").value;
+
+
+    const wantedDepartment =
+      $("departmentFilter").value;
+
+
+    const wantedName =
+      norm(
+        $("nameFilter").value
+      );
+
+
+    const rows =
+
+      nominativeVotes
+
+      .filter(
+        vote =>
+
+          (
+            !wantedVote
+            ||
+            vote.vote
+            ===
+            wantedVote
+          )
+
+          &&
+
+          (
+            !wantedGroup
+            ||
+            vote.groupe
+            ===
+            wantedGroup
+          )
+
+          &&
+
+          (
+            !wantedDepartment
+            ||
+            vote.departement
+            ===
+            wantedDepartment
+          )
+
+          &&
+
+          (
+            !wantedName
+            ||
+            norm(
+              vote.nom
+            )
+            .includes(
+              wantedName
+            )
+          )
+
+      )
+
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          String(
+            a.nom
+            || ""
+          )
+          .localeCompare(
+            String(
+              b.nom
+              || ""
+            ),
+            "fr"
+          )
+      );
+
+
+    $("resultInfo").textContent =
+
+      `${fmt(rows.length)} vote(s) affiché(s).`;
+
+
+    if (!rows.length) {
+
+      $("votesGrid").innerHTML =
+
+        `
+          <div class="empty">
+            Aucun vote ne correspond aux filtres choisis.
+          </div>
+        `;
+
+
+      return;
+
+    }
+
+
+    $("votesGrid").innerHTML =
+
+      rows.map(
+        vote => {
+
+          const href =
+
+            deputyMap.has(
+              vote.depute_uid
+            )
+
+            ?
+
+            `./depute.html?uid=${encodeURIComponent(vote.depute_uid)}&year=${encodeURIComponent(selectedYear)}`
+
+            :
+
+            "#";
+
+
+          return `
+
+            <a
+              class="vote-card"
+              href="${href}"
+            >
+
+              <h3>
+                ${esc(vote.nom)}
+              </h3>
+
+
+              <span
+                class="vote-badge ${esc(vote.vote)}"
+              >
+                ${esc(vote.vote)}
+              </span>
+
+
+              <div class="vote-meta">
+                ${esc(vote.groupe || "—")}
+              </div>
+
+
+              <div class="vote-meta">
+                ${esc(
+                  vote.circonscription
+                  ||
+                  vote.departement
+                  ||
+                  "—"
+                )}
+              </div>
+
+            </a>
+
+          `;
+
         }
+      )
+      .join("");
 
-        renderHeader();
-        renderFilters();
-        renderVotes();
-        bindFilters();
-      } catch (error) {
-        console.error(error);
-        document.querySelector("main").innerHTML =
-          `<section class="panel"><div class="empty">Erreur de chargement des données.</div></section>`;
+  }
+
+
+  function bindFilters() {
+
+    [
+      "voteFilter",
+      "groupFilter",
+      "departmentFilter",
+      "nameFilter"
+    ]
+    .forEach(
+      id => {
+
+        $(id)
+        .addEventListener(
+          "input",
+          renderVotes
+        );
+
+
+        $(id)
+        .addEventListener(
+          "change",
+          renderVotes
+        );
+
       }
+    );
+
+  }
+
+
+  function showError(
+    message
+  ) {
+
+    document.querySelector(
+      "main"
+    ).innerHTML = `
+
+      <section class="panel">
+
+        <div class="error">
+          ${esc(message)}
+        </div>
+
+      </section>
+
+    `;
+
+  }
+
+
+  async function init() {
+
+    try {
+
+      scrutinUid =
+        getParam(
+          "uid"
+        );
+
+
+      if (!scrutinUid) {
+
+        showError(
+          "UID du scrutin manquant."
+        );
+
+        return;
+
+      }
+
+
+      [
+        indexData,
+        deputiesData
+      ] =
+        await Promise.all([
+          loadJson(
+            `${ROOT}index.json`
+          ),
+          loadJson(
+            `${ROOT}deputes.json`
+          )
+        ]);
+
+
+      buildDeputyMap();
+
+
+      await findScrutin();
+
+
+      if (!scrutin) {
+
+        showError(
+          `Scrutin ${scrutinUid} introuvable dans les données disponibles.`
+        );
+
+        return;
+
+      }
+
+
+      renderSummary();
+
+      renderGroups();
+
+
+      await loadNominativeVotes();
+
+
+      renderFilterOptions();
+
+      renderVotes();
+
+      bindFilters();
+
     }
 
-    init();
-  </script>
+    catch(error) {
+
+      console.error(
+        error
+      );
+
+
+      showError(
+        "Erreur de chargement : "
+        +
+        (
+          error
+            ?.message
+          ||
+          "erreur inconnue"
+        )
+      );
+
+    }
+
+  }
+
+
+  init();
+
+})();
+
+</script>
+
 </body>
 </html>
