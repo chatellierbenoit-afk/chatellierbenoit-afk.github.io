@@ -1,1135 +1,3523 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Votes du groupe politique</title>
-<style>
-:root{--violet:#6f00ff;--bg:#f6f4fb;--card:#fff;--text:#1f1f25;--muted:#696777;--border:#e5e1ef;--green:#198754;--green-bg:#eaf8f1;--red:#c63c43;--red-bg:#fff0f1;--amber:#a56a00;--amber-bg:#fff7df;--grey:#6c7480;--grey-bg:#f0f2f5}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-a{text-decoration:none;color:inherit}
-.page{width:min(1320px,calc(100% - 24px));margin:20px auto 50px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:24px}
-.topbar{padding:16px 22px;margin-bottom:18px}
-.home{font-weight:800;color:var(--violet)}
-.hero,.section{padding:30px 22px;margin-bottom:18px}
-.hero{text-align:center}
-.eyebrow{display:inline-block;background:#f3eaff;color:var(--violet);padding:8px 14px;border-radius:999px;font-size:.8rem;font-weight:900;text-transform:uppercase}
-.hero h1{font-size:clamp(2rem,4vw,3.5rem);margin:15px 0 0}
-.hero p,.intro{color:var(--muted);line-height:1.5}
-.year-card{padding:18px;display:flex;justify-content:center;gap:10px;margin-bottom:18px}
-.year-btn{border:1px solid var(--border);background:#fff;border-radius:14px;padding:13px 28px;font-weight:900;cursor:pointer}
-.year-btn.active{background:var(--violet);color:#fff;border-color:var(--violet)}
-h2{text-align:center;font-size:clamp(1.7rem,3vw,2.3rem);margin:0}
-.intro{text-align:center;max-width:760px;margin:10px auto 0}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}
-.stat{border:1px solid var(--border);border-radius:18px;padding:18px;text-align:center}
-.stat .v{color:var(--violet);font-size:2rem;font-weight:950}
-.stat .l{color:var(--muted);font-size:.84rem;margin-top:6px}
-.positions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
-.pos{border-radius:18px;padding:20px;text-align:center}
-.pos .n{font-size:2rem;font-weight:950}
-.pour{background:var(--green-bg);color:var(--green)}
-.contre{background:var(--red-bg);color:var(--red)}
-.abst{background:var(--amber-bg);color:var(--amber)}
-.partage{background:var(--grey-bg);color:var(--grey)}
-.themes{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:22px}
-.theme-btn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:9px 14px;font-weight:850;cursor:pointer}
-.theme-btn.active{background:var(--violet);color:#fff;border-color:var(--violet)}
-.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
-.field label{display:block;text-align:center;font-weight:900;font-size:.8rem;margin-bottom:8px}
-.field input,.field select{width:100%;border:1px solid var(--border);border-radius:15px;padding:14px}
-.votes-list{display:grid;gap:12px;margin-top:22px}
-.vote-card{display:block;border:1px solid var(--border);border-radius:18px;padding:18px;background:#fff}
-.vote-top{display:flex;justify-content:space-between;gap:16px}
-.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;color:var(--muted);font-size:.82rem}
-.tag{background:#f7f4fc;border-radius:999px;padding:4px 8px}
-.title{font-weight:950;line-height:1.3}
-.desc{color:var(--muted);font-size:.9rem;line-height:1.45;margin-top:7px}
-.pill{border-radius:999px;padding:8px 11px;font-size:.75rem;font-weight:950;white-space:nowrap}
-.pill.Pour{background:var(--green-bg);color:var(--green)}
-.pill.Contre{background:var(--red-bg);color:var(--red)}
-.pill.Abstention{background:var(--amber-bg);color:var(--amber)}
-.pill.Partagé,.pill.Non-votant{background:var(--grey-bg);color:var(--grey)}
-.bottom{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
-.mini{background:#faf9fd;border:1px solid var(--border);border-radius:10px;padding:7px 9px;color:var(--muted);font-size:.78rem}
-.coh{margin-left:auto;color:var(--muted);font-size:.82rem;font-weight:800}
-.center{text-align:center}
-.error{padding:24px;color:#a42b31;background:#fff2f3;border:1px solid #f2c9cc;border-radius:16px}
-.load{display:block;margin:18px auto 0;background:var(--violet);color:#fff;border:0;border-radius:14px;padding:12px 18px;font-weight:900;cursor:pointer}
-.load[hidden]{display:none}
-@media(max-width:1000px){.stats{grid-template-columns:repeat(3,1fr)}.positions{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.field label{text-align:left}.vote-top{flex-direction:column}.coh{margin-left:0}}
-@media(max-width:480px){.stats,.positions{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Comment votent nos députés ?</title>
+
+  <style>
+    :root {
+      --violet: #7700ff;
+      --violet-dark: #5600bd;
+      --violet-soft: #f2eaff;
+
+      --text: #1d1b22;
+      --muted: #6f6a78;
+
+      --bg: #f7f5fb;
+      --card: #ffffff;
+
+      --border: #e6e0ef;
+
+      --green: #168550;
+      --green-bg: #eaf8f0;
+
+      --red: #c43b43;
+      --red-bg: #fff0f1;
+
+      --orange: #a66b00;
+      --orange-bg: #fff7df;
+
+      --grey: #6b7280;
+      --grey-bg: #f2f3f5;
+
+      --radius: 22px;
+
+      --shadow:
+        0 10px 30px
+        rgba(54, 24, 105, 0.08);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #faf9fd 0%,
+          var(--bg) 100%
+        );
+
+      color: var(--text);
+    }
+
+
+    a {
+      color: inherit;
+    }
+
+
+    button,
+    input {
+      font: inherit;
+    }
+
+
+    /* ======================================================
+       HERO
+    ====================================================== */
+
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          var(--violet-dark),
+          var(--violet)
+        );
+
+      color: white;
+
+      padding:
+        58px
+        20px
+        52px;
+
+      text-align: center;
+    }
+
+
+    .hero-inner {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+
+    .hero-kicker {
+      margin-bottom: 12px;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+
+      opacity: 0.8;
+    }
+
+
+    .hero h1 {
+      margin: 0;
+
+      font-size:
+        clamp(
+          36px,
+          6vw,
+          62px
+        );
+
+      line-height: 1.02;
+    }
+
+
+    .hero p {
+      max-width: 800px;
+
+      margin:
+        20px
+        auto
+        0;
+
+      font-size: 18px;
+
+      line-height: 1.55;
+
+      opacity: 0.94;
+    }
+
+
+    /* ======================================================
+       GENERAL
+    ====================================================== */
+
+
+    main {
+      max-width: 1450px;
+
+      margin: 0 auto;
+
+      padding:
+        28px
+        18px
+        70px;
+    }
+
+
+    .panel {
+      background: var(--card);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        var(--radius);
+
+      box-shadow:
+        var(--shadow);
+
+      padding: 24px;
+
+      margin-bottom: 22px;
+    }
+
+
+    .section-title {
+      margin:
+        0
+        0
+        8px;
+
+      text-align: center;
+
+      font-size:
+        clamp(
+          27px,
+          4vw,
+          36px
+        );
+
+      line-height: 1.15;
+    }
+
+
+    .section-intro {
+      max-width: 820px;
+
+      margin:
+        0
+        auto
+        22px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      line-height: 1.5;
+    }
+
+
+    .small-muted {
+      color:
+        var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+
+    /* ======================================================
+       YEARS
+    ====================================================== */
+
+
+    .year-switch {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+    }
+
+
+    .year-button {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 105px;
+
+      padding:
+        13px
+        18px;
+
+      text-decoration: none;
+
+      color:
+        var(--text);
+
+      background: white;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 14px;
+
+      font-weight: 800;
+
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+
+    .year-button:hover {
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 8px 20px
+        rgba(54, 24, 105, 0.08);
+    }
+
+
+    .year-button.active {
+      color: white;
+
+      border-color:
+        transparent;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--violet-dark),
+          var(--violet)
+        );
+    }
+
+
+    /* ======================================================
+       SEARCH
+    ====================================================== */
+
+
+    .search-panel {
+      padding:
+        32px;
+    }
+
+
+    .search-form {
+      max-width:
+        1050px;
+
+      margin:
+        24px
+        auto
+        0;
+    }
+
+
+    .search-row {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+      gap: 12px;
+    }
+
+
+    .search-input {
+      width: 100%;
+
+      min-height: 60px;
+
+      border:
+        2px solid
+        #ded6eb;
+
+      border-radius:
+        17px;
+
+      padding:
+        0
+        20px;
+
+      font-size: 18px;
+
+      outline: none;
+
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+
+    .search-input:focus {
+      border-color:
+        #b597e8;
+
+      box-shadow:
+        0 0 0 5px
+        rgba(119, 0, 255, 0.07);
+    }
+
+
+    .search-button {
+      min-width: 160px;
+
+      border: 0;
+
+      border-radius: 17px;
+
+      padding:
+        0
+        22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--violet-dark),
+          var(--violet)
+        );
+
+      color: white;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    .search-examples {
+      margin-top: 13px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    .search-status {
+      margin-top: 18px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+    }
+
+
+    .search-results {
+      margin-top: 25px;
+
+      display: grid;
+
+      gap: 12px;
+    }
+
+
+    .search-result {
+      display: grid;
+
+      grid-template-columns:
+        auto
+        minmax(0, 1fr)
+        auto;
+
+      align-items: center;
+
+      gap: 15px;
+
+      padding:
+        15px
+        17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 16px;
+
+      background: white;
+
+      text-decoration: none;
+
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+
+    .search-result:hover {
+      background:
+        var(--violet-soft);
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 8px 22px
+        rgba(54, 24, 105, 0.08);
+    }
+
+
+    .result-type {
+      min-width: 92px;
+
+      padding:
+        7px
+        10px;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--violet-soft);
+
+      color:
+        var(--violet-dark);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      text-transform: uppercase;
+    }
+
+
+    .result-title {
+      font-size: 17px;
+
+      font-weight: 800;
+
+      line-height: 1.25;
+    }
+
+
+    .result-meta {
+      margin-top: 4px;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    .result-arrow {
+      color:
+        var(--violet);
+
+      font-size: 20px;
+
+      font-weight: 900;
+    }
+
+
+    /* ======================================================
+       COUNTS
+    ====================================================== */
+
+
+    .counts-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 13px;
+    }
+
+
+    .count-card {
+      padding:
+        20px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 17px;
+
+      text-align: center;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fff,
+          #fcfbff
+        );
+    }
+
+
+    .count-value {
+      display: block;
+
+      color:
+        var(--violet);
+
+      font-size: 29px;
+
+      font-weight: 900;
+
+      margin-bottom: 5px;
+    }
+
+
+    .count-label {
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* ======================================================
+       COMPOSITION
+    ====================================================== */
+
+
+    .composition-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(300px, 440px)
+        minmax(0, 1fr);
+
+      gap: 22px;
+
+      align-items: start;
+    }
+
+
+    .donut-card {
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 20px;
+
+      padding: 20px;
+    }
+
+
+    .donut-wrap {
+      position: relative;
+
+      width: 100%;
+
+      max-width: 400px;
+
+      aspect-ratio: 1 / 1;
+
+      margin: 0 auto;
+    }
+
+
+    .donut-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+
+    .donut-slice {
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        filter 0.15s ease;
+
+      transform-origin:
+        160px
+        160px;
+    }
+
+
+    .donut-slice:hover {
+      transform:
+        scale(1.025);
+
+      filter:
+        brightness(1.04);
+    }
+
+
+    .donut-center {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(
+          -50%,
+          -50%
+        );
+
+      width: 125px;
+      height: 125px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 50%;
+
+      background: white;
+
+      text-align: center;
+
+      box-shadow:
+        0 8px 20px
+        rgba(54, 24, 105, 0.08);
+
+      padding: 10px;
+    }
+
+
+    .donut-center strong {
+      color:
+        var(--violet);
+
+      font-size: 28px;
+    }
+
+
+    .donut-center span {
+      margin-top: 5px;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.2;
+    }
+
+
+    .group-list {
+      display: grid;
+
+      gap: 9px;
+    }
+
+
+    .group-item {
+      display: grid;
+
+      grid-template-columns:
+        15px
+        minmax(0, 1fr)
+        auto;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding:
+        12px
+        14px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 14px;
+
+      background: white;
+
+      color:
+        var(--text);
+
+      text-decoration: none;
+
+      transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+    }
+
+
+    .group-item:hover {
+      background:
+        var(--violet-soft);
+
+      transform:
+        translateX(2px);
+    }
+
+
+    .group-dot {
+      width: 13px;
+      height: 13px;
+
+      border-radius: 50%;
+    }
+
+
+    .group-name {
+      font-weight: 800;
+
+      line-height: 1.25;
+    }
+
+
+    .group-count {
+      color:
+        var(--violet);
+
+      font-weight: 900;
+    }
+
+
+    /* ======================================================
+       SCRUTINS
+    ====================================================== */
+
+
+    .scrutins-list {
+      display: grid;
+
+      gap: 16px;
+    }
+
+
+    .scrutin-card {
+      display: block;
+
+      padding: 21px;
+
+      color:
+        var(--text);
+
+      text-decoration: none;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 19px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fff,
+          #fcfbff
+        );
+
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+
+    .scrutin-card:hover {
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 10px 25px
+        rgba(54, 24, 105, 0.09);
+    }
+
+
+    .scrutin-meta {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-bottom: 12px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      font-weight: 700;
+    }
+
+
+    .theme-badge {
+      display: inline-block;
+
+      padding:
+        6px
+        10px;
+
+      border-radius:
+        999px;
+
+      color:
+        var(--violet-dark);
+
+      background:
+        var(--violet-soft);
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .scrutin-title {
+      margin:
+        0
+        auto
+        10px;
+
+      max-width: 1000px;
+
+      text-align: center;
+
+      font-size:
+        clamp(
+          21px,
+          3vw,
+          29px
+        );
+
+      line-height: 1.2;
+    }
+
+
+    .scrutin-description {
+      max-width:
+        1050px;
+
+      margin:
+        0
+        auto
+        16px;
+
+      padding:
+        14px
+        17px;
+
+      border-radius: 14px;
+
+      background:
+        var(--violet-soft);
+
+      color:
+        #3b3542;
+
+      text-align: center;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+
+    .positions-row {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      flex-wrap: wrap;
+
+      margin-top: 14px;
+    }
+
+
+    .position-pill {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+      padding:
+        7px
+        10px;
+
+      border-radius:
+        999px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .position-Pour {
+      color:
+        var(--green);
+
+      background:
+        var(--green-bg);
+    }
+
+
+    .position-Contre {
+      color:
+        var(--red);
+
+      background:
+        var(--red-bg);
+    }
+
+
+    .position-Abstention {
+      color:
+        var(--orange);
+
+      background:
+        var(--orange-bg);
+    }
+
+
+    .position-Partagé,
+    .position-Non-votant {
+      color:
+        var(--grey);
+
+      background:
+        var(--grey-bg);
+    }
+
+
+    /* ======================================================
+       EMPTY / ERROR
+    ====================================================== */
+
+
+    .empty {
+      padding:
+        28px
+        10px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+    }
+
+
+    .error {
+      padding:
+        20px;
+
+      border:
+        1px solid
+        #f3c7ca;
+
+      border-radius: 15px;
+
+      background:
+        #fff3f4;
+
+      color:
+        #a42931;
+
+      text-align: center;
+    }
+
+
+    /* ======================================================
+       RESPONSIVE
+    ====================================================== */
+
+
+    @media (
+      max-width: 1050px
+    ) {
+
+      .composition-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .counts-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+    }
+
+
+    @media (
+      max-width: 700px
+    ) {
+
+      .hero {
+        padding:
+          42px
+          18px
+          38px;
+      }
+
+
+      main {
+        padding:
+          18px
+          11px
+          45px;
+      }
+
+
+      .panel {
+        padding:
+          18px;
+      }
+
+
+      .search-panel {
+        padding:
+          23px
+          18px;
+      }
+
+
+      .search-row {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .search-button {
+        min-height:
+          54px;
+      }
+
+
+      .counts-grid {
+        grid-template-columns:
+          1fr
+          1fr;
+      }
+
+
+      .search-result {
+        grid-template-columns:
+          1fr
+          auto;
+      }
+
+
+      .result-type {
+        grid-column:
+          1 / -1;
+
+        justify-self:
+          start;
+      }
+
+    }
+  </style>
 </head>
+
+
 <body>
 
-<main class="page">
+  <header class="hero">
 
-<div class="topbar card">
-<a class="home" href="./index.html">← Retour à l'accueil</a>
-</div>
+    <div class="hero-inner">
 
-<section class="hero card">
-<div class="eyebrow">Groupe politique</div>
-<h1 id="groupTitle">Chargement…</h1>
-<p>Analyse des votes du groupe à l'Assemblée nationale.</p>
-</section>
+      <div class="hero-kicker">
+        Votes à l'Assemblée nationale
+      </div>
 
-<section class="year-card card" id="yearTabs"></section>
+      <h1>
+        Comment votent nos députés ?
+      </h1>
 
-<section class="section card">
-<h2>En un coup d'œil</h2>
+      <p>
+        Recherchez un groupe politique, un député, une circonscription,
+        un département ou un sujet de vote et découvrez facilement
+        les positions prises à l'Assemblée nationale.
+      </p>
 
-<p class="intro">
-Les chiffres concernent l'année sélectionnée. Le nombre de députés correspond à la composition actuelle de l'Assemblée.
-</p>
+    </div>
 
-<div class="stats">
+  </header>
 
-<div class="stat">
-<div class="v" id="members">—</div>
-<div class="l">députés aujourd'hui</div>
-</div>
 
-<div class="stat">
-<div class="v" id="pct">—</div>
-<div class="l">de l'Assemblée actuelle</div>
-</div>
+  <main>
 
-<div class="stat">
-<div class="v" id="scrutins">—</div>
-<div class="l" id="scrutinsLabel">scrutins analysés</div>
-</div>
+    <!-- ====================================================
+         ANNÉE
+    ===================================================== -->
 
-<div class="stat">
-<div class="v" id="themesCount">—</div>
-<div class="l">thèmes identifiés</div>
-</div>
+    <section class="panel">
 
-<div class="stat">
-<div class="v" id="cohesion">—</div>
-<div class="l">cohésion moyenne du groupe</div>
-</div>
+      <div
+        class="year-switch"
+        id="yearSwitch"
+      ></div>
 
-</div>
-</section>
+    </section>
 
-<section class="section card">
 
-<h2>Position dominante du groupe</h2>
+    <!-- ====================================================
+         RECHERCHE
+    ===================================================== -->
 
-<p class="intro">
-Pour chaque scrutin, nous regardons la position majoritaire des députés du groupe.
-</p>
+    <section class="panel search-panel">
 
-<div class="positions">
+      <h2 class="section-title">
+        Que voulez-vous rechercher ?
+      </h2>
 
-<div class="pos pour">
-<div class="n" id="pPour">0</div>
-<div>scrutins majoritairement POUR</div>
-</div>
+      <p class="section-intro">
+        Un seul champ pour rechercher un groupe, un député,
+        une circonscription, un département ou un sujet politique.
+      </p>
 
-<div class="pos contre">
-<div class="n" id="pContre">0</div>
-<div>scrutins majoritairement CONTRE</div>
-</div>
 
-<div class="pos abst">
-<div class="n" id="pAbst">0</div>
-<div>scrutins majoritairement en ABSTENTION</div>
-</div>
+      <div class="search-form">
 
-<div class="pos partage">
-<div class="n" id="pPartage">0</div>
-<div>votes partagés ou non-votants</div>
-</div>
+        <div class="search-row">
+
+          <input
+            type="search"
+            id="searchInput"
+            class="search-input"
+            autocomplete="off"
+            placeholder="Ex. retraites, RN, Ruffin, Haute-Garonne, 3e circonscription…"
+          >
 
-</div>
-</section>
+          <button
+            type="button"
+            id="searchButton"
+            class="search-button"
+          >
+            Rechercher
+          </button>
 
-<section class="section card">
+        </div>
 
-<h2>Sur quels sujets vote ce groupe ?</h2>
 
-<p class="intro">
-Cliquez sur un thème pour ne voir que les votes correspondants.
-</p>
+        <div class="search-examples">
+          Exemples : immigration · agriculture · Écologiste et Social ·
+          Alexis Corbière · Hérault · 7e circonscription
+        </div>
 
-<div class="themes" id="themes"></div>
 
-</section>
+        <div
+          id="searchStatus"
+          class="search-status"
+        ></div>
 
-<section class="section card">
 
-<div class="filters">
+        <div
+          id="searchResults"
+          class="search-results"
+        ></div>
 
-<div class="field">
-<label for="q">Rechercher dans les sujets</label>
-<input
-id="q"
-type="search"
-placeholder="Ex. retraite, immigration, budget, agriculture…"
->
-</div>
-
-<div class="field">
-<label for="position">Position</label>
-
-<select id="position">
-<option value="">Toutes</option>
-<option>Pour</option>
-<option>Contre</option>
-<option>Abstention</option>
-<option value="Partagé">Partagé / non-votant</option>
-</select>
-</div>
-
-<div class="field">
-<label for="sort">Trier</label>
-
-<select id="sort">
-<option value="recent">Plus récents</option>
-<option value="old">Plus anciens</option>
-<option value="coh-desc">Cohésion la plus forte</option>
-<option value="coh-asc">Cohésion la plus faible</option>
-</select>
-
-</div>
-
-</div>
-</section>
-
-<section class="section card">
-
-<h2>Les votes du groupe</h2>
-
-<p class="intro" id="resultCount">
-Chargement…
-</p>
-
-<div id="status" class="center">
-Chargement des votes…
-</div>
-
-<div class="votes-list" id="votesList"></div>
-
-<button class="load" id="loadMore" hidden>
-Afficher davantage
-</button>
-
-</section>
-
-</main>
-
-<script>
-
-(()=>{
-
-const ROOT="./data/current/";
-const PAGE_SIZE=40;
-
-const S={
-index:null,
-composition:null,
-groups:[],
-entry:null,
-detail:null,
-name:"",
-sigle:"",
-year:null,
-theme:"",
-q:"",
-position:"",
-sort:"recent",
-visible:PAGE_SIZE
-};
-
-const $=id=>document.getElementById(id);
-
-const norm=v=>
-String(v||"")
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
-.toLowerCase()
-.replace(/&/g," et ")
-.replace(/[^a-z0-9]+/g," ")
-.trim();
-
-const fmt=n=>
-new Intl.NumberFormat("fr-FR")
-.format(Number(n||0));
-
-const pct=n=>
-new Intl.NumberFormat(
-"fr-FR",
-{maximumFractionDigits:1}
-)
-.format(Number(n||0))
-+" %";
-
-const esc=v=>
-String(v??"")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-const dateFr=v=>{
-
-if(!v)return"";
-
-const d=new Date(v+"T12:00:00");
-
-return isNaN(d)
-?v
-:new Intl.DateTimeFormat(
-"fr-FR",
-{
-day:"2-digit",
-month:"short",
-year:"numeric"
-}
-).format(d);
-
-};
-
-async function json(url){
-
-const r=await fetch(
-url,
-{cache:"no-store"}
-);
-
-if(!r.ok)
-throw new Error(
-r.status+" "+url
-);
-
-return r.json();
-
-}
-
-function params(){
-
-const p=
-new URLSearchParams(
-location.search
-);
-
-return{
-name:
-p.get("name")
-||
-p.get("groupe")
-||
-"",
-
-year:
-Number(
-p.get("year")
-)
-||
-null
-};
-
-}
-
-function findGroup(name){
-
-const n=norm(name);
-
-return
-S.groups.find(
-g=>
-norm(g.groupe)===n
-||
-norm(g.sigle)===n
-)
-||
-S.groups.find(
-g=>
-norm(g.groupe)
-.includes(n)
-);
-
-}
-
-function years(){
-
-return[
-...new Set(
-S.groups
-.filter(
-g=>
-norm(g.groupe)
-===
-norm(S.name)
-)
-.map(
-g=>Number(g.year)
-)
-)
-]
-.sort(
-(a,b)=>b-a
-);
-
-}
-
-function setUrl(){
-
-const u=
-new URL(
-location.href
-);
-
-u.searchParams.set(
-"name",
-S.name
-);
-
-u.searchParams.set(
-"year",
-S.year
-);
-
-history.replaceState(
-{},
-"",
-u
-);
-
-}
-
-function renderYears(){
-
-$("yearTabs").innerHTML=
-years()
-.map(
-y=>
-`
-<button
-class="year-btn ${y===S.year?"active":""}"
-data-y="${y}"
->
-${y}
-</button>
-`
-)
-.join("");
-
-document
-.querySelectorAll("[data-y]")
-.forEach(
-b=>b.onclick=
-async()=>{
-
-S.year=
-Number(
-b.dataset.y
-);
-
-S.theme="";
-S.q="";
-S.position="";
-S.sort="recent";
-S.visible=PAGE_SIZE;
-
-$("q").value="";
-$("position").value="";
-$("sort").value="recent";
-
-setUrl();
-
-renderYears();
-
-await loadDetail();
-
-}
-);
-
-}
-
-async function loadDetail(){
-
-S.entry=
-S.groups.find(
-g=>
-Number(g.year)===S.year
-&&
-norm(g.groupe)
-===
-norm(S.name)
-);
-
-if(
-!S.entry
-||
-!S.entry.file
-){
-
-return fail(
-"Fichier détaillé du groupe introuvable."
-);
-
-}
-
-S.detail=
-await json(
-"./"+
-String(
-S.entry.file
-)
-.replace(
-/^\.\//,
-""
-)
-);
-
-render();
-
-}
-
-function compositionRow(){
-
-return(
-S.composition.groupes
-||
-[]
-)
-.find(
-g=>
-norm(g.groupe)
-===
-norm(S.name)
-);
-
-}
-
-function themeCounts(list){
-
-const m=
-new Map;
-
-list.forEach(
-s=>{
-
-const t=
-s.theme
-||
-"Autres";
-
-m.set(
-t,
-(m.get(t)||0)+1
-);
-
-}
-);
-
-return m;
-
-}
-
-function render(){
-
-const list=
-Array.isArray(
-S.detail?.scrutins
-)
-?
-S.detail.scrutins
-:
-[];
-
-const c=
-compositionRow();
-
-const members=
-Number(
-c?.count
-||
-S.detail?.deputes_actuels
-||
-0
-);
-
-const total=
-Number(
-S.composition.total
-||
-577
-);
-
-$("groupTitle").textContent=
-S.name;
-
-$("members").textContent=
-fmt(members);
-
-$("pct").textContent=
-pct(
-members
-/
-total
-*
-100
-);
-
-$("scrutins").textContent=
-fmt(
-list.length
-);
-
-$("scrutinsLabel").textContent=
-`scrutins analysés en ${S.year}`;
-
-$("themesCount").textContent=
-fmt(
-themeCounts(list).size
-);
-
-const cohs=
-list
-.map(
-s=>Number(
-s.cohesion_pct
-)
-)
-.filter(
-Number.isFinite
-);
-
-$("cohesion").textContent=
-pct(
-cohs.length
-?
-cohs.reduce(
-(a,b)=>a+b,
-0
-)
-/
-cohs.length
-:
-0
-);
-
-const p={
-Pour:0,
-Contre:0,
-Abstention:0,
-Partage:0
-};
-
-list.forEach(
-s=>{
-
-if(
-s.position==="Pour"
-)
-p.Pour++;
-
-else if(
-s.position==="Contre"
-)
-p.Contre++;
-
-else if(
-s.position==="Abstention"
-)
-p.Abstention++;
-
-else
-p.Partage++;
-
-}
-);
-
-$("pPour").textContent=
-fmt(p.Pour);
-
-$("pContre").textContent=
-fmt(p.Contre);
-
-$("pAbst").textContent=
-fmt(p.Abstention);
-
-$("pPartage").textContent=
-fmt(p.Partage);
-
-renderThemes(list);
-
-apply();
-
-}
-
-function renderThemes(list){
-
-const arr=
-[
-...themeCounts(list).entries()
-]
-.sort(
-(a,b)=>
-b[1]-a[1]
-);
-
-$("themes").innerHTML=
-
-`
-<button
-class="theme-btn ${S.theme===""?"active":""}"
-data-theme=""
->
-Tous les sujets · ${fmt(list.length)}
-</button>
-`
-
-+
-
-arr
-.map(
-([t,n])=>
-`
-<button
-class="theme-btn ${S.theme===t?"active":""}"
-data-theme="${esc(t)}"
->
-${esc(t)} · ${fmt(n)}
-</button>
-`
-)
-.join("");
-
-document
-.querySelectorAll("[data-theme]")
-.forEach(
-b=>b.onclick=
-()=>{
-
-S.theme=
-b.dataset.theme
-||
-"";
-
-S.visible=
-PAGE_SIZE;
-
-renderThemes(list);
-
-apply();
-
-}
-);
-
-}
-
-function apply(){
-
-let a=[
-...(
-S.detail?.scrutins
-||
-[]
-)
-];
-
-const q=
-norm(S.q);
-
-a=
-a.filter(
-s=>
-(
-!S.theme
-||
-(s.theme||"Autres")
-===
-S.theme
-)
-&&
-(
-!S.position
-||
-(
-S.position==="Partagé"
-?
-(
-s.position==="Partagé"
-||
-s.position==="Non-votant"
-)
-:
-s.position===S.position
-)
-)
-&&
-(
-!q
-||
-norm(
-[
-s.sujet,
-s.titre,
-s.description,
-s.theme
-]
-.join(" ")
-)
-.includes(q)
-)
-);
-
-if(
-S.sort==="old"
-)
-
-a.sort(
-(x,y)=>
-String(x.date)
-.localeCompare(
-String(y.date)
-)
-);
-
-else if(
-S.sort==="coh-desc"
-)
-
-a.sort(
-(x,y)=>
-Number(
-y.cohesion_pct||0
-)
--
-Number(
-x.cohesion_pct||0
-)
-);
-
-else if(
-S.sort==="coh-asc"
-)
-
-a.sort(
-(x,y)=>
-Number(
-x.cohesion_pct||0
-)
--
-Number(
-y.cohesion_pct||0
-)
-);
-
-else
-
-a.sort(
-(x,y)=>
-String(y.date)
-.localeCompare(
-String(x.date)
-)
-);
-
-renderVotes(a);
-
-}
-
-function renderVotes(a){
-
-$("status").style.display=
-"none";
-
-$("resultCount").textContent=
-`${fmt(a.length)} scrutin(s) affiché(s).`;
-
-if(
-!a.length
-){
-
-$("votesList").innerHTML=
-`
-<div class="center">
-Aucun vote ne correspond aux filtres sélectionnés.
-</div>
-`;
-
-$("loadMore").hidden=
-true;
-
-return;
-
-}
-
-const vis=
-a.slice(
-0,
-S.visible
-);
-
-$("votesList").innerHTML=
-
-vis
-.map(
-s=>
-`
-<a
-class="vote-card"
-href="./scrutin.html?uid=${encodeURIComponent(s.uid||"")}&year=${S.year}"
->
-
-<div class="vote-top">
-
-<div>
-
-<div class="meta">
-
-<span>
-${esc(dateFr(s.date))}
-</span>
-
-<span class="tag">
-${esc(s.theme||"Autres")}
-</span>
-
-</div>
-
-<div class="title">
-${esc(
-s.sujet
-||
-s.titre
-||
-"Scrutin"
-)}
-</div>
-
-${
-s.description
-?
-`
-<div class="desc">
-${esc(s.description)}
-</div>
-`
-:
-""
-}
-
-</div>
-
-<span class="pill ${esc(s.position||"Partagé")}">
-${esc(s.position||"Partagé")}
-</span>
-
-</div>
-
-<div class="bottom">
-
-<span class="mini">
-<strong>${fmt(s.pour)}</strong> pour
-</span>
-
-<span class="mini">
-<strong>${fmt(s.contre)}</strong> contre
-</span>
-
-<span class="mini">
-<strong>${fmt(s.abstention)}</strong> abstention
-</span>
-
-<span class="mini">
-<strong>${fmt(s.non_votant)}</strong> non-votant
-</span>
-
-<span class="coh">
-Cohésion : ${pct(s.cohesion_pct||0)}
-</span>
-
-</div>
-
-</a>
-`
-)
-.join("");
-
-$("loadMore").hidden=
-S.visible>=a.length;
-
-$("loadMore").onclick=
-()=>{
-
-S.visible+=
-PAGE_SIZE;
-
-renderVotes(a);
-
-};
-
-}
-
-function fail(msg){
-
-$("status").style.display=
-"block";
-
-$("status").className=
-"error";
-
-$("status").textContent=
-msg;
-
-$("votesList").innerHTML=
-"";
-
-$("resultCount").textContent=
-"";
-
-}
-
-$("q").oninput=
-e=>{
-
-S.q=
-e.target.value;
-
-S.visible=
-PAGE_SIZE;
-
-apply();
-
-};
-
-$("position").onchange=
-e=>{
-
-S.position=
-e.target.value;
-
-S.visible=
-PAGE_SIZE;
-
-apply();
-
-};
-
-$("sort").onchange=
-e=>{
-
-S.sort=
-e.target.value;
-
-S.visible=
-PAGE_SIZE;
-
-apply();
-
-};
-
-(async()=>{
-
-try{
-
-const[
-index,
-composition,
-gp
-]=
-await Promise.all(
-[
-json(
-ROOT+"index.json"
-),
-
-json(
-ROOT+"composition.json"
-),
-
-json(
-ROOT+"groupes.json"
-)
-]
-);
-
-S.index=
-index;
-
-S.composition=
-composition;
-
-S.groups=
-gp.groupes
-||
-[];
-
-const p=
-params();
-
-const first=
-findGroup(p.name)
-||
-S.groups[0];
-
-S.name=
-first.groupe;
-
-S.sigle=
-first.sigle
-||
-"";
-
-const ys=
-years();
-
-S.year=
-ys.includes(
-p.year
-)
-?
-p.year
-:
-(
-ys.includes(
-Number(
-index.default_year
-)
-)
-?
-Number(
-index.default_year
-)
-:
-ys[0]
-);
-
-setUrl();
-
-renderYears();
-
-await loadDetail();
-
-}
-
-catch(e){
-
-console.error(e);
-
-fail(
-"Impossible de charger les données du groupe."
-);
-
-}
-
-})();
-
-})();
-
-</script>
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         CHIFFRES
+    ===================================================== -->
+
+    <section class="panel">
+
+      <div
+        id="countsGrid"
+        class="counts-grid"
+      >
+
+        <div class="count-card">
+          <strong
+            id="countScrutins"
+            class="count-value"
+          >
+            -
+          </strong>
+          <span class="count-label">
+            scrutins
+          </span>
+        </div>
+
+        <div class="count-card">
+          <strong
+            id="countVotes"
+            class="count-value"
+          >
+            -
+          </strong>
+          <span class="count-label">
+            votes nominatifs
+          </span>
+        </div>
+
+        <div class="count-card">
+          <strong
+            id="countGroups"
+            class="count-value"
+          >
+            -
+          </strong>
+          <span class="count-label">
+            groupes observés
+          </span>
+        </div>
+
+        <div class="count-card">
+          <strong
+            id="countDeputies"
+            class="count-value"
+          >
+            -
+          </strong>
+          <span class="count-label">
+            députés actuels
+          </span>
+        </div>
+
+      </div>
+
+
+      <div
+        id="updatedInfo"
+        class="small-muted"
+        style="text-align:center;margin-top:15px;"
+      ></div>
+
+    </section>
+
+
+    <!-- ====================================================
+         COMPOSITION
+    ===================================================== -->
+
+    <section
+      class="panel"
+      id="compositionSection"
+    >
+
+      <h2 class="section-title">
+        Composition actuelle de l'Assemblée
+      </h2>
+
+      <p class="section-intro">
+        Cliquez sur un groupe pour découvrir comment il vote
+        sur les différents sujets.
+      </p>
+
+
+      <div class="composition-layout">
+
+        <div class="donut-card">
+
+          <div class="donut-wrap">
+
+            <svg
+              id="assemblyDonut"
+              class="donut-svg"
+              viewBox="0 0 320 320"
+            ></svg>
+
+            <div class="donut-center">
+
+              <strong
+                id="donutTotal"
+              >
+                -
+              </strong>
+
+              <span
+                id="donutLabel"
+              >
+                députés
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="groupList"
+          class="group-list"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         DERNIERS SCRUTINS
+    ===================================================== -->
+
+    <section class="panel">
+
+      <h2 class="section-title">
+        Derniers votes
+      </h2>
+
+      <p class="section-intro">
+        Le sujet du vote est présenté en premier.
+        Le texte officiel plus détaillé apparaît juste en dessous.
+      </p>
+
+
+      <div
+        id="scrutinsList"
+        class="scrutins-list"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* ======================================================
+       ÉTAT
+    ====================================================== */
+
+
+    let indexData = null;
+
+    let searchData = null;
+
+    let compositionData = null;
+
+    let deputiesData = null;
+
+    let allScrutins = [];
+
+    let selectedYear = "";
+
+
+    const GROUP_COLORS = [
+      "#5b21b6",
+      "#7c3aed",
+      "#2563eb",
+      "#0284c7",
+      "#0891b2",
+      "#059669",
+      "#65a30d",
+      "#ca8a04",
+      "#ea580c",
+      "#dc2626",
+      "#db2777",
+      "#9333ea",
+      "#64748b",
+      "#4f46e5",
+      "#0f766e"
+    ];
+
+
+    /* ======================================================
+       OUTILS
+    ====================================================== */
+
+
+    function getParam(name) {
+
+      return new URLSearchParams(
+        window.location.search
+      ).get(name) || "";
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function normalize(value) {
+
+      return String(
+        value || ""
+      )
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        )
+        .replace(
+          /œ/g,
+          "oe"
+        )
+        .replace(
+          /æ/g,
+          "ae"
+        )
+        .replace(
+          /[^a-z0-9\s-]/g,
+          " "
+        )
+        .replace(
+          /\s+/g,
+          " "
+        )
+        .trim();
+
+    }
+
+
+    function formatNumber(value) {
+
+      return new Intl.NumberFormat(
+        "fr-FR"
+      ).format(
+        Number(value || 0)
+      );
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      const parts =
+        value.split("-");
+
+      if (parts.length !== 3) {
+        return value;
+      }
+
+      return new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      ).format(
+        new Date(
+          `${value}T12:00:00`
+        )
+      );
+
+    }
+
+
+    async function loadJson(path) {
+
+      const response =
+        await fetch(path);
+
+      if (!response.ok) {
+
+        throw new Error(
+          `Impossible de charger ${path}`
+        );
+
+      }
+
+      return response.json();
+
+    }
+
+
+    function setYearInUrl(year) {
+
+      const url =
+        new URL(
+          window.location.href
+        );
+
+      url.searchParams.set(
+        "year",
+        year
+      );
+
+      return (
+        url.pathname
+        + url.search
+      );
+
+    }
+
+
+    function linkWithYear(
+      page,
+      params = {}
+    ) {
+
+      const url =
+        new URL(
+          page,
+          window.location.origin
+        );
+
+      Object.entries(
+        params
+      ).forEach(
+        ([key, value]) => {
+
+          if (
+            value !== undefined
+            && value !== null
+            && value !== ""
+          ) {
+
+            url.searchParams.set(
+              key,
+              value
+            );
+
+          }
+
+        }
+      );
+
+      if (selectedYear) {
+
+        url.searchParams.set(
+          "year",
+          selectedYear
+        );
+
+      }
+
+      return (
+        url.pathname
+        + url.search
+      );
+
+    }
+
+
+    /* ======================================================
+       ANNÉE
+    ====================================================== */
+
+
+    function determineSelectedYear() {
+
+      const years =
+        (
+          indexData
+            ?.available_years
+          || []
+        )
+          .map(String);
+
+
+      const requested =
+        getParam(
+          "year"
+        );
+
+
+      if (
+        requested
+        && years.includes(
+          requested
+        )
+      ) {
+
+        return requested;
+
+      }
+
+
+      const defaultYear =
+        String(
+          indexData
+            ?.default_year
+          || ""
+        );
+
+
+      if (
+        defaultYear
+        && years.includes(
+          defaultYear
+        )
+      ) {
+
+        return defaultYear;
+
+      }
+
+
+      return years[0]
+        || "";
+
+    }
+
+
+    function renderYearSwitch() {
+
+      const container =
+        document.getElementById(
+          "yearSwitch"
+        );
+
+
+      const years =
+        (
+          indexData
+            ?.available_years
+          || []
+        )
+          .map(String);
+
+
+      container.innerHTML =
+        years
+          .map(
+            year => `
+              <a
+                class="
+                  year-button
+                  ${
+                    year ===
+                    selectedYear
+                      ? "active"
+                      : ""
+                  }
+                "
+                href="${
+                  escapeHtml(
+                    setYearInUrl(
+                      year
+                    )
+                  )
+                }"
+              >
+                ${escapeHtml(year)}
+              </a>
+            `
+          )
+          .join("");
+
+    }
+
+
+    /* ======================================================
+       SCRUTINS DE L'ANNÉE
+    ====================================================== */
+
+
+    async function loadSelectedYearScrutins() {
+
+      const yearData =
+        indexData
+          ?.years
+          ?.[selectedYear];
+
+
+      const months =
+        yearData
+          ?.months
+        || [];
+
+
+      const payloads =
+        await Promise.all(
+          months.map(
+            month =>
+              loadJson(
+                "./"
+                + month.file
+              )
+          )
+        );
+
+
+      allScrutins =
+        payloads.flatMap(
+          payload =>
+            payload.scrutins
+            || []
+        );
+
+
+      allScrutins.sort(
+        (
+          a,
+          b
+        ) =>
+          String(
+            b.date || ""
+          ).localeCompare(
+            String(
+              a.date || ""
+            )
+          )
+      );
+
+    }
+
+
+    /* ======================================================
+       CHIFFRES
+    ====================================================== */
+
+
+    function renderCounts() {
+
+      const yearData =
+        indexData
+          ?.years
+          ?.[selectedYear]
+        || {};
+
+
+      const counts =
+        yearData.counts
+        || {};
+
+
+      document.getElementById(
+        "countScrutins"
+      ).textContent =
+        formatNumber(
+          counts.scrutins
+        );
+
+
+      document.getElementById(
+        "countVotes"
+      ).textContent =
+        formatNumber(
+          counts.votes
+        );
+
+
+      document.getElementById(
+        "countGroups"
+      ).textContent =
+        formatNumber(
+          counts.groupes
+        );
+
+
+      document.getElementById(
+        "countDeputies"
+      ).textContent =
+        formatNumber(
+          deputiesData?.total
+        );
+
+
+      document.getElementById(
+        "updatedInfo"
+      ).textContent =
+        `Données ${selectedYear}`
+        + (
+          indexData?.updated_at
+            ? ` · mise à jour : ${
+                new Date(
+                  indexData.updated_at
+                ).toLocaleDateString(
+                  "fr-FR"
+                )
+              }`
+            : ""
+        );
+
+    }
+
+
+    /* ======================================================
+       DONUT
+    ====================================================== */
+
+
+    function polarToCartesian(
+      cx,
+      cy,
+      radius,
+      angle
+    ) {
+
+      const radians =
+        (
+          angle - 90
+        )
+        * Math.PI
+        / 180;
+
+
+      return {
+
+        x:
+          cx
+          + radius
+          * Math.cos(
+            radians
+          ),
+
+        y:
+          cy
+          + radius
+          * Math.sin(
+            radians
+          )
+
+      };
+
+    }
+
+
+    function describeDonutArc(
+      cx,
+      cy,
+      outerRadius,
+      innerRadius,
+      startAngle,
+      endAngle
+    ) {
+
+      const startOuter =
+        polarToCartesian(
+          cx,
+          cy,
+          outerRadius,
+          endAngle
+        );
+
+
+      const endOuter =
+        polarToCartesian(
+          cx,
+          cy,
+          outerRadius,
+          startAngle
+        );
+
+
+      const startInner =
+        polarToCartesian(
+          cx,
+          cy,
+          innerRadius,
+          endAngle
+        );
+
+
+      const endInner =
+        polarToCartesian(
+          cx,
+          cy,
+          innerRadius,
+          startAngle
+        );
+
+
+      const largeArc =
+        (
+          endAngle
+          - startAngle
+        ) <= 180
+          ? 0
+          : 1;
+
+
+      return [
+
+        `M ${startOuter.x} ${startOuter.y}`,
+
+        `A ${outerRadius} ${outerRadius} 0 ${largeArc} 0 ${endOuter.x} ${endOuter.y}`,
+
+        `L ${endInner.x} ${endInner.y}`,
+
+        `A ${innerRadius} ${innerRadius} 0 ${largeArc} 1 ${startInner.x} ${startInner.y}`,
+
+        "Z"
+
+      ].join(" ");
+
+    }
+
+
+    function renderComposition() {
+
+      const groups =
+        compositionData
+          ?.groupes
+        || [];
+
+
+      const total =
+        Number(
+          compositionData?.total
+          || 0
+        );
+
+
+      const svg =
+        document.getElementById(
+          "assemblyDonut"
+        );
+
+
+      const groupList =
+        document.getElementById(
+          "groupList"
+        );
+
+
+      document.getElementById(
+        "donutTotal"
+      ).textContent =
+        formatNumber(
+          total
+        );
+
+
+      document.getElementById(
+        "donutLabel"
+      ).textContent =
+        "députés";
+
+
+      if (
+        !groups.length
+        || !total
+      ) {
+
+        svg.innerHTML = "";
+
+        groupList.innerHTML =
+          `
+            <div class="empty">
+              Composition indisponible.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      let angle = 0;
+
+
+      svg.innerHTML =
+        groups.map(
+          (
+            group,
+            index
+          ) => {
+
+            const color =
+              GROUP_COLORS[
+                index
+                % GROUP_COLORS.length
+              ];
+
+
+            const portion =
+              Number(
+                group.count || 0
+              )
+              / total
+              * 360;
+
+
+            const start =
+              angle;
+
+
+            const end =
+              angle
+              + portion;
+
+
+            angle = end;
+
+
+            const path =
+              describeDonutArc(
+                160,
+                160,
+                140,
+                76,
+                start,
+                end
+              );
+
+
+            const href =
+              linkWithYear(
+                "groupe.html",
+                {
+                  name:
+                    group.groupe
+                }
+              );
+
+
+            return `
+              <a
+                href="${
+                  escapeHtml(
+                    href
+                  )
+                }"
+              >
+                <path
+                  class="donut-slice"
+                  d="${path}"
+                  fill="${color}"
+                  stroke="#fff"
+                  stroke-width="2"
+                >
+                  <title>
+                    ${
+                      escapeHtml(
+                        group.groupe
+                      )
+                    } :
+                    ${
+                      formatNumber(
+                        group.count
+                      )
+                    }
+                    député(s)
+                  </title>
+                </path>
+              </a>
+            `;
+
+          }
+        ).join("");
+
+
+      groupList.innerHTML =
+        groups.map(
+          (
+            group,
+            index
+          ) => {
+
+            const color =
+              GROUP_COLORS[
+                index
+                % GROUP_COLORS.length
+              ];
+
+
+            const href =
+              linkWithYear(
+                "groupe.html",
+                {
+                  name:
+                    group.groupe
+                }
+              );
+
+
+            return `
+              <a
+                class="group-item"
+                href="${
+                  escapeHtml(
+                    href
+                  )
+                }"
+              >
+
+                <span
+                  class="group-dot"
+                  style="
+                    background:
+                      ${color};
+                  "
+                ></span>
+
+                <span
+                  class="group-name"
+                >
+                  ${
+                    escapeHtml(
+                      group.groupe
+                    )
+                  }
+                </span>
+
+                <span
+                  class="group-count"
+                >
+                  ${
+                    formatNumber(
+                      group.count
+                    )
+                  }
+                </span>
+
+              </a>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /* ======================================================
+       DERNIERS SCRUTINS
+    ====================================================== */
+
+
+    function renderPositions(
+      scrutin
+    ) {
+
+      const summaries =
+        scrutin
+          ?.groupes_summary
+        || [];
+
+
+      if (!summaries.length) {
+        return "";
+      }
+
+
+      const sorted =
+        summaries
+          .slice()
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              Number(
+                b.total || 0
+              )
+              -
+              Number(
+                a.total || 0
+              )
+          )
+          .slice(
+            0,
+            8
+          );
+
+
+      return `
+        <div class="positions-row">
+
+          ${
+            sorted.map(
+              group => {
+
+                const position =
+                  group.position
+                  || "Partagé";
+
+
+                const className =
+                  `position-${position}`;
+
+
+                return `
+                  <span
+                    class="
+                      position-pill
+                      ${className}
+                    "
+                    title="${
+                      escapeHtml(
+                        group.groupe
+                      )
+                    }"
+                  >
+                    ${
+                      escapeHtml(
+                        shortGroupName(
+                          group.groupe
+                        )
+                      )
+                    }
+                    :
+                    ${
+                      escapeHtml(
+                        position
+                      )
+                    }
+                  </span>
+                `;
+
+              }
+            ).join("")
+          }
+
+        </div>
+      `;
+
+    }
+
+
+    function shortGroupName(
+      group
+    ) {
+
+      const aliases = {
+
+        "Rassemblement National":
+          "RN",
+
+        "La France insoumise - Nouveau Front Populaire":
+          "LFI-NFP",
+
+        "Socialistes et apparentés":
+          "Socialistes",
+
+        "Ensemble pour la République":
+          "Ensemble",
+
+        "Les Démocrates":
+          "Démocrates",
+
+        "Écologiste et Social":
+          "Écologistes",
+
+        "Horizons & Indépendants":
+          "Horizons",
+
+        "Gauche démocrate et républicaine":
+          "GDR",
+
+        "Libertés, indépendants, outre-mer et territoires":
+          "LIOT",
+
+        "Union des droites pour la République":
+          "UDR"
+
+      };
+
+
+      return aliases[group]
+        || group;
+
+    }
+
+
+    function renderScrutins() {
+
+      const container =
+        document.getElementById(
+          "scrutinsList"
+        );
+
+
+      const latest =
+        allScrutins.slice(
+          0,
+          18
+        );
+
+
+      if (!latest.length) {
+
+        container.innerHTML =
+          `
+            <div class="empty">
+              Aucun scrutin disponible pour ${escapeHtml(selectedYear)}.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        latest.map(
+          scrutin => {
+
+            const subject =
+              scrutin.sujet
+              || scrutin.titre_court
+              || scrutin.titre
+              || "Scrutin";
+
+
+            const description =
+              scrutin.description
+              || scrutin.titre_officiel
+              || scrutin.titre
+              || "";
+
+
+            const href =
+              linkWithYear(
+                "scrutin.html",
+                {
+                  uid:
+                    scrutin.uid
+                }
+              );
+
+
+            return `
+              <a
+                class="scrutin-card"
+                href="${
+                  escapeHtml(
+                    href
+                  )
+                }"
+              >
+
+                <div
+                  class="scrutin-meta"
+                >
+
+                  <span>
+                    ${
+                      escapeHtml(
+                        formatDate(
+                          scrutin.date
+                        )
+                      )
+                    }
+                  </span>
+
+                  <span>
+                    ·
+                  </span>
+
+                  <span
+                    class="theme-badge"
+                  >
+                    ${
+                      escapeHtml(
+                        scrutin.theme
+                        || "Autres"
+                      )
+                    }
+                  </span>
+
+                </div>
+
+
+                <h3
+                  class="scrutin-title"
+                >
+                  ${
+                    escapeHtml(
+                      subject
+                    )
+                  }
+                </h3>
+
+
+                ${
+                  description
+                  && normalize(
+                    description
+                  )
+                  !== normalize(
+                    subject
+                  )
+                    ? `
+                      <div
+                        class="scrutin-description"
+                      >
+                        ${
+                          escapeHtml(
+                            description
+                          )
+                        }
+                      </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  renderPositions(
+                    scrutin
+                  )
+                }
+
+              </a>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /* ======================================================
+       RECHERCHE
+    ====================================================== */
+
+
+    function scoreText(
+      text,
+      query
+    ) {
+
+      const normalizedText =
+        normalize(
+          text
+        );
+
+
+      const normalizedQuery =
+        normalize(
+          query
+        );
+
+
+      if (
+        !normalizedText
+        || !normalizedQuery
+      ) {
+
+        return 0;
+
+      }
+
+
+      if (
+        normalizedText
+        === normalizedQuery
+      ) {
+
+        return 100;
+
+      }
+
+
+      if (
+        normalizedText.startsWith(
+          normalizedQuery
+        )
+      ) {
+
+        return 80;
+
+      }
+
+
+      if (
+        normalizedText.includes(
+          normalizedQuery
+        )
+      ) {
+
+        return 60;
+
+      }
+
+
+      const words =
+        normalizedQuery.split(
+          " "
+        );
+
+
+      const found =
+        words.filter(
+          word =>
+            word.length > 1
+            && normalizedText.includes(
+              word
+            )
+        );
+
+
+      if (
+        found.length
+        === words.length
+      ) {
+
+        return 45;
+
+      }
+
+
+      if (
+        found.length
+      ) {
+
+        return (
+          20
+          +
+          found.length
+          * 5
+        );
+
+      }
+
+
+      return 0;
+
+    }
+
+
+    function buildSearchResults(
+      rawQuery
+    ) {
+
+      const query =
+        rawQuery.trim();
+
+
+      if (!query) {
+        return [];
+      }
+
+
+      const results = [];
+
+
+      /* GROUPES */
+
+      (
+        searchData?.groupes
+        || []
+      ).forEach(
+        group => {
+
+          const score =
+            scoreText(
+              group.groupe,
+              query
+            );
+
+
+          if (score > 0) {
+
+            results.push({
+
+              type:
+                "Groupe",
+
+              title:
+                group.groupe,
+
+              meta:
+                `${formatNumber(group.count)} député(s) actuellement`,
+
+              score:
+                score
+                + 20,
+
+              href:
+                linkWithYear(
+                  "groupe.html",
+                  {
+                    name:
+                      group.groupe
+                  }
+                )
+
+            });
+
+          }
+
+        }
+      );
+
+
+      /* DÉPUTÉS */
+
+      (
+        searchData?.deputes
+        || []
+      ).forEach(
+        deputy => {
+
+          const fields = [
+
+            {
+              value:
+                deputy.nom,
+              weight:
+                25
+            },
+
+            {
+              value:
+                deputy.groupe,
+              weight:
+                10
+            },
+
+            {
+              value:
+                deputy.departement,
+              weight:
+                7
+            },
+
+            {
+              value:
+                deputy.circonscription,
+              weight:
+                12
+            }
+
+          ];
+
+
+          let bestScore = 0;
+
+
+          fields.forEach(
+            field => {
+
+              const current =
+                scoreText(
+                  field.value,
+                  query
+                );
+
+
+              if (current) {
+
+                bestScore =
+                  Math.max(
+                    bestScore,
+                    current
+                    + field.weight
+                  );
+
+              }
+
+            }
+          );
+
+
+          if (bestScore > 0) {
+
+            results.push({
+
+              type:
+                "Député",
+
+              title:
+                deputy.nom,
+
+              meta:
+                [
+                  deputy.groupe,
+                  deputy.departement,
+                  deputy.circonscription
+                ]
+                  .filter(Boolean)
+                  .join(" · "),
+
+              score:
+                bestScore,
+
+              href:
+                linkWithYear(
+                  "depute.html",
+                  {
+                    uid:
+                      deputy.uid
+                  }
+                )
+
+            });
+
+          }
+
+        }
+      );
+
+
+      /* SUJETS / SCRUTINS */
+
+      allScrutins.forEach(
+        scrutin => {
+
+          const subject =
+            scrutin.sujet
+            || scrutin.titre_court
+            || scrutin.titre
+            || "";
+
+
+          const searchable = [
+
+            subject,
+            scrutin.description,
+            scrutin.titre_officiel,
+            scrutin.theme
+
+          ].join(" ");
+
+
+          const score =
+            scoreText(
+              searchable,
+              query
+            );
+
+
+          if (score > 0) {
+
+            results.push({
+
+              type:
+                "Vote",
+
+              title:
+                subject
+                || "Scrutin",
+
+              meta:
+                [
+                  formatDate(
+                    scrutin.date
+                  ),
+                  scrutin.theme
+                ]
+                  .filter(Boolean)
+                  .join(" · "),
+
+              score:
+                score
+                + 5,
+
+              href:
+                linkWithYear(
+                  "scrutin.html",
+                  {
+                    uid:
+                      scrutin.uid
+                  }
+                )
+
+            });
+
+          }
+
+        }
+      );
+
+
+      /* DÉPARTEMENTS */
+
+      (
+        searchData?.departements
+        || []
+      ).forEach(
+        department => {
+
+          const score =
+            scoreText(
+              department,
+              query
+            );
+
+
+          if (score > 0) {
+
+            const deputyCount =
+              (
+                searchData?.deputes
+                || []
+              ).filter(
+                deputy =>
+                  normalize(
+                    deputy.departement
+                  )
+                  ===
+                  normalize(
+                    department
+                  )
+              ).length;
+
+
+            results.push({
+
+              type:
+                "Territoire",
+
+              title:
+                department,
+
+              meta:
+                `${formatNumber(deputyCount)} député(s) dans les données actuelles`,
+
+              score:
+                score,
+
+              href:
+                `#territory=${encodeURIComponent(department)}`,
+
+              territory:
+                department
+
+            });
+
+          }
+
+        }
+      );
+
+
+      /* CIRCONSCRIPTIONS */
+
+      (
+        searchData?.circonscriptions
+        || []
+      ).forEach(
+        constituency => {
+
+          const score =
+            scoreText(
+              constituency,
+              query
+            );
+
+
+          if (score > 0) {
+
+            const matchingDeputies =
+              (
+                searchData?.deputes
+                || []
+              )
+                .filter(
+                  deputy =>
+                    normalize(
+                      deputy.circonscription
+                    )
+                    ===
+                    normalize(
+                      constituency
+                    )
+                );
+
+
+            matchingDeputies.forEach(
+              deputy => {
+
+                results.push({
+
+                  type:
+                    "Circonscription",
+
+                  title:
+                    constituency,
+
+                  meta:
+                    deputy.nom
+                    + (
+                      deputy.departement
+                        ? ` · ${deputy.departement}`
+                        : ""
+                    ),
+
+                  score:
+                    score
+                    + 8,
+
+                  href:
+                    linkWithYear(
+                      "depute.html",
+                      {
+                        uid:
+                          deputy.uid
+                      }
+                    )
+
+                });
+
+              }
+            );
+
+          }
+
+        }
+      );
+
+
+      /* DÉDOUBLONNAGE */
+
+      const unique =
+        new Map();
+
+
+      results.forEach(
+        result => {
+
+          const key =
+            [
+              result.type,
+              result.title,
+              result.href
+            ].join("|");
+
+
+          const previous =
+            unique.get(
+              key
+            );
+
+
+          if (
+            !previous
+            || result.score
+            > previous.score
+          ) {
+
+            unique.set(
+              key,
+              result
+            );
+
+          }
+
+        }
+      );
+
+
+      return [
+        ...unique.values()
+      ]
+        .sort(
+          (
+            a,
+            b
+          ) => {
+
+            if (
+              b.score
+              !==
+              a.score
+            ) {
+
+              return (
+                b.score
+                -
+                a.score
+              );
+
+            }
+
+
+            return String(
+              a.title
+            ).localeCompare(
+              String(
+                b.title
+              ),
+              "fr"
+            );
+
+          }
+        )
+        .slice(
+          0,
+          30
+        );
+
+    }
+
+
+    function renderTerritoryDeputies(
+      territory
+    ) {
+
+      const deputies =
+        (
+          searchData?.deputes
+          || []
+        )
+          .filter(
+            deputy =>
+              normalize(
+                deputy.departement
+              )
+              ===
+              normalize(
+                territory
+              )
+          );
+
+
+      return deputies.map(
+        deputy => ({
+
+          type:
+            "Député",
+
+          title:
+            deputy.nom,
+
+          meta:
+            [
+              deputy.groupe,
+              deputy.circonscription
+            ]
+              .filter(Boolean)
+              .join(" · "),
+
+          href:
+            linkWithYear(
+              "depute.html",
+              {
+                uid:
+                  deputy.uid
+              }
+            )
+
+        })
+      );
+
+    }
+
+
+    function renderSearchResults(
+      results
+    ) {
+
+      const container =
+        document.getElementById(
+          "searchResults"
+        );
+
+
+      if (!results.length) {
+
+        container.innerHTML =
+          `
+            <div class="empty">
+              Aucun résultat trouvé.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        results.map(
+          result => `
+            <a
+              class="search-result"
+              href="${
+                escapeHtml(
+                  result.href
+                )
+              }"
+              ${
+                result.territory
+                  ? `data-territory="${escapeHtml(result.territory)}"`
+                  : ""
+              }
+            >
+
+              <span
+                class="result-type"
+              >
+                ${
+                  escapeHtml(
+                    result.type
+                  )
+                }
+              </span>
+
+              <span>
+
+                <span
+                  class="result-title"
+                >
+                  ${
+                    escapeHtml(
+                      result.title
+                    )
+                  }
+                </span>
+
+                <span
+                  class="result-meta"
+                >
+                  ${
+                    escapeHtml(
+                      result.meta
+                      || ""
+                    )
+                  }
+                </span>
+
+              </span>
+
+              <span
+                class="result-arrow"
+              >
+                →
+              </span>
+
+            </a>
+          `
+        ).join("");
+
+
+      container
+        .querySelectorAll(
+          "[data-territory]"
+        )
+        .forEach(
+          link => {
+
+            link.addEventListener(
+              "click",
+              event => {
+
+                event.preventDefault();
+
+
+                const territory =
+                  link.dataset
+                    .territory;
+
+
+                const deputies =
+                  renderTerritoryDeputies(
+                    territory
+                  );
+
+
+                document.getElementById(
+                  "searchStatus"
+                ).textContent =
+                  `${deputies.length} député(s) pour ${territory}.`;
+
+
+                renderSearchResults(
+                  deputies
+                );
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    function performSearch() {
+
+      const input =
+        document.getElementById(
+          "searchInput"
+        );
+
+
+      const query =
+        input.value.trim();
+
+
+      const status =
+        document.getElementById(
+          "searchStatus"
+        );
+
+
+      if (!query) {
+
+        status.textContent =
+          "Tapez un mot ou un nom pour lancer la recherche.";
+
+
+        document.getElementById(
+          "searchResults"
+        ).innerHTML = "";
+
+
+        return;
+
+      }
+
+
+      const results =
+        buildSearchResults(
+          query
+        );
+
+
+      status.textContent =
+        results.length
+          ? `${results.length} résultat(s) pour « ${query} »`
+          : `Aucun résultat pour « ${query} »`;
+
+
+      renderSearchResults(
+        results
+      );
+
+    }
+
+
+    function bindSearch() {
+
+      document.getElementById(
+        "searchButton"
+      ).addEventListener(
+        "click",
+        performSearch
+      );
+
+
+      document.getElementById(
+        "searchInput"
+      ).addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key
+            === "Enter"
+          ) {
+
+            performSearch();
+
+          }
+
+        }
+      );
+
+
+      let timer = null;
+
+
+      document.getElementById(
+        "searchInput"
+      ).addEventListener(
+        "input",
+        event => {
+
+          clearTimeout(
+            timer
+          );
+
+
+          const value =
+            event.target
+              .value
+              .trim();
+
+
+          if (
+            value.length
+            < 2
+          ) {
+
+            document.getElementById(
+              "searchResults"
+            ).innerHTML = "";
+
+
+            document.getElementById(
+              "searchStatus"
+            ).textContent = "";
+
+            return;
+
+          }
+
+
+          timer =
+            setTimeout(
+              performSearch,
+              180
+            );
+
+        }
+      );
+
+    }
+
+
+    /* ======================================================
+       INITIALISATION
+    ====================================================== */
+
+
+    async function init() {
+
+      try {
+
+        indexData =
+          await loadJson(
+            "./data/current/index.json"
+          );
+
+
+        selectedYear =
+          determineSelectedYear();
+
+
+        renderYearSwitch();
+
+
+        const [
+          searchPayload,
+          compositionPayload,
+          deputiesPayload
+        ] =
+          await Promise.all([
+
+            loadJson(
+              "./data/current/search.json"
+            ),
+
+            loadJson(
+              "./data/current/composition.json"
+            ),
+
+            loadJson(
+              "./data/current/deputes.json"
+            )
+
+          ]);
+
+
+        searchData =
+          searchPayload;
+
+
+        compositionData =
+          compositionPayload;
+
+
+        deputiesData =
+          deputiesPayload;
+
+
+        await loadSelectedYearScrutins();
+
+
+        renderCounts();
+
+        renderComposition();
+
+        renderScrutins();
+
+        bindSearch();
+
+      }
+
+      catch(error) {
+
+        console.error(
+          error
+        );
+
+
+        document.querySelector(
+          "main"
+        ).innerHTML =
+          `
+            <section class="panel">
+
+              <div class="error">
+
+                Impossible de charger les données du site.
+
+                <br><br>
+
+                Vérifiez que le script
+                <strong>build_data.py</strong>
+                a bien généré les fichiers
+                <strong>index.json</strong>,
+                <strong>search.json</strong>,
+                <strong>composition.json</strong>
+                et
+                <strong>deputes.json</strong>.
+
+              </div>
+
+            </section>
+          `;
+
+      }
+
+    }
+
+
+    init();
+
+  </script>
 
 </body>
 </html>
