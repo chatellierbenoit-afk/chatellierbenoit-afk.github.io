@@ -44,6 +44,7 @@ BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
 GROUPS_DIR = BASE_DIR / "groupes"
 DEPUTE_VOTES_DIR = BASE_DIR / "deputes_votes"
+SCRUTIN_VOTES_DIR = BASE_DIR / "scrutin_votes"
 SSL_CONTEXT = ssl.create_default_context()
 
 
@@ -1428,6 +1429,108 @@ def write_month_files(scrutins):
     return month_index
 
 
+def build_scrutin_votes_files(scrutins):
+    """
+    Votes nominatifs compacts, regroupés par mois.
+
+    Schéma volontairement compact :
+      groupes = liste des groupes utilisés dans le mois
+      scrutins[uid] = [[depute_uid, code_vote, index_groupe], ...]
+
+    Codes vote :
+      P = Pour
+      C = Contre
+      A = Abstention
+      N = Non-votant
+
+    Cela permet à scrutin.html de charger les votes individuels
+    sans remettre les énormes listes nominatives dans months/*.json.
+    """
+    if SCRUTIN_VOTES_DIR.exists():
+        shutil.rmtree(SCRUTIN_VOTES_DIR)
+
+    ensure_dir(SCRUTIN_VOTES_DIR)
+
+    by_month = defaultdict(list)
+
+    for scrutin in scrutins:
+        month = clean(scrutin.get("date"))[:7]
+        if month:
+            by_month[month].append(scrutin)
+
+    vote_codes = {
+        "Pour": "P",
+        "Contre": "C",
+        "Abstention": "A",
+        "Non-votant": "N",
+    }
+
+    files_count = 0
+
+    for month, month_scrutins in by_month.items():
+        group_names = sorted({
+            normalize_group(
+                vote.get("groupe_au_vote")
+                or vote.get("groupe")
+                or "Inconnu"
+            ) or "Inconnu"
+            for scrutin in month_scrutins
+            for vote in scrutin.get("votes", [])
+        })
+
+        group_index = {
+            group: i
+            for i, group in enumerate(group_names)
+        }
+
+        scrutins_payload = {}
+
+        for scrutin in month_scrutins:
+            compact_votes = []
+
+            for vote in scrutin.get("votes", []):
+                deputy_uid = clean(vote.get("depute_uid"))
+                if not deputy_uid:
+                    continue
+
+                vote_code = vote_codes.get(
+                    clean(vote.get("vote")),
+                    "N",
+                )
+
+                group = normalize_group(
+                    vote.get("groupe_au_vote")
+                    or vote.get("groupe")
+                    or "Inconnu"
+                ) or "Inconnu"
+
+                compact_votes.append([
+                    deputy_uid,
+                    vote_code,
+                    group_index[group],
+                ])
+
+            scrutins_payload[
+                scrutin.get("uid")
+            ] = compact_votes
+
+        path = SCRUTIN_VOTES_DIR / f"{month}.json"
+
+        write_json(
+            path,
+            {
+                "month": month,
+                "groupes": group_names,
+                "scrutins": scrutins_payload,
+            },
+        )
+
+        files_count += 1
+
+    print("Fichiers mensuels de votes nominatifs :", files_count)
+
+
+
 def build_depute_votes_files(current_deputies, scrutins):
     """
     Historique individuel minimal, séparé par député et par année.
@@ -1728,7 +1831,7 @@ def build_index_file(scrutins, month_index, composition):
     write_json(
         BASE_DIR / "index.json",
         {
-            "version": "GROUP_FIRST_V4_LIGHT_DATA",
+            "version": "GROUP_FIRST_V4_1_SCRUTIN_VOTES",
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "legislature": int(LEGISLATURE),
             "available_years": available_years,
@@ -1787,7 +1890,7 @@ def validate_generated_file_sizes():
 def main():
     print("")
     print("======================================================")
-    print(" BUILD DATA — GROUP FIRST V4 / LIGHT DATA")
+    print(" BUILD DATA — GROUP FIRST V4.1 / SCRUTIN VOTES")
     print("======================================================")
     print("")
 
@@ -1795,6 +1898,7 @@ def main():
     ensure_dir(MONTHS_DIR)
     ensure_dir(GROUPS_DIR)
     ensure_dir(DEPUTE_VOTES_DIR)
+    ensure_dir(SCRUTIN_VOTES_DIR)
 
     current_deputies, organes, group_ref_to_label = load_current_deputies()
 
@@ -1813,6 +1917,11 @@ def main():
 
     # Fichiers mensuels LÉGERS : pas de votes individuels.
     month_index = write_month_files(scrutins)
+
+    # Votes nominatifs compacts par mois pour scrutin.html.
+    build_scrutin_votes_files(
+        scrutins,
+    )
 
     # Historique individuel minimal, séparé par député.
     build_depute_votes_files(
@@ -1857,6 +1966,7 @@ def main():
     print(" data/current/groupes/YYYY/<groupe>.json   (détail groupe)")
     print(" data/current/months/YYYY-MM.json           (scrutins sans votes individuels)")
     print(" data/current/deputes_votes/YYYY/PA....json (votes individuels minimaux)")
+    print(" data/current/scrutin_votes/YYYY-MM.json       (votes compacts par scrutin)")
 
 
 if __name__ == "__main__":
