@@ -1,3046 +1,2760 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Comment votent nos députés ?</title>
-
-  <style>
-    :root {
-      --violet: #7700ff;
-      --violet-dark: #5600bd;
-      --violet-soft: #f2eaff;
-
-      --text: #1d1b22;
-      --muted: #6f6a78;
-
-      --bg: #f7f5fb;
-      --card: #ffffff;
-
-      --border: #e6e0ef;
-
-      --green: #168550;
-      --green-bg: #eaf8f0;
-
-      --red: #c43b43;
-      --red-bg: #fff0f1;
-
-      --orange: #a66b00;
-      --orange-bg: #fff7df;
-
-      --grey: #6b7280;
-      --grey-bg: #f2f3f5;
-
-      --radius: 22px;
-
-      --shadow:
-        0 10px 30px
-        rgba(54, 24, 105, 0.08);
-    }
-
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-
-    body {
-      margin: 0;
-      font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      background:
-        linear-gradient(
-          180deg,
-          #faf9fd 0%,
-          var(--bg) 100%
-        );
-
-      color: var(--text);
-    }
-
-
-    a {
-      color: inherit;
-    }
-
-
-    button,
-    input {
-      font: inherit;
-    }
-
-
-    /* ======================================================
-       HERO
-    ====================================================== */
-
-
-    .hero {
-      background:
-        linear-gradient(
-          135deg,
-          var(--violet-dark),
-          var(--violet)
-        );
-
-      color: white;
-
-      padding:
-        58px
-        20px
-        52px;
-
-      text-align: center;
-    }
-
-
-    .hero-inner {
-      max-width: 1050px;
-      margin: 0 auto;
-    }
-
-
-    .hero-kicker {
-      margin-bottom: 12px;
-
-      font-size: 14px;
-      font-weight: 800;
-
-      letter-spacing: 0.08em;
-
-      text-transform: uppercase;
-
-      opacity: 0.8;
-    }
-
-
-    .hero h1 {
-      margin: 0;
-
-      font-size:
-        clamp(
-          36px,
-          6vw,
-          62px
-        );
-
-      line-height: 1.02;
-    }
-
-
-    .hero p {
-      max-width: 800px;
-
-      margin:
-        20px
-        auto
-        0;
-
-      font-size: 18px;
-
-      line-height: 1.55;
-
-      opacity: 0.94;
-    }
-
-
-    /* ======================================================
-       GENERAL
-    ====================================================== */
-
-
-    main {
-      max-width: 1450px;
-
-      margin: 0 auto;
-
-      padding:
-        28px
-        18px
-        70px;
-    }
-
-
-    .panel {
-      background: var(--card);
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        var(--radius);
-
-      box-shadow:
-        var(--shadow);
-
-      padding: 24px;
-
-      margin-bottom: 22px;
-    }
-
-
-    .section-title {
-      margin:
-        0
-        0
-        8px;
-
-      text-align: center;
-
-      font-size:
-        clamp(
-          27px,
-          4vw,
-          36px
-        );
-
-      line-height: 1.15;
-    }
-
-
-    .section-intro {
-      max-width: 820px;
-
-      margin:
-        0
-        auto
-        22px;
-
-      text-align: center;
-
-      color:
-        var(--muted);
-
-      line-height: 1.5;
-    }
-
-
-    .small-muted {
-      color:
-        var(--muted);
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-
-    /* ======================================================
-       YEARS
-    ====================================================== */
-
-
-    .year-switch {
-      display: flex;
-
-      justify-content: center;
-
-      gap: 10px;
-
-      flex-wrap: wrap;
-    }
-
-
-    .year-button {
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      min-width: 105px;
-
-      padding:
-        13px
-        18px;
-
-      text-decoration: none;
-
-      color:
-        var(--text);
-
-      background: white;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 14px;
-
-      font-weight: 800;
-
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
-    }
-
-
-    .year-button:hover {
-      transform:
-        translateY(-1px);
-
-      box-shadow:
-        0 8px 20px
-        rgba(54, 24, 105, 0.08);
-    }
-
-
-    .year-button.active {
-      color: white;
-
-      border-color:
-        transparent;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--violet-dark),
-          var(--violet)
-        );
-    }
-
-
-    /* ======================================================
-       SEARCH
-    ====================================================== */
-
-
-    .search-panel {
-      padding:
-        32px;
-    }
-
-
-    .search-form {
-      max-width:
-        1050px;
-
-      margin:
-        24px
-        auto
-        0;
-    }
-
-
-    .search-row {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-
-      gap: 12px;
-    }
-
-
-    .search-input {
-      width: 100%;
-
-      min-height: 60px;
-
-      border:
-        2px solid
-        #ded6eb;
-
-      border-radius:
-        17px;
-
-      padding:
-        0
-        20px;
-
-      font-size: 18px;
-
-      outline: none;
-
-      transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-    }
-
-
-    .search-input:focus {
-      border-color:
-        #b597e8;
-
-      box-shadow:
-        0 0 0 5px
-        rgba(119, 0, 255, 0.07);
-    }
-
-
-    .search-button {
-      min-width: 160px;
-
-      border: 0;
-
-      border-radius: 17px;
-
-      padding:
-        0
-        22px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--violet-dark),
-          var(--violet)
-        );
-
-      color: white;
-
-      font-weight: 800;
-
-      cursor: pointer;
-    }
-
-
-    .search-examples {
-      margin-top: 13px;
-
-      text-align: center;
-
-      color:
-        var(--muted);
-
-      font-size: 14px;
-    }
-
-
-    .search-status {
-      margin-top: 18px;
-
-      text-align: center;
-
-      color:
-        var(--muted);
-    }
-
-
-    .search-results {
-      margin-top: 25px;
-
-      display: grid;
-
-      gap: 12px;
-    }
-
-
-    .search-result {
-      display: grid;
-
-      grid-template-columns:
-        auto
-        minmax(0, 1fr)
-        auto;
-
-      align-items: center;
-
-      gap: 15px;
-
-      padding:
-        15px
-        17px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 16px;
-
-      background: white;
-
-      text-decoration: none;
-
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
-    }
-
-
-    .search-result:hover {
-      background:
-        var(--violet-soft);
-
-      transform:
-        translateY(-1px);
-
-      box-shadow:
-        0 8px 22px
-        rgba(54, 24, 105, 0.08);
-    }
-
-
-    .result-type {
-      min-width: 92px;
-
-      padding:
-        7px
-        10px;
-
-      border-radius:
-        999px;
-
-      background:
-        var(--violet-soft);
-
-      color:
-        var(--violet-dark);
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      text-align: center;
-
-      text-transform: uppercase;
-    }
-
-
-    .result-title {
-      font-size: 17px;
-
-      font-weight: 800;
-
-      line-height: 1.25;
-    }
-
-
-    .result-meta {
-      margin-top: 4px;
-
-      color:
-        var(--muted);
-
-      font-size: 14px;
-    }
-
-
-    .result-arrow {
-      color:
-        var(--violet);
-
-      font-size: 20px;
-
-      font-weight: 900;
-    }
-
-
-    /* ======================================================
-       COUNTS
-    ====================================================== */
-
-
-    .counts-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          4,
-          minmax(0, 1fr)
-        );
-
-      gap: 13px;
-    }
-
-
-    .count-card {
-      padding:
-        20px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 17px;
-
-      text-align: center;
-
-      background:
-        linear-gradient(
-          180deg,
-          #fff,
-          #fcfbff
-        );
-    }
-
-
-    .count-value {
-      display: block;
-
-      color:
-        var(--violet);
-
-      font-size: 29px;
-
-      font-weight: 900;
-
-      margin-bottom: 5px;
-    }
-
-
-    .count-label {
-      color:
-        var(--muted);
-
-      font-size: 13px;
-    }
-
-
-    /* ======================================================
-       COMPOSITION
-    ====================================================== */
-
-
-    .composition-layout {
-      display: grid;
-
-      grid-template-columns:
-        minmax(300px, 440px)
-        minmax(0, 1fr);
-
-      gap: 22px;
-
-      align-items: start;
-    }
-
-
-    .donut-card {
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 20px;
-
-      padding: 20px;
-    }
-
-
-    .donut-wrap {
-      position: relative;
-
-      width: 100%;
-
-      max-width: 400px;
-
-      aspect-ratio: 1 / 1;
-
-      margin: 0 auto;
-    }
-
-
-    .donut-svg {
-      width: 100%;
-      height: 100%;
-    }
-
-
-    .donut-slice {
-      cursor: pointer;
-
-      transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
-
-      transform-origin:
-        160px
-        160px;
-    }
-
-
-    .donut-slice:hover {
-      transform:
-        scale(1.025);
-
-      filter:
-        brightness(1.04);
-    }
-
-
-    .donut-center {
-      position: absolute;
-
-      left: 50%;
-      top: 50%;
-
-      transform:
-        translate(
-          -50%,
-          -50%
-        );
-
-      width: 125px;
-      height: 125px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 50%;
-
-      background: white;
-
-      text-align: center;
-
-      box-shadow:
-        0 8px 20px
-        rgba(54, 24, 105, 0.08);
-
-      padding: 10px;
-    }
-
-
-    .donut-center strong {
-      color:
-        var(--violet);
-
-      font-size: 28px;
-    }
-
-
-    .donut-center span {
-      margin-top: 5px;
-
-      color:
-        var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.2;
-    }
-
-
-    .group-list {
-      display: grid;
-
-      gap: 9px;
-    }
-
-
-    .group-item {
-      display: grid;
-
-      grid-template-columns:
-        15px
-        minmax(0, 1fr)
-        auto;
-
-      align-items: center;
-
-      gap: 12px;
-
-      padding:
-        12px
-        14px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 14px;
-
-      background: white;
-
-      color:
-        var(--text);
-
-      text-decoration: none;
-
-      transition:
-        background 0.15s ease,
-        transform 0.15s ease;
-    }
-
-
-    .group-item:hover {
-      background:
-        var(--violet-soft);
-
-      transform:
-        translateX(2px);
-    }
-
-
-    .group-dot {
-      width: 13px;
-      height: 13px;
-
-      border-radius: 50%;
-    }
-
-
-    .group-name {
-      font-weight: 800;
-
-      line-height: 1.25;
-    }
-
-
-    .group-count {
-      color:
-        var(--violet);
-
-      font-weight: 900;
-    }
-
-
-    /* ======================================================
-       SCRUTINS
-    ====================================================== */
-
-
-    .scrutins-list {
-      display: grid;
-
-      gap: 16px;
-    }
-
-
-    .scrutin-card {
-      display: block;
-
-      padding: 21px;
-
-      color:
-        var(--text);
-
-      text-decoration: none;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 19px;
-
-      background:
-        linear-gradient(
-          180deg,
-          #fff,
-          #fcfbff
-        );
-
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-    }
-
-
-    .scrutin-card:hover {
-      transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 10px 25px
-        rgba(54, 24, 105, 0.09);
-    }
-
-
-    .scrutin-meta {
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      margin-bottom: 12px;
-
-      color:
-        var(--muted);
-
-      font-size: 13px;
-
-      font-weight: 700;
-    }
-
-
-    .theme-badge {
-      display: inline-block;
-
-      padding:
-        6px
-        10px;
-
-      border-radius:
-        999px;
-
-      color:
-        var(--violet-dark);
-
-      background:
-        var(--violet-soft);
-
-      font-size: 12px;
-
-      font-weight: 800;
-    }
-
-
-    .scrutin-title {
-      margin:
-        0
-        auto
-        10px;
-
-      max-width: 1000px;
-
-      text-align: center;
-
-      font-size:
-        clamp(
-          21px,
-          3vw,
-          29px
-        );
-
-      line-height: 1.2;
-    }
-
-
-    .scrutin-description {
-      max-width:
-        1050px;
-
-      margin:
-        0
-        auto
-        16px;
-
-      padding:
-        14px
-        17px;
-
-      border-radius: 14px;
-
-      background:
-        var(--violet-soft);
-
-      color:
-        #3b3542;
-
-      text-align: center;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-
-    .positions-row {
-      display: flex;
-
-      justify-content: center;
-
-      gap: 7px;
-
-      flex-wrap: wrap;
-
-      margin-top: 14px;
-    }
-
-
-    .position-pill {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 5px;
-
-      padding:
-        7px
-        10px;
-
-      border-radius:
-        999px;
-
-      font-size: 12px;
-
-      font-weight: 800;
-    }
-
-
-    .position-Pour {
-      color:
-        var(--green);
-
-      background:
-        var(--green-bg);
-    }
-
-
-    .position-Contre {
-      color:
-        var(--red);
-
-      background:
-        var(--red-bg);
-    }
-
-
-    .position-Abstention {
-      color:
-        var(--orange);
-
-      background:
-        var(--orange-bg);
-    }
-
-
-    .position-Partagé,
-    .position-Non-votant {
-      color:
-        var(--grey);
-
-      background:
-        var(--grey-bg);
-    }
-
-
-    /* ======================================================
-       EMPTY / ERROR
-    ====================================================== */
-
-
-    .empty {
-      padding:
-        28px
-        10px;
-
-      text-align: center;
-
-      color:
-        var(--muted);
-    }
-
-
-    .error {
-      padding:
-        20px;
-
-      border:
-        1px solid
-        #f3c7ca;
-
-      border-radius: 15px;
-
-      background:
-        #fff3f4;
-
-      color:
-        #a42931;
-
-      text-align: center;
-    }
-
-
-    /* ======================================================
-       RESPONSIVE
-    ====================================================== */
-
-
-    @media (
-      max-width: 1050px
-    ) {
-
-      .composition-layout {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .counts-grid {
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0, 1fr)
-          );
-      }
-
-    }
-
-
-    @media (
-      max-width: 700px
-    ) {
-
-      .hero {
-        padding:
-          42px
-          18px
-          38px;
-      }
-
-
-      main {
-        padding:
-          18px
-          11px
-          45px;
-      }
-
-
-      .panel {
-        padding:
-          18px;
-      }
-
-
-      .search-panel {
-        padding:
-          23px
-          18px;
-      }
-
-
-      .search-row {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .search-button {
-        min-height:
-          54px;
-      }
-
-
-      .counts-grid {
-        grid-template-columns:
-          1fr
-          1fr;
-      }
-
-
-      .search-result {
-        grid-template-columns:
-          1fr
-          auto;
-      }
-
-
-      .result-type {
-        grid-column:
-          1 / -1;
-
-        justify-self:
-          start;
-      }
-
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Que vote mon député ? — Votes à l'Assemblée nationale</title>
+
+<meta
+  name="description"
+  content="Que vote mon député ? Retrouvez les votes des députés et des groupes politiques à l'Assemblée nationale, par thème, département, circonscription et scrutin."
+>
+
+<meta property="og:title" content="Que vote mon député ?">
+<meta
+  property="og:description"
+  content="Comprendre facilement les votes des députés et des groupes politiques à l'Assemblée nationale."
+>
+<meta property="og:type" content="website">
+
+<style>
+:root{
+  --violet:#7700ff;
+  --violet-dark:#5600bd;
+  --violet-soft:#f2eaff;
+  --text:#1d1b22;
+  --muted:#6f6a78;
+  --bg:#f7f5fb;
+  --card:#fff;
+  --border:#e6e0ef;
+  --green:#168550;
+  --green-bg:#eaf8f0;
+  --red:#c43b43;
+  --red-bg:#fff0f1;
+  --orange:#a66b00;
+  --orange-bg:#fff7df;
+  --grey:#6b7280;
+  --grey-bg:#f2f3f5;
+  --radius:22px;
+  --shadow:0 10px 30px rgba(54,24,105,.08);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:linear-gradient(
+    180deg,
+    #faf9fd 0%,
+    var(--bg) 100%
+  );
+  color:var(--text);
+}
+
+a{
+  color:inherit;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+
+/* ======================================================
+   HERO
+====================================================== */
+
+.hero{
+  background:linear-gradient(
+    135deg,
+    var(--violet-dark),
+    var(--violet)
+  );
+  color:#fff;
+  padding:58px 20px 52px;
+  text-align:center;
+}
+
+.hero-inner{
+  max-width:1050px;
+  margin:0 auto;
+}
+
+.hero-kicker{
+  margin-bottom:12px;
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.8;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(
+    36px,
+    6vw,
+    62px
+  );
+  line-height:1.02;
+}
+
+.hero p{
+  max-width:800px;
+  margin:20px auto 0;
+  font-size:18px;
+  line-height:1.55;
+  opacity:.94;
+}
+
+
+/* ======================================================
+   GENERAL
+====================================================== */
+
+main{
+  max-width:1450px;
+  margin:0 auto;
+  padding:28px 18px 70px;
+}
+
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-bottom:22px;
+}
+
+.section-title{
+  margin:0 0 8px;
+  text-align:center;
+  font-size:clamp(
+    27px,
+    4vw,
+    36px
+  );
+  line-height:1.15;
+}
+
+.section-intro{
+  max-width:820px;
+  margin:0 auto 22px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.small-muted{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
+
+/* ======================================================
+   YEARS
+====================================================== */
+
+.year-switch{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.year-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:105px;
+  padding:13px 18px;
+  text-decoration:none;
+  color:var(--text);
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  font-weight:800;
+  transition:.15s ease;
+}
+
+.year-button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(54,24,105,.08);
+}
+
+.year-button.active{
+  color:#fff;
+  border-color:transparent;
+  background:linear-gradient(
+    135deg,
+    var(--violet-dark),
+    var(--violet)
+  );
+}
+
+
+/* ======================================================
+   SEARCH
+====================================================== */
+
+.search-panel{
+  padding:32px;
+}
+
+.search-form{
+  max-width:1050px;
+  margin:24px auto 0;
+}
+
+.search-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+}
+
+.search-input{
+  width:100%;
+  min-height:60px;
+  border:2px solid #ded6eb;
+  border-radius:17px;
+  padding:0 20px;
+  font-size:18px;
+  outline:none;
+  transition:.15s ease;
+}
+
+.search-input:focus{
+  border-color:#b597e8;
+  box-shadow:0 0 0 5px rgba(119,0,255,.07);
+}
+
+.search-button{
+  min-width:160px;
+  border:0;
+  border-radius:17px;
+  padding:0 22px;
+  background:linear-gradient(
+    135deg,
+    var(--violet-dark),
+    var(--violet)
+  );
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.search-examples{
+  margin-top:13px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.search-status{
+  margin-top:18px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.search-results{
+  margin-top:25px;
+  display:grid;
+  gap:12px;
+}
+
+.search-result{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:15px;
+  padding:15px 17px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#fff;
+  text-decoration:none;
+  transition:.15s ease;
+}
+
+.search-result:hover{
+  background:var(--violet-soft);
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(54,24,105,.08);
+}
+
+.result-type{
+  min-width:92px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:var(--violet-soft);
+  color:var(--violet-dark);
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  text-transform:uppercase;
+}
+
+.result-title{
+  display:block;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.25;
+}
+
+.result-meta{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.result-arrow{
+  color:var(--violet);
+  font-size:20px;
+  font-weight:900;
+}
+
+
+/* ======================================================
+   COUNTS
+====================================================== */
+
+.counts-grid{
+  display:grid;
+  grid-template-columns:repeat(
+    4,
+    minmax(0,1fr)
+  );
+  gap:13px;
+}
+
+.count-card{
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  text-align:center;
+  background:linear-gradient(
+    180deg,
+    #fff,
+    #fcfbff
+  );
+}
+
+.count-value{
+  display:block;
+  color:var(--violet);
+  font-size:29px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.count-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+
+/* ======================================================
+   COMPOSITION
+====================================================== */
+
+.composition-layout{
+  display:grid;
+  grid-template-columns:minmax(300px,440px) minmax(0,1fr);
+  gap:22px;
+  align-items:start;
+}
+
+.donut-card{
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:20px;
+}
+
+.donut-wrap{
+  position:relative;
+  width:100%;
+  max-width:400px;
+  aspect-ratio:1/1;
+  margin:0 auto;
+}
+
+.donut-svg{
+  width:100%;
+  height:100%;
+}
+
+.donut-slice{
+  cursor:pointer;
+  transition:
+    transform .15s ease,
+    filter .15s ease;
+  transform-origin:160px 160px;
+}
+
+.donut-slice:hover{
+  transform:scale(1.025);
+  filter:brightness(1.04);
+}
+
+.donut-center{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:125px;
+  height:125px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:#fff;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(54,24,105,.08);
+  padding:10px;
+}
+
+.donut-center strong{
+  color:var(--violet);
+  font-size:28px;
+}
+
+.donut-center span{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.2;
+}
+
+.group-list{
+  display:grid;
+  gap:9px;
+}
+
+.group-item{
+  display:grid;
+  grid-template-columns:15px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+  color:var(--text);
+  text-decoration:none;
+  transition:.15s ease;
+}
+
+.group-item:hover{
+  background:var(--violet-soft);
+  transform:translateX(2px);
+}
+
+.group-dot{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+}
+
+.group-name{
+  font-weight:800;
+  line-height:1.25;
+}
+
+.group-count{
+  color:var(--violet);
+  font-weight:900;
+}
+
+
+/* ======================================================
+   SCRUTINS
+====================================================== */
+
+.scrutins-list{
+  display:grid;
+  gap:16px;
+}
+
+.scrutin-card{
+  display:block;
+  padding:21px;
+  color:var(--text);
+  text-decoration:none;
+  border:1px solid var(--border);
+  border-radius:19px;
+  background:linear-gradient(
+    180deg,
+    #fff,
+    #fcfbff
+  );
+  transition:.15s ease;
+}
+
+.scrutin-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(54,24,105,.09);
+}
+
+.scrutin-meta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-bottom:12px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+.theme-badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  color:var(--violet-dark);
+  background:var(--violet-soft);
+  font-size:12px;
+  font-weight:800;
+}
+
+.scrutin-title{
+  margin:0 auto 10px;
+  max-width:1000px;
+  text-align:center;
+  font-size:clamp(
+    21px,
+    3vw,
+    29px
+  );
+  line-height:1.2;
+}
+
+.scrutin-description{
+  max-width:1050px;
+  margin:0 auto 16px;
+  padding:14px 17px;
+  border-radius:14px;
+  background:var(--violet-soft);
+  color:#3b3542;
+  text-align:center;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.positions-row{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.position-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.position-Pour{
+  color:var(--green);
+  background:var(--green-bg);
+}
+
+.position-Contre{
+  color:var(--red);
+  background:var(--red-bg);
+}
+
+.position-Abstention{
+  color:var(--orange);
+  background:var(--orange-bg);
+}
+
+.position-Partagé,
+.position-Non-votant{
+  color:var(--grey);
+  background:var(--grey-bg);
+}
+
+
+/* ======================================================
+   MESSAGES
+====================================================== */
+
+.empty{
+  padding:28px 10px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.error{
+  padding:20px;
+  border:1px solid #f3c7ca;
+  border-radius:15px;
+  background:#fff3f4;
+  color:#a42931;
+  text-align:center;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media(max-width:1050px){
+
+  .composition-layout{
+    grid-template-columns:1fr;
+  }
+
+  .counts-grid{
+    grid-template-columns:repeat(
+      2,
+      minmax(0,1fr)
+    );
+  }
+
+}
+
+@media(max-width:700px){
+
+  .hero{
+    padding:42px 18px 38px;
+  }
+
+  main{
+    padding:18px 11px 45px;
+  }
+
+  .panel{
+    padding:18px;
+  }
+
+  .search-panel{
+    padding:23px 18px;
+  }
+
+  .search-row{
+    grid-template-columns:1fr;
+  }
+
+  .search-button{
+    min-height:54px;
+  }
+
+  .counts-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .search-result{
+    grid-template-columns:1fr auto;
+  }
+
+  .result-type{
+    grid-column:1/-1;
+    justify-self:start;
+  }
+
+}
+</style>
 </head>
-
 
 <body>
 
-  <header class="hero">
+<header class="hero">
 
-    <div class="hero-inner">
+  <div class="hero-inner">
 
-      <div class="hero-kicker">
-        Votes à l'Assemblée nationale
+    <div class="hero-kicker">
+      Votes à l'Assemblée nationale
+    </div>
+
+    <h1>
+      Que vote mon député ?
+    </h1>
+
+    <p>
+      Recherchez un groupe politique, un député, une circonscription,
+      un département ou un sujet de vote et découvrez facilement
+      les positions prises à l'Assemblée nationale.
+    </p>
+
+  </div>
+
+</header>
+
+
+<main>
+
+
+  <!-- ====================================================
+       ANNÉE
+  ===================================================== -->
+
+  <section class="panel">
+
+    <div
+      class="year-switch"
+      id="yearSwitch"
+    ></div>
+
+  </section>
+
+
+  <!-- ====================================================
+       RECHERCHE
+  ===================================================== -->
+
+  <section class="panel search-panel">
+
+    <h2 class="section-title">
+      Que voulez-vous rechercher ?
+    </h2>
+
+    <p class="section-intro">
+      Un seul champ pour rechercher un groupe, un député,
+      une circonscription, un département ou un sujet politique.
+    </p>
+
+    <div class="search-form">
+
+      <div class="search-row">
+
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+          autocomplete="off"
+          placeholder="Ex. retraites, RN, Ruffin, Haute-Garonne, 3e circonscription…"
+        >
+
+        <button
+          type="button"
+          id="searchButton"
+          class="search-button"
+        >
+          Rechercher
+        </button>
+
       </div>
 
-      <h1>
-        Comment votent nos députés ?
-      </h1>
+      <div class="search-examples">
+        Exemples : immigration · agriculture · Écologiste et Social ·
+        Alexis Corbière · Hérault · 7e circonscription
+      </div>
 
-      <p>
-        Recherchez un groupe politique, un député, une circonscription,
-        un département ou un sujet de vote et découvrez facilement
-        les positions prises à l'Assemblée nationale.
-      </p>
+      <div
+        id="searchStatus"
+        class="search-status"
+      ></div>
+
+      <div
+        id="searchResults"
+        class="search-results"
+      ></div>
 
     </div>
 
-  </header>
+  </section>
 
 
-  <main>
+  <!-- ====================================================
+       CHIFFRES
+  ===================================================== -->
 
-    <!-- ====================================================
-         ANNÉE
-    ===================================================== -->
+  <section class="panel">
 
-    <section class="panel">
-
-      <div
-        class="year-switch"
-        id="yearSwitch"
-      ></div>
-
-    </section>
-
-
-    <!-- ====================================================
-         RECHERCHE
-    ===================================================== -->
-
-    <section class="panel search-panel">
-
-      <h2 class="section-title">
-        Que voulez-vous rechercher ?
-      </h2>
-
-      <p class="section-intro">
-        Un seul champ pour rechercher un groupe, un député,
-        une circonscription, un département ou un sujet politique.
-      </p>
-
-
-      <div class="search-form">
-
-        <div class="search-row">
-
-          <input
-            type="search"
-            id="searchInput"
-            class="search-input"
-            autocomplete="off"
-            placeholder="Ex. retraites, RN, Ruffin, Haute-Garonne, 3e circonscription…"
-          >
-
-          <button
-            type="button"
-            id="searchButton"
-            class="search-button"
-          >
-            Rechercher
-          </button>
-
-        </div>
-
-
-        <div class="search-examples">
-          Exemples : immigration · agriculture · Écologiste et Social ·
-          Alexis Corbière · Hérault · 7e circonscription
-        </div>
-
-
-        <div
-          id="searchStatus"
-          class="search-status"
-        ></div>
-
-
-        <div
-          id="searchResults"
-          class="search-results"
-        ></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ====================================================
-         CHIFFRES
-    ===================================================== -->
-
-    <section class="panel">
-
-      <div
-        id="countsGrid"
-        class="counts-grid"
-      >
-
-        <div class="count-card">
-          <strong
-            id="countScrutins"
-            class="count-value"
-          >
-            -
-          </strong>
-          <span class="count-label">
-            scrutins
-          </span>
-        </div>
-
-        <div class="count-card">
-          <strong
-            id="countVotes"
-            class="count-value"
-          >
-            -
-          </strong>
-          <span class="count-label">
-            votes nominatifs
-          </span>
-        </div>
-
-        <div class="count-card">
-          <strong
-            id="countGroups"
-            class="count-value"
-          >
-            -
-          </strong>
-          <span class="count-label">
-            groupes observés
-          </span>
-        </div>
-
-        <div class="count-card">
-          <strong
-            id="countDeputies"
-            class="count-value"
-          >
-            -
-          </strong>
-          <span class="count-label">
-            députés actuels
-          </span>
-        </div>
-
-      </div>
-
-
-      <div
-        id="updatedInfo"
-        class="small-muted"
-        style="text-align:center;margin-top:15px;"
-      ></div>
-
-    </section>
-
-
-    <!-- ====================================================
-         COMPOSITION
-    ===================================================== -->
-
-    <section
-      class="panel"
-      id="compositionSection"
+    <div
+      id="countsGrid"
+      class="counts-grid"
     >
 
-      <h2 class="section-title">
-        Composition actuelle de l'Assemblée
-      </h2>
+      <div class="count-card">
 
-      <p class="section-intro">
-        Cliquez sur un groupe pour découvrir comment il vote
-        sur les différents sujets.
-      </p>
+        <strong
+          id="countScrutins"
+          class="count-value"
+        >
+          -
+        </strong>
+
+        <span class="count-label">
+          scrutins
+        </span>
+
+      </div>
 
 
-      <div class="composition-layout">
+      <div class="count-card">
 
-        <div class="donut-card">
+        <strong
+          id="countVotes"
+          class="count-value"
+        >
+          -
+        </strong>
 
-          <div class="donut-wrap">
+        <span class="count-label">
+          votes nominatifs
+        </span>
 
-            <svg
-              id="assemblyDonut"
-              class="donut-svg"
-              viewBox="0 0 320 320"
-            ></svg>
+      </div>
 
-            <div class="donut-center">
 
-              <strong
-                id="donutTotal"
-              >
-                -
-              </strong>
+      <div class="count-card">
 
-              <span
-                id="donutLabel"
-              >
-                députés
-              </span>
+        <strong
+          id="countGroups"
+          class="count-value"
+        >
+          -
+        </strong>
 
-            </div>
+        <span class="count-label">
+          groupes observés
+        </span>
+
+      </div>
+
+
+      <div class="count-card">
+
+        <strong
+          id="countDeputies"
+          class="count-value"
+        >
+          -
+        </strong>
+
+        <span class="count-label">
+          députés actuels
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="updatedInfo"
+      class="small-muted"
+      style="text-align:center;margin-top:15px;"
+    ></div>
+
+  </section>
+
+
+  <!-- ====================================================
+       COMPOSITION
+  ===================================================== -->
+
+  <section
+    class="panel"
+    id="compositionSection"
+  >
+
+    <h2 class="section-title">
+      Composition actuelle de l'Assemblée
+    </h2>
+
+    <p class="section-intro">
+      Cliquez sur un groupe pour découvrir comment il vote
+      sur les différents sujets.
+    </p>
+
+    <div class="composition-layout">
+
+      <div class="donut-card">
+
+        <div class="donut-wrap">
+
+          <svg
+            id="assemblyDonut"
+            class="donut-svg"
+            viewBox="0 0 320 320"
+          ></svg>
+
+          <div class="donut-center">
+
+            <strong id="donutTotal">
+              -
+            </strong>
+
+            <span id="donutLabel">
+              députés
+            </span>
 
           </div>
 
         </div>
 
-
-        <div
-          id="groupList"
-          class="group-list"
-        ></div>
-
       </div>
-
-    </section>
-
-
-    <!-- ====================================================
-         DERNIERS SCRUTINS
-    ===================================================== -->
-
-    <section class="panel">
-
-      <h2 class="section-title">
-        Derniers votes
-      </h2>
-
-      <p class="section-intro">
-        Le sujet du vote est présenté en premier.
-        Le texte officiel plus détaillé apparaît juste en dessous.
-      </p>
 
 
       <div
-        id="scrutinsList"
-        class="scrutins-list"
+        id="groupList"
+        class="group-list"
       ></div>
 
-    </section>
+    </div>
 
-  </main>
-
-
-  <script>
-
-    /* ======================================================
-       ÉTAT
-    ====================================================== */
+  </section>
 
 
-    let indexData = null;
+  <!-- ====================================================
+       DERNIERS SCRUTINS
+  ===================================================== -->
 
-    let searchData = null;
+  <section class="panel">
 
-    let compositionData = null;
+    <h2 class="section-title">
+      Derniers votes
+    </h2>
 
-    let deputiesData = null;
+    <p class="section-intro">
+      Le sujet du vote est présenté en premier.
+      Cliquez sur un vote pour en comprendre le détail.
+    </p>
 
-    let allScrutins = [];
+    <div
+      id="scrutinsList"
+      class="scrutins-list"
+    ></div>
 
-    let selectedYear = "";
-
-
-    const GROUP_COLORS = [
-      "#5b21b6",
-      "#7c3aed",
-      "#2563eb",
-      "#0284c7",
-      "#0891b2",
-      "#059669",
-      "#65a30d",
-      "#ca8a04",
-      "#ea580c",
-      "#dc2626",
-      "#db2777",
-      "#9333ea",
-      "#64748b",
-      "#4f46e5",
-      "#0f766e"
-    ];
+  </section>
 
 
-    /* ======================================================
-       OUTILS
-    ====================================================== */
+</main>
 
 
-    function getParam(name) {
+<script>
 
-      return new URLSearchParams(
-        window.location.search
-      ).get(name) || "";
+(() => {
 
-    }
+"use strict";
 
 
-    function escapeHtml(value) {
+/* ======================================================
+   ÉTAT
+====================================================== */
 
-      return String(
-        value ?? ""
+let indexData =
+  null;
+
+let searchData =
+  null;
+
+let compositionData =
+  null;
+
+let deputiesData =
+  null;
+
+let allScrutins =
+  [];
+
+let selectedYear =
+  "";
+
+
+const GROUP_COLORS = [
+
+  "#5b21b6",
+  "#7c3aed",
+  "#2563eb",
+  "#0284c7",
+  "#0891b2",
+  "#059669",
+  "#65a30d",
+  "#ca8a04",
+  "#ea580c",
+  "#dc2626",
+  "#db2777",
+  "#9333ea",
+  "#64748b",
+  "#4f46e5",
+  "#0f766e"
+
+];
+
+
+/* ======================================================
+   OUTILS
+====================================================== */
+
+function getParam(
+  name
+) {
+
+  return (
+    new URLSearchParams(
+      window.location.search
+    )
+    .get(
+      name
+    )
+    ||
+    ""
+  );
+
+}
+
+
+function escapeHtml(
+  value
+) {
+
+  return (
+    String(
+      value ?? ""
+    )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    )
+  );
+
+}
+
+
+function normalize(
+  value
+) {
+
+  return (
+    String(
+      value || ""
+    )
+    .toLowerCase()
+    .normalize(
+      "NFD"
+    )
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /œ/g,
+      "oe"
+    )
+    .replace(
+      /æ/g,
+      "ae"
+    )
+    .replace(
+      /[^a-z0-9\s-]/g,
+      " "
+    )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim()
+  );
+
+}
+
+
+function formatNumber(
+  value
+) {
+
+  return (
+    new Intl.NumberFormat(
+      "fr-FR"
+    )
+    .format(
+      Number(
+        value || 0
       )
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
+    )
+  );
 
-    }
+}
 
 
-    function normalize(value) {
+function formatDate(
+  value
+) {
 
-      return String(
-        value || ""
-      )
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(
-          /[\u0300-\u036f]/g,
-          ""
-        )
-        .replace(
-          /œ/g,
-          "oe"
-        )
-        .replace(
-          /æ/g,
-          "ae"
-        )
-        .replace(
-          /[^a-z0-9\s-]/g,
-          " "
-        )
-        .replace(
-          /\s+/g,
-          " "
-        )
-        .trim();
+  if (
+    !value
+  ) {
 
-    }
+    return "";
+
+  }
 
 
-    function formatNumber(value) {
-
-      return new Intl.NumberFormat(
-        "fr-FR"
-      ).format(
-        Number(value || 0)
-      );
-
-    }
+  const date =
+    new Date(
+      `${value}T12:00:00`
+    );
 
 
-    function formatDate(value) {
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
 
-      if (!value) {
-        return "";
+    return value;
+
+  }
+
+
+  return (
+    new Intl.DateTimeFormat(
+      "fr-FR",
+      {
+        day:
+          "numeric",
+
+        month:
+          "long",
+
+        year:
+          "numeric"
       }
+    )
+    .format(
+      date
+    )
+  );
 
-      const parts =
-        value.split("-");
+}
 
-      if (parts.length !== 3) {
-        return value;
+
+async function loadJson(
+  path
+) {
+
+  const response =
+    await fetch(
+      path,
+      {
+        cache:
+          "no-store"
       }
-
-      return new Intl.DateTimeFormat(
-        "fr-FR",
-        {
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        }
-      ).format(
-        new Date(
-          `${value}T12:00:00`
-        )
-      );
-
-    }
+    );
 
 
-    async function loadJson(path) {
+  if (
+    !response.ok
+  ) {
 
-      const response =
-        await fetch(path);
+    throw new Error(
+      `Impossible de charger ${path}`
+    );
 
-      if (!response.ok) {
-
-        throw new Error(
-          `Impossible de charger ${path}`
-        );
-
-      }
-
-      return response.json();
-
-    }
+  }
 
 
-    function setYearInUrl(year) {
+  return (
+    response.json()
+  );
 
-      const url =
-        new URL(
-          window.location.href
-        );
-
-      url.searchParams.set(
-        "year",
-        year
-      );
-
-      return (
-        url.pathname
-        + url.search
-      );
-
-    }
+}
 
 
-    function linkWithYear(
+function linkWithYear(
+  page,
+  params = {}
+) {
+
+  const url =
+    new URL(
       page,
-      params = {}
-    ) {
+      window.location.origin
+    );
 
-      const url =
-        new URL(
-          page,
-          window.location.origin
-        );
 
-      Object.entries(
-        params
-      ).forEach(
-        ([key, value]) => {
+  Object.entries(
+    params
+  )
+  .forEach(
+    (
+      [
+        key,
+        value
+      ]
+    ) => {
 
-          if (
-            value !== undefined
-            && value !== null
-            && value !== ""
-          ) {
-
-            url.searchParams.set(
-              key,
-              value
-            );
-
-          }
-
-        }
-      );
-
-      if (selectedYear) {
+      if (
+        value !== undefined
+        &&
+        value !== null
+        &&
+        value !== ""
+      ) {
 
         url.searchParams.set(
-          "year",
-          selectedYear
+          key,
+          value
         );
 
       }
 
-      return (
-        url.pathname
-        + url.search
-      );
-
     }
+  );
 
 
-    /* ======================================================
-       ANNÉE
-    ====================================================== */
+  if (
+    selectedYear
+  ) {
+
+    url.searchParams.set(
+      "year",
+      selectedYear
+    );
+
+  }
 
 
-    function determineSelectedYear() {
+  return (
+    url.pathname
+    +
+    url.search
+  );
 
-      const years =
-        (
-          indexData
-            ?.available_years
-          || []
-        )
-          .map(String);
+}
 
 
-      const requested =
-        getParam(
-          "year"
-        );
+/* ======================================================
+   ANNÉE
+====================================================== */
 
+function determineSelectedYear() {
 
-      if (
-        requested
-        && years.includes(
-          requested
-        )
-      ) {
+  const years =
 
-        return requested;
+    (
+      indexData
+        ?.available_years
 
-      }
+      ||
 
-
-      const defaultYear =
-        String(
-          indexData
-            ?.default_year
-          || ""
-        );
-
-
-      if (
-        defaultYear
-        && years.includes(
-          defaultYear
-        )
-      ) {
-
-        return defaultYear;
-
-      }
-
-
-      return years[0]
-        || "";
-
-    }
-
-
-    function renderYearSwitch() {
-
-      const container =
-        document.getElementById(
-          "yearSwitch"
-        );
-
-
-      const years =
-        (
-          indexData
-            ?.available_years
-          || []
-        )
-          .map(String);
-
-
-      container.innerHTML =
-        years
-          .map(
-            year => `
-              <a
-                class="
-                  year-button
-                  ${
-                    year ===
-                    selectedYear
-                      ? "active"
-                      : ""
-                  }
-                "
-                href="${
-                  escapeHtml(
-                    setYearInUrl(
-                      year
-                    )
-                  )
-                }"
-              >
-                ${escapeHtml(year)}
-              </a>
-            `
-          )
-          .join("");
-
-    }
-
-
-    /* ======================================================
-       SCRUTINS DE L'ANNÉE
-    ====================================================== */
-
-
-    async function loadSelectedYearScrutins() {
-
-      const yearData =
+      Object.keys(
         indexData
           ?.years
-          ?.[selectedYear];
+        ||
+        {}
+      )
+    )
+    .map(
+      String
+    );
 
 
-      const months =
-        yearData
-          ?.months
-        || [];
+  const requested =
+    getParam(
+      "year"
+    );
 
 
-      const payloads =
-        await Promise.all(
-          months.map(
-            month =>
-              loadJson(
-                "./"
-                + month.file
-              )
-          )
-        );
+  if (
+    requested
+    &&
+    years.includes(
+      requested
+    )
+  ) {
+
+    return requested;
+
+  }
 
 
-      allScrutins =
-        payloads.flatMap(
-          payload =>
-            payload.scrutins
-            || []
-        );
+  const defaultYear =
+    String(
+      indexData
+        ?.default_year
+      ||
+      ""
+    );
 
 
-      allScrutins.sort(
-        (
-          a,
-          b
-        ) =>
-          String(
-            b.date || ""
-          ).localeCompare(
-            String(
-              a.date || ""
-            )
-          )
-      );
+  if (
+    defaultYear
+    &&
+    years.includes(
+      defaultYear
+    )
+  ) {
 
-    }
+    return defaultYear;
+
+  }
 
 
-    /* ======================================================
-       CHIFFRES
-    ====================================================== */
+  return (
+    years[0]
+    ||
+    ""
+  );
+
+}
 
 
-    function renderCounts() {
+function renderYearSwitch() {
 
-      const yearData =
+  const container =
+    document.getElementById(
+      "yearSwitch"
+    );
+
+
+  const years =
+
+    (
+      indexData
+        ?.available_years
+
+      ||
+
+      Object.keys(
         indexData
           ?.years
-          ?.[selectedYear]
-        || {};
-
-
-      const counts =
-        yearData.counts
-        || {};
-
-
-      document.getElementById(
-        "countScrutins"
-      ).textContent =
-        formatNumber(
-          counts.scrutins
-        );
-
-
-      document.getElementById(
-        "countVotes"
-      ).textContent =
-        formatNumber(
-          counts.votes
-        );
-
-
-      document.getElementById(
-        "countGroups"
-      ).textContent =
-        formatNumber(
-          counts.groupes
-        );
-
-
-      document.getElementById(
-        "countDeputies"
-      ).textContent =
-        formatNumber(
-          deputiesData?.total
-        );
-
-
-      document.getElementById(
-        "updatedInfo"
-      ).textContent =
-        `Données ${selectedYear}`
-        + (
-          indexData?.updated_at
-            ? ` · mise à jour : ${
-                new Date(
-                  indexData.updated_at
-                ).toLocaleDateString(
-                  "fr-FR"
-                )
-              }`
-            : ""
-        );
-
-    }
-
-
-    /* ======================================================
-       DONUT
-    ====================================================== */
-
-
-    function polarToCartesian(
-      cx,
-      cy,
-      radius,
-      angle
-    ) {
-
-      const radians =
-        (
-          angle - 90
-        )
-        * Math.PI
-        / 180;
-
-
-      return {
-
-        x:
-          cx
-          + radius
-          * Math.cos(
-            radians
-          ),
-
-        y:
-          cy
-          + radius
-          * Math.sin(
-            radians
-          )
-
-      };
-
-    }
-
-
-    function describeDonutArc(
-      cx,
-      cy,
-      outerRadius,
-      innerRadius,
-      startAngle,
-      endAngle
-    ) {
-
-      const startOuter =
-        polarToCartesian(
-          cx,
-          cy,
-          outerRadius,
-          endAngle
-        );
-
-
-      const endOuter =
-        polarToCartesian(
-          cx,
-          cy,
-          outerRadius,
-          startAngle
-        );
-
-
-      const startInner =
-        polarToCartesian(
-          cx,
-          cy,
-          innerRadius,
-          endAngle
-        );
-
-
-      const endInner =
-        polarToCartesian(
-          cx,
-          cy,
-          innerRadius,
-          startAngle
-        );
-
-
-      const largeArc =
-        (
-          endAngle
-          - startAngle
-        ) <= 180
-          ? 0
-          : 1;
-
-
-      return [
-
-        `M ${startOuter.x} ${startOuter.y}`,
-
-        `A ${outerRadius} ${outerRadius} 0 ${largeArc} 0 ${endOuter.x} ${endOuter.y}`,
-
-        `L ${endInner.x} ${endInner.y}`,
-
-        `A ${innerRadius} ${innerRadius} 0 ${largeArc} 1 ${startInner.x} ${startInner.y}`,
-
-        "Z"
-
-      ].join(" ");
-
-    }
-
-
-    function renderComposition() {
-
-      const groups =
-        compositionData
-          ?.groupes
-        || [];
-
-
-      const total =
+        ||
+        {}
+      )
+    )
+    .map(
+      String
+    )
+    .sort(
+      (
+        a,
+        b
+      ) =>
         Number(
-          compositionData?.total
-          || 0
-        );
+          b
+        )
+        -
+        Number(
+          a
+        )
+    );
 
 
-      const svg =
-        document.getElementById(
-          "assemblyDonut"
-        );
+  container.innerHTML =
 
+    years.map(
+      year => {
 
-      const groupList =
-        document.getElementById(
-          "groupList"
-        );
-
-
-      document.getElementById(
-        "donutTotal"
-      ).textContent =
-        formatNumber(
-          total
-        );
-
-
-      document.getElementById(
-        "donutLabel"
-      ).textContent =
-        "députés";
-
-
-      if (
-        !groups.length
-        || !total
-      ) {
-
-        svg.innerHTML = "";
-
-        groupList.innerHTML =
-          `
-            <div class="empty">
-              Composition indisponible.
-            </div>
-          `;
-
-        return;
-
-      }
-
-
-      let angle = 0;
-
-
-      svg.innerHTML =
-        groups.map(
-          (
-            group,
-            index
-          ) => {
-
-            const color =
-              GROUP_COLORS[
-                index
-                % GROUP_COLORS.length
-              ];
-
-
-            const portion =
-              Number(
-                group.count || 0
-              )
-              / total
-              * 360;
-
-
-            const start =
-              angle;
-
-
-            const end =
-              angle
-              + portion;
-
-
-            angle = end;
-
-
-            const path =
-              describeDonutArc(
-                160,
-                160,
-                140,
-                76,
-                start,
-                end
-              );
-
-
-            const href =
-              linkWithYear(
-                "groupe.html",
-                {
-                  name:
-                    group.groupe
-                }
-              );
-
-
-            return `
-              <a
-                href="${
-                  escapeHtml(
-                    href
-                  )
-                }"
-              >
-                <path
-                  class="donut-slice"
-                  d="${path}"
-                  fill="${color}"
-                  stroke="#fff"
-                  stroke-width="2"
-                >
-                  <title>
-                    ${
-                      escapeHtml(
-                        group.groupe
-                      )
-                    } :
-                    ${
-                      formatNumber(
-                        group.count
-                      )
-                    }
-                    député(s)
-                  </title>
-                </path>
-              </a>
-            `;
-
-          }
-        ).join("");
-
-
-      groupList.innerHTML =
-        groups.map(
-          (
-            group,
-            index
-          ) => {
-
-            const color =
-              GROUP_COLORS[
-                index
-                % GROUP_COLORS.length
-              ];
-
-
-            const href =
-              linkWithYear(
-                "groupe.html",
-                {
-                  name:
-                    group.groupe
-                }
-              );
-
-
-            return `
-              <a
-                class="group-item"
-                href="${
-                  escapeHtml(
-                    href
-                  )
-                }"
-              >
-
-                <span
-                  class="group-dot"
-                  style="
-                    background:
-                      ${color};
-                  "
-                ></span>
-
-                <span
-                  class="group-name"
-                >
-                  ${
-                    escapeHtml(
-                      group.groupe
-                    )
-                  }
-                </span>
-
-                <span
-                  class="group-count"
-                >
-                  ${
-                    formatNumber(
-                      group.count
-                    )
-                  }
-                </span>
-
-              </a>
-            `;
-
-          }
-        ).join("");
-
-    }
-
-
-    /* ======================================================
-       DERNIERS SCRUTINS
-    ====================================================== */
-
-
-    function renderPositions(
-      scrutin
-    ) {
-
-      const summaries =
-        scrutin
-          ?.groupes_summary
-        || [];
-
-
-      if (!summaries.length) {
-        return "";
-      }
-
-
-      const sorted =
-        summaries
-          .slice()
-          .sort(
-            (
-              a,
-              b
-            ) =>
-              Number(
-                b.total || 0
-              )
-              -
-              Number(
-                a.total || 0
-              )
-          )
-          .slice(
-            0,
-            8
+        const url =
+          new URL(
+            window.location.href
           );
 
 
-      return `
-        <div class="positions-row">
-
-          ${
-            sorted.map(
-              group => {
-
-                const position =
-                  group.position
-                  || "Partagé";
+        url.searchParams.set(
+          "year",
+          year
+        );
 
 
-                const className =
-                  `position-${position}`;
+        url.searchParams.delete(
+          "name"
+        );
 
 
-                return `
-                  <span
-                    class="
-                      position-pill
-                      ${className}
-                    "
-                    title="${
-                      escapeHtml(
-                        group.groupe
-                      )
-                    }"
-                  >
-                    ${
-                      escapeHtml(
-                        shortGroupName(
-                          group.groupe
-                        )
-                      )
-                    }
-                    :
-                    ${
-                      escapeHtml(
-                        position
-                      )
-                    }
-                  </span>
-                `;
+        return `
 
-              }
-            ).join("")
+          <a
+            class="year-button ${
+              year === selectedYear
+              ? "active"
+              : ""
+            }"
+            href="${
+              escapeHtml(
+                url.pathname
+                +
+                url.search
+              )
+            }"
+          >
+
+            ${escapeHtml(year)}
+
+          </a>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* ======================================================
+   CHARGEMENT DES SCRUTINS
+====================================================== */
+
+async function loadSelectedYearScrutins() {
+
+  const months =
+
+    indexData
+      ?.years
+      ?.[selectedYear]
+      ?.months
+
+    ||
+
+    [];
+
+
+  const results =
+
+    await Promise.allSettled(
+
+      months.map(
+        month =>
+
+          loadJson(
+
+            "./"
+
+            +
+
+            String(
+              month.file
+            )
+            .replace(
+              /^\.\//,
+              ""
+            )
+
+          )
+
+      )
+
+    );
+
+
+  allScrutins =
+
+    results
+
+    .filter(
+      result =>
+        result.status
+        ===
+        "fulfilled"
+    )
+
+    .flatMap(
+      result =>
+        result.value
+          ?.scrutins
+        ||
+        []
+    );
+
+
+  allScrutins.sort(
+    (
+      a,
+      b
+    ) =>
+      String(
+        b.date || ""
+      )
+      .localeCompare(
+        String(
+          a.date || ""
+        )
+      )
+  );
+
+}
+
+
+/* ======================================================
+   CHIFFRES
+====================================================== */
+
+function renderCounts() {
+
+  const yearData =
+
+    indexData
+      ?.years
+      ?.[selectedYear]
+
+    ||
+
+    {};
+
+
+  const counts =
+
+    yearData
+      .counts
+
+    ||
+
+    {};
+
+
+  document.getElementById(
+    "countScrutins"
+  ).textContent =
+
+    formatNumber(
+
+      counts
+        .scrutins
+
+      ??
+
+      allScrutins
+        .length
+
+    );
+
+
+  document.getElementById(
+    "countVotes"
+  ).textContent =
+
+    formatNumber(
+      counts
+        .votes
+    );
+
+
+  document.getElementById(
+    "countGroups"
+  ).textContent =
+
+    formatNumber(
+
+      counts
+        .groupes
+
+      ??
+
+      compositionData
+        ?.groupes
+        ?.length
+
+    );
+
+
+  document.getElementById(
+    "countDeputies"
+  ).textContent =
+
+    formatNumber(
+
+      deputiesData
+        ?.total
+
+      ??
+
+      deputiesData
+        ?.deputes
+        ?.length
+
+      ??
+
+      compositionData
+        ?.total
+
+    );
+
+
+  const updated =
+
+    indexData
+      ?.updated_at
+
+    ||
+
+    indexData
+      ?.generated_at
+
+    ||
+
+    "";
+
+
+  let updatedText =
+    "";
+
+
+  if (
+    updated
+  ) {
+
+    const date =
+      new Date(
+        updated
+      );
+
+
+    if (
+      !Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      updatedText =
+
+        ` · mise à jour : ${
+
+          date.toLocaleDateString(
+            "fr-FR"
+          )
+
+        }`;
+
+    }
+
+  }
+
+
+  document.getElementById(
+    "updatedInfo"
+  ).textContent =
+
+    `Données ${selectedYear}${updatedText}`;
+
+}
+
+
+/* ======================================================
+   DONUT
+====================================================== */
+
+function polarToCartesian(
+  cx,
+  cy,
+  radius,
+  angle
+) {
+
+  const radians =
+
+    (
+      angle
+      -
+      90
+    )
+
+    *
+
+    Math.PI
+
+    /
+
+    180;
+
+
+  return {
+
+    x:
+      cx
+      +
+      radius
+      *
+      Math.cos(
+        radians
+      ),
+
+    y:
+      cy
+      +
+      radius
+      *
+      Math.sin(
+        radians
+      )
+
+  };
+
+}
+
+
+function describeDonutArc(
+  cx,
+  cy,
+  outerRadius,
+  innerRadius,
+  startAngle,
+  endAngle
+) {
+
+  const startOuter =
+    polarToCartesian(
+      cx,
+      cy,
+      outerRadius,
+      endAngle
+    );
+
+
+  const endOuter =
+    polarToCartesian(
+      cx,
+      cy,
+      outerRadius,
+      startAngle
+    );
+
+
+  const startInner =
+    polarToCartesian(
+      cx,
+      cy,
+      innerRadius,
+      endAngle
+    );
+
+
+  const endInner =
+    polarToCartesian(
+      cx,
+      cy,
+      innerRadius,
+      startAngle
+    );
+
+
+  const largeArc =
+
+    (
+      endAngle
+      -
+      startAngle
+    )
+
+    <=
+    180
+
+    ?
+
+    0
+
+    :
+
+    1;
+
+
+  return [
+
+    `M ${startOuter.x} ${startOuter.y}`,
+
+    `A ${outerRadius} ${outerRadius} 0 ${largeArc} 0 ${endOuter.x} ${endOuter.y}`,
+
+    `L ${endInner.x} ${endInner.y}`,
+
+    `A ${innerRadius} ${innerRadius} 0 ${largeArc} 1 ${startInner.x} ${startInner.y}`,
+
+    "Z"
+
+  ]
+  .join(
+    " "
+  );
+
+}
+
+
+function renderComposition() {
+
+  const groups =
+
+    compositionData
+      ?.groupes
+
+    ||
+
+    [];
+
+
+  const total =
+
+    Number(
+
+      compositionData
+        ?.total
+
+      ||
+
+      groups.reduce(
+        (
+          sum,
+          group
+        ) =>
+
+          sum
+
+          +
+
+          Number(
+            group.count || 0
+          ),
+
+        0
+      )
+
+    );
+
+
+  const svg =
+    document.getElementById(
+      "assemblyDonut"
+    );
+
+
+  const groupList =
+    document.getElementById(
+      "groupList"
+    );
+
+
+  document.getElementById(
+    "donutTotal"
+  ).textContent =
+
+    formatNumber(
+      total
+    );
+
+
+  if (
+    !groups.length
+    ||
+    !total
+  ) {
+
+    svg.innerHTML =
+      "";
+
+
+    groupList.innerHTML =
+
+      `
+        <div class="empty">
+          Composition indisponible.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  let angle =
+    0;
+
+
+  svg.innerHTML =
+
+    groups.map(
+      (
+        group,
+        index
+      ) => {
+
+        const color =
+
+          GROUP_COLORS[
+
+            index
+
+            %
+
+            GROUP_COLORS
+              .length
+
+          ];
+
+
+        const portion =
+
+          Number(
+            group.count || 0
+          )
+
+          /
+
+          total
+
+          *
+
+          360;
+
+
+        const start =
+          angle;
+
+
+        const end =
+          angle
+          +
+          portion;
+
+
+        angle =
+          end;
+
+
+        const path =
+
+          describeDonutArc(
+
+            160,
+
+            160,
+
+            140,
+
+            76,
+
+            start,
+
+            end
+
+          );
+
+
+        const href =
+
+          linkWithYear(
+
+            "groupe.html",
+
+            {
+              name:
+                group.groupe
+            }
+
+          );
+
+
+        return `
+
+          <a
+            href="${
+              escapeHtml(
+                href
+              )
+            }"
+          >
+
+            <path
+              class="donut-slice"
+              d="${path}"
+              fill="${color}"
+              stroke="#fff"
+              stroke-width="2"
+            >
+
+              <title>
+
+                ${escapeHtml(group.groupe)}
+                :
+                ${formatNumber(group.count)}
+                député(s)
+
+              </title>
+
+            </path>
+
+          </a>
+
+        `;
+
+      }
+    )
+    .join("");
+
+
+  groupList.innerHTML =
+
+    groups.map(
+      (
+        group,
+        index
+      ) => {
+
+        const color =
+
+          GROUP_COLORS[
+
+            index
+
+            %
+
+            GROUP_COLORS
+              .length
+
+          ];
+
+
+        const href =
+
+          linkWithYear(
+
+            "groupe.html",
+
+            {
+              name:
+                group.groupe
+            }
+
+          );
+
+
+        return `
+
+          <a
+            class="group-item"
+            href="${
+              escapeHtml(
+                href
+              )
+            }"
+          >
+
+            <span
+              class="group-dot"
+              style="
+                background:
+                  ${color}
+              "
+            ></span>
+
+
+            <span class="group-name">
+
+              ${escapeHtml(group.groupe)}
+
+            </span>
+
+
+            <span class="group-count">
+
+              ${formatNumber(group.count)}
+
+            </span>
+
+          </a>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* ======================================================
+   NOMS COURTS DES GROUPES
+====================================================== */
+
+function shortGroupName(
+  group
+) {
+
+  const aliases = {
+
+    "Rassemblement National":
+      "RN",
+
+    "La France insoumise - Nouveau Front Populaire":
+      "LFI-NFP",
+
+    "Socialistes et apparentés":
+      "Socialistes",
+
+    "Ensemble pour la République":
+      "Ensemble",
+
+    "Les Démocrates":
+      "Démocrates",
+
+    "Écologiste et Social":
+      "Écologistes",
+
+    "Horizons & Indépendants":
+      "Horizons",
+
+    "Gauche Démocrate et Républicaine":
+      "GDR",
+
+    "Gauche démocrate et républicaine":
+      "GDR",
+
+    "Libertés, Indépendants, Outre-mer et Territoires":
+      "LIOT",
+
+    "Libertés, indépendants, outre-mer et territoires":
+      "LIOT",
+
+    "Union des droites pour la République":
+      "UDR",
+
+    "Droite Républicaine":
+      "DR"
+
+  };
+
+
+  return (
+    aliases[
+      group
+    ]
+    ||
+    group
+  );
+
+}
+
+
+/* ======================================================
+   POSITIONS DES GROUPES
+====================================================== */
+
+function renderPositions(
+  scrutin
+) {
+
+  const summaries =
+
+    scrutin
+      ?.groupes_summary
+
+    ||
+
+    [];
+
+
+  if (
+    !summaries.length
+  ) {
+
+    return "";
+
+  }
+
+
+  const sorted =
+
+    summaries
+
+    .slice()
+
+    .sort(
+      (
+        a,
+        b
+      ) =>
+
+        Number(
+          b.total || 0
+        )
+
+        -
+
+        Number(
+          a.total || 0
+        )
+    )
+
+    .slice(
+      0,
+      8
+    );
+
+
+  return `
+
+    <div class="positions-row">
+
+      ${
+
+        sorted.map(
+          group => {
+
+            const position =
+
+              group.position
+
+              ||
+
+              "Partagé";
+
+
+            return `
+
+              <span
+                class="
+                  position-pill
+                  position-${escapeHtml(position)}
+                "
+                title="${
+                  escapeHtml(
+                    group.groupe
+                  )
+                }"
+              >
+
+                ${
+                  escapeHtml(
+                    shortGroupName(
+                      group.groupe
+                    )
+                  )
+                }
+
+                :
+
+                ${escapeHtml(position)}
+
+              </span>
+
+            `;
+
           }
+        )
+        .join("")
+
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+/* ======================================================
+   DERNIERS SCRUTINS
+====================================================== */
+
+function renderScrutins() {
+
+  const container =
+    document.getElementById(
+      "scrutinsList"
+    );
+
+
+  const latest =
+
+    allScrutins
+      .slice(
+        0,
+        18
+      );
+
+
+  if (
+    !latest.length
+  ) {
+
+    container.innerHTML =
+
+      `
+        <div class="empty">
+
+          Aucun scrutin disponible pour
+          ${escapeHtml(selectedYear)}.
 
         </div>
       `;
 
-    }
+
+    return;
+
+  }
 
 
-    function shortGroupName(
-      group
-    ) {
+  container.innerHTML =
 
-      const aliases = {
+    latest.map(
+      scrutin => {
 
-        "Rassemblement National":
-          "RN",
+        const subject =
 
-        "La France insoumise - Nouveau Front Populaire":
-          "LFI-NFP",
+          scrutin.sujet
 
-        "Socialistes et apparentés":
-          "Socialistes",
+          ||
 
-        "Ensemble pour la République":
-          "Ensemble",
+          scrutin.titre_court
 
-        "Les Démocrates":
-          "Démocrates",
+          ||
 
-        "Écologiste et Social":
-          "Écologistes",
+          scrutin.titre
 
-        "Horizons & Indépendants":
-          "Horizons",
+          ||
 
-        "Gauche démocrate et républicaine":
-          "GDR",
-
-        "Libertés, indépendants, outre-mer et territoires":
-          "LIOT",
-
-        "Union des droites pour la République":
-          "UDR"
-
-      };
+          "Scrutin";
 
 
-      return aliases[group]
-        || group;
+        const description =
 
-    }
+          scrutin.en_clair
 
+          ||
 
-    function renderScrutins() {
+          scrutin.description
 
-      const container =
-        document.getElementById(
-          "scrutinsList"
-        );
+          ||
 
+          scrutin.titre_officiel
 
-      const latest =
-        allScrutins.slice(
-          0,
-          18
-        );
+          ||
 
+          scrutin.titre
 
-      if (!latest.length) {
+          ||
 
-        container.innerHTML =
-          `
-            <div class="empty">
-              Aucun scrutin disponible pour ${escapeHtml(selectedYear)}.
-            </div>
-          `;
-
-        return;
-
-      }
+          "";
 
 
-      container.innerHTML =
-        latest.map(
-          scrutin => {
+        const href =
 
-            const subject =
-              scrutin.sujet
-              || scrutin.titre_court
-              || scrutin.titre
-              || "Scrutin";
+          linkWithYear(
 
+            "scrutin.html",
 
-            const description =
-              scrutin.description
-              || scrutin.titre_officiel
-              || scrutin.titre
-              || "";
+            {
+              uid:
+                scrutin.uid
+            }
+
+          );
 
 
-            const href =
-              linkWithYear(
-                "scrutin.html",
-                {
-                  uid:
-                    scrutin.uid
-                }
-              );
+        return `
 
+          <a
+            class="scrutin-card"
+            href="${
+              escapeHtml(
+                href
+              )
+            }"
+          >
 
-            return `
-              <a
-                class="scrutin-card"
-                href="${
+            <div class="scrutin-meta">
+
+              <span>
+
+                ${
                   escapeHtml(
-                    href
+                    formatDate(
+                      scrutin.date
+                    )
                   )
-                }"
-              >
+                }
 
-                <div
-                  class="scrutin-meta"
-                >
+              </span>
 
-                  <span>
-                    ${
-                      escapeHtml(
-                        formatDate(
-                          scrutin.date
-                        )
-                      )
-                    }
-                  </span>
 
-                  <span>
-                    ·
-                  </span>
+              <span>
+                ·
+              </span>
 
-                  <span
-                    class="theme-badge"
-                  >
-                    ${
-                      escapeHtml(
-                        scrutin.theme
-                        || "Autres"
-                      )
-                    }
-                  </span>
+
+              <span class="theme-badge">
+
+                ${
+                  escapeHtml(
+                    scrutin.theme
+                    ||
+                    "Autres"
+                  )
+                }
+
+              </span>
+
+            </div>
+
+
+            <h3 class="scrutin-title">
+
+              ${escapeHtml(subject)}
+
+            </h3>
+
+
+            ${
+
+              description
+
+              &&
+
+              normalize(
+                description
+              )
+
+              !==
+
+              normalize(
+                subject
+              )
+
+              ?
+
+              `
+
+                <div class="scrutin-description">
+
+                  ${escapeHtml(description)}
 
                 </div>
 
+              `
 
-                <h3
-                  class="scrutin-title"
-                >
-                  ${
-                    escapeHtml(
-                      subject
-                    )
-                  }
-                </h3>
+              :
+
+              ""
+
+            }
 
 
-                ${
-                  description
-                  && normalize(
-                    description
-                  )
-                  !== normalize(
-                    subject
-                  )
-                    ? `
-                      <div
-                        class="scrutin-description"
-                      >
-                        ${
-                          escapeHtml(
-                            description
-                          )
-                        }
-                      </div>
-                    `
-                    : ""
-                }
+            ${renderPositions(scrutin)}
 
 
-                ${
-                  renderPositions(
-                    scrutin
-                  )
-                }
+          </a>
 
-              </a>
-            `;
+        `;
 
-          }
-        ).join("");
+      }
+    )
+    .join("");
 
-    }
+}
 
 
-    /* ======================================================
-       RECHERCHE
-    ====================================================== */
+/* ======================================================
+   RECHERCHE
+====================================================== */
+
+function scoreText(
+  text,
+  query
+) {
+
+  const normalizedText =
+    normalize(
+      text
+    );
 
 
-    function scoreText(
-      text,
+  const normalizedQuery =
+    normalize(
       query
-    ) {
-
-      const normalizedText =
-        normalize(
-          text
-        );
+    );
 
 
-      const normalizedQuery =
-        normalize(
+  if (
+    !normalizedText
+    ||
+    !normalizedQuery
+  ) {
+
+    return 0;
+
+  }
+
+
+  if (
+    normalizedText
+    ===
+    normalizedQuery
+  ) {
+
+    return 100;
+
+  }
+
+
+  if (
+    normalizedText.startsWith(
+      normalizedQuery
+    )
+  ) {
+
+    return 80;
+
+  }
+
+
+  if (
+    normalizedText.includes(
+      normalizedQuery
+    )
+  ) {
+
+    return 60;
+
+  }
+
+
+  const words =
+    normalizedQuery
+      .split(
+        " "
+      );
+
+
+  const found =
+
+    words.filter(
+      word =>
+
+        word.length
+        >
+        1
+
+        &&
+
+        normalizedText.includes(
+          word
+        )
+    );
+
+
+  if (
+    found.length
+    ===
+    words.length
+  ) {
+
+    return 45;
+
+  }
+
+
+  if (
+    found.length
+  ) {
+
+    return (
+      20
+      +
+      found.length
+      *
+      5
+    );
+
+  }
+
+
+  return 0;
+
+}
+
+
+function buildSearchResults(
+  rawQuery
+) {
+
+  const query =
+    rawQuery.trim();
+
+
+  if (
+    !query
+  ) {
+
+    return [];
+
+  }
+
+
+  const results =
+    [];
+
+
+  /* GROUPES */
+
+  (
+    searchData
+      ?.groupes
+
+    ||
+
+    []
+  )
+  .forEach(
+    group => {
+
+      const score =
+
+        scoreText(
+          group.groupe,
           query
         );
 
 
       if (
-        !normalizedText
-        || !normalizedQuery
+        score
+        >
+        0
       ) {
 
-        return 0;
+        results.push({
 
-      }
+          type:
+            "Groupe",
 
+          title:
+            group.groupe,
 
-      if (
-        normalizedText
-        === normalizedQuery
-      ) {
+          meta:
+            `${formatNumber(group.count)} député(s) actuellement`,
 
-        return 100;
+          score:
+            score
+            +
+            20,
 
-      }
+          href:
+            linkWithYear(
 
+              "groupe.html",
 
-      if (
-        normalizedText.startsWith(
-          normalizedQuery
-        )
-      ) {
+              {
+                name:
+                  group.groupe
+              }
 
-        return 80;
-
-      }
-
-
-      if (
-        normalizedText.includes(
-          normalizedQuery
-        )
-      ) {
-
-        return 60;
-
-      }
-
-
-      const words =
-        normalizedQuery.split(
-          " "
-        );
-
-
-      const found =
-        words.filter(
-          word =>
-            word.length > 1
-            && normalizedText.includes(
-              word
             )
-        );
 
-
-      if (
-        found.length
-        === words.length
-      ) {
-
-        return 45;
+        });
 
       }
-
-
-      if (
-        found.length
-      ) {
-
-        return (
-          20
-          +
-          found.length
-          * 5
-        );
-
-      }
-
-
-      return 0;
 
     }
+  );
 
 
-    function buildSearchResults(
-      rawQuery
-    ) {
+  /* DÉPUTÉS */
 
-      const query =
-        rawQuery.trim();
+  (
+    searchData
+      ?.deputes
+
+    ||
+
+    []
+  )
+  .forEach(
+    deputy => {
+
+      const fields = [
+
+        {
+          value:
+            deputy.nom,
+
+          weight:
+            25
+        },
+
+        {
+          value:
+            deputy.groupe,
+
+          weight:
+            10
+        },
+
+        {
+          value:
+            deputy.departement,
+
+          weight:
+            7
+        },
+
+        {
+          value:
+            deputy.circonscription,
+
+          weight:
+            12
+        }
+
+      ];
 
 
-      if (!query) {
-        return [];
-      }
+      let bestScore =
+        0;
 
 
-      const results = [];
+      fields.forEach(
+        field => {
 
+          const current =
 
-      /* GROUPES */
-
-      (
-        searchData?.groupes
-        || []
-      ).forEach(
-        group => {
-
-          const score =
             scoreText(
-              group.groupe,
+              field.value,
               query
-            );
-
-
-          if (score > 0) {
-
-            results.push({
-
-              type:
-                "Groupe",
-
-              title:
-                group.groupe,
-
-              meta:
-                `${formatNumber(group.count)} député(s) actuellement`,
-
-              score:
-                score
-                + 20,
-
-              href:
-                linkWithYear(
-                  "groupe.html",
-                  {
-                    name:
-                      group.groupe
-                  }
-                )
-
-            });
-
-          }
-
-        }
-      );
-
-
-      /* DÉPUTÉS */
-
-      (
-        searchData?.deputes
-        || []
-      ).forEach(
-        deputy => {
-
-          const fields = [
-
-            {
-              value:
-                deputy.nom,
-              weight:
-                25
-            },
-
-            {
-              value:
-                deputy.groupe,
-              weight:
-                10
-            },
-
-            {
-              value:
-                deputy.departement,
-              weight:
-                7
-            },
-
-            {
-              value:
-                deputy.circonscription,
-              weight:
-                12
-            }
-
-          ];
-
-
-          let bestScore = 0;
-
-
-          fields.forEach(
-            field => {
-
-              const current =
-                scoreText(
-                  field.value,
-                  query
-                );
-
-
-              if (current) {
-
-                bestScore =
-                  Math.max(
-                    bestScore,
-                    current
-                    + field.weight
-                  );
-
-              }
-
-            }
-          );
-
-
-          if (bestScore > 0) {
-
-            results.push({
-
-              type:
-                "Député",
-
-              title:
-                deputy.nom,
-
-              meta:
-                [
-                  deputy.groupe,
-                  deputy.departement,
-                  deputy.circonscription
-                ]
-                  .filter(Boolean)
-                  .join(" · "),
-
-              score:
-                bestScore,
-
-              href:
-                linkWithYear(
-                  "depute.html",
-                  {
-                    uid:
-                      deputy.uid
-                  }
-                )
-
-            });
-
-          }
-
-        }
-      );
-
-
-      /* SUJETS / SCRUTINS */
-
-      allScrutins.forEach(
-        scrutin => {
-
-          const subject =
-            scrutin.sujet
-            || scrutin.titre_court
-            || scrutin.titre
-            || "";
-
-
-          const searchable = [
-
-            subject,
-            scrutin.description,
-            scrutin.titre_officiel,
-            scrutin.theme
-
-          ].join(" ");
-
-
-          const score =
-            scoreText(
-              searchable,
-              query
-            );
-
-
-          if (score > 0) {
-
-            results.push({
-
-              type:
-                "Vote",
-
-              title:
-                subject
-                || "Scrutin",
-
-              meta:
-                [
-                  formatDate(
-                    scrutin.date
-                  ),
-                  scrutin.theme
-                ]
-                  .filter(Boolean)
-                  .join(" · "),
-
-              score:
-                score
-                + 5,
-
-              href:
-                linkWithYear(
-                  "scrutin.html",
-                  {
-                    uid:
-                      scrutin.uid
-                  }
-                )
-
-            });
-
-          }
-
-        }
-      );
-
-
-      /* DÉPARTEMENTS */
-
-      (
-        searchData?.departements
-        || []
-      ).forEach(
-        department => {
-
-          const score =
-            scoreText(
-              department,
-              query
-            );
-
-
-          if (score > 0) {
-
-            const deputyCount =
-              (
-                searchData?.deputes
-                || []
-              ).filter(
-                deputy =>
-                  normalize(
-                    deputy.departement
-                  )
-                  ===
-                  normalize(
-                    department
-                  )
-              ).length;
-
-
-            results.push({
-
-              type:
-                "Territoire",
-
-              title:
-                department,
-
-              meta:
-                `${formatNumber(deputyCount)} député(s) dans les données actuelles`,
-
-              score:
-                score,
-
-              href:
-                `#territory=${encodeURIComponent(department)}`,
-
-              territory:
-                department
-
-            });
-
-          }
-
-        }
-      );
-
-
-      /* CIRCONSCRIPTIONS */
-
-      (
-        searchData?.circonscriptions
-        || []
-      ).forEach(
-        constituency => {
-
-          const score =
-            scoreText(
-              constituency,
-              query
-            );
-
-
-          if (score > 0) {
-
-            const matchingDeputies =
-              (
-                searchData?.deputes
-                || []
-              )
-                .filter(
-                  deputy =>
-                    normalize(
-                      deputy.circonscription
-                    )
-                    ===
-                    normalize(
-                      constituency
-                    )
-                );
-
-
-            matchingDeputies.forEach(
-              deputy => {
-
-                results.push({
-
-                  type:
-                    "Circonscription",
-
-                  title:
-                    constituency,
-
-                  meta:
-                    deputy.nom
-                    + (
-                      deputy.departement
-                        ? ` · ${deputy.departement}`
-                        : ""
-                    ),
-
-                  score:
-                    score
-                    + 8,
-
-                  href:
-                    linkWithYear(
-                      "depute.html",
-                      {
-                        uid:
-                          deputy.uid
-                      }
-                    )
-
-                });
-
-              }
-            );
-
-          }
-
-        }
-      );
-
-
-      /* DÉDOUBLONNAGE */
-
-      const unique =
-        new Map();
-
-
-      results.forEach(
-        result => {
-
-          const key =
-            [
-              result.type,
-              result.title,
-              result.href
-            ].join("|");
-
-
-          const previous =
-            unique.get(
-              key
             );
 
 
           if (
-            !previous
-            || result.score
-            > previous.score
+            current
           ) {
 
-            unique.set(
-              key,
-              result
-            );
+            bestScore =
+
+              Math.max(
+
+                bestScore,
+
+                current
+                +
+                field.weight
+
+              );
 
           }
 
@@ -3048,72 +2762,13 @@
       );
 
 
-      return [
-        ...unique.values()
-      ]
-        .sort(
-          (
-            a,
-            b
-          ) => {
+      if (
+        bestScore
+        >
+        0
+      ) {
 
-            if (
-              b.score
-              !==
-              a.score
-            ) {
-
-              return (
-                b.score
-                -
-                a.score
-              );
-
-            }
-
-
-            return String(
-              a.title
-            ).localeCompare(
-              String(
-                b.title
-              ),
-              "fr"
-            );
-
-          }
-        )
-        .slice(
-          0,
-          30
-        );
-
-    }
-
-
-    function renderTerritoryDeputies(
-      territory
-    ) {
-
-      const deputies =
-        (
-          searchData?.deputes
-          || []
-        )
-          .filter(
-            deputy =>
-              normalize(
-                deputy.departement
-              )
-              ===
-              normalize(
-                territory
-              )
-          );
-
-
-      return deputies.map(
-        deputy => ({
+        results.push({
 
           type:
             "Député",
@@ -3122,402 +2777,608 @@
             deputy.nom,
 
           meta:
+
             [
               deputy.groupe,
+              deputy.departement,
               deputy.circonscription
             ]
-              .filter(Boolean)
-              .join(" · "),
+            .filter(
+              Boolean
+            )
+            .join(
+              " · "
+            ),
+
+          score:
+            bestScore,
 
           href:
             linkWithYear(
+
               "depute.html",
+
               {
                 uid:
                   deputy.uid
               }
+
             )
 
-        })
-      );
-
-    }
-
-
-    function renderSearchResults(
-      results
-    ) {
-
-      const container =
-        document.getElementById(
-          "searchResults"
-        );
-
-
-      if (!results.length) {
-
-        container.innerHTML =
-          `
-            <div class="empty">
-              Aucun résultat trouvé.
-            </div>
-          `;
-
-        return;
+        });
 
       }
 
-
-      container.innerHTML =
-        results.map(
-          result => `
-            <a
-              class="search-result"
-              href="${
-                escapeHtml(
-                  result.href
-                )
-              }"
-              ${
-                result.territory
-                  ? `data-territory="${escapeHtml(result.territory)}"`
-                  : ""
-              }
-            >
-
-              <span
-                class="result-type"
-              >
-                ${
-                  escapeHtml(
-                    result.type
-                  )
-                }
-              </span>
-
-              <span>
-
-                <span
-                  class="result-title"
-                >
-                  ${
-                    escapeHtml(
-                      result.title
-                    )
-                  }
-                </span>
-
-                <span
-                  class="result-meta"
-                >
-                  ${
-                    escapeHtml(
-                      result.meta
-                      || ""
-                    )
-                  }
-                </span>
-
-              </span>
-
-              <span
-                class="result-arrow"
-              >
-                →
-              </span>
-
-            </a>
-          `
-        ).join("");
+    }
+  );
 
 
-      container
-        .querySelectorAll(
-          "[data-territory]"
+  /* SCRUTINS */
+
+  allScrutins.forEach(
+    scrutin => {
+
+      const subject =
+
+        scrutin.sujet
+
+        ||
+
+        scrutin.titre_court
+
+        ||
+
+        scrutin.titre
+
+        ||
+
+        "";
+
+
+      const searchable =
+
+        [
+          subject,
+          scrutin.en_clair,
+          scrutin.description,
+          scrutin.titre_officiel,
+          scrutin.theme
+        ]
+        .filter(
+          Boolean
         )
-        .forEach(
-          link => {
-
-            link.addEventListener(
-              "click",
-              event => {
-
-                event.preventDefault();
-
-
-                const territory =
-                  link.dataset
-                    .territory;
-
-
-                const deputies =
-                  renderTerritoryDeputies(
-                    territory
-                  );
-
-
-                document.getElementById(
-                  "searchStatus"
-                ).textContent =
-                  `${deputies.length} député(s) pour ${territory}.`;
-
-
-                renderSearchResults(
-                  deputies
-                );
-
-              }
-            );
-
-          }
-        );
-
-    }
-
-
-    function performSearch() {
-
-      const input =
-        document.getElementById(
-          "searchInput"
+        .join(
+          " "
         );
 
 
-      const query =
-        input.value.trim();
+      const score =
 
-
-      const status =
-        document.getElementById(
-          "searchStatus"
-        );
-
-
-      if (!query) {
-
-        status.textContent =
-          "Tapez un mot ou un nom pour lancer la recherche.";
-
-
-        document.getElementById(
-          "searchResults"
-        ).innerHTML = "";
-
-
-        return;
-
-      }
-
-
-      const results =
-        buildSearchResults(
+        scoreText(
+          searchable,
           query
         );
 
 
-      status.textContent =
-        results.length
-          ? `${results.length} résultat(s) pour « ${query} »`
-          : `Aucun résultat pour « ${query} »`;
+      if (
+        score
+        >
+        0
+      ) {
 
+        results.push({
 
-      renderSearchResults(
-        results
-      );
+          type:
+            "Vote",
 
-    }
+          title:
+            subject
+            ||
+            "Scrutin",
 
+          meta:
 
-    function bindSearch() {
-
-      document.getElementById(
-        "searchButton"
-      ).addEventListener(
-        "click",
-        performSearch
-      );
-
-
-      document.getElementById(
-        "searchInput"
-      ).addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key
-            === "Enter"
-          ) {
-
-            performSearch();
-
-          }
-
-        }
-      );
-
-
-      let timer = null;
-
-
-      document.getElementById(
-        "searchInput"
-      ).addEventListener(
-        "input",
-        event => {
-
-          clearTimeout(
-            timer
-          );
-
-
-          const value =
-            event.target
-              .value
-              .trim();
-
-
-          if (
-            value.length
-            < 2
-          ) {
-
-            document.getElementById(
-              "searchResults"
-            ).innerHTML = "";
-
-
-            document.getElementById(
-              "searchStatus"
-            ).textContent = "";
-
-            return;
-
-          }
-
-
-          timer =
-            setTimeout(
-              performSearch,
-              180
-            );
-
-        }
-      );
-
-    }
-
-
-    /* ======================================================
-       INITIALISATION
-    ====================================================== */
-
-
-    async function init() {
-
-      try {
-
-        indexData =
-          await loadJson(
-            "./data/current/index.json"
-          );
-
-
-        selectedYear =
-          determineSelectedYear();
-
-
-        renderYearSwitch();
-
-
-        const [
-          searchPayload,
-          compositionPayload,
-          deputiesPayload
-        ] =
-          await Promise.all([
-
-            loadJson(
-              "./data/current/search.json"
+            [
+              formatDate(
+                scrutin.date
+              ),
+              scrutin.theme
+            ]
+            .filter(
+              Boolean
+            )
+            .join(
+              " · "
             ),
 
-            loadJson(
-              "./data/current/composition.json"
-            ),
+          score:
+            score
+            +
+            5,
 
-            loadJson(
-              "./data/current/deputes.json"
+          href:
+            linkWithYear(
+
+              "scrutin.html",
+
+              {
+                uid:
+                  scrutin.uid
+              }
+
             )
 
-          ]);
-
-
-        searchData =
-          searchPayload;
-
-
-        compositionData =
-          compositionPayload;
-
-
-        deputiesData =
-          deputiesPayload;
-
-
-        await loadSelectedYearScrutins();
-
-
-        renderCounts();
-
-        renderComposition();
-
-        renderScrutins();
-
-        bindSearch();
+        });
 
       }
 
-      catch(error) {
+    }
+  );
 
-        console.error(
-          error
+
+  /* DÉDOUBLONNAGE */
+
+  const unique =
+    new Map();
+
+
+  results.forEach(
+    result => {
+
+      const key =
+
+        [
+          result.type,
+          result.title,
+          result.href
+        ]
+        .join(
+          "|"
         );
 
 
-        document.querySelector(
-          "main"
-        ).innerHTML =
-          `
-            <section class="panel">
+      const previous =
+        unique.get(
+          key
+        );
 
-              <div class="error">
 
-                Impossible de charger les données du site.
+      if (
+        !previous
+        ||
+        result.score
+        >
+        previous.score
+      ) {
 
-                <br><br>
-
-                Vérifiez que le script
-                <strong>build_data.py</strong>
-                a bien généré les fichiers
-                <strong>index.json</strong>,
-                <strong>search.json</strong>,
-                <strong>composition.json</strong>
-                et
-                <strong>deputes.json</strong>.
-
-              </div>
-
-            </section>
-          `;
+        unique.set(
+          key,
+          result
+        );
 
       }
 
     }
+  );
 
 
-    init();
+  return (
 
-  </script>
+    [
+      ...unique.values()
+    ]
+
+    .sort(
+      (
+        a,
+        b
+      ) => {
+
+        if (
+          b.score
+          !==
+          a.score
+        ) {
+
+          return (
+            b.score
+            -
+            a.score
+          );
+
+        }
+
+
+        return (
+
+          String(
+            a.title
+          )
+          .localeCompare(
+
+            String(
+              b.title
+            ),
+
+            "fr"
+
+          )
+
+        );
+
+      }
+    )
+
+    .slice(
+      0,
+      30
+    )
+
+  );
+
+}
+
+
+function renderSearchResults(
+  results
+) {
+
+  const container =
+    document.getElementById(
+      "searchResults"
+    );
+
+
+  if (
+    !results.length
+  ) {
+
+    container.innerHTML =
+
+      `
+        <div class="empty">
+
+          Aucun résultat trouvé.
+
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    results.map(
+      result => `
+
+        <a
+          class="search-result"
+          href="${
+            escapeHtml(
+              result.href
+            )
+          }"
+        >
+
+          <span class="result-type">
+
+            ${escapeHtml(result.type)}
+
+          </span>
+
+
+          <span>
+
+            <span class="result-title">
+
+              ${escapeHtml(result.title)}
+
+            </span>
+
+
+            <span class="result-meta">
+
+              ${escapeHtml(result.meta || "")}
+
+            </span>
+
+          </span>
+
+
+          <span class="result-arrow">
+
+            →
+
+          </span>
+
+        </a>
+
+      `
+    )
+    .join("");
+
+}
+
+
+function performSearch() {
+
+  const input =
+    document.getElementById(
+      "searchInput"
+    );
+
+
+  const query =
+    input
+      .value
+      .trim();
+
+
+  const status =
+    document.getElementById(
+      "searchStatus"
+    );
+
+
+  if (
+    !query
+  ) {
+
+    status.textContent =
+
+      "Tapez un mot ou un nom pour lancer la recherche.";
+
+
+    document.getElementById(
+      "searchResults"
+    ).innerHTML =
+      "";
+
+
+    return;
+
+  }
+
+
+  const results =
+    buildSearchResults(
+      query
+    );
+
+
+  status.textContent =
+
+    results.length
+
+    ?
+
+    `${results.length} résultat(s) pour « ${query} »`
+
+    :
+
+    `Aucun résultat pour « ${query} »`;
+
+
+  renderSearchResults(
+    results
+  );
+
+}
+
+
+function bindSearch() {
+
+  document.getElementById(
+    "searchButton"
+  )
+  .addEventListener(
+    "click",
+    performSearch
+  );
+
+
+  document.getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key
+        ===
+        "Enter"
+      ) {
+
+        performSearch();
+
+      }
+
+    }
+  );
+
+
+  let timer =
+    null;
+
+
+  document.getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "input",
+    event => {
+
+      clearTimeout(
+        timer
+      );
+
+
+      const value =
+
+        event.target
+          .value
+          .trim();
+
+
+      if (
+        value.length
+        <
+        2
+      ) {
+
+        document.getElementById(
+          "searchResults"
+        ).innerHTML =
+          "";
+
+
+        document.getElementById(
+          "searchStatus"
+        ).textContent =
+          "";
+
+
+        return;
+
+      }
+
+
+      timer =
+
+        setTimeout(
+          performSearch,
+          180
+        );
+
+    }
+  );
+
+}
+
+
+/* ======================================================
+   INITIALISATION
+====================================================== */
+
+async function init() {
+
+  try {
+
+
+    indexData =
+
+      await loadJson(
+        "./data/current/index.json"
+      );
+
+
+    selectedYear =
+      determineSelectedYear();
+
+
+    renderYearSwitch();
+
+
+    const [
+
+      searchPayload,
+
+      compositionPayload,
+
+      deputiesPayload
+
+    ] =
+
+      await Promise.all([
+
+        loadJson(
+          "./data/current/search.json"
+        ),
+
+        loadJson(
+          "./data/current/composition.json"
+        ),
+
+        loadJson(
+          "./data/current/deputes.json"
+        )
+
+      ]);
+
+
+    searchData =
+      searchPayload;
+
+
+    compositionData =
+      compositionPayload;
+
+
+    deputiesData =
+      deputiesPayload;
+
+
+    await loadSelectedYearScrutins();
+
+
+    renderCounts();
+
+    renderComposition();
+
+    renderScrutins();
+
+    bindSearch();
+
+
+  }
+
+  catch(
+    error
+  ) {
+
+
+    console.error(
+      error
+    );
+
+
+    document.querySelector(
+      "main"
+    ).innerHTML =
+
+      `
+        <section class="panel">
+
+          <div class="error">
+
+            Impossible de charger les données du site.
+
+            <br><br>
+
+            Vérifiez que
+            <strong>build_data.py</strong>
+            a bien généré les fichiers de données.
+
+          </div>
+
+        </section>
+      `;
+
+  }
+
+}
+
+
+init();
+
+
+})();
+
+</script>
 
 </body>
 </html>
