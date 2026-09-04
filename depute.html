@@ -10,7 +10,12 @@
   content="width=device-width,initial-scale=1"
 >
 
-<title>Député — Votes à l'Assemblée nationale</title>
+<title>Député — Que vote mon député ?</title>
+
+<meta
+  name="description"
+  content="Retrouvez les votes d'un député à l'Assemblée nationale : Pour, Contre, Abstention, thèmes et historique des scrutins."
+>
 
 <style>
 
@@ -84,14 +89,11 @@ select{
 }
 
 
-.hero{
+/* ======================================================
+   HEADER
+====================================================== */
 
-  padding:
-    34px
-    18px
-    42px;
-
-  text-align:center;
+.site-header{
 
   color:white;
 
@@ -105,36 +107,41 @@ select{
 }
 
 
-.hero-inner{
+.topbar{
 
-  max-width:
-    1050px;
+  max-width:1350px;
 
   margin:auto;
 
-}
-
-
-.top-links{
+  padding:
+    16px
+    18px;
 
   display:flex;
 
-  justify-content:center;
+  justify-content:space-between;
 
-  flex-wrap:wrap;
+  align-items:center;
 
-  gap:9px;
-
-  margin-bottom:23px;
+  gap:15px;
 
 }
 
 
-.top-links a{
+.brand{
+
+  font-size:17px;
+
+  font-weight:950;
+
+}
+
+
+.home-link{
 
   padding:
-    10px
-    14px;
+    9px
+    13px;
 
   border:
     1px solid
@@ -146,8 +153,25 @@ select{
   background:
     rgba(255,255,255,.08);
 
-  font-weight:
-    800;
+  font-size:14px;
+
+  font-weight:800;
+
+}
+
+
+.hero{
+
+  max-width:1050px;
+
+  margin:auto;
+
+  padding:
+    30px
+    18px
+    44px;
+
+  text-align:center;
 
 }
 
@@ -205,6 +229,10 @@ select{
 
 }
 
+
+/* ======================================================
+   GENERAL
+====================================================== */
 
 main{
 
@@ -281,7 +309,9 @@ main{
 }
 
 
-/* ANNÉES */
+/* ======================================================
+   ANNÉES
+====================================================== */
 
 .year-switch{
 
@@ -340,7 +370,9 @@ main{
 }
 
 
-/* PROFIL */
+/* ======================================================
+   PROFIL
+====================================================== */
 
 .profile-grid{
 
@@ -410,7 +442,9 @@ main{
 }
 
 
-/* STATS */
+/* ======================================================
+   STATS
+====================================================== */
 
 .stats-grid{
 
@@ -429,7 +463,9 @@ main{
 
 .stat{
 
-  padding:20px 12px;
+  padding:
+    20px
+    12px;
 
   text-align:center;
 
@@ -490,7 +526,9 @@ main{
 }
 
 
-/* THÈMES */
+/* ======================================================
+   THÈMES
+====================================================== */
 
 .themes{
 
@@ -540,7 +578,9 @@ main{
 }
 
 
-/* FILTRES */
+/* ======================================================
+   FILTRES
+====================================================== */
 
 .filters{
 
@@ -594,7 +634,9 @@ main{
 }
 
 
-/* VOTES */
+/* ======================================================
+   VOTES
+====================================================== */
 
 .result-info{
 
@@ -886,6 +928,10 @@ main{
 }
 
 
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
 @media(max-width:1000px){
 
   .stats-grid{
@@ -913,6 +959,13 @@ main{
 
 
 @media(max-width:700px){
+
+  .topbar{
+
+    flex-direction:column;
+
+  }
+
 
   .profile-grid,
   .stats-grid,
@@ -947,39 +1000,48 @@ main{
 <body>
 
 
-<header class="hero">
-
-<div class="hero-inner">
+<header class="site-header">
 
 
-  <div class="top-links">
+  <div class="topbar">
+
+    <a
+      class="brand"
+      href="./index.html"
+    >
+      Que vote mon député ?
+    </a>
+
 
     <a
       id="homeLink"
+      class="home-link"
       href="./index.html"
     >
-      ← Accueil
+      ← Retour à l'accueil
     </a>
 
   </div>
 
 
-  <div class="kicker">
-    Député
+  <div class="hero">
+
+    <div class="kicker">
+      Député
+    </div>
+
+
+    <h1 id="deputyName">
+      Chargement…
+    </h1>
+
+
+    <p id="deputySubtitle">
+      Historique des votes à l'Assemblée nationale
+    </p>
+
   </div>
 
-
-  <h1 id="deputyName">
-    Chargement…
-  </h1>
-
-
-  <p id="deputySubtitle">
-    Historique des votes à l'Assemblée nationale
-  </p>
-
-
-</div>
 
 </header>
 
@@ -1013,6 +1075,7 @@ main{
         Groupe actuel
       </span>
 
+
       <div
         class="profile-value"
         id="currentGroup"
@@ -1029,6 +1092,7 @@ main{
         Département
       </span>
 
+
       <div
         class="profile-value"
         id="department"
@@ -1044,6 +1108,7 @@ main{
       <span class="profile-label">
         Circonscription
       </span>
+
 
       <div
         class="profile-value"
@@ -1177,6 +1242,7 @@ main{
         Rechercher un sujet
       </label>
 
+
       <input
         id="searchFilter"
         type="search"
@@ -1191,6 +1257,7 @@ main{
       <label for="voteFilter">
         Vote
       </label>
+
 
       <select id="voteFilter">
 
@@ -1225,6 +1292,7 @@ main{
         Groupe au moment du vote
       </label>
 
+
       <select id="groupFilter">
 
         <option value="">
@@ -1241,6 +1309,7 @@ main{
       <label for="sortFilter">
         Trier
       </label>
+
 
       <select id="sortFilter">
 
@@ -1298,7 +1367,6 @@ main{
   >
     Afficher davantage
   </button>
-
 
 </section>
 
@@ -1375,7 +1443,8 @@ function getParam(
     .get(
       name
     )
-    || ""
+    ||
+    ""
   );
 
 }
@@ -1749,7 +1818,7 @@ function renderHeader(){
 
 
   document.title =
-    `${deputy?.nom || "Député"} — Votes à l'Assemblée nationale`;
+    `${deputy?.nom || "Député"} — Que vote mon député ?`;
 
 
   $(
@@ -2607,7 +2676,10 @@ function renderVotes(){
 
       `
         <div class="empty">
-          Aucun vote ne correspond aux filtres sélectionnés.
+
+          Aucun vote ne correspond
+          aux filtres sélectionnés.
+
         </div>
       `;
 
@@ -2660,19 +2732,30 @@ function renderVotes(){
                     ${escapeHtml(formatDate(vote.date))}
                   </span>
 
+
                   <span class="theme-tag">
+
                     ${escapeHtml(vote.theme || "Autres")}
+
                   </span>
+
 
                   ${
                     vote.numero
+
                     ?
+
                     `
                       <span>
-                        scrutin n° ${escapeHtml(vote.numero)}
+
+                        scrutin n°
+                        ${escapeHtml(vote.numero)}
+
                       </span>
                     `
+
                     :
+
                     ""
                   }
 
@@ -2680,7 +2763,9 @@ function renderVotes(){
 
 
                 <div class="vote-title">
+
                   ${escapeHtml(vote.sujet)}
+
                 </div>
 
 
@@ -2691,7 +2776,9 @@ function renderVotes(){
 
                   `
                     <div class="vote-description">
+
                       ${escapeHtml(vote.description)}
+
                     </div>
                   `
 
@@ -2707,7 +2794,9 @@ function renderVotes(){
               <span
                 class="vote-badge ${escapeHtml(vote.vote)}"
               >
+
                 ${escapeHtml(vote.vote)}
+
               </span>
 
 
@@ -2723,10 +2812,15 @@ function renderVotes(){
 
                 `
                   <span class="mini">
+
                     Groupe au moment du vote :
+
                     <strong>
+
                       ${escapeHtml(vote.groupe)}
+
                     </strong>
+
                   </span>
                 `
 
@@ -2906,18 +3000,8 @@ async function init(){
     renderProfile();
 
 
-    /*
-     * On charge les résumés des scrutins
-     * pour pouvoir donner un vrai titre,
-     * une date et un thème à chaque vote.
-     */
-
     await loadScrutinSummaries();
 
-
-    /*
-     * Puis le fichier individuel du député.
-     */
 
     await loadDeputyVotes();
 
