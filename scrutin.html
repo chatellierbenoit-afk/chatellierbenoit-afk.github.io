@@ -1,1166 +1,675 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Scrutin — Assemblée nationale</title>
 
 <style>
-
-:root {
-
+:root{
   --violet:#7700ff;
   --violet-dark:#5900bf;
   --violet-soft:#f2eaff;
-
   --bg:#f7f5fb;
-  --card:#ffffff;
-
+  --card:#fff;
   --text:#1d1b22;
   --muted:#6f6a78;
-
   --border:#e5dfef;
-
   --green:#168550;
   --green-bg:#eaf8f0;
-
   --red:#c43b43;
   --red-bg:#fff0f1;
-
   --orange:#a66b00;
   --orange-bg:#fff7df;
-
   --grey:#6b7280;
   --grey-bg:#f1f2f5;
-
-  --shadow:
-    0 10px 28px
-    rgba(54,24,105,.07);
-
+  --blue:#1769aa;
+  --blue-bg:#edf6ff;
+  --shadow:0 10px 28px rgba(54,24,105,.07);
 }
 
-
-* {
-
-  box-sizing:
-    border-box;
-
+*{
+  box-sizing:border-box;
 }
 
-
-body {
-
+body{
   margin:0;
-
-  font-family:
-    Inter,
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  background:
-    var(--bg);
-
-  color:
-    var(--text);
-
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:var(--bg);
 }
 
-
-a {
-
-  color:
-    inherit;
-
-  text-decoration:
-    none;
-
+a{
+  color:inherit;
+  text-decoration:none;
 }
-
 
 button,
 input,
-select {
-
-  font:
-    inherit;
-
+select{
+  font:inherit;
 }
 
-
-.hero {
-
-  padding:
-    32px
-    18px
-    38px;
-
-  color:
-    white;
-
-  text-align:
-    center;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--violet-dark),
-      var(--violet)
-    );
-
+.hero{
+  padding:32px 18px 40px;
+  color:#fff;
+  text-align:center;
+  background:linear-gradient(
+    135deg,
+    var(--violet-dark),
+    var(--violet)
+  );
 }
 
-
-.hero-inner {
-
-  max-width:
-    1100px;
-
-  margin:
-    auto;
-
+.hero-inner{
+  max-width:1120px;
+  margin:auto;
 }
 
-
-.top-links {
-
-  display:
-    flex;
-
-  justify-content:
-    center;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    9px;
-
-  margin-bottom:
-    23px;
-
+.top-links{
+  display:flex;
+  justify-content:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
 }
 
-
-.top-links a {
-
-  padding:
-    10px
-    14px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.35);
-
-  border-radius:
-    12px;
-
-  background:
-    rgba(255,255,255,.08);
-
-  font-weight:
-    800;
-
+.top-links a{
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  font-weight:800;
 }
 
-
-.kicker {
-
-  font-size:
-    .78rem;
-
-  font-weight:
-    900;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    .07em;
-
-  opacity:
-    .82;
-
+.kicker{
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  opacity:.82;
 }
 
-
-.hero h1 {
-
-  max-width:
-    1000px;
-
-  margin:
-    12px
-    auto
-    0;
-
-  font-size:
-    clamp(
-      2rem,
-      5vw,
-      3.5rem
-    );
-
-  line-height:
-    1.08;
-
-  letter-spacing:
-    -.03em;
-
+.hero h1{
+  max-width:1040px;
+  margin:12px auto 0;
+  font-size:clamp(2rem,5vw,3.5rem);
+  line-height:1.08;
+  letter-spacing:-.03em;
 }
 
-
-.hero p {
-
-  max-width:
-    920px;
-
-  margin:
-    15px
-    auto
-    0;
-
-  line-height:
-    1.55;
-
-  opacity:
-    .93;
-
+.hero p{
+  max-width:920px;
+  margin:15px auto 0;
+  line-height:1.55;
+  opacity:.93;
 }
 
-
-main {
-
-  max-width:
-    1450px;
-
-  margin:
-    auto;
-
-  padding:
-    24px
-    16px
-    60px;
-
+main{
+  max-width:1450px;
+  margin:auto;
+  padding:24px 16px 60px;
 }
 
-
-.panel {
-
-  margin-bottom:
-    20px;
-
-  padding:
-    24px;
-
-  background:
-    var(--card);
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    22px;
-
-  box-shadow:
-    var(--shadow);
-
+.panel{
+  margin-bottom:20px;
+  padding:24px;
+  border:1px solid var(--border);
+  border-radius:22px;
+  background:var(--card);
+  box-shadow:var(--shadow);
 }
 
-
-.panel h2 {
-
-  margin:
-    0
-    0
-    10px;
-
-  text-align:
-    center;
-
-  font-size:
-    clamp(
-      1.6rem,
-      3vw,
-      2.2rem
-    );
-
+.panel h2{
+  margin:0 0 10px;
+  text-align:center;
+  font-size:clamp(1.6rem,3vw,2.2rem);
 }
 
-
-.intro {
-
-  max-width:
-    850px;
-
-  margin:
-    0
-    auto
-    21px;
-
-  text-align:
-    center;
-
-  color:
-    var(--muted);
-
-  line-height:
-    1.5;
-
+.intro{
+  max-width:880px;
+  margin:0 auto 22px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.5;
 }
 
-
-.info-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    1.25fr
-    .75fr;
-
-  gap:
-    16px;
-
+.explanation-grid{
+  display:grid;
+  grid-template-columns:1.15fr 1fr;
+  gap:14px;
 }
 
+.explain-card{
+  padding:22px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:#fff;
+}
+
+.explain-card.primary{
+  background:linear-gradient(
+    180deg,
+    #fbf8ff,
+    #f4ecff
+  );
+  border-color:#dac7ff;
+}
+
+.explain-card.vote{
+  background:linear-gradient(
+    180deg,
+    #f8fbff,
+    #eef7ff
+  );
+  border-color:#cddff1;
+}
+
+.explain-label{
+  display:inline-flex;
+  margin-bottom:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  color:var(--violet-dark);
+  background:#fff;
+  font-size:.78rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.explain-card.vote .explain-label{
+  color:var(--blue);
+}
+
+.explain-text{
+  margin:0;
+  font-size:1.02rem;
+  line-height:1.65;
+}
+
+.official-details{
+  margin-top:15px;
+  border-top:1px solid var(--border);
+  padding-top:14px;
+}
+
+.official-details summary{
+  cursor:pointer;
+  color:var(--muted);
+  font-weight:850;
+}
+
+.official-text{
+  margin-top:12px;
+  padding:14px;
+  border-radius:13px;
+  color:#4d4654;
+  background:#f8f7fa;
+  line-height:1.5;
+  font-size:.9rem;
+}
+
+.source-row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.source-link{
+  display:inline-flex;
+  padding:11px 15px;
+  border-radius:13px;
+  color:#fff;
+  background:var(--violet);
+  font-weight:900;
+}
+
+.method-note{
+  max-width:900px;
+  margin:15px auto 0;
+  color:var(--muted);
+  text-align:center;
+  font-size:.78rem;
+  line-height:1.5;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:16px;
+}
 
 .info-box,
-.stats-box {
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    18px;
-
-  padding:
-    20px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #fff,
-      #fcfbff
-    );
-
+.stats-box{
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(
+    180deg,
+    #fff,
+    #fcfbff
+  );
 }
 
-
-.meta-grid {
-
-  display:
-    grid;
-
-  gap:
-    9px;
-
-  margin-top:
-    17px;
-
+.meta-grid{
+  display:grid;
+  gap:9px;
+  margin-top:17px;
 }
 
-
-.meta-row {
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  gap:
-    15px;
-
-  padding:
-    11px
-    13px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    12px;
-
-  background:
-    #fff;
-
+.meta-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:11px 13px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#fff;
 }
 
-
-.meta-row span:last-child {
-
-  color:
-    var(--muted);
-
-  text-align:
-    right;
-
+.meta-row span:last-child{
+  color:var(--muted);
+  text-align:right;
 }
 
-
-.description {
-
-  margin-top:
-    15px;
-
-  padding:
-    15px;
-
-  border-radius:
-    14px;
-
-  background:
-    var(--violet-soft);
-
-  color:
-    #40364a;
-
-  line-height:
-    1.5;
-
+.result-badge{
+  display:inline-flex;
+  margin:15px auto 0;
+  padding:8px 12px;
+  border-radius:999px;
+  background:var(--violet-soft);
+  color:var(--violet-dark);
+  font-size:.82rem;
+  font-weight:950;
 }
 
-
-.stats {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      1fr
-    );
-
-  gap:
-    10px;
-
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:16px;
 }
 
-
-.stat {
-
-  padding:
-    16px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    14px;
-
-  text-align:
-    center;
-
-  background:
-    #fff;
-
+.stat{
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  text-align:center;
+  background:#fff;
 }
 
-
-.stat strong {
-
-  display:
-    block;
-
-  color:
-    var(--violet);
-
-  font-size:
-    1.8rem;
-
+.stat strong{
+  display:block;
+  color:var(--violet);
+  font-size:1.8rem;
 }
 
-
-.stat span {
-
-  color:
-    var(--muted);
-
-  font-size:
-    .82rem;
-
+.stat span{
+  color:var(--muted);
+  font-size:.82rem;
 }
 
-
-.group-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(0,1fr)
-    );
-
-  gap:
-    12px;
-
+.group-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
 }
 
-
-.group-card {
-
-  display:
-    block;
-
-  padding:
-    17px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    17px;
-
-  background:
-    #fff;
-
-  transition:
-    .15s;
-
+.group-card{
+  display:block;
+  padding:17px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:#fff;
+  transition:.15s;
 }
 
-
-.group-card:hover {
-
-  transform:
-    translateY(-1px);
-
-  border-color:
-    #cdb7ff;
-
+.group-card:hover{
+  transform:translateY(-1px);
+  border-color:#cdb7ff;
 }
 
-
-.group-name {
-
-  min-height:
-    42px;
-
-  font-weight:
-    900;
-
-  line-height:
-    1.25;
-
+.group-name{
+  min-height:42px;
+  font-weight:900;
+  line-height:1.25;
 }
 
-
-.position {
-
-  display:
-    inline-block;
-
-  margin-top:
-    10px;
-
-  padding:
-    7px
-    10px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    .78rem;
-
-  font-weight:
-    950;
-
+.position{
+  display:inline-block;
+  margin-top:10px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:950;
 }
 
-
-.position-pour {
-
-  color:
-    var(--green);
-
-  background:
-    var(--green-bg);
-
+.position-pour{
+  color:var(--green);
+  background:var(--green-bg);
 }
 
-
-.position-contre {
-
-  color:
-    var(--red);
-
-  background:
-    var(--red-bg);
-
+.position-contre{
+  color:var(--red);
+  background:var(--red-bg);
 }
 
-
-.position-abstention {
-
-  color:
-    var(--orange);
-
-  background:
-    var(--orange-bg);
-
+.position-abstention{
+  color:var(--orange);
+  background:var(--orange-bg);
 }
 
-
-.position-partage {
-
-  color:
-    var(--grey);
-
-  background:
-    var(--grey-bg);
-
+.position-partage{
+  color:var(--grey);
+  background:var(--grey-bg);
 }
 
-
-.group-numbers {
-
-  display:
-    flex;
-
-  flex-wrap:
-    wrap;
-
-  gap:
-    6px;
-
-  margin-top:
-    11px;
-
-  color:
-    var(--muted);
-
-  font-size:
-    .76rem;
-
+.group-numbers{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:11px;
+  color:var(--muted);
+  font-size:.76rem;
 }
 
-
-.group-numbers span {
-
-  padding:
-    6px
-    8px;
-
-  border-radius:
-    9px;
-
-  background:
-    #faf9fd;
-
-  border:
-    1px solid
-    var(--border);
-
+.group-numbers span{
+  padding:6px 8px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#faf9fd;
 }
 
-
-.cohesion {
-
-  margin-top:
-    10px;
-
-  color:
-    var(--muted);
-
-  font-size:
-    .8rem;
-
-  font-weight:
-    800;
-
+.cohesion{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:800;
 }
 
-
-.filters {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    1fr
-    1fr
-    1fr
-    1.3fr;
-
-  gap:
-    12px;
-
-  margin-bottom:
-    18px;
-
+.filters{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1.3fr;
+  gap:12px;
+  margin-bottom:18px;
 }
 
-
-.field label {
-
-  display:
-    block;
-
-  margin-bottom:
-    7px;
-
-  text-align:
-    center;
-
-  font-size:
-    .8rem;
-
-  font-weight:
-    900;
-
+.field label{
+  display:block;
+  margin-bottom:7px;
+  text-align:center;
+  font-size:.8rem;
+  font-weight:900;
 }
-
 
 .field input,
-.field select {
-
-  width:
-    100%;
-
-  min-height:
-    48px;
-
-  padding:
-    0
-    12px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    13px;
-
-  background:
-    #fff;
-
+.field select{
+  width:100%;
+  min-height:48px;
+  padding:0 12px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
 }
 
-
-.result-info {
-
-  margin:
-    10px
-    0
-    20px;
-
-  color:
-    var(--muted);
-
-  text-align:
-    center;
-
+.result-info{
+  margin:10px 0 20px;
+  color:var(--muted);
+  text-align:center;
 }
 
-
-.votes-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      4,
-      minmax(0,1fr)
-    );
-
-  gap:
-    12px;
-
+.votes-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
 }
 
-
-.vote-card {
-
-  display:
-    block;
-
-  padding:
-    17px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    17px;
-
-  text-align:
-    center;
-
-  background:
-    #fff;
-
+.vote-card{
+  display:block;
+  padding:17px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  text-align:center;
+  background:#fff;
 }
 
-
-.vote-card:hover {
-
-  border-color:
-    #ccb6fb;
-
-  background:
-    #fdfcff;
-
+.vote-card:hover{
+  border-color:#ccb6fb;
+  background:#fdfcff;
 }
 
-
-.vote-card h3 {
-
-  margin:
-    0
-    0
-    8px;
-
-  font-size:
-    1rem;
-
+.vote-card h3{
+  margin:0 0 8px;
+  font-size:1rem;
 }
 
-
-.vote-badge {
-
-  display:
-    inline-block;
-
-  padding:
-    7px
-    10px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    .75rem;
-
-  font-weight:
-    950;
-
+.vote-badge{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:950;
 }
 
-
-.vote-pour {
-
-  color:
-    var(--green);
-
-  background:
-    var(--green-bg);
-
+.vote-pour{
+  color:var(--green);
+  background:var(--green-bg);
 }
 
-
-.vote-contre {
-
-  color:
-    var(--red);
-
-  background:
-    var(--red-bg);
-
+.vote-contre{
+  color:var(--red);
+  background:var(--red-bg);
 }
 
-
-.vote-abstention {
-
-  color:
-    var(--orange);
-
-  background:
-    var(--orange-bg);
-
+.vote-abstention{
+  color:var(--orange);
+  background:var(--orange-bg);
 }
 
-
-.vote-non-votant {
-
-  color:
-    var(--grey);
-
-  background:
-    var(--grey-bg);
-
+.vote-non-votant{
+  color:var(--grey);
+  background:var(--grey-bg);
 }
 
-
-.vote-meta {
-
-  margin-top:
-    8px;
-
-  color:
-    var(--muted);
-
-  font-size:
-    .78rem;
-
-  line-height:
-    1.4;
-
+.vote-meta{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.4;
 }
 
-
-.loading {
-
-  padding:
-    25px;
-
-  text-align:
-    center;
-
-  color:
-    var(--muted);
-
+.loading,
+.empty{
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
 }
 
-
-.empty {
-
-  grid-column:
-    1 / -1;
-
-  padding:
-    28px;
-
-  text-align:
-    center;
-
-  color:
-    var(--muted);
-
+.empty{
+  grid-column:1/-1;
 }
 
-
-.warning {
-
-  padding:
-    18px;
-
-  border:
-    1px solid
-    #ead8a7;
-
-  border-radius:
-    14px;
-
-  color:
-    #805d0a;
-
-  background:
-    #fff9e9;
-
-  text-align:
-    center;
-
-  line-height:
-    1.5;
-
+.warning{
+  padding:18px;
+  border:1px solid #ead8a7;
+  border-radius:14px;
+  color:#805d0a;
+  background:#fff9e9;
+  text-align:center;
+  line-height:1.5;
 }
 
-
-.error {
-
-  padding:
-    28px;
-
-  border:
-    1px solid
-    #efc8cb;
-
-  border-radius:
-    15px;
-
-  color:
-    #a32b31;
-
-  background:
-    #fff2f3;
-
-  text-align:
-    center;
-
-  line-height:
-    1.5;
-
+.error{
+  padding:28px;
+  border:1px solid #efc8cb;
+  border-radius:15px;
+  color:#a32b31;
+  background:#fff2f3;
+  text-align:center;
+  line-height:1.5;
 }
 
-
-.note {
-
-  max-width:
-    900px;
-
-  margin:
-    20px
-    auto
-    0;
-
-  color:
-    var(--muted);
-
-  text-align:
-    center;
-
-  font-size:
-    .8rem;
-
-  line-height:
-    1.5;
-
-}
-
-
-@media(max-width:1100px) {
-
-  .group-grid {
-
-    grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
-
+@media(max-width:1100px){
+  .explanation-grid{
+    grid-template-columns:1fr;
   }
 
-
-  .votes-grid {
-
-    grid-template-columns:
-      repeat(
-        3,
-        1fr
-      );
-
+  .group-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-
-  .filters {
-
-    grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
-
+  .votes-grid{
+    grid-template-columns:repeat(3,1fr);
   }
 
+  .filters{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
-
-@media(max-width:760px) {
-
+@media(max-width:760px){
   .info-grid,
   .group-grid,
   .votes-grid,
-  .filters {
-
-    grid-template-columns:
-      1fr;
-
+  .filters{
+    grid-template-columns:1fr;
   }
 
-
-  .panel {
-
-    padding:
-      18px;
-
+  .panel{
+    padding:18px;
   }
 
-
-  .meta-row {
-
-    flex-direction:
-      column;
-
+  .meta-row{
+    flex-direction:column;
   }
 
-
-  .meta-row span:last-child {
-
-    text-align:
-      left;
-
+  .meta-row span:last-child{
+    text-align:left;
   }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <header class="hero">
 
-<div class="hero-inner">
+  <div class="hero-inner">
 
-  <div class="top-links">
+    <div class="top-links">
+      <a
+        id="homeLink"
+        href="./index.html"
+      >
+        ← Accueil
+      </a>
+    </div>
+
+    <div class="kicker">
+      Scrutin de l'Assemblée nationale
+    </div>
+
+    <h1 id="pageTitle">
+      Chargement…
+    </h1>
+
+    <p id="pageSubtitle">
+      Recherche du scrutin…
+    </p>
+
+  </div>
+
+</header>
+
+<main id="main">
+
+<section class="panel">
+
+  <h2>
+    Comprendre ce vote
+  </h2>
+
+  <p class="intro">
+    L'objectif est de distinguer le sujet politique du jargon de procédure parlementaire.
+  </p>
+
+  <div class="explanation-grid">
+
+    <div class="explain-card primary">
+
+      <div class="explain-label">
+        En clair
+      </div>
+
+      <p
+        class="explain-text"
+        id="plainExplanation"
+      >
+        Chargement…
+      </p>
+
+    </div>
+
+    <div class="explain-card vote">
+
+      <div class="explain-label">
+        Ce qui était voté
+      </div>
+
+      <p
+        class="explain-text"
+        id="voteMeaning"
+      >
+        Chargement…
+      </p>
+
+    </div>
+
+  </div>
+
+  <details class="official-details">
+
+    <summary>
+      Afficher le libellé officiel
+    </summary>
+
+    <div
+      class="official-text"
+      id="officialText"
+    >
+      —
+    </div>
+
+  </details>
+
+  <div class="source-row">
 
     <a
-      id="homeLink"
-      href="./index.html"
+      id="officialSource"
+      class="source-link"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      hidden
     >
-      ← Accueil
+      Voir le scrutin officiel ↗
     </a>
 
   </div>
 
+  <p
+    class="method-note"
+    id="methodNote"
+  ></p>
 
-  <div class="kicker">
+</section>
 
-    Scrutin de l'Assemblée nationale
-
-  </div>
-
-
-  <h1 id="pageTitle">
-
-    Chargement…
-
-  </h1>
-
-
-  <p id="pageSubtitle">
-
-    Recherche du scrutin…
-
-  </p>
-
-</div>
-
-</header>
-
-
-<main id="main">
-
-
-<section
-  class="panel"
-  id="summaryPanel"
->
+<section class="panel">
 
   <div class="info-grid">
-
 
     <div class="info-box">
 
@@ -1168,72 +677,41 @@ main {
         Résumé du scrutin
       </h2>
 
-
       <div class="meta-grid">
 
         <div class="meta-row">
-
-          <strong>
-            Date
-          </strong>
-
-          <span id="date">
-            —
-          </span>
-
+          <strong>Date</strong>
+          <span id="date">—</span>
         </div>
 
-
         <div class="meta-row">
-
-          <strong>
-            Thématique
-          </strong>
-
-          <span id="theme">
-            —
-          </span>
-
+          <strong>Thématique</strong>
+          <span id="theme">—</span>
         </div>
 
-
         <div class="meta-row">
-
-          <strong>
-            N° du scrutin
-          </strong>
-
-          <span id="numero">
-            —
-          </span>
-
+          <strong>N° du scrutin</strong>
+          <span id="numero">—</span>
         </div>
 
-
         <div class="meta-row">
-
-          <strong>
-            Votes recensés
-          </strong>
-
-          <span id="totalVotes">
-            —
-          </span>
-
+          <strong>Votes recensés</strong>
+          <span id="totalVotes">—</span>
         </div>
 
       </div>
 
+      <div style="text-align:center">
 
-      <div
-        class="description"
-        id="description"
-      >
-        —
+        <span
+          class="result-badge"
+          id="resultBadge"
+          hidden
+        ></span>
+
       </div>
 
     </div>
-
 
     <div class="stats-box">
 
@@ -1241,58 +719,26 @@ main {
         Répartition
       </h2>
 
-
       <div class="stats">
 
         <div class="stat">
-
-          <strong id="pour">
-            0
-          </strong>
-
-          <span>
-            Pour
-          </span>
-
+          <strong id="pour">0</strong>
+          <span>Pour</span>
         </div>
 
-
         <div class="stat">
-
-          <strong id="contre">
-            0
-          </strong>
-
-          <span>
-            Contre
-          </span>
-
+          <strong id="contre">0</strong>
+          <span>Contre</span>
         </div>
 
-
         <div class="stat">
-
-          <strong id="abstention">
-            0
-          </strong>
-
-          <span>
-            Abstention
-          </span>
-
+          <strong id="abstention">0</strong>
+          <span>Abstention</span>
         </div>
 
-
         <div class="stat">
-
-          <strong id="nonVotant">
-            0
-          </strong>
-
-          <span>
-            Non-votant
-          </span>
-
+          <strong id="nonVotant">0</strong>
+          <span>Non-votant</span>
         </div>
 
       </div>
@@ -1303,75 +749,50 @@ main {
 
 </section>
 
-
-<section
-  class="panel"
-  id="groupsPanel"
->
+<section class="panel">
 
   <h2>
     Comment ont voté les groupes ?
   </h2>
 
-
   <p class="intro">
-
-    Position dominante des députés de chaque groupe
-    mentionnés dans ce scrutin.
-
+    Position dominante des députés de chaque groupe mentionnés dans ce scrutin.
   </p>
-
 
   <div
     id="groupsGrid"
     class="group-grid"
   >
-
     <div class="loading">
       Chargement…
     </div>
-
   </div>
 
 </section>
 
-
-<section
-  class="panel"
-  id="nominativePanel"
->
+<section class="panel">
 
   <h2>
     Votes nominatifs
   </h2>
 
-
   <p class="intro">
-
-    Retrouvez les députés dont le vote est mentionné
-    dans le compte rendu de ce scrutin.
-
+    Retrouvez les députés dont le vote est mentionné dans le scrutin officiel.
   </p>
-
 
   <div
     id="nominativeStatus"
     class="loading"
   >
-
     Chargement des votes nominatifs…
-
   </div>
-
 
   <div
     id="nominativeContent"
     hidden
   >
 
-
     <div class="filters">
-
 
       <div class="field">
 
@@ -1405,7 +826,6 @@ main {
 
       </div>
 
-
       <div class="field">
 
         <label for="groupFilter">
@@ -1413,15 +833,12 @@ main {
         </label>
 
         <select id="groupFilter">
-
           <option value="">
             Tous les groupes
           </option>
-
         </select>
 
       </div>
-
 
       <div class="field">
 
@@ -1430,15 +847,12 @@ main {
         </label>
 
         <select id="departmentFilter">
-
           <option value="">
             Tous les départements
           </option>
-
         </select>
 
       </div>
-
 
       <div class="field">
 
@@ -1456,35 +870,21 @@ main {
 
     </div>
 
-
     <div
       id="resultInfo"
       class="result-info"
     ></div>
-
 
     <div
       id="votesGrid"
       class="votes-grid"
     ></div>
 
-
-    <p class="note">
-
-      Les données nominatives indiquent les députés
-      mentionnés dans le scrutin officiel.
-      L'absence d'un nom dans cette liste ne permet pas,
-      à elle seule, de conclure à une absence à l'Assemblée.
-
-    </p>
-
   </div>
 
 </section>
 
-
 </main>
-
 
 <script>
 
@@ -1500,26 +900,20 @@ const ROOT =
 let indexData =
   null;
 
-
 let deputiesData =
   null;
-
 
 let deputyMap =
   new Map();
 
-
 let scrutin =
   null;
-
 
 let scrutinUid =
   "";
 
-
 let selectedYear =
   "";
-
 
 let nominativeVotes =
   [];
@@ -1532,28 +926,19 @@ const $ =
     );
 
 
-function getParam(
-  name
-) {
-
-  return (
+const getParam =
+  name =>
     new URLSearchParams(
-      window.location.search
+      location.search
     )
     .get(
       name
     )
-    || ""
-  );
-
-}
+    || "";
 
 
-function fmt(
-  value
-) {
-
-  return (
+const fmt =
+  value =>
     new Intl.NumberFormat(
       "fr-FR"
     )
@@ -1561,10 +946,7 @@ function fmt(
       Number(
         value || 0
       )
-    )
-  );
-
-}
+    );
 
 
 function normalize(
@@ -1626,7 +1008,9 @@ function formatDate(
   value
 ) {
 
-  if (!value) {
+  if (
+    !value
+  ) {
 
     return "—";
 
@@ -1654,14 +1038,9 @@ function formatDate(
     new Intl.DateTimeFormat(
       "fr-FR",
       {
-        day:
-          "numeric",
-
-        month:
-          "long",
-
-        year:
-          "numeric"
+        day:"numeric",
+        month:"long",
+        year:"numeric"
       }
     )
     .format(
@@ -1758,8 +1137,7 @@ async function loadJson(
     await fetch(
       path,
       {
-        cache:
-          "no-store"
+        cache:"no-store"
       }
     );
 
@@ -1821,7 +1199,7 @@ function determineYear() {
   }
 
 
-  const defaultYear =
+  const fallback =
     String(
       indexData
         ?.default_year
@@ -1830,14 +1208,14 @@ function determineYear() {
 
 
   if (
-    defaultYear
+    fallback
     &&
     years.includes(
-      defaultYear
+      fallback
     )
   ) {
 
-    return defaultYear;
+    return fallback;
 
   }
 
@@ -1864,14 +1242,6 @@ function getMonthsForYear(
 
 }
 
-
-/*
- * Recherche le scrutin dans les fichiers mensuels.
- *
- * Promise.allSettled est utilisé volontairement :
- * si un mois manque temporairement,
- * les autres fichiers continuent à fonctionner.
- */
 
 async function searchScrutinInYear(
   year
@@ -1942,14 +1312,13 @@ async function searchScrutinInYear(
     }
 
 
-    const rows =
-      result.value
-        ?.scrutins
-      || [];
-
-
     const found =
-      rows.find(
+      (
+        result.value
+          ?.scrutins
+        || []
+      )
+      .find(
         row =>
           row.uid
           ===
@@ -1993,11 +1362,6 @@ async function findScrutin() {
 
   }
 
-
-  /*
-   * Si l'année présente dans l'URL est erronée,
-   * on cherche dans les autres années disponibles.
-   */
 
   for (
     const year
@@ -2086,6 +1450,237 @@ function buildDeputyMap() {
 }
 
 
+function fallbackExplanation() {
+
+  const title =
+    (
+      scrutin
+        ?.titre_officiel
+
+      ||
+
+      scrutin
+        ?.description
+
+      ||
+
+      scrutin
+        ?.titre
+
+      ||
+
+      ""
+    )
+    .toLowerCase();
+
+
+  if (
+    title.includes(
+      "motion de censure"
+    )
+  ) {
+
+    return {
+
+      plain:
+        "Ce vote porte sur une motion de censure, c'est-à-dire sur la mise en cause de la responsabilité du Gouvernement devant l'Assemblée nationale.",
+
+      meaning:
+        "Un vote Pour soutient la motion de censure. Un vote Contre s'y oppose."
+
+    };
+
+  }
+
+
+  if (
+    title.includes(
+      "l'ensemble de"
+    )
+    ||
+    title.includes(
+      "sur l'ensemble"
+    )
+  ) {
+
+    return {
+
+      plain:
+        "Il s'agit d'un vote sur l'ensemble du texte : les députés ne se prononcent donc pas sur une seule disposition isolée.",
+
+      meaning:
+        "Un vote Pour approuve cette version du texte dans son ensemble. Un vote Contre la rejette."
+
+    };
+
+  }
+
+
+  if (
+    title.includes(
+      "amendement"
+    )
+  ) {
+
+    return {
+
+      plain:
+        "Ce scrutin porte sur un amendement, c'est-à-dire sur une proposition de modification du texte en cours d'examen.",
+
+      meaning:
+        "Un vote Pour adopte la modification proposée. Un vote Contre la rejette."
+
+    };
+
+  }
+
+
+  if (
+    title.includes(
+      "article"
+    )
+  ) {
+
+    return {
+
+      plain:
+        "Ce scrutin porte sur un article précis du texte, et non sur le texte dans son ensemble.",
+
+      meaning:
+        "Un vote Pour approuve l'article dans la rédaction soumise au vote. Un vote Contre le rejette."
+
+    };
+
+  }
+
+
+  return {
+
+    plain:
+      "Ce scrutin porte sur l'objet parlementaire indiqué par son libellé officiel.",
+
+    meaning:
+      "Un vote Pour approuve l'objet soumis au scrutin. Un vote Contre s'y oppose."
+
+  };
+
+}
+
+
+function renderExplanation() {
+
+  const fallback =
+    fallbackExplanation();
+
+
+  $(
+    "plainExplanation"
+  ).textContent =
+
+    scrutin
+      ?.en_clair
+
+    ||
+
+    fallback.plain;
+
+
+  $(
+    "voteMeaning"
+  ).textContent =
+
+    scrutin
+      ?.ce_qui_etait_vote
+
+    ||
+
+    fallback.meaning;
+
+
+  $(
+    "officialText"
+  ).textContent =
+
+    scrutin
+      ?.titre_officiel
+
+    ||
+
+    scrutin
+      ?.description
+
+    ||
+
+    scrutin
+      ?.titre
+
+    ||
+
+    "Libellé officiel non disponible.";
+
+
+  const source =
+
+    scrutin
+      ?.source_url
+
+    ||
+
+    (
+      scrutin
+        ?.numero
+
+      ?
+
+      `https://www.assemblee-nationale.fr/dyn/17/scrutins/${encodeURIComponent(scrutin.numero)}`
+
+      :
+
+      ""
+    );
+
+
+  if (
+    source
+  ) {
+
+    $(
+      "officialSource"
+    ).href =
+      source;
+
+
+    $(
+      "officialSource"
+    ).hidden =
+      false;
+
+  }
+
+  else {
+
+    $(
+      "officialSource"
+    ).hidden =
+      true;
+
+  }
+
+
+  $(
+    "methodNote"
+  ).textContent =
+
+    scrutin
+      ?.precision_explication
+
+    ||
+
+    "L'explication distingue la mécanique du vote de son libellé officiel et évite d'ajouter des mesures qui ne figurent pas dans les données sources.";
+
+}
+
+
 function renderSummary() {
 
   const stats =
@@ -2098,7 +1693,9 @@ function renderSummary() {
     `${scrutin?.sujet || "Scrutin"} — Assemblée nationale`;
 
 
-  $("pageTitle").textContent =
+  $(
+    "pageTitle"
+  ).textContent =
 
     scrutin
       ?.sujet
@@ -2118,26 +1715,34 @@ function renderSummary() {
     "Scrutin";
 
 
-  $("pageSubtitle").textContent =
+  $(
+    "pageSubtitle"
+  ).textContent =
 
     `${formatDate(scrutin?.date)} · ${scrutin?.theme || "Autres"}`;
 
 
-  $("date").textContent =
+  $(
+    "date"
+  ).textContent =
     formatDate(
       scrutin
         ?.date
     );
 
 
-  $("theme").textContent =
+  $(
+    "theme"
+  ).textContent =
     scrutin
       ?.theme
     ||
     "Autres";
 
 
-  $("numero").textContent =
+  $(
+    "numero"
+  ).textContent =
 
     scrutin
       ?.numero
@@ -2151,58 +1756,95 @@ function renderSummary() {
     scrutinUid;
 
 
-  $("totalVotes").textContent =
+  $(
+    "totalVotes"
+  ).textContent =
     fmt(
       stats.total_votes
     );
 
 
-  $("pour").textContent =
+  $(
+    "pour"
+  ).textContent =
     fmt(
       stats.pour
     );
 
 
-  $("contre").textContent =
+  $(
+    "contre"
+  ).textContent =
     fmt(
       stats.contre
     );
 
 
-  $("abstention").textContent =
+  $(
+    "abstention"
+  ).textContent =
     fmt(
       stats.abstention
     );
 
 
-  $("nonVotant").textContent =
+  $(
+    "nonVotant"
+  ).textContent =
     fmt(
       stats.non_votant
     );
 
 
-  $("description").textContent =
+  const result =
 
     scrutin
-      ?.description
+      ?.resultat_libelle
 
     ||
 
     scrutin
-      ?.titre_officiel
+      ?.resultat_code
 
     ||
 
-    scrutin
-      ?.titre
-
-    ||
-
-    "Aucune description disponible.";
+    "";
 
 
-  $("homeLink").href =
+  if (
+    result
+  ) {
+
+    $(
+      "resultBadge"
+    ).textContent =
+      result;
+
+
+    $(
+      "resultBadge"
+    ).hidden =
+      false;
+
+  }
+
+  else {
+
+    $(
+      "resultBadge"
+    ).hidden =
+      true;
+
+  }
+
+
+  $(
+    "homeLink"
+  ).href =
     `./index.html?year=${encodeURIComponent(selectedYear)}`;
+
+
+  renderExplanation();
 
 }
 
@@ -2246,7 +1888,9 @@ function renderGroups() {
     !groups.length
   ) {
 
-    $("groupsGrid").innerHTML =
+    $(
+      "groupsGrid"
+    ).innerHTML =
 
       `
         <div class="empty">
@@ -2260,7 +1904,9 @@ function renderGroups() {
   }
 
 
-  $("groupsGrid").innerHTML =
+  $(
+    "groupsGrid"
+  ).innerHTML =
 
     groups.map(
       group => {
@@ -2288,18 +1934,14 @@ function renderGroups() {
           >
 
             <div class="group-name">
-
               ${escapeHtml(group.groupe || "Groupe")}
-
             </div>
 
 
             <span
               class="position ${positionClass(position)}"
             >
-
               ${escapeHtml(position)}
-
             </span>
 
 
@@ -2347,25 +1989,6 @@ function renderGroups() {
 }
 
 
-/*
- * Lecture du fichier compact V4.1 :
- *
- * {
- *   "groupes":[...],
- *   "scrutins":{
- *      "VTANR...":[
- *          ["PA123","P",4],
- *          ...
- *      ]
- *   }
- * }
- *
- * P = Pour
- * C = Contre
- * A = Abstention
- * N = Non-votant
- */
-
 async function loadNominativeVotes() {
 
   const month =
@@ -2391,26 +2014,16 @@ async function loadNominativeVotes() {
   }
 
 
-  const path =
-    `${ROOT}scrutin_votes/${month}.json`;
-
-
   const payload =
     await loadJson(
-      path
+      `${ROOT}scrutin_votes/${month}.json`
     );
 
 
-  const allScrutins =
+  const rows =
     payload
       ?.scrutins
-    || {};
-
-
-  const rows =
-    allScrutins[
-      scrutinUid
-    ];
+      ?.[scrutinUid];
 
 
   if (
@@ -2427,13 +2040,18 @@ async function loadNominativeVotes() {
 
 
   const groups =
+
     Array.isArray(
       payload
         ?.groupes
     )
+
     ?
+
     payload.groupes
+
     :
+
     [];
 
 
@@ -2455,174 +2073,55 @@ async function loadNominativeVotes() {
 
 
   nominativeVotes =
+
     rows.map(
       row => {
 
-
-        /*
-         * Format compact actuel :
-         * [depute_uid, code_vote, index_groupe]
-         */
-
-        if (
-          Array.isArray(
-            row
-          )
-        ) {
-
-          const deputyUid =
-            row[0]
-            || "";
-
-
-          const vote =
-            voteCodes[
-              row[1]
-            ]
-            ||
-            row[1]
-            ||
-            "Non-votant";
-
-
-          const groupIndex =
-            Number(
-              row[2]
-            );
-
-
-          const group =
-            Number.isInteger(
-              groupIndex
-            )
-
-            ?
-
-            (
-              groups[
-                groupIndex
-              ]
-              ||
-              "Inconnu"
-            )
-
-            :
-
-            "Inconnu";
-
-
-          const deputy =
-            deputyMap.get(
-              deputyUid
-            )
-            ||
-            {};
-
-
-          return {
-
-            depute_uid:
-              deputyUid,
-
-            nom:
-              deputy.nom
-              ||
-              deputyUid,
-
-            vote:
-              vote,
-
-            groupe:
-              group,
-
-            departement:
-              deputy.departement
-              ||
-              "",
-
-            circonscription:
-              deputy.circonscription
-              ||
-              ""
-
-          };
-
-        }
-
-
-        /*
-         * Compatibilité avec un éventuel format objet.
-         */
-
         const deputyUid =
-
-          row.depute_uid
-
-          ||
-
-          row.uid
-
-          ||
-
-          row.u
-
-          ||
-
-          "";
+          row[0]
+          || "";
 
 
-        let vote =
+        const vote =
 
-          row.vote
+          voteCodes[
+            row[1]
+          ]
 
           ||
 
-          row.v
+          row[1]
 
           ||
 
           "Non-votant";
 
 
-        vote =
-          voteCodes[
-            vote
-          ]
-          ||
-          vote;
+        const groupIndex =
+          Number(
+            row[2]
+          );
 
 
-        let group =
+        const group =
 
-          row.groupe
+          Number.isInteger(
+            groupIndex
+          )
 
-          ||
+          ?
 
-          row.groupe_au_vote
-
-          ||
-
-          row.g
-
-          ||
-
-          "Inconnu";
-
-
-        if (
-          typeof group
-          ===
-          "number"
-        ) {
-
-          group =
+          (
             groups[
-              group
+              groupIndex
             ]
             ||
-            "Inconnu";
+            "Inconnu"
+          )
 
-        }
+          :
+
+          "Inconnu";
 
 
         const deputy =
@@ -2662,15 +2161,8 @@ async function loadNominativeVotes() {
         };
 
       }
-    );
-
-
-  /*
-   * On retire seulement les lignes complètement inutilisables.
-   */
-
-  nominativeVotes =
-    nominativeVotes.filter(
+    )
+    .filter(
       vote =>
         vote.depute_uid
     );
@@ -2736,7 +2228,9 @@ function renderFilterOptions() {
     );
 
 
-  $("groupFilter").innerHTML =
+  $(
+    "groupFilter"
+  ).innerHTML =
 
     `
       <option value="">
@@ -2759,7 +2253,9 @@ function renderFilterOptions() {
     .join("");
 
 
-  $("departmentFilter").innerHTML =
+  $(
+    "departmentFilter"
+  ).innerHTML =
 
     `
       <option value="">
@@ -2787,20 +2283,28 @@ function renderFilterOptions() {
 function renderNominativeVotes() {
 
   const wantedVote =
-    $("voteFilter").value;
+    $(
+      "voteFilter"
+    ).value;
 
 
   const wantedGroup =
-    $("groupFilter").value;
+    $(
+      "groupFilter"
+    ).value;
 
 
   const wantedDepartment =
-    $("departmentFilter").value;
+    $(
+      "departmentFilter"
+    ).value;
 
 
   const wantedName =
     normalize(
-      $("nameFilter").value
+      $(
+        "nameFilter"
+      ).value
     );
 
 
@@ -2809,74 +2313,49 @@ function renderNominativeVotes() {
     nominativeVotes
 
     .filter(
-      vote => {
+      vote =>
 
-        const voteOk =
-
+        (
           !wantedVote
-
           ||
-
           vote.vote
           ===
-          wantedVote;
+          wantedVote
+        )
 
+        &&
 
-        const groupOk =
-
+        (
           !wantedGroup
-
           ||
-
           vote.groupe
           ===
-          wantedGroup;
+          wantedGroup
+        )
 
+        &&
 
-        const departmentOk =
-
+        (
           !wantedDepartment
-
           ||
-
           vote.departement
           ===
-          wantedDepartment;
+          wantedDepartment
+        )
 
+        &&
 
-        const nameOk =
-
+        (
           !wantedName
-
           ||
-
           normalize(
             vote.nom
           )
           .includes(
             wantedName
-          );
+          )
+        )
 
-
-        return (
-
-          voteOk
-
-          &&
-
-          groupOk
-
-          &&
-
-          departmentOk
-
-          &&
-
-          nameOk
-
-        );
-
-      }
     )
 
     .sort(
@@ -2896,7 +2375,9 @@ function renderNominativeVotes() {
     );
 
 
-  $("resultInfo").textContent =
+  $(
+    "resultInfo"
+  ).textContent =
 
     `${fmt(filtered.length)} vote(s) affiché(s) sur ${fmt(nominativeVotes.length)}.`;
 
@@ -2905,13 +2386,13 @@ function renderNominativeVotes() {
     !filtered.length
   ) {
 
-    $("votesGrid").innerHTML =
+    $(
+      "votesGrid"
+    ).innerHTML =
 
       `
         <div class="empty">
-
           Aucun vote ne correspond aux filtres choisis.
-
         </div>
       `;
 
@@ -2921,21 +2402,18 @@ function renderNominativeVotes() {
   }
 
 
-  $("votesGrid").innerHTML =
+  $(
+    "votesGrid"
+  ).innerHTML =
 
     filtered.map(
       vote => {
 
-
-        const deputyExists =
-          deputyMap.has(
-            vote.depute_uid
-          );
-
-
         const href =
 
-          deputyExists
+          deputyMap.has(
+            vote.depute_uid
+          )
 
           ?
 
@@ -2961,16 +2439,12 @@ function renderNominativeVotes() {
             <span
               class="vote-badge ${voteClass(vote.vote)}"
             >
-
               ${escapeHtml(vote.vote)}
-
             </span>
 
 
             <div class="vote-meta">
-
               ${escapeHtml(vote.groupe || "—")}
-
             </div>
 
 
@@ -3008,7 +2482,6 @@ function bindFilters() {
   .forEach(
     id => {
 
-
       $(
         id
       )
@@ -3032,28 +2505,22 @@ function bindFilters() {
 }
 
 
-/*
- * IMPORTANT :
- *
- * cette fonction possède son propre try/catch.
- *
- * Une panne ou un fichier nominatif manquant
- * NE PEUT DONC PLUS casser la fiche entière.
- */
-
 async function initNominativeSection() {
 
   try {
 
-
     await loadNominativeVotes();
 
 
-    $("nominativeStatus").hidden =
+    $(
+      "nominativeStatus"
+    ).hidden =
       true;
 
 
-    $("nominativeContent").hidden =
+    $(
+      "nominativeContent"
+    ).hidden =
       false;
 
 
@@ -3063,13 +2530,11 @@ async function initNominativeSection() {
 
     bindFilters();
 
-
   }
 
   catch(
     error
   ) {
-
 
     console.error(
       "Votes nominatifs :",
@@ -3077,19 +2542,27 @@ async function initNominativeSection() {
     );
 
 
-    $("nominativeContent").hidden =
+    $(
+      "nominativeContent"
+    ).hidden =
       true;
 
 
-    $("nominativeStatus").hidden =
+    $(
+      "nominativeStatus"
+    ).hidden =
       false;
 
 
-    $("nominativeStatus").className =
+    $(
+      "nominativeStatus"
+    ).className =
       "warning";
 
 
-    $("nominativeStatus").innerHTML =
+    $(
+      "nominativeStatus"
+    ).innerHTML =
 
       `
         Le résumé du scrutin et les résultats par groupe sont disponibles,
@@ -3111,15 +2584,15 @@ function showMainError(
   message
 ) {
 
-  $("main").innerHTML =
+  $(
+    "main"
+  ).innerHTML =
 
     `
       <section class="panel">
 
         <div class="error">
-
           ${escapeHtml(message)}
-
         </div>
 
       </section>
@@ -3128,18 +2601,9 @@ function showMainError(
 }
 
 
-/*
- * INITIALISATION GÉNÉRALE
- *
- * Seules les données indispensables
- * (index + scrutin) peuvent provoquer
- * l'erreur générale.
- */
-
 async function init() {
 
   try {
-
 
     scrutinUid =
       getParam(
@@ -3157,14 +2621,6 @@ async function init() {
 
     }
 
-
-    /*
-     * deputies.json n'est pas indispensable
-     * au résumé du scrutin.
-     *
-     * On le charge quand même ici,
-     * mais une erreur est tolérée.
-     */
 
     const results =
       await Promise.allSettled([
@@ -3219,12 +2675,6 @@ async function init() {
       deputyMap =
         new Map();
 
-
-      console.warn(
-        "deputes.json indisponible :",
-        results[1].reason
-      );
-
     }
 
 
@@ -3242,33 +2692,18 @@ async function init() {
     }
 
 
-    /*
-     * À partir d'ici :
-     *
-     * la fiche principale est affichée.
-     */
-
     renderSummary();
 
     renderGroups();
 
 
-    /*
-     * Chargement séparé.
-     *
-     * Une erreur ici ne casse plus
-     * le reste de la page.
-     */
-
     await initNominativeSection();
-
 
   }
 
   catch(
     error
   ) {
-
 
     console.error(
       error
@@ -3278,7 +2713,9 @@ async function init() {
     showMainError(
 
       "Impossible de charger ce scrutin. "
+
       +
+
       (
         error
           ?.message
@@ -3300,7 +2737,5 @@ init();
 
 </script>
 
-
 </body>
-
 </html>
