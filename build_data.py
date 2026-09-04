@@ -241,6 +241,12 @@ def public_scrutin_summary(scrutin):
         "titre": truncate(scrutin.get("titre"), 350),
         "titre_officiel": truncate(scrutin.get("titre_officiel"), 350),
         "description": truncate(scrutin.get("description"), 700),
+        "en_clair": truncate(scrutin.get("en_clair"), 1200),
+        "ce_qui_etait_vote": truncate(scrutin.get("ce_qui_etait_vote"), 1000),
+        "precision_explication": scrutin.get("precision_explication", ""),
+        "source_url": scrutin.get("source_url", ""),
+        "resultat_code": scrutin.get("resultat_code", ""),
+        "resultat_libelle": scrutin.get("resultat_libelle", ""),
         "theme": scrutin.get("theme"),
         "stats": scrutin.get("stats", {}),
         "groupes_summary": scrutin.get("groupes_summary", []),
@@ -871,6 +877,450 @@ def make_subject(official_title, description):
     return truncate(readable or "Scrutin", 170)
 
 
+
+def strip_scrutin_boilerplate(text):
+    """
+    Retire seulement le jargon de présentation du scrutin.
+    Ne réécrit pas le fond politique du texte.
+    """
+    value = clean(text)
+
+    value = re.sub(
+        r"^\s*scrutin public(?:\s+n[°º]?\s*\d+)?\s+sur\s+",
+        "",
+        value,
+        flags=re.I,
+    )
+
+    value = re.sub(
+        r"^\s*vote\s+sur\s+",
+        "",
+        value,
+        flags=re.I,
+    )
+
+    value = value.strip(" .")
+
+    return value
+
+
+def extract_text_goal(text):
+    """
+    Extrait uniquement un objectif explicitement présent dans le libellé officiel.
+    Exemple :
+      'proposition de loi visant à moderniser ...'
+      -> 'moderniser ...'
+
+    Aucune mesure n'est inventée.
+    """
+    value = strip_scrutin_boilerplate(text)
+
+    patterns = [
+        r"\bvisant\s+à\s+(.+?)(?:\s*\([^)]*\)\s*$|$)",
+        r"\bvisant\s+au\s+(.+?)(?:\s*\([^)]*\)\s*$|$)",
+        r"\brelative?\s+à\s+(.+?)(?:\s*\([^)]*\)\s*$|$)",
+        r"\brelative?\s+au\s+(.+?)(?:\s*\([^)]*\)\s*$|$)",
+        r"\bportant\s+(.+?)(?:\s*\([^)]*\)\s*$|$)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, value, flags=re.I)
+        if match:
+            goal = clean(match.group(1)).strip(" .")
+            if goal:
+                return truncate(goal, 350)
+
+    return ""
+
+
+def extract_legislative_context_long(text):
+    """
+    Version plus longue du contexte législatif, destinée à la fiche scrutin.
+    """
+    value = strip_scrutin_boilerplate(text)
+
+    patterns = [
+        r"((?:projet|proposition)\s+de\s+loi\s+de\s+financement\s+de\s+la\s+sécurité\s+sociale.+)",
+        r"((?:projet|proposition)\s+de\s+loi\s+de\s+finances.+)",
+        r"((?:projet|proposition)\s+de\s+loi.+)",
+        r"(proposition\s+de\s+résolution.+)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, value, flags=re.I)
+        if match:
+            return truncate(clean(match.group(1)).strip(" ."), 500)
+
+    return ""
+
+
+def make_plain_explanation(official_title, description, numero):
+    """
+    Produit deux niveaux de lecture :
+
+      en_clair
+        -> explique la nature et le contexte du vote.
+
+      ce_qui_etait_vote
+        -> explique concrètement ce que signifiaient Pour / Contre.
+
+    Règle éditoriale :
+    nous ne déduisons jamais une mesure politique absente du libellé officiel.
+    Quand le contenu précis d'un amendement n'est pas présent dans les données
+    de scrutin, nous le disons au lieu de l'inventer.
+    """
+    official_title = clean(official_title)
+    description = clean(description)
+
+    source = description or official_title
+    readable = strip_scrutin_boilerplate(source)
+    lower = readable.lower()
+
+    context = extract_legislative_context_long(readable)
+    goal = extract_text_goal(readable)
+
+    source_url = (
+        f"https://www.assemblee-nationale.fr/dyn/"
+        f"{LEGISLATURE}/scrutins/{clean(numero)}"
+        if clean(numero)
+        else ""
+    )
+
+    precision = (
+        "Explication générée à partir du libellé officiel du scrutin. "
+        "Aucune mesure absente de ce libellé n'est ajoutée."
+    )
+
+    # ------------------------------------------------------------
+    # MOTION DE CENSURE
+    # ------------------------------------------------------------
+    if "motion de censure" in lower:
+        en_clair = (
+            "Ce vote porte sur une motion de censure, c'est-à-dire sur la "
+            "mise en cause de la responsabilité du Gouvernement devant "
+            "l'Assemblée nationale."
+        )
+
+        ce_vote = (
+            "Un vote Pour soutient la motion de censure. "
+            "Un vote Contre s'y oppose. "
+            "Si la motion est adoptée dans les conditions prévues par la "
+            "Constitution, le Gouvernement doit remettre sa démission."
+        )
+
+        return {
+            "en_clair": en_clair,
+            "ce_qui_etait_vote": ce_vote,
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # MOTION DE REJET PRÉALABLE
+    # ------------------------------------------------------------
+    if "motion de rejet préalable" in lower:
+        subject = context or readable
+
+        en_clair = (
+            "Il ne s'agit pas d'un vote article par article : les députés "
+            "se prononcent sur une motion de rejet préalable concernant "
+            f"{subject}."
+        )
+
+        ce_vote = (
+            "Un vote Pour soutient le rejet préalable et vise à arrêter "
+            "l'examen du texte à ce stade. "
+            "Un vote Contre rejette cette motion et permet la poursuite "
+            "de l'examen."
+        )
+
+        return {
+            "en_clair": truncate(en_clair, 1000),
+            "ce_qui_etait_vote": ce_vote,
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # RENVOI EN COMMISSION
+    # ------------------------------------------------------------
+    if "motion de renvoi en commission" in lower or "renvoi en commission" in lower:
+        subject = context or readable
+
+        en_clair = (
+            "Ce scrutin porte sur le renvoi du texte en commission, "
+            f"dans le cadre de {subject}."
+        )
+
+        ce_vote = (
+            "Un vote Pour demande le renvoi du texte en commission avant "
+            "la poursuite de son examen en séance. "
+            "Un vote Contre s'oppose à ce renvoi."
+        )
+
+        return {
+            "en_clair": truncate(en_clair, 1000),
+            "ce_qui_etait_vote": ce_vote,
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # VOTE SUR L'ENSEMBLE D'UN TEXTE
+    # ------------------------------------------------------------
+    whole_text = re.search(
+        r"(?:sur\s+)?l['’]ensemble\s+de\s+(.+)",
+        readable,
+        flags=re.I,
+    )
+
+    if whole_text:
+        subject = clean(whole_text.group(1)).strip(" .")
+
+        sentences = [
+            "Il s'agit d'un vote sur l'ensemble du texte : les députés "
+            "ne se prononcent donc pas sur une seule disposition isolée."
+        ]
+
+        if goal:
+            if re.match(r"^[a-zà-ÿ].*", goal, flags=re.I):
+                sentences.append(
+                    f"D'après son intitulé officiel, le texte a pour objet de {goal}."
+                )
+        elif subject:
+            sentences.append(
+                f"Le texte soumis au vote est : {subject}."
+            )
+
+        if "commission mixte paritaire" in lower:
+            sentences.append(
+                "La version soumise au vote est celle issue de la commission "
+                "mixte paritaire, c'est-à-dire du texte élaboré après recherche "
+                "d'un accord entre députés et sénateurs."
+            )
+        elif "nouvelle lecture" in lower:
+            sentences.append(
+                "Le vote intervient en nouvelle lecture, après une étape "
+                "antérieure de la navette parlementaire."
+            )
+        elif "deuxième lecture" in lower or "seconde lecture" in lower:
+            sentences.append(
+                "Le vote intervient en deuxième lecture du texte."
+            )
+        elif "première lecture" in lower:
+            sentences.append(
+                "Le vote intervient en première lecture du texte."
+            )
+
+        en_clair = " ".join(sentences)
+
+        ce_vote = (
+            "Un vote Pour approuve cette version du texte dans son ensemble. "
+            "Un vote Contre la rejette. "
+            "Une abstention signifie que le député ne choisit ni l'adoption "
+            "ni le rejet."
+        )
+
+        return {
+            "en_clair": truncate(en_clair, 1200),
+            "ce_qui_etait_vote": ce_vote,
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # SOUS-AMENDEMENT
+    # ------------------------------------------------------------
+    sub_amendment = re.search(
+        r"sous-amendement\s+n[°º]?\s*([0-9]+)",
+        readable,
+        flags=re.I,
+    )
+
+    if sub_amendment:
+        number = sub_amendment.group(1)
+
+        article = re.search(
+            r"(?:à|après|avant)\s+l['’]article\s+([0-9A-Za-zÀ-ÿ\-]+)",
+            readable,
+            flags=re.I,
+        )
+
+        location = (
+            f" autour de l'article {article.group(1)}"
+            if article
+            else ""
+        )
+
+        en_clair = (
+            f"Ce scrutin porte sur le sous-amendement n°{number}{location}. "
+            "Un sous-amendement propose de modifier un amendement déjà déposé, "
+            "et non directement l'ensemble du texte."
+        )
+
+        if context:
+            en_clair += f" Il s'inscrit dans l'examen de {context}."
+
+        ce_vote = (
+            "Un vote Pour adopte la modification proposée par ce sous-amendement. "
+            "Un vote Contre la rejette. "
+            "Le jeu de données des scrutins ne contient pas toujours le détail "
+            "matériel complet de cette modification : la source officielle "
+            "permet de vérifier le libellé parlementaire."
+        )
+
+        return {
+            "en_clair": truncate(en_clair, 1200),
+            "ce_qui_etait_vote": truncate(ce_vote, 1000),
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # AMENDEMENT
+    # ------------------------------------------------------------
+    amendment = re.search(
+        r"amendement(?:s)?\s+n[°º]?\s*([0-9]+)",
+        readable,
+        flags=re.I,
+    )
+
+    if amendment:
+        number = amendment.group(1)
+
+        article = re.search(
+            r"(?:à|après|avant)\s+l['’]article\s+([0-9A-Za-zÀ-ÿ\-]+)",
+            readable,
+            flags=re.I,
+        )
+
+        location = (
+            f" concernant l'article {article.group(1)}"
+            if article
+            else ""
+        )
+
+        if "suppression" in lower or "supprimer" in lower:
+            en_clair = (
+                f"Ce scrutin porte sur l'amendement n°{number}{location}. "
+                "Le libellé officiel indique qu'il s'agit d'une proposition "
+                "de suppression de la disposition visée."
+            )
+
+            ce_vote = (
+                "Un vote Pour adopte la suppression proposée. "
+                "Un vote Contre conserve la disposition telle qu'elle se "
+                "présente avant cet amendement."
+            )
+        else:
+            en_clair = (
+                f"Ce scrutin porte sur l'amendement n°{number}{location}. "
+                "Un amendement sert à modifier le texte en cours d'examen "
+                "sans valoir adoption ou rejet de l'ensemble du projet ou "
+                "de la proposition de loi."
+            )
+
+            if context:
+                en_clair += f" Il s'inscrit dans l'examen de {context}."
+
+            ce_vote = (
+                "Un vote Pour intègre la modification proposée par l'amendement "
+                "dans le texte à ce stade de la discussion. "
+                "Un vote Contre rejette cette modification. "
+                "Lorsque le détail de l'amendement n'est pas contenu dans le "
+                "jeu de scrutins, nous ne l'inventons pas."
+            )
+
+        return {
+            "en_clair": truncate(en_clair, 1200),
+            "ce_qui_etait_vote": truncate(ce_vote, 1000),
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # ARTICLE
+    # ------------------------------------------------------------
+    article = re.search(
+        r"(?:sur\s+)?l['’]article\s+([0-9A-Za-zÀ-ÿ\-]+)",
+        readable,
+        flags=re.I,
+    )
+
+    if article:
+        article_number = article.group(1)
+
+        en_clair = (
+            f"Ce scrutin porte spécifiquement sur l'article {article_number}, "
+            "et non sur l'ensemble du texte."
+        )
+
+        if context:
+            en_clair += f" Cet article fait partie de {context}."
+
+        ce_vote = (
+            f"Un vote Pour approuve l'article {article_number} dans la rédaction "
+            "soumise au vote à ce moment de l'examen. "
+            "Un vote Contre rejette cet article."
+        )
+
+        return {
+            "en_clair": truncate(en_clair, 1200),
+            "ce_qui_etait_vote": truncate(ce_vote, 1000),
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # DÉCLARATION / CONFIANCE
+    # ------------------------------------------------------------
+    if "confiance" in lower and "gouvernement" in lower:
+        en_clair = (
+            "Ce scrutin porte sur la confiance accordée au Gouvernement "
+            "dans le cadre indiqué par le libellé officiel."
+        )
+
+        ce_vote = (
+            "Un vote Pour accorde la confiance. "
+            "Un vote Contre la refuse."
+        )
+
+        return {
+            "en_clair": en_clair,
+            "ce_qui_etait_vote": ce_vote,
+            "precision_explication": precision,
+            "source_url": source_url,
+        }
+
+    # ------------------------------------------------------------
+    # CAS GÉNÉRAL, VOLONTAIREMENT PRUDENT
+    # ------------------------------------------------------------
+    en_clair = (
+        "Ce scrutin porte sur l'objet parlementaire décrit ci-dessous. "
+        "Le libellé officiel ne permet pas, à lui seul, d'expliquer de façon "
+        "fiable toutes les conséquences concrètes de la mesure sans consulter "
+        "le texte ou le dossier législatif associé."
+    )
+
+    if goal:
+        en_clair += f" Son objectif affiché est de {goal}."
+
+    ce_vote = (
+        "Un vote Pour approuve l'objet soumis au scrutin. "
+        "Un vote Contre s'y oppose. "
+        "La formulation officielle est conservée afin de pouvoir vérifier "
+        "précisément la portée du vote."
+    )
+
+    return {
+        "en_clair": truncate(en_clair, 1200),
+        "ce_qui_etait_vote": truncate(ce_vote, 1000),
+        "precision_explication": precision,
+        "source_url": source_url,
+    }
+
+
+
 def guess_theme(text):
     text = clean(text).lower()
 
@@ -1095,6 +1545,19 @@ def load_scrutins(current_deputies, organes, group_ref_to_label):
         subject = make_subject(official_title, description)
         theme = guess_theme(" ".join([official_title, description, subject]))
 
+        explanation = make_plain_explanation(
+            official_title,
+            description,
+            numero,
+        )
+
+        sort_node = scrutin.get("sort", {})
+        if not isinstance(sort_node, dict):
+            sort_node = {}
+
+        resultat_code = clean(sort_node.get("code"))
+        resultat_libelle = clean(sort_node.get("libelle"))
+
         ventilation = scrutin.get("ventilationVotes", {})
         if not isinstance(ventilation, dict):
             ventilation = {}
@@ -1216,6 +1679,12 @@ def load_scrutins(current_deputies, organes, group_ref_to_label):
             "titre": official_title,
             "titre_officiel": official_title,
             "description": description or official_title,
+            "en_clair": explanation["en_clair"],
+            "ce_qui_etait_vote": explanation["ce_qui_etait_vote"],
+            "precision_explication": explanation["precision_explication"],
+            "source_url": explanation["source_url"],
+            "resultat_code": resultat_code,
+            "resultat_libelle": resultat_libelle,
             "theme": theme,
             "stats": {
                 "pour": stats["pour"],
@@ -1831,7 +2300,7 @@ def build_index_file(scrutins, month_index, composition):
     write_json(
         BASE_DIR / "index.json",
         {
-            "version": "GROUP_FIRST_V4_1_SCRUTIN_VOTES",
+            "version": "GROUP_FIRST_V5_EXPLAINED_SCRUTINS",
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "legislature": int(LEGISLATURE),
             "available_years": available_years,
@@ -1890,7 +2359,7 @@ def validate_generated_file_sizes():
 def main():
     print("")
     print("======================================================")
-    print(" BUILD DATA — GROUP FIRST V4.1 / SCRUTIN VOTES")
+    print(" BUILD DATA — GROUP FIRST V5 / EXPLAINED SCRUTINS")
     print("======================================================")
     print("")
 
