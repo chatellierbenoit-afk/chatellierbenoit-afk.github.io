@@ -4,29 +4,51 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Groupe politique — Que vote mon député ?</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Que vote mon député ? — Votes à l'Assemblée nationale
+</title>
 
 <meta
   name="description"
-  content="Découvrez comment les groupes politiques votent à l'Assemblée nationale : Pour, Contre, Abstention, thèmes et scrutins."
+  content="Que vote mon député ? Retrouvez les votes des députés et des groupes politiques à l'Assemblée nationale, par thème, département, circonscription et scrutin."
+>
+
+<meta
+  property="og:title"
+  content="Que vote mon député ?"
+>
+
+<meta
+  property="og:description"
+  content="Comprendre facilement les votes des députés et des groupes politiques à l'Assemblée nationale."
+>
+
+<meta
+  property="og:type"
+  content="website"
 >
 
 <style>
 
 :root{
-  --violet:#7700ff;
-  --violet-dark:#5900bf;
-  --violet-soft:#f2eaff;
 
-  --bg:#f7f5fb;
-  --card:#fff;
+  --violet:#7700ff;
+  --violet-dark:#5600bd;
+  --violet-soft:#f2eaff;
 
   --text:#1d1b22;
   --muted:#6f6a78;
 
-  --border:#e5dfef;
+  --bg:#f7f5fb;
+  --card:#fff;
+
+  --border:#e6e0ef;
 
   --green:#168550;
   --green-bg:#eaf8f0;
@@ -38,16 +60,24 @@
   --orange-bg:#fff7df;
 
   --grey:#6b7280;
-  --grey-bg:#f1f2f5;
+  --grey-bg:#f2f3f5;
+
+  --radius:22px;
 
   --shadow:
-    0 10px 28px
-    rgba(54,24,105,.07);
+    0 10px 30px
+    rgba(54,24,105,.08);
+
 }
 
 
 *{
   box-sizing:border-box;
+}
+
+
+html{
+  scroll-behavior:smooth;
 }
 
 
@@ -61,33 +91,44 @@ body{
     Helvetica,
     sans-serif;
 
+  background:
+    linear-gradient(
+      180deg,
+      #faf9fd 0%,
+      var(--bg) 100%
+    );
+
   color:
     var(--text);
-
-  background:
-    var(--bg);
 
 }
 
 
 a{
   color:inherit;
-  text-decoration:none;
 }
 
 
 button,
-input,
-select{
+input{
   font:inherit;
 }
 
 
 /* ======================================================
-   HEADER
+   HERO
 ====================================================== */
 
-.site-header{
+.hero{
+
+  padding:
+    58px
+    20px
+    52px;
+
+  text-align:center;
+
+  color:#fff;
 
   background:
     linear-gradient(
@@ -96,138 +137,78 @@ select{
       var(--violet)
     );
 
-  color:white;
+}
+
+
+.hero-inner{
+
+  max-width:
+    1050px;
+
+  margin:
+    0 auto;
 
 }
 
 
-.topbar{
+.hero-kicker{
 
-  max-width:1320px;
-
-  margin:auto;
-
-  padding:
-    16px
-    18px;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:15px;
-
-}
-
-
-.brand{
-
-  font-size:17px;
-
-  font-weight:950;
-
-}
-
-
-.home-link{
-
-  padding:
-    9px
-    13px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.35);
-
-  border-radius:
+  margin-bottom:
     12px;
 
-  background:
-    rgba(255,255,255,.08);
+  font-size:
+    14px;
 
-  font-size:14px;
+  font-weight:
+    800;
 
-  font-weight:800;
+  letter-spacing:
+    .08em;
 
-}
+  text-transform:
+    uppercase;
 
-
-.hero{
-
-  max-width:1100px;
-
-  margin:auto;
-
-  padding:
-    30px
-    18px
-    45px;
-
-  text-align:center;
-
-}
-
-
-.eyebrow{
-
-  display:inline-block;
-
-  padding:
-    7px
-    12px;
-
-  border-radius:
-    999px;
-
-  background:
-    rgba(255,255,255,.13);
-
-  font-size:.78rem;
-
-  font-weight:900;
-
-  text-transform:uppercase;
-
-  letter-spacing:.07em;
+  opacity:
+    .8;
 
 }
 
 
 .hero h1{
 
-  margin:
-    15px
-    auto
-    0;
-
-  max-width:1000px;
+  margin:0;
 
   font-size:
     clamp(
-      2.2rem,
-      5vw,
-      4rem
+      36px,
+      6vw,
+      62px
     );
 
-  line-height:1.05;
+  line-height:
+    1.02;
 
 }
 
 
 .hero p{
 
-  max-width:780px;
+  max-width:
+    800px;
 
   margin:
-    17px
+    20px
     auto
     0;
 
-  line-height:1.5;
+  font-size:
+    18px;
 
-  opacity:.92;
+  line-height:
+    1.55;
+
+  opacity:
+    .94;
 
 }
 
@@ -238,27 +219,27 @@ select{
 
 main{
 
-  width:
-    min(
-      1320px,
-      calc(100% - 24px)
-    );
+  max-width:
+    1450px;
 
   margin:
-    22px
-    auto
-    60px;
+    0 auto;
+
+  padding:
+    28px
+    18px
+    70px;
 
 }
 
 
-.card{
+.panel{
 
-  margin-bottom:18px;
+  margin-bottom:
+    22px;
 
   padding:
-    26px
-    22px;
+    24px;
 
   background:
     var(--card);
@@ -267,7 +248,8 @@ main{
     1px solid
     var(--border);
 
-  border-radius:22px;
+  border-radius:
+    var(--radius);
 
   box-shadow:
     var(--shadow);
@@ -275,37 +257,61 @@ main{
 }
 
 
-h2{
+.section-title{
 
-  margin:0;
+  margin:
+    0
+    0
+    8px;
 
-  text-align:center;
+  text-align:
+    center;
 
   font-size:
     clamp(
-      1.7rem,
-      3vw,
-      2.3rem
+      27px,
+      4vw,
+      36px
     );
+
+  line-height:
+    1.15;
 
 }
 
 
-.intro{
+.section-intro{
 
-  max-width:780px;
+  max-width:
+    820px;
 
   margin:
-    10px
+    0
     auto
-    0;
+    22px;
+
+  text-align:
+    center;
 
   color:
     var(--muted);
 
-  text-align:center;
+  line-height:
+    1.5;
 
-  line-height:1.5;
+}
+
+
+.small-muted{
+
+  color:
+    var(--muted);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
 
 }
 
@@ -314,7 +320,7 @@ h2{
    YEARS
 ====================================================== */
 
-.year-card{
+.year-switch{
 
   display:flex;
 
@@ -327,190 +333,859 @@ h2{
 }
 
 
-.year-btn{
+.year-button{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  min-width:
+    105px;
 
   padding:
     13px
-    28px;
+    18px;
+
+  text-decoration:none;
+
+  color:
+    var(--text);
+
+  background:#fff;
 
   border:
     1px solid
     var(--border);
 
-  border-radius:14px;
+  border-radius:
+    14px;
 
-  background:#fff;
+  font-weight:
+    800;
 
-  font-weight:900;
+  transition:
+    .15s ease;
+
+}
+
+
+.year-button:hover{
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(54,24,105,.08);
+
+}
+
+
+.year-button.active{
+
+  color:#fff;
+
+  border-color:
+    transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet-dark),
+      var(--violet)
+    );
+
+}
+
+
+/* ======================================================
+   SEARCH
+====================================================== */
+
+.search-panel{
+
+  padding:
+    32px;
+
+}
+
+
+.search-form{
+
+  max-width:
+    1050px;
+
+  margin:
+    24px
+    auto
+    0;
+
+}
+
+
+.search-row{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
+  gap:
+    12px;
+
+}
+
+
+.search-input{
+
+  width:100%;
+
+  min-height:
+    60px;
+
+  padding:
+    0
+    20px;
+
+  border:
+    2px solid
+    #ded6eb;
+
+  border-radius:
+    17px;
+
+  font-size:
+    18px;
+
+  outline:none;
+
+  transition:
+    .15s ease;
+
+}
+
+
+.search-input:focus{
+
+  border-color:
+    #b597e8;
+
+  box-shadow:
+    0 0 0 5px
+    rgba(119,0,255,.07);
+
+}
+
+
+.search-button{
+
+  min-width:
+    160px;
+
+  padding:
+    0
+    22px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet-dark),
+      var(--violet)
+    );
+
+  border:0;
+
+  border-radius:
+    17px;
+
+  font-weight:
+    800;
 
   cursor:pointer;
 
 }
 
 
-.year-btn.active{
+.search-examples{
 
-  color:#fff;
+  margin-top:
+    13px;
 
-  border-color:
-    var(--violet);
+  text-align:center;
 
-  background:
-    var(--violet);
+  color:
+    var(--muted);
+
+  font-size:
+    14px;
 
 }
 
 
-/* ======================================================
-   STATS
-====================================================== */
+.search-status{
 
-.stats{
+  margin-top:
+    18px;
+
+  text-align:center;
+
+  color:
+    var(--muted);
+
+}
+
+
+.search-results{
+
+  display:grid;
+
+  gap:
+    12px;
+
+  margin-top:
+    25px;
+
+}
+
+
+.search-result{
 
   display:grid;
 
   grid-template-columns:
-    repeat(
-      5,
-      1fr
-    );
+    auto
+    minmax(0,1fr)
+    auto;
 
-  gap:12px;
+  align-items:center;
 
-  margin-top:24px;
+  gap:
+    15px;
 
-}
+  padding:
+    15px
+    17px;
 
+  text-decoration:none;
 
-.stat{
-
-  padding:18px;
-
-  text-align:center;
+  background:#fff;
 
   border:
     1px solid
     var(--border);
 
-  border-radius:18px;
+  border-radius:
+    16px;
+
+  transition:
+    .15s ease;
 
 }
 
 
-.stat .v{
+.search-result:hover{
+
+  transform:
+    translateY(-1px);
+
+  background:
+    var(--violet-soft);
+
+  box-shadow:
+    0 8px 22px
+    rgba(54,24,105,.08);
+
+}
+
+
+.result-type{
+
+  min-width:
+    92px;
+
+  padding:
+    7px
+    10px;
+
+  text-align:center;
 
   color:
-    var(--violet);
+    var(--violet-dark);
 
-  font-size:2rem;
+  background:
+    var(--violet-soft);
 
-  font-weight:950;
+  border-radius:
+    999px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
 
 }
 
 
-.stat .l{
+.result-title{
 
-  margin-top:6px;
+  display:block;
+
+  font-size:
+    17px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.25;
+
+}
+
+
+.result-meta{
+
+  display:block;
+
+  margin-top:
+    4px;
 
   color:
     var(--muted);
 
-  font-size:.84rem;
+  font-size:
+    14px;
+
+}
+
+
+.result-arrow{
+
+  color:
+    var(--violet);
+
+  font-size:
+    20px;
+
+  font-weight:
+    900;
 
 }
 
 
 /* ======================================================
-   POSITIONS
+   COUNTS
 ====================================================== */
 
-.positions{
+.counts-grid{
 
   display:grid;
 
   grid-template-columns:
     repeat(
       4,
-      1fr
+      minmax(0,1fr)
     );
 
-  gap:12px;
-
-  margin-top:24px;
+  gap:
+    13px;
 
 }
 
 
-.pos{
+.count-card{
 
-  padding:20px;
+  padding:
+    20px;
 
   text-align:center;
 
-  border-radius:18px;
+  background:
+    linear-gradient(
+      180deg,
+      #fff,
+      #fcfbff
+    );
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    17px;
 
 }
 
 
-.pos .n{
+.count-value{
 
-  font-size:2rem;
+  display:block;
 
-  font-weight:950;
-
-}
-
-
-.pour{
+  margin-bottom:
+    5px;
 
   color:
-    var(--green);
+    var(--violet);
 
-  background:
-    var(--green-bg);
+  font-size:
+    29px;
 
-}
-
-
-.contre{
-
-  color:
-    var(--red);
-
-  background:
-    var(--red-bg);
+  font-weight:
+    900;
 
 }
 
 
-.abst{
+.count-label{
 
   color:
-    var(--orange);
+    var(--muted);
 
-  background:
-    var(--orange-bg);
-
-}
-
-
-.partage{
-
-  color:
-    var(--grey);
-
-  background:
-    var(--grey-bg);
+  font-size:
+    13px;
 
 }
 
 
 /* ======================================================
-   THEMES
+   COMPOSITION
 ====================================================== */
 
-.themes{
+.composition-layout{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(300px,440px)
+    minmax(0,1fr);
+
+  gap:
+    22px;
+
+  align-items:
+    start;
+
+}
+
+
+.donut-card{
+
+  padding:
+    20px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    20px;
+
+}
+
+
+.donut-wrap{
+
+  position:relative;
+
+  width:100%;
+
+  max-width:
+    400px;
+
+  aspect-ratio:
+    1/1;
+
+  margin:
+    0 auto;
+
+}
+
+
+.donut-svg{
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+}
+
+
+.donut-slice{
+
+  cursor:pointer;
+
+  transition:
+    transform .15s ease,
+    filter .15s ease;
+
+  transform-origin:
+    160px 160px;
+
+}
+
+
+.donut-slice:hover{
+
+  transform:
+    scale(1.025);
+
+  filter:
+    brightness(1.04);
+
+}
+
+
+.donut-center{
+
+  position:absolute;
+
+  left:50%;
+
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width:
+    125px;
+
+  height:
+    125px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:
+    10px;
+
+  text-align:center;
+
+  background:#fff;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 8px 20px
+    rgba(54,24,105,.08);
+
+}
+
+
+.donut-center strong{
+
+  color:
+    var(--violet);
+
+  font-size:
+    28px;
+
+}
+
+
+.donut-center span{
+
+  margin-top:
+    5px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.2;
+
+}
+
+
+.group-list{
+
+  display:grid;
+
+  gap:
+    9px;
+
+}
+
+
+.group-item{
+
+  display:grid;
+
+  grid-template-columns:
+    15px
+    minmax(0,1fr)
+    auto;
+
+  align-items:center;
+
+  gap:
+    12px;
+
+  padding:
+    12px
+    14px;
+
+  color:
+    var(--text);
+
+  text-decoration:none;
+
+  background:#fff;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    14px;
+
+  transition:
+    .15s ease;
+
+}
+
+
+.group-item:hover{
+
+  transform:
+    translateX(2px);
+
+  background:
+    var(--violet-soft);
+
+}
+
+
+.group-dot{
+
+  width:
+    13px;
+
+  height:
+    13px;
+
+  border-radius:
+    50%;
+
+}
+
+
+.group-name{
+
+  font-weight:
+    800;
+
+  line-height:
+    1.25;
+
+}
+
+
+.group-count{
+
+  color:
+    var(--violet);
+
+  font-weight:
+    900;
+
+}
+
+
+/* ======================================================
+   SCRUTINS
+====================================================== */
+
+.scrutins-list{
+
+  display:grid;
+
+  gap:
+    16px;
+
+}
+
+
+.scrutin-card{
+
+  display:block;
+
+  padding:
+    21px;
+
+  color:
+    var(--text);
+
+  text-decoration:none;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff,
+      #fcfbff
+    );
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    19px;
+
+  transition:
+    .15s ease;
+
+}
+
+
+.scrutin-card:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 25px
+    rgba(54,24,105,.09);
+
+}
+
+
+.scrutin-meta{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:
+    7px;
+
+  margin-bottom:
+    12px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+}
+
+
+.theme-badge{
+
+  display:inline-block;
+
+  padding:
+    6px
+    10px;
+
+  color:
+    var(--violet-dark);
+
+  background:
+    var(--violet-soft);
+
+  border-radius:
+    999px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+}
+
+
+.scrutin-title{
+
+  max-width:
+    1000px;
+
+  margin:
+    0
+    auto
+    10px;
+
+  text-align:center;
+
+  font-size:
+    clamp(
+      21px,
+      3vw,
+      29px
+    );
+
+  line-height:
+    1.2;
+
+}
+
+
+.scrutin-description{
+
+  max-width:
+    1050px;
+
+  margin:
+    0
+    auto
+    16px;
+
+  padding:
+    14px
+    17px;
+
+  text-align:center;
+
+  color:
+    #3b3542;
+
+  background:
+    var(--violet-soft);
+
+  border-radius:
+    14px;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.positions-row{
 
   display:flex;
 
@@ -518,276 +1193,41 @@ h2{
 
   flex-wrap:wrap;
 
-  gap:9px;
+  gap:
+    7px;
 
-  margin-top:22px;
-
-}
-
-
-.theme-btn{
-
-  padding:
-    9px
+  margin-top:
     14px;
 
-  border:
-    1px solid
-    var(--border);
+}
+
+
+.position-pill{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:
+    5px;
+
+  padding:
+    7px
+    10px;
 
   border-radius:
     999px;
 
-  background:#fff;
+  font-size:
+    12px;
 
-  font-weight:850;
-
-  cursor:pointer;
-
-}
-
-
-.theme-btn.active{
-
-  color:#fff;
-
-  border-color:
-    var(--violet);
-
-  background:
-    var(--violet);
+  font-weight:
+    800;
 
 }
 
 
-/* ======================================================
-   FILTERS
-====================================================== */
-
-.filters{
-
-  display:grid;
-
-  grid-template-columns:
-    2fr
-    1fr
-    1fr;
-
-  gap:12px;
-
-}
-
-
-.field label{
-
-  display:block;
-
-  margin-bottom:8px;
-
-  text-align:center;
-
-  font-size:.8rem;
-
-  font-weight:900;
-
-}
-
-
-.field input,
-.field select{
-
-  width:100%;
-
-  padding:14px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:15px;
-
-  background:#fff;
-
-}
-
-
-/* ======================================================
-   VOTES
-====================================================== */
-
-.votes-list{
-
-  display:grid;
-
-  gap:12px;
-
-  margin-top:22px;
-
-}
-
-
-.vote-card{
-
-  display:block;
-
-  padding:18px;
-
-  background:#fff;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:18px;
-
-  transition:.15s;
-
-}
-
-
-.vote-card:hover{
-
-  transform:
-    translateY(-1px);
-
-  border-color:
-    #ccb6fb;
-
-  box-shadow:
-    0 8px 22px
-    rgba(54,24,105,.07);
-
-}
-
-
-.vote-top{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  gap:16px;
-
-}
-
-
-.meta{
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:8px;
-
-  margin-bottom:8px;
-
-  color:
-    var(--muted);
-
-  font-size:.82rem;
-
-}
-
-
-.tag{
-
-  padding:
-    4px
-    8px;
-
-  border-radius:
-    999px;
-
-  background:
-    var(--violet-soft);
-
-  color:
-    var(--violet-dark);
-
-}
-
-
-.title{
-
-  font-weight:950;
-
-  line-height:1.3;
-
-}
-
-
-.desc{
-
-  margin-top:10px;
-
-  padding:
-    12px
-    14px;
-
-  color:
-    #514b59;
-
-  background:
-    #faf8ff;
-
-  border-left:
-    3px solid
-    #d6bfff;
-
-  border-radius:
-    0
-    10px
-    10px
-    0;
-
-  font-size:.9rem;
-
-  line-height:1.5;
-
-}
-
-
-.desc-label{
-
-  display:block;
-
-  margin-bottom:4px;
-
-  color:
-    var(--violet-dark);
-
-  font-size:.72rem;
-
-  font-weight:900;
-
-  text-transform:uppercase;
-
-  letter-spacing:.04em;
-
-}
-
-
-.pill{
-
-  height:max-content;
-
-  padding:
-    8px
-    11px;
-
-  border-radius:
-    999px;
-
-  white-space:nowrap;
-
-  font-size:.75rem;
-
-  font-weight:950;
-
-}
-
-
-.pill.Pour{
+.position-Pour{
 
   color:
     var(--green);
@@ -798,7 +1238,7 @@ h2{
 }
 
 
-.pill.Contre{
+.position-Contre{
 
   color:
     var(--red);
@@ -809,7 +1249,7 @@ h2{
 }
 
 
-.pill.Abstention{
+.position-Abstention{
 
   color:
     var(--orange);
@@ -820,8 +1260,8 @@ h2{
 }
 
 
-.pill.Partagé,
-.pill.Non-votant{
+.position-Partagé,
+.position-Non-votant{
 
   color:
     var(--grey);
@@ -832,112 +1272,43 @@ h2{
 }
 
 
-.bottom{
+/* ======================================================
+   MESSAGES
+====================================================== */
 
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:8px;
-
-  margin-top:13px;
-
-}
-
-
-.mini{
+.empty{
 
   padding:
-    7px
-    9px;
-
-  color:
-    var(--muted);
-
-  background:
-    #faf9fd;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:10px;
-
-  font-size:.78rem;
-
-}
-
-
-.coh{
-
-  margin-left:auto;
-
-  color:
-    var(--muted);
-
-  font-size:.82rem;
-
-  font-weight:800;
-
-}
-
-
-.center{
+    28px
+    10px;
 
   text-align:center;
+
+  color:
+    var(--muted);
 
 }
 
 
 .error{
 
-  padding:24px;
+  padding:
+    20px;
 
-  color:#a42b31;
+  text-align:center;
 
-  background:#fff2f3;
+  color:
+    #a42931;
+
+  background:
+    #fff3f4;
 
   border:
     1px solid
-    #f2c9cc;
+    #f3c7ca;
 
-  border-radius:16px;
-
-}
-
-
-.load{
-
-  display:block;
-
-  margin:
-    18px
-    auto
-    0;
-
-  padding:
-    12px
-    18px;
-
-  color:#fff;
-
-  background:
-    var(--violet);
-
-  border:0;
-
-  border-radius:14px;
-
-  font-weight:900;
-
-  cursor:pointer;
-
-}
-
-
-.load[hidden]{
-
-  display:none;
+  border-radius:
+    15px;
 
 }
 
@@ -946,25 +1317,22 @@ h2{
    RESPONSIVE
 ====================================================== */
 
-@media(max-width:1000px){
+@media(max-width:1050px){
 
-  .stats{
+  .composition-layout{
 
     grid-template-columns:
-      repeat(
-        3,
-        1fr
-      );
+      1fr;
 
   }
 
 
-  .positions{
+  .counts-grid{
 
     grid-template-columns:
       repeat(
         2,
-        1fr
+        minmax(0,1fr)
       );
 
   }
@@ -972,62 +1340,86 @@ h2{
 }
 
 
-@media(max-width:760px){
+@media(max-width:700px){
 
-  .topbar{
+  .hero{
 
-    flex-direction:column;
+    padding:
+      42px
+      18px
+      38px;
 
   }
 
 
-  .stats{
+  main{
+
+    padding:
+      18px
+      11px
+      45px;
+
+  }
+
+
+  .panel{
+
+    padding:
+      18px;
+
+  }
+
+
+  .search-panel{
+
+    padding:
+      23px
+      18px;
+
+  }
+
+
+  .search-row{
 
     grid-template-columns:
-      repeat(
-        2,
-        1fr
-      );
+      1fr;
 
   }
 
 
-  .filters{
+  .search-button{
 
-    grid-template-columns:1fr;
-
-  }
-
-
-  .field label{
-
-    text-align:left;
+    min-height:
+      54px;
 
   }
 
 
-  .vote-top{
+  .counts-grid{
 
-    flex-direction:column;
+    grid-template-columns:
+      1fr
+      1fr;
+
+  }
+
+
+  .search-result{
+
+    grid-template-columns:
+      1fr
+      auto;
 
   }
 
 
-  .coh{
+  .result-type{
 
-    margin-left:0;
+    grid-column:
+      1 / -1;
 
-  }
-
-}
-
-
-@media(max-width:480px){
-
-  .stats,
-  .positions{
-
-    grid-template-columns:1fr;
+    justify-self:
+      start;
 
   }
 
@@ -1041,48 +1433,27 @@ h2{
 <body>
 
 
-<header class="site-header">
+<header class="hero">
 
+  <div class="hero-inner">
 
-  <div class="topbar">
-
-    <a
-      class="brand"
-      href="./index.html"
-    >
-      Que vote mon député ?
-    </a>
-
-
-    <a
-      class="home-link"
-      href="./index.html"
-    >
-      ← Retour à l'accueil
-    </a>
-
-  </div>
-
-
-  <div class="hero">
-
-    <div class="eyebrow">
-      Groupe politique
+    <div class="hero-kicker">
+      Votes à l'Assemblée nationale
     </div>
 
 
-    <h1 id="groupTitle">
-      Chargement…
+    <h1>
+      Que vote mon député ?
     </h1>
 
 
     <p>
-      Découvrez comment ce groupe vote à l'Assemblée nationale,
-      thème par thème et scrutin par scrutin.
+      Recherchez un groupe politique, un député, une circonscription,
+      un département ou un sujet de vote et découvrez facilement
+      les positions prises à l'Assemblée nationale.
     </p>
 
   </div>
-
 
 </header>
 
@@ -1090,302 +1461,78 @@ h2{
 <main>
 
 
-<section
-  class="card year-card"
-  id="yearTabs"
-></section>
-
-
-<section class="card">
-
-  <h2>
-    En un coup d'œil
-  </h2>
-
-
-  <p class="intro">
-    Les chiffres concernent l'année sélectionnée.
-    Le nombre de députés correspond à la composition actuelle
-    de l'Assemblée.
-  </p>
-
-
-  <div class="stats">
-
-
-    <div class="stat">
-
-      <div
-        class="v"
-        id="members"
-      >
-        —
-      </div>
-
-      <div class="l">
-        députés aujourd'hui
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        class="v"
-        id="pct"
-      >
-        —
-      </div>
-
-      <div class="l">
-        de l'Assemblée actuelle
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        class="v"
-        id="scrutins"
-      >
-        —
-      </div>
-
-      <div
-        class="l"
-        id="scrutinsLabel"
-      >
-        scrutins analysés
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        class="v"
-        id="themesCount"
-      >
-        —
-      </div>
-
-      <div class="l">
-        thèmes identifiés
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        class="v"
-        id="cohesion"
-      >
-        —
-      </div>
-
-      <div class="l">
-        cohésion moyenne du groupe
-      </div>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<section class="card">
-
-  <h2>
-    Position dominante du groupe
-  </h2>
-
-
-  <p class="intro">
-    Pour chaque scrutin, nous regardons la position majoritaire
-    des députés du groupe.
-  </p>
-
-
-  <div class="positions">
-
-
-    <div class="pos pour">
-
-      <div
-        class="n"
-        id="pPour"
-      >
-        0
-      </div>
-
-      <div>
-        scrutins majoritairement POUR
-      </div>
-
-    </div>
-
-
-    <div class="pos contre">
-
-      <div
-        class="n"
-        id="pContre"
-      >
-        0
-      </div>
-
-      <div>
-        scrutins majoritairement CONTRE
-      </div>
-
-    </div>
-
-
-    <div class="pos abst">
-
-      <div
-        class="n"
-        id="pAbst"
-      >
-        0
-      </div>
-
-      <div>
-        scrutins majoritairement en ABSTENTION
-      </div>
-
-    </div>
-
-
-    <div class="pos partage">
-
-      <div
-        class="n"
-        id="pPartage"
-      >
-        0
-      </div>
-
-      <div>
-        votes partagés ou non-votants
-      </div>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<section class="card">
-
-  <h2>
-    Sur quels sujets vote ce groupe ?
-  </h2>
-
-
-  <p class="intro">
-    Cliquez sur un thème pour ne voir que les votes correspondants.
-  </p>
-
+<!-- ====================================================
+     ANNÉE
+===================================================== -->
+
+<section class="panel">
 
   <div
-    class="themes"
-    id="themes"
+    class="year-switch"
+    id="yearSwitch"
   ></div>
 
 </section>
 
 
-<section class="card">
+<!-- ====================================================
+     RECHERCHE
+===================================================== -->
 
-  <div class="filters">
+<section class="panel search-panel">
+
+  <h2 class="section-title">
+    Que voulez-vous rechercher ?
+  </h2>
 
 
-    <div class="field">
+  <p class="section-intro">
+    Un seul champ pour rechercher un groupe, un député,
+    une circonscription, un département ou un sujet politique.
+  </p>
 
-      <label for="q">
-        Rechercher dans les sujets
-      </label>
+
+  <div class="search-form">
+
+
+    <div class="search-row">
 
       <input
-        id="q"
         type="search"
-        placeholder="Ex. retraite, immigration, budget, agriculture…"
+        id="searchInput"
+        class="search-input"
+        autocomplete="off"
+        placeholder="Ex. retraites, RN, Ruffin, Haute-Garonne, 3e circonscription…"
       >
 
-    </div>
 
-
-    <div class="field">
-
-      <label for="position">
-        Position
-      </label>
-
-      <select id="position">
-
-        <option value="">
-          Toutes
-        </option>
-
-        <option value="Pour">
-          Pour
-        </option>
-
-        <option value="Contre">
-          Contre
-        </option>
-
-        <option value="Abstention">
-          Abstention
-        </option>
-
-        <option value="Partagé">
-          Partagé / non-votant
-        </option>
-
-      </select>
+      <button
+        type="button"
+        id="searchButton"
+        class="search-button"
+      >
+        Rechercher
+      </button>
 
     </div>
 
 
-    <div class="field">
-
-      <label for="sort">
-        Trier
-      </label>
-
-      <select id="sort">
-
-        <option value="recent">
-          Plus récents
-        </option>
-
-        <option value="old">
-          Plus anciens
-        </option>
-
-        <option value="coh-desc">
-          Cohésion la plus forte
-        </option>
-
-        <option value="coh-asc">
-          Cohésion la plus faible
-        </option>
-
-      </select>
-
+    <div class="search-examples">
+      Exemples : immigration · agriculture · Écologie · budget ·
+      Écologiste et Social · Alexis Corbière · Hérault · 7e circonscription
     </div>
+
+
+    <div
+      id="searchStatus"
+      class="search-status"
+    ></div>
+
+
+    <div
+      id="searchResults"
+      class="search-results"
+    ></div>
 
 
   </div>
@@ -1393,42 +1540,177 @@ h2{
 </section>
 
 
-<section class="card">
+<!-- ====================================================
+     CHIFFRES
+===================================================== -->
 
-  <h2>
-    Les votes du groupe
-  </h2>
-
-
-  <p
-    class="intro"
-    id="resultCount"
-  >
-    Chargement…
-  </p>
-
+<section class="panel">
 
   <div
-    id="status"
-    class="center"
+    id="countsGrid"
+    class="counts-grid"
   >
-    Chargement des votes…
+
+
+    <div class="count-card">
+
+      <strong
+        id="countScrutins"
+        class="count-value"
+      >
+        -
+      </strong>
+
+      <span class="count-label">
+        scrutins
+      </span>
+
+    </div>
+
+
+    <div class="count-card">
+
+      <strong
+        id="countVotes"
+        class="count-value"
+      >
+        -
+      </strong>
+
+      <span class="count-label">
+        votes nominatifs
+      </span>
+
+    </div>
+
+
+    <div class="count-card">
+
+      <strong
+        id="countGroups"
+        class="count-value"
+      >
+        -
+      </strong>
+
+      <span class="count-label">
+        groupes observés
+      </span>
+
+    </div>
+
+
+    <div class="count-card">
+
+      <strong
+        id="countDeputies"
+        class="count-value"
+      >
+        -
+      </strong>
+
+      <span class="count-label">
+        députés actuels
+      </span>
+
+    </div>
+
+
   </div>
 
 
   <div
-    class="votes-list"
-    id="votesList"
+    id="updatedInfo"
+    class="small-muted"
+    style="text-align:center;margin-top:15px;"
   ></div>
 
+</section>
 
-  <button
-    class="load"
-    id="loadMore"
-    hidden
-  >
-    Afficher davantage
-  </button>
+
+<!-- ====================================================
+     COMPOSITION
+===================================================== -->
+
+<section
+  class="panel"
+  id="compositionSection"
+>
+
+  <h2 class="section-title">
+    Composition actuelle de l'Assemblée
+  </h2>
+
+
+  <p class="section-intro">
+    Cliquez sur un groupe pour découvrir comment il vote
+    sur les différents sujets.
+  </p>
+
+
+  <div class="composition-layout">
+
+
+    <div class="donut-card">
+
+      <div class="donut-wrap">
+
+        <svg
+          id="assemblyDonut"
+          class="donut-svg"
+          viewBox="0 0 320 320"
+        ></svg>
+
+
+        <div class="donut-center">
+
+          <strong id="donutTotal">
+            -
+          </strong>
+
+          <span>
+            députés
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="groupList"
+      class="group-list"
+    ></div>
+
+
+  </div>
+
+</section>
+
+
+<!-- ====================================================
+     DERNIERS SCRUTINS
+===================================================== -->
+
+<section class="panel">
+
+  <h2 class="section-title">
+    Derniers votes
+  </h2>
+
+
+  <p class="section-intro">
+    Cliquez sur un vote pour comprendre précisément
+    ce qui était soumis aux députés et voir comment chacun a voté.
+  </p>
+
+
+  <div
+    id="scrutinsList"
+    class="scrutins-list"
+  ></div>
 
 </section>
 
@@ -1447,98 +1729,149 @@ const ROOT =
   "./data/current/";
 
 
-const PAGE_SIZE =
-  40;
+let indexData =
+  null;
 
 
-const S = {
-
-  index:
-    null,
-
-  composition:
-    null,
-
-  groups:
-    [],
-
-  entry:
-    null,
-
-  detail:
-    null,
-
-  summaryMap:
-    new Map(),
-
-  name:
-    "",
-
-  sigle:
-    "",
-
-  year:
-    null,
-
-  theme:
-    "",
-
-  q:
-    "",
-
-  position:
-    "",
-
-  sort:
-    "recent",
-
-  visible:
-    PAGE_SIZE
-
-};
+let searchData =
+  null;
 
 
-const $ =
-  id =>
-    document.getElementById(
-      id
-    );
+let compositionData =
+  null;
 
 
-const norm =
-  value =>
+let deputiesData =
+  null;
 
+
+let allScrutins =
+  [];
+
+
+let selectedYear =
+  "";
+
+
+const GROUP_COLORS = [
+
+  "#5b21b6",
+  "#7c3aed",
+  "#2563eb",
+  "#0284c7",
+  "#0891b2",
+  "#059669",
+  "#65a30d",
+  "#ca8a04",
+  "#ea580c",
+  "#dc2626",
+  "#db2777",
+  "#9333ea",
+  "#64748b",
+  "#4f46e5",
+  "#0f766e"
+
+];
+
+
+/* ======================================================
+   OUTILS
+====================================================== */
+
+function getParam(
+  name
+){
+
+  return (
+    new URLSearchParams(
+      window.location.search
+    )
+    .get(
+      name
+    )
+    ||
+    ""
+  );
+
+}
+
+
+function escapeHtml(
+  value
+){
+
+  return (
+    String(
+      value ?? ""
+    )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    )
+  );
+
+}
+
+
+function normalize(
+  value
+){
+
+  return (
     String(
       value || ""
     )
-
+    .toLowerCase()
     .normalize(
       "NFD"
     )
-
     .replace(
       /[\u0300-\u036f]/g,
       ""
     )
-
-    .toLowerCase()
-
     .replace(
-      /&/g,
-      " et "
+      /œ/g,
+      "oe"
     )
-
     .replace(
-      /[^a-z0-9]+/g,
+      /æ/g,
+      "ae"
+    )
+    .replace(
+      /[^a-z0-9\s-]/g,
       " "
     )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim()
+  );
 
-    .trim();
+}
 
 
-const fmt =
-  value =>
+function formatNumber(
+  value
+){
 
+  return (
     new Intl.NumberFormat(
       "fr-FR"
     )
@@ -1546,64 +1879,13 @@ const fmt =
       Number(
         value || 0
       )
-    );
-
-
-const pct =
-  value =>
-
-    new Intl.NumberFormat(
-      "fr-FR",
-      {
-        maximumFractionDigits:
-          1
-      }
     )
-    .format(
-      Number(
-        value || 0
-      )
-    )
+  );
 
-    +
-
-    " %";
+}
 
 
-const esc =
-  value =>
-
-    String(
-      value ?? ""
-    )
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-
-function dateFr(
+function formatDate(
   value
 ){
 
@@ -1618,9 +1900,7 @@ function dateFr(
 
   const date =
     new Date(
-      value
-      +
-      "T12:00:00"
+      `${value}T12:00:00`
     );
 
 
@@ -1639,14 +1919,9 @@ function dateFr(
     new Intl.DateTimeFormat(
       "fr-FR",
       {
-        day:
-          "2-digit",
-
-        month:
-          "short",
-
-        year:
-          "numeric"
+        day:"numeric",
+        month:"long",
+        year:"numeric"
       }
     )
     .format(
@@ -1657,13 +1932,13 @@ function dateFr(
 }
 
 
-async function json(
-  url
+async function loadJson(
+  path
 ){
 
   const response =
     await fetch(
-      url,
+      path,
       {
         cache:
           "no-store"
@@ -1676,11 +1951,7 @@ async function json(
   ){
 
     throw new Error(
-      response.status
-      +
-      " "
-      +
-      url
+      `Impossible de charger ${path}`
     );
 
   }
@@ -1692,6 +1963,16 @@ async function json(
 
 }
 
+
+/*
+ * Accepte aussi bien :
+ *
+ * data/current/months/2026-07.json
+ *
+ * que :
+ *
+ * months/2026-07.json
+ */
 
 function resolveDataFile(
   file
@@ -1706,10 +1987,27 @@ function resolveDataFile(
   }
 
 
-  const clean =
+  const original =
     String(
       file
     )
+    .trim();
+
+
+  if(
+    /^https?:\/\//i
+    .test(
+      original
+    )
+  ){
+
+    return original;
+
+  }
+
+
+  const clean =
+    original
     .replace(
       /^\.\//,
       ""
@@ -1744,318 +2042,233 @@ function resolveDataFile(
 }
 
 
-function params(){
+/* ======================================================
+   ANNÉE
+====================================================== */
 
-  const search =
-    new URLSearchParams(
-      location.search
-    );
-
-
-  return {
-
-    name:
-
-      search.get(
-        "name"
-      )
-
-      ||
-
-      search.get(
-        "groupe"
-      )
-
-      ||
-
-      "",
-
-
-    year:
-
-      Number(
-        search.get(
-          "year"
-        )
-      )
-
-      ||
-
-      null
-
-  };
-
-}
-
-
-function findGroup(
-  name
-){
-
-  const n =
-    norm(
-      name
-    );
-
-
-  if(
-    !n
-  ){
-
-    return (
-      S.groups[0]
-      ||
-      null
-    );
-
-  }
-
-
-  const exact =
-
-    S.groups.find(
-      group =>
-
-        norm(
-          group.groupe
-        )
-        ===
-        n
-
-        ||
-
-        norm(
-          group.sigle
-        )
-        ===
-        n
-    );
-
-
-  if(
-    exact
-  ){
-
-    return exact;
-
-  }
-
+function availableYears(){
 
   return (
-
-    S.groups.find(
-      group =>
-
-        norm(
-          group.groupe
-        )
-        .includes(
-          n
-        )
+    (
+      indexData
+        ?.available_years
+      ||
+      Object.keys(
+        indexData
+          ?.years
+        ||
+        {}
+      )
     )
-
-    ||
-
-    null
-
+    .map(
+      String
+    )
   );
 
 }
 
 
-function years(){
+function determineSelectedYear(){
+
+  const years =
+    availableYears();
+
+
+  const requested =
+    getParam(
+      "year"
+    );
+
+
+  if(
+    requested
+    &&
+    years.includes(
+      requested
+    )
+  ){
+
+    return requested;
+
+  }
+
+
+  const defaultYear =
+    String(
+      indexData
+        ?.default_year
+      ||
+      ""
+    );
+
+
+  if(
+    defaultYear
+    &&
+    years.includes(
+      defaultYear
+    )
+  ){
+
+    return defaultYear;
+
+  }
+
 
   return (
+    years[0]
+    ||
+    ""
+  );
 
-    [
-      ...new Set(
+}
 
-        S.groups
 
-        .filter(
-          group =>
+function renderYearSwitch(){
 
-            norm(
-              group.groupe
-            )
+  const container =
+    document.getElementById(
+      "yearSwitch"
+    );
 
-            ===
 
-            norm(
-              S.name
-            )
-        )
-
-        .map(
-          group =>
-            Number(
-              group.year
-            )
-        )
-
-      )
-    ]
-
+  const years =
+    availableYears()
     .sort(
       (
         a,
         b
       ) =>
-        b
+        Number(
+          b
+        )
         -
-        a
-    )
-
-  );
-
-}
-
-
-function setUrl(){
-
-  const url =
-    new URL(
-      location.href
+        Number(
+          a
+        )
     );
 
 
-  url.searchParams.set(
-    "name",
-    S.name
-  );
+  container.innerHTML =
+
+    years.map(
+      year => {
+
+        const url =
+          new URL(
+            window.location.href
+          );
 
 
-  url.searchParams.set(
-    "year",
-    S.year
-  );
+        url.searchParams.set(
+          "year",
+          year
+        );
 
 
-  history.replaceState(
-    {},
-    "",
-    url
-  );
+        return `
 
-}
-
-
-function renderYears(){
-
-  $(
-    "yearTabs"
-  ).innerHTML =
-
-    years()
-
-    .map(
-      year =>
-
-        `
-          <button
-            class="year-btn ${year === S.year ? "active" : ""}"
-            data-y="${year}"
+          <a
+            class="year-button ${
+              year === selectedYear
+              ? "active"
+              : ""
+            }"
+            href="${
+              escapeHtml(
+                url.pathname
+                +
+                url.search
+              )
+            }"
           >
 
-            ${year}
+            ${escapeHtml(year)}
 
-          </button>
-        `
+          </a>
 
-    )
-    .join("");
-
-
-  document
-    .querySelectorAll(
-      "[data-y]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          async () => {
-
-            S.year =
-              Number(
-                button.dataset.y
-              );
-
-
-            S.theme =
-              "";
-
-
-            S.q =
-              "";
-
-
-            S.position =
-              "";
-
-
-            S.sort =
-              "recent";
-
-
-            S.visible =
-              PAGE_SIZE;
-
-
-            $(
-              "q"
-            ).value =
-              "";
-
-
-            $(
-              "position"
-            ).value =
-              "";
-
-
-            $(
-              "sort"
-            ).value =
-              "recent";
-
-
-            setUrl();
-
-            renderYears();
-
-            await loadDetail();
-
-          };
+        `;
 
       }
-    );
+    )
+    .join("");
 
 }
 
 
 /* ======================================================
-   CHARGEMENT DES RÉSUMÉS V5
+   LIENS
 ====================================================== */
 
-async function loadMonthSummaries(){
+function linkWithYear(
+  page,
+  params = {}
+){
 
-  S.summaryMap =
-    new Map();
+  const search =
+    new URLSearchParams();
 
+
+  Object.entries(
+    params
+  )
+  .forEach(
+    (
+      [
+        key,
+        value
+      ]
+    ) => {
+
+      if(
+        value !== undefined
+        &&
+        value !== null
+        &&
+        value !== ""
+      ){
+
+        search.set(
+          key,
+          value
+        );
+
+      }
+
+    }
+  );
+
+
+  if(
+    selectedYear
+  ){
+
+    search.set(
+      "year",
+      selectedYear
+    );
+
+  }
+
+
+  return (
+    `./${page}?${search.toString()}`
+  );
+
+}
+
+
+/* ======================================================
+   SCRUTINS
+====================================================== */
+
+async function loadSelectedYearScrutins(){
 
   const months =
 
-    S.index
+    indexData
       ?.years
-      ?.[String(S.year)]
-      ?.months
-
-    ||
-
-    S.index
-      ?.years
-      ?.[S.year]
+      ?.[selectedYear]
       ?.months
 
     ||
@@ -2066,6 +2279,9 @@ async function loadMonthSummaries(){
   if(
     !months.length
   ){
+
+    allScrutins =
+      [];
 
     return;
 
@@ -2114,7 +2330,7 @@ async function loadMonthSummaries(){
 
 
           return (
-            json(
+            loadJson(
               path
             )
           );
@@ -2125,112 +2341,412 @@ async function loadMonthSummaries(){
     );
 
 
-  results.forEach(
-    result => {
+  allScrutins =
 
-      if(
+    results
+
+    .filter(
+      result =>
         result.status
-        !==
+        ===
         "fulfilled"
-      ){
+    )
 
-        return;
+    .flatMap(
+      result => {
 
-      }
-
-
-      const payload =
-        result.value;
+        const payload =
+          result.value;
 
 
-      const list =
+        if(
+          Array.isArray(
+            payload
+          )
+        ){
 
-        Array.isArray(
-          payload
-        )
+          return payload;
 
-        ?
+        }
 
-        payload
 
-        :
-
-        (
+        return (
           payload
             ?.scrutins
-
           ||
-
           []
         );
 
+      }
+    );
 
-      list.forEach(
-        scrutin => {
 
-          if(
-            scrutin
-              ?.uid
-          ){
+  const unique =
+    new Map();
 
-            S.summaryMap.set(
-              scrutin.uid,
-              scrutin
-            );
 
-          }
+  allScrutins.forEach(
+    scrutin => {
 
-        }
-      );
+      if(
+        scrutin
+          ?.uid
+      ){
+
+        unique.set(
+          scrutin.uid,
+          scrutin
+        );
+
+      }
 
     }
+  );
+
+
+  allScrutins =
+    [
+      ...unique.values()
+    ];
+
+
+  allScrutins.sort(
+    (
+      a,
+      b
+    ) =>
+      String(
+        b.date || ""
+      )
+      .localeCompare(
+        String(
+          a.date || ""
+        )
+      )
   );
 
 }
 
 
 /* ======================================================
-   GROUPE
+   CHIFFRES
 ====================================================== */
 
-async function loadDetail(){
+function renderCounts(){
 
-  S.entry =
+  const yearData =
 
-    S.groups.find(
-      group =>
+    indexData
+      ?.years
+      ?.[selectedYear]
 
-        Number(
-          group.year
-        )
+    ||
 
-        ===
+    {};
 
-        S.year
 
-        &&
+  const counts =
+    yearData.counts
+    ||
+    {};
 
-        norm(
-          group.groupe
-        )
 
-        ===
+  document.getElementById(
+    "countScrutins"
+  ).textContent =
 
-        norm(
-          S.name
-        )
+    formatNumber(
+
+      counts.scrutins
+
+      ??
+
+      allScrutins.length
+
+    );
+
+
+  document.getElementById(
+    "countVotes"
+  ).textContent =
+
+    formatNumber(
+      counts.votes
+      ??
+      0
+    );
+
+
+  document.getElementById(
+    "countGroups"
+  ).textContent =
+
+    formatNumber(
+
+      counts.groupes
+
+      ??
+
+      compositionData
+        ?.groupes
+        ?.length
+
+      ??
+
+      0
+
+    );
+
+
+  document.getElementById(
+    "countDeputies"
+  ).textContent =
+
+    formatNumber(
+
+      deputiesData
+        ?.total
+
+      ??
+
+      deputiesData
+        ?.deputes
+        ?.length
+
+      ??
+
+      compositionData
+        ?.total
+
+      ??
+
+      0
+
+    );
+
+
+  document.getElementById(
+    "updatedInfo"
+  ).textContent =
+
+    `Données ${selectedYear}`;
+
+}
+
+
+/* ======================================================
+   DONUT
+====================================================== */
+
+function polarToCartesian(
+  cx,
+  cy,
+  radius,
+  angle
+){
+
+  const radians =
+
+    (
+      angle
+      -
+      90
+    )
+
+    *
+
+    Math.PI
+
+    /
+
+    180;
+
+
+  return {
+
+    x:
+      cx
+      +
+      radius
+      *
+      Math.cos(
+        radians
+      ),
+
+    y:
+      cy
+      +
+      radius
+      *
+      Math.sin(
+        radians
+      )
+
+  };
+
+}
+
+
+function describeDonutArc(
+  cx,
+  cy,
+  outerRadius,
+  innerRadius,
+  startAngle,
+  endAngle
+){
+
+  const startOuter =
+    polarToCartesian(
+      cx,
+      cy,
+      outerRadius,
+      endAngle
+    );
+
+
+  const endOuter =
+    polarToCartesian(
+      cx,
+      cy,
+      outerRadius,
+      startAngle
+    );
+
+
+  const startInner =
+    polarToCartesian(
+      cx,
+      cy,
+      innerRadius,
+      endAngle
+    );
+
+
+  const endInner =
+    polarToCartesian(
+      cx,
+      cy,
+      innerRadius,
+      startAngle
+    );
+
+
+  const largeArc =
+
+    (
+      endAngle
+      -
+      startAngle
+    )
+
+    <=
+    180
+
+    ?
+
+    0
+
+    :
+
+    1;
+
+
+  return [
+
+    `M ${startOuter.x} ${startOuter.y}`,
+
+    `A ${outerRadius} ${outerRadius} 0 ${largeArc} 0 ${endOuter.x} ${endOuter.y}`,
+
+    `L ${endInner.x} ${endInner.y}`,
+
+    `A ${innerRadius} ${innerRadius} 0 ${largeArc} 1 ${startInner.x} ${startInner.y}`,
+
+    "Z"
+
+  ]
+  .join(
+    " "
+  );
+
+}
+
+
+function renderComposition(){
+
+  const groups =
+
+    compositionData
+      ?.groupes
+
+    ||
+
+    [];
+
+
+  const total =
+
+    Number(
+
+      compositionData
+        ?.total
+
+      ||
+
+      groups.reduce(
+        (
+          sum,
+          group
+        ) =>
+          sum
+          +
+          Number(
+            group.count || 0
+          ),
+        0
+      )
+
+    );
+
+
+  const svg =
+    document.getElementById(
+      "assemblyDonut"
+    );
+
+
+  const groupList =
+    document.getElementById(
+      "groupList"
+    );
+
+
+  document.getElementById(
+    "donutTotal"
+  ).textContent =
+
+    formatNumber(
+      total
     );
 
 
   if(
-    !S.entry
+    !groups.length
     ||
-    !S.entry.file
+    !total
   ){
 
-    fail(
-      "Fichier détaillé du groupe introuvable."
-    );
+    svg.innerHTML =
+      "";
+
+
+    groupList.innerHTML =
+
+      `
+        <div class="empty">
+          Composition indisponible.
+        </div>
+      `;
 
 
     return;
@@ -2238,790 +2754,355 @@ async function loadDetail(){
   }
 
 
-  const path =
-    resolveDataFile(
-      S.entry.file
-    );
-
-
-  S.detail =
-    await json(
-      path
-    );
-
-
-  /*
-   * On récupère en parallèle les résumés V5
-   * contenant notamment le champ en_clair.
-   */
-
-  await loadMonthSummaries();
-
-
-  render();
-
-}
-
-
-function compositionRow(){
-
-  return (
-
-    (
-      S.composition
-        ?.groupes
-      ||
-      []
-    )
-
-    .find(
-      group =>
-
-        norm(
-          group.groupe
-        )
-
-        ===
-
-        norm(
-          S.name
-        )
-    )
-
-    ||
-
-    null
-
-  );
-
-}
-
-
-function themeCounts(
-  list
-){
-
-  const map =
-    new Map();
-
-
-  list.forEach(
-    scrutin => {
-
-      const summary =
-        S.summaryMap.get(
-          scrutin.uid
-        )
-        ||
-        {};
-
-
-      const theme =
-
-        summary.theme
-
-        ||
-
-        scrutin.theme
-
-        ||
-
-        "Autres";
-
-
-      map.set(
-        theme,
-        (
-          map.get(
-            theme
-          )
-          ||
-          0
-        )
-        +
-        1
-      );
-
-    }
-  );
-
-
-  return map;
-
-}
-
-
-function render(){
-
-  const list =
-
-    Array.isArray(
-      S.detail
-        ?.scrutins
-    )
-
-    ?
-
-    S.detail.scrutins
-
-    :
-
-    [];
-
-
-  const composition =
-    compositionRow();
-
-
-  const members =
-
-    Number(
-
-      composition
-        ?.count
-
-      ||
-
-      S.detail
-        ?.deputes_actuels
-
-      ||
-
-      0
-
-    );
-
-
-  const total =
-
-    Number(
-      S.composition
-        ?.total
-      ||
-      577
-    );
-
-
-  document.title =
-
-    `${S.name} — Que vote mon député ?`;
-
-
-  $(
-    "groupTitle"
-  ).textContent =
-    S.name;
-
-
-  $(
-    "members"
-  ).textContent =
-    fmt(
-      members
-    );
-
-
-  $(
-    "pct"
-  ).textContent =
-    pct(
-      members
-      /
-      total
-      *
-      100
-    );
-
-
-  $(
-    "scrutins"
-  ).textContent =
-    fmt(
-      list.length
-    );
-
-
-  $(
-    "scrutinsLabel"
-  ).textContent =
-
-    `scrutins analysés en ${S.year}`;
-
-
-  $(
-    "themesCount"
-  ).textContent =
-    fmt(
-      themeCounts(
-        list
-      ).size
-    );
-
-
-  const cohs =
-
-    list
-
-    .map(
-      scrutin =>
-        Number(
-          scrutin.cohesion_pct
-        )
-    )
-
-    .filter(
-      Number.isFinite
-    );
-
-
-  const average =
-
-    cohs.length
-
-    ?
-
-    cohs.reduce(
-      (
-        total,
-        value
-      ) =>
-        total
-        +
-        value,
-
-      0
-    )
-
-    /
-
-    cohs.length
-
-    :
-
+  let angle =
     0;
 
 
-  $(
-    "cohesion"
-  ).textContent =
-    pct(
-      average
-    );
+  svg.innerHTML =
+
+    groups.map(
+      (
+        group,
+        index
+      ) => {
+
+        const color =
+
+          GROUP_COLORS[
+            index
+            %
+            GROUP_COLORS.length
+          ];
 
 
-  const positions = {
+        const portion =
 
-    Pour:
-      0,
+          Number(
+            group.count || 0
+          )
 
-    Contre:
-      0,
+          /
 
-    Abstention:
-      0,
+          total
 
-    Partage:
-      0
+          *
 
-  };
+          360;
 
 
-  list.forEach(
-    scrutin => {
+        const start =
+          angle;
 
-      if(
-        scrutin.position
-        ===
-        "Pour"
-      ){
 
-        positions.Pour++;
+        const end =
+          angle
+          +
+          portion;
+
+
+        angle =
+          end;
+
+
+        const path =
+          describeDonutArc(
+            160,
+            160,
+            140,
+            76,
+            start,
+            end
+          );
+
+
+        const href =
+          linkWithYear(
+            "groupe.html",
+            {
+              name:
+                group.groupe
+            }
+          );
+
+
+        return `
+
+          <a href="${escapeHtml(href)}">
+
+            <path
+              class="donut-slice"
+              d="${path}"
+              fill="${color}"
+              stroke="#fff"
+              stroke-width="2"
+            >
+
+              <title>
+                ${escapeHtml(group.groupe)}
+                :
+                ${formatNumber(group.count)}
+                député(s)
+              </title>
+
+            </path>
+
+          </a>
+
+        `;
 
       }
+    )
+    .join("");
 
-      else if(
-        scrutin.position
-        ===
-        "Contre"
-      ){
 
-        positions.Contre++;
+  groupList.innerHTML =
+
+    groups.map(
+      (
+        group,
+        index
+      ) => {
+
+        const color =
+
+          GROUP_COLORS[
+            index
+            %
+            GROUP_COLORS.length
+          ];
+
+
+        const href =
+          linkWithYear(
+            "groupe.html",
+            {
+              name:
+                group.groupe
+            }
+          );
+
+
+        return `
+
+          <a
+            class="group-item"
+            href="${escapeHtml(href)}"
+          >
+
+            <span
+              class="group-dot"
+              style="background:${color}"
+            ></span>
+
+
+            <span class="group-name">
+              ${escapeHtml(group.groupe)}
+            </span>
+
+
+            <span class="group-count">
+              ${formatNumber(group.count)}
+            </span>
+
+          </a>
+
+        `;
 
       }
-
-      else if(
-        scrutin.position
-        ===
-        "Abstention"
-      ){
-
-        positions.Abstention++;
-
-      }
-
-      else{
-
-        positions.Partage++;
-
-      }
-
-    }
-  );
-
-
-  $(
-    "pPour"
-  ).textContent =
-    fmt(
-      positions.Pour
-    );
-
-
-  $(
-    "pContre"
-  ).textContent =
-    fmt(
-      positions.Contre
-    );
-
-
-  $(
-    "pAbst"
-  ).textContent =
-    fmt(
-      positions.Abstention
-    );
-
-
-  $(
-    "pPartage"
-  ).textContent =
-    fmt(
-      positions.Partage
-    );
-
-
-  renderThemes(
-    list
-  );
-
-
-  apply();
+    )
+    .join("");
 
 }
 
 
 /* ======================================================
-   THEMES
+   POSITIONS
 ====================================================== */
 
-function renderThemes(
-  list
+function shortGroupName(
+  group
 ){
 
-  const array =
+  const aliases = {
 
-    [
-      ...themeCounts(
-        list
-      )
-      .entries()
-    ]
+    "Rassemblement National":
+      "RN",
+
+    "La France insoumise - Nouveau Front Populaire":
+      "LFI-NFP",
+
+    "Socialistes et apparentés":
+      "Socialistes",
+
+    "Ensemble pour la République":
+      "Ensemble",
+
+    "Les Démocrates":
+      "Démocrates",
+
+    "Écologiste et Social":
+      "Écologistes",
+
+    "Horizons & Indépendants":
+      "Horizons",
+
+    "Gauche Démocrate et Républicaine":
+      "GDR",
+
+    "Libertés, Indépendants, Outre-mer et Territoires":
+      "LIOT",
+
+    "Union des droites pour la République":
+      "UDR",
+
+    "Droite Républicaine":
+      "DR"
+
+  };
+
+
+  return (
+    aliases[group]
+    ||
+    group
+  );
+
+}
+
+
+function renderPositions(
+  scrutin
+){
+
+  const summaries =
+
+    scrutin
+      ?.groupes_summary
+
+    ||
+
+    [];
+
+
+  if(
+    !summaries.length
+  ){
+
+    return "";
+
+  }
+
+
+  const sorted =
+
+    summaries
+
+    .slice()
 
     .sort(
       (
         a,
         b
       ) =>
-        b[1]
+        Number(
+          b.total || 0
+        )
         -
-        a[1]
+        Number(
+          a.total || 0
+        )
+    )
+
+    .slice(
+      0,
+      8
     );
 
 
-  $(
-    "themes"
-  ).innerHTML =
+  return `
 
-    `
-      <button
-        class="theme-btn ${S.theme === "" ? "active" : ""}"
-        data-theme=""
-      >
+    <div class="positions-row">
 
-        Tous les sujets · ${fmt(list.length)}
+      ${
 
-      </button>
-    `
+        sorted.map(
+          group => {
 
-    +
-
-    array.map(
-      (
-        [
-          theme,
-          count
-        ]
-      ) =>
-
-        `
-          <button
-            class="theme-btn ${S.theme === theme ? "active" : ""}"
-            data-theme="${esc(theme)}"
-          >
-
-            ${esc(theme)}
-            ·
-            ${fmt(count)}
-
-          </button>
-        `
-
-    )
-    .join("");
-
-
-  document
-    .querySelectorAll(
-      "[data-theme]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            S.theme =
-              button.dataset.theme
+            const position =
+              group.position
               ||
-              "";
+              "Partagé";
 
 
-            S.visible =
-              PAGE_SIZE;
+            return `
 
+              <span
+                class="
+                  position-pill
+                  position-${escapeHtml(position)}
+                "
+                title="${escapeHtml(group.groupe)}"
+              >
 
-            renderThemes(
-              list
-            );
+                ${escapeHtml(
+                  shortGroupName(
+                    group.groupe
+                  )
+                )}
 
+                :
 
-            apply();
+                ${escapeHtml(position)}
 
-          };
+              </span>
+
+            `;
+
+          }
+        )
+        .join("")
 
       }
-    );
+
+    </div>
+
+  `;
 
 }
 
 
 /* ======================================================
-   FILTRAGE
+   DERNIERS SCRUTINS
 ====================================================== */
 
-function apply(){
+function renderScrutins(){
 
-  let array =
-
-    [
-      ...(
-        S.detail
-          ?.scrutins
-        ||
-        []
-      )
-    ];
-
-
-  const query =
-    norm(
-      S.q
+  const container =
+    document.getElementById(
+      "scrutinsList"
     );
 
 
-  array =
-
-    array.filter(
-      scrutin => {
-
-        const summary =
-          S.summaryMap.get(
-            scrutin.uid
-          )
-          ||
-          {};
-
-
-        const theme =
-
-          summary.theme
-
-          ||
-
-          scrutin.theme
-
-          ||
-
-          "Autres";
-
-
-        const themeOk =
-
-          !S.theme
-
-          ||
-
-          theme
-          ===
-          S.theme;
-
-
-        let positionOk =
-          true;
-
-
-        if(
-          S.position
-        ){
-
-          if(
-            S.position
-            ===
-            "Partagé"
-          ){
-
-            positionOk =
-
-              scrutin.position
-              ===
-              "Partagé"
-
-              ||
-
-              scrutin.position
-              ===
-              "Non-votant";
-
-          }
-
-          else{
-
-            positionOk =
-
-              scrutin.position
-              ===
-              S.position;
-
-          }
-
-        }
-
-
-        const searchable =
-
-          norm(
-
-            [
-              summary.sujet,
-              summary.titre_court,
-              summary.titre,
-              summary.en_clair,
-              summary.description,
-              theme,
-
-              scrutin.sujet,
-              scrutin.titre,
-              scrutin.description,
-              scrutin.en_clair
-            ]
-
-            .join(
-              " "
-            )
-
-          );
-
-
-        const queryOk =
-
-          !query
-
-          ||
-
-          searchable.includes(
-            query
-          );
-
-
-        return (
-
-          themeOk
-
-          &&
-
-          positionOk
-
-          &&
-
-          queryOk
-
-        );
-
-      }
+  const latest =
+    allScrutins
+    .slice(
+      0,
+      18
     );
 
 
   if(
-    S.sort
-    ===
-    "old"
+    !latest.length
   ){
 
-    array.sort(
-      (
-        a,
-        b
-      ) =>
-
-        String(
-          a.date
-        )
-        .localeCompare(
-          String(
-            b.date
-          )
-        )
-    );
-
-  }
-
-  else if(
-    S.sort
-    ===
-    "coh-desc"
-  ){
-
-    array.sort(
-      (
-        a,
-        b
-      ) =>
-
-        Number(
-          b.cohesion_pct
-          ||
-          0
-        )
-
-        -
-
-        Number(
-          a.cohesion_pct
-          ||
-          0
-        )
-    );
-
-  }
-
-  else if(
-    S.sort
-    ===
-    "coh-asc"
-  ){
-
-    array.sort(
-      (
-        a,
-        b
-      ) =>
-
-        Number(
-          a.cohesion_pct
-          ||
-          0
-        )
-
-        -
-
-        Number(
-          b.cohesion_pct
-          ||
-          0
-        )
-    );
-
-  }
-
-  else{
-
-    array.sort(
-      (
-        a,
-        b
-      ) =>
-
-        String(
-          b.date
-        )
-        .localeCompare(
-          String(
-            a.date
-          )
-        )
-    );
-
-  }
-
-
-  renderVotes(
-    array
-  );
-
-}
-
-
-/* ======================================================
-   AFFICHAGE DES SCRUTINS
-====================================================== */
-
-function renderVotes(
-  array
-){
-
-  $(
-    "status"
-  ).style.display =
-    "none";
-
-
-  $(
-    "resultCount"
-  ).textContent =
-
-    `${fmt(array.length)} scrutin(s) correspondent aux filtres.`;
-
-
-  if(
-    !array.length
-  ){
-
-    $(
-      "votesList"
-    ).innerHTML =
+    container.innerHTML =
 
       `
-        <div class="center">
-          Aucun vote ne correspond aux filtres sélectionnés.
+        <div class="empty">
+          Aucun scrutin disponible pour
+          ${escapeHtml(selectedYear)}.
         </div>
       `;
-
-
-    $(
-      "loadMore"
-    ).hidden =
-      true;
 
 
     return;
@@ -3029,47 +3110,18 @@ function renderVotes(
   }
 
 
-  const visible =
+  container.innerHTML =
 
-    array.slice(
-      0,
-      S.visible
-    );
-
-
-  $(
-    "votesList"
-  ).innerHTML =
-
-    visible.map(
+    latest.map(
       scrutin => {
-
-
-        /*
-         * Le fichier mensuel V5 est prioritaire
-         * pour le sujet, le thème et surtout
-         * l'explication "en clair".
-         */
-
-        const summary =
-          S.summaryMap.get(
-            scrutin.uid
-          )
-          ||
-          {};
-
 
         const subject =
 
-          summary.sujet
-
-          ||
-
-          summary.titre_court
-
-          ||
-
           scrutin.sujet
+
+          ||
+
+          scrutin.titre_court
 
           ||
 
@@ -3077,37 +3129,12 @@ function renderVotes(
 
           ||
 
-          summary.titre
-
-          ||
-
           "Scrutin";
-
-
-        const theme =
-
-          summary.theme
-
-          ||
-
-          scrutin.theme
-
-          ||
-
-          "Autres";
 
 
         const candidateDescription =
 
-          summary.en_clair
-
-          ||
-
           scrutin.en_clair
-
-          ||
-
-          summary.description
 
           ||
 
@@ -3115,13 +3142,12 @@ function renderVotes(
 
           ||
 
+          scrutin.titre_officiel
+
+          ||
+
           "";
 
-
-        /*
-         * Si la description est simplement
-         * une copie du titre, on ne l'affiche pas.
-         */
 
         const description =
 
@@ -3129,13 +3155,13 @@ function renderVotes(
 
           &&
 
-          norm(
+          normalize(
             candidateDescription
           )
 
           !==
 
-          norm(
+          normalize(
             subject
           )
 
@@ -3148,146 +3174,77 @@ function renderVotes(
           "";
 
 
-        const date =
-
-          summary.date
-
-          ||
-
-          scrutin.date
-
-          ||
-
-          "";
+        const href =
+          linkWithYear(
+            "scrutin.html",
+            {
+              uid:
+                scrutin.uid
+            }
+          );
 
 
         return `
 
           <a
-            class="vote-card"
-            href="./scrutin.html?uid=${encodeURIComponent(scrutin.uid || "")}&year=${S.year}"
+            class="scrutin-card"
+            href="${escapeHtml(href)}"
           >
 
-            <div class="vote-top">
+            <div class="scrutin-meta">
 
-
-              <div>
-
-
-                <div class="meta">
-
-                  <span>
-                    ${esc(dateFr(date))}
-                  </span>
-
-
-                  <span class="tag">
-                    ${esc(theme)}
-                  </span>
-
-                </div>
-
-
-                <div class="title">
-                  ${esc(subject)}
-                </div>
-
-
-                ${
-                  description
-
-                  ?
-
-                  `
-                    <div class="desc">
-
-                      <span class="desc-label">
-                        En clair
-                      </span>
-
-                      ${esc(description)}
-
-                    </div>
-                  `
-
-                  :
-
-                  ""
-                }
-
-
-              </div>
-
-
-              <span
-                class="pill ${esc(scrutin.position || "Partagé")}"
-              >
-
-                ${esc(scrutin.position || "Partagé")}
-
+              <span>
+                ${escapeHtml(
+                  formatDate(
+                    scrutin.date
+                  )
+                )}
               </span>
 
+
+              <span>
+                ·
+              </span>
+
+
+              <span class="theme-badge">
+
+                ${escapeHtml(
+                  scrutin.theme
+                  ||
+                  "Autres"
+                )}
+
+              </span>
 
             </div>
 
 
-            <div class="bottom">
+            <h3 class="scrutin-title">
+              ${escapeHtml(subject)}
+            </h3>
 
 
-              <span class="mini">
+            ${
+              description
 
-                <strong>
-                  ${fmt(scrutin.pour)}
-                </strong>
+              ?
 
-                pour
+              `
 
-              </span>
+                <div class="scrutin-description">
+                  ${escapeHtml(description)}
+                </div>
 
+              `
 
-              <span class="mini">
+              :
 
-                <strong>
-                  ${fmt(scrutin.contre)}
-                </strong>
-
-                contre
-
-              </span>
+              ""
+            }
 
 
-              <span class="mini">
-
-                <strong>
-                  ${fmt(scrutin.abstention)}
-                </strong>
-
-                abstention
-
-              </span>
-
-
-              <span class="mini">
-
-                <strong>
-                  ${fmt(scrutin.non_votant)}
-                </strong>
-
-                non-votant
-
-              </span>
-
-
-              <span class="coh">
-
-                Cohésion :
-                ${pct(scrutin.cohesion_pct || 0)}
-
-              </span>
-
-
-            </div>
-
+            ${renderPositions(scrutin)}
 
           </a>
 
@@ -3297,275 +3254,1166 @@ function renderVotes(
     )
     .join("");
 
-
-  $(
-    "loadMore"
-  ).hidden =
-
-    S.visible
-    >=
-    array.length;
-
-
-  $(
-    "loadMore"
-  ).onclick =
-    () => {
-
-      S.visible +=
-        PAGE_SIZE;
-
-
-      renderVotes(
-        array
-      );
-
-    };
-
 }
 
 
 /* ======================================================
-   ERREURS
+   RECHERCHE
 ====================================================== */
 
-function fail(
-  message
+function scoreText(
+  text,
+  query
 ){
 
-  $(
-    "status"
-  ).style.display =
-    "block";
+  const normalizedText =
+    normalize(
+      text
+    );
 
 
-  $(
-    "status"
-  ).className =
-    "error";
+  const normalizedQuery =
+    normalize(
+      query
+    );
 
 
-  $(
-    "status"
-  ).textContent =
-    message;
+  if(
+    !normalizedText
+    ||
+    !normalizedQuery
+  ){
+
+    return 0;
+
+  }
 
 
-  $(
-    "votesList"
-  ).innerHTML =
-    "";
+  if(
+    normalizedText
+    ===
+    normalizedQuery
+  ){
+
+    return 100;
+
+  }
 
 
-  $(
-    "resultCount"
-  ).textContent =
-    "";
+  if(
+    normalizedText.startsWith(
+      normalizedQuery
+    )
+  ){
+
+    return 85;
+
+  }
+
+
+  if(
+    normalizedText.includes(
+      normalizedQuery
+    )
+  ){
+
+    return 70;
+
+  }
+
+
+  const words =
+
+    normalizedQuery
+
+    .split(
+      " "
+    )
+
+    .filter(
+      word =>
+        word.length
+        >
+        1
+    );
+
+
+  if(
+    !words.length
+  ){
+
+    return 0;
+
+  }
+
+
+  const found =
+
+    words.filter(
+      word =>
+        normalizedText.includes(
+          word
+        )
+    );
+
+
+  if(
+    found.length
+    ===
+    words.length
+  ){
+
+    return 50;
+
+  }
+
+
+  if(
+    found.length
+  ){
+
+    return (
+      20
+      +
+      found.length
+      *
+      5
+    );
+
+  }
+
+
+  return 0;
 
 }
 
 
-/* ======================================================
-   FILTRES
-====================================================== */
+function getSearchGroups(){
 
-$(
-  "q"
-).oninput =
-  event => {
+  if(
+    Array.isArray(
+      searchData
+        ?.groupes
+    )
+    &&
+    searchData.groupes.length
+  ){
 
-    S.q =
-      event.target.value;
+    return searchData.groupes;
 
-
-    S.visible =
-      PAGE_SIZE;
-
-
-    apply();
-
-  };
+  }
 
 
-$(
-  "position"
-).onchange =
-  event => {
+  return (
+    compositionData
+      ?.groupes
+    ||
+    []
+  );
 
-    S.position =
-      event.target.value;
-
-
-    S.visible =
-      PAGE_SIZE;
+}
 
 
-    apply();
+function getSearchDeputies(){
 
-  };
+  if(
+    Array.isArray(
+      searchData
+        ?.deputes
+    )
+    &&
+    searchData.deputes.length
+  ){
 
+    return searchData.deputes;
 
-$(
-  "sort"
-).onchange =
-  event => {
-
-    S.sort =
-      event.target.value;
-
-
-    S.visible =
-      PAGE_SIZE;
+  }
 
 
-    apply();
+  if(
+    Array.isArray(
+      deputiesData
+        ?.deputes
+    )
+  ){
 
-  };
+    return deputiesData.deputes;
+
+  }
+
+
+  if(
+    Array.isArray(
+      deputiesData
+    )
+  ){
+
+    return deputiesData;
+
+  }
+
+
+  return [];
+
+}
+
+
+function getSearchScrutins(){
+
+  const map =
+    new Map();
+
+
+  allScrutins.forEach(
+    scrutin => {
+
+      if(
+        scrutin
+          ?.uid
+      ){
+
+        map.set(
+          scrutin.uid,
+          scrutin
+        );
+
+      }
+
+    }
+  );
+
+
+  if(
+    Array.isArray(
+      searchData
+        ?.scrutins
+    )
+  ){
+
+    searchData.scrutins.forEach(
+      scrutin => {
+
+        const year =
+          String(
+            scrutin.year
+            ||
+            ""
+          );
+
+
+        if(
+          scrutin
+            ?.uid
+          &&
+          (
+            !year
+            ||
+            year === selectedYear
+          )
+        ){
+
+          map.set(
+            scrutin.uid,
+            {
+              ...map.get(
+                scrutin.uid
+              ),
+              ...scrutin
+            }
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  return (
+    [
+      ...map.values()
+    ]
+  );
+
+}
+
+
+function buildSearchResults(
+  rawQuery
+){
+
+  const query =
+    rawQuery.trim();
+
+
+  if(
+    !query
+  ){
+
+    return [];
+
+  }
+
+
+  const results =
+    [];
+
+
+/* ====================================================
+   GROUPES
+===================================================== */
+
+  getSearchGroups()
+  .forEach(
+    group => {
+
+      const name =
+
+        group.groupe
+
+        ||
+
+        group.nom
+
+        ||
+
+        "";
+
+
+      const sigle =
+
+        group.sigle
+
+        ||
+
+        "";
+
+
+      const score =
+
+        Math.max(
+
+          scoreText(
+            name,
+            query
+          ),
+
+          scoreText(
+            sigle,
+            query
+          )
+          +
+          10
+
+        );
+
+
+      if(
+        score
+        >
+        0
+      ){
+
+        results.push({
+
+          type:
+            "Groupe",
+
+          title:
+            name,
+
+          meta:
+
+            group.count
+
+            ?
+
+            `${formatNumber(group.count)} député(s) actuellement`
+
+            :
+
+            "Groupe politique",
+
+          score:
+            score
+            +
+            20,
+
+          href:
+            linkWithYear(
+              "groupe.html",
+              {
+                name:
+                  name
+              }
+            )
+
+        });
+
+      }
+
+    }
+  );
+
+
+/* ====================================================
+   DÉPUTÉS
+===================================================== */
+
+  getSearchDeputies()
+  .forEach(
+    deputy => {
+
+      const name =
+
+        deputy.nom
+
+        ||
+
+        deputy.nom_complet
+
+        ||
+
+        "";
+
+
+      const group =
+
+        deputy.groupe_actuel
+
+        ||
+
+        deputy.groupe
+
+        ||
+
+        "";
+
+
+      const department =
+
+        deputy.departement
+
+        ||
+
+        "";
+
+
+      const constituency =
+
+        deputy.circonscription
+
+        ||
+
+        "";
+
+
+      const fields = [
+
+        {
+          value:name,
+          weight:30
+        },
+
+        {
+          value:group,
+          weight:7
+        },
+
+        {
+          value:department,
+          weight:15
+        },
+
+        {
+          value:constituency,
+          weight:18
+        }
+
+      ];
+
+
+      let bestScore =
+        0;
+
+
+      fields.forEach(
+        field => {
+
+          const current =
+            scoreText(
+              field.value,
+              query
+            );
+
+
+          if(
+            current
+          ){
+
+            bestScore =
+              Math.max(
+                bestScore,
+                current
+                +
+                field.weight
+              );
+
+          }
+
+        }
+      );
+
+
+      if(
+        bestScore
+        >
+        0
+      ){
+
+        results.push({
+
+          type:
+            "Député",
+
+          title:
+            name,
+
+          meta:
+
+            [
+              group,
+              department,
+              constituency
+            ]
+            .filter(
+              Boolean
+            )
+            .join(
+              " · "
+            ),
+
+          score:
+            bestScore,
+
+          href:
+            linkWithYear(
+              "depute.html",
+              {
+                uid:
+                  deputy.uid
+              }
+            )
+
+        });
+
+      }
+
+    }
+  );
+
+
+/* ====================================================
+   SCRUTINS
+===================================================== */
+
+  getSearchScrutins()
+  .forEach(
+    scrutin => {
+
+      const subject =
+
+        scrutin.sujet
+
+        ||
+
+        scrutin.titre_court
+
+        ||
+
+        scrutin.titre
+
+        ||
+
+        scrutin.titre_officiel
+
+        ||
+
+        "";
+
+
+      const theme =
+        scrutin.theme
+        ||
+        "";
+
+
+      const searchable =
+
+        [
+          subject,
+          scrutin.titre,
+          scrutin.titre_court,
+          scrutin.titre_officiel,
+          scrutin.en_clair,
+          scrutin.ce_qui_etait_vote,
+          scrutin.description,
+          theme
+        ]
+
+        .filter(
+          Boolean
+        )
+
+        .join(
+          " "
+        );
+
+
+      let score =
+        scoreText(
+          searchable,
+          query
+        );
+
+
+      const themeScore =
+        scoreText(
+          theme,
+          query
+        );
+
+
+      if(
+        themeScore
+        >
+        0
+      ){
+
+        score =
+          Math.max(
+            score,
+            themeScore
+            +
+            25
+          );
+
+      }
+
+
+      if(
+        score
+        >
+        0
+      ){
+
+        results.push({
+
+          type:
+            "Vote",
+
+          title:
+            subject
+            ||
+            "Scrutin",
+
+          meta:
+
+            [
+              formatDate(
+                scrutin.date
+              ),
+              theme
+            ]
+            .filter(
+              Boolean
+            )
+            .join(
+              " · "
+            ),
+
+          score:
+            score,
+
+          date:
+            scrutin.date
+            ||
+            "",
+
+          href:
+            linkWithYear(
+              "scrutin.html",
+              {
+                uid:
+                  scrutin.uid
+              }
+            )
+
+        });
+
+      }
+
+    }
+  );
+
+
+/* ====================================================
+   DÉDOUBLONNAGE
+===================================================== */
+
+  const unique =
+    new Map();
+
+
+  results.forEach(
+    result => {
+
+      const key =
+
+        [
+          result.type,
+          result.title,
+          result.href
+        ]
+        .join(
+          "|"
+        );
+
+
+      const previous =
+        unique.get(
+          key
+        );
+
+
+      if(
+        !previous
+        ||
+        result.score
+        >
+        previous.score
+      ){
+
+        unique.set(
+          key,
+          result
+        );
+
+      }
+
+    }
+  );
+
+
+  return (
+
+    [
+      ...unique.values()
+    ]
+
+    .sort(
+      (
+        a,
+        b
+      ) => {
+
+        if(
+          b.score
+          !==
+          a.score
+        ){
+
+          return (
+            b.score
+            -
+            a.score
+          );
+
+        }
+
+
+        if(
+          b.date
+          !==
+          a.date
+        ){
+
+          return (
+            String(
+              b.date || ""
+            )
+            .localeCompare(
+              String(
+                a.date || ""
+              )
+            )
+          );
+
+        }
+
+
+        return (
+          String(
+            a.title
+          )
+          .localeCompare(
+            String(
+              b.title
+            ),
+            "fr"
+          )
+        );
+
+      }
+    )
+
+    .slice(
+      0,
+      40
+    )
+
+  );
+
+}
+
+
+function renderSearchResults(
+  results
+){
+
+  const container =
+    document.getElementById(
+      "searchResults"
+    );
+
+
+  if(
+    !results.length
+  ){
+
+    container.innerHTML =
+
+      `
+        <div class="empty">
+          Aucun résultat trouvé.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    results.map(
+      result =>
+
+        `
+          <a
+            class="search-result"
+            href="${escapeHtml(result.href)}"
+          >
+
+            <span class="result-type">
+              ${escapeHtml(result.type)}
+            </span>
+
+
+            <span>
+
+              <span class="result-title">
+                ${escapeHtml(result.title)}
+              </span>
+
+
+              <span class="result-meta">
+                ${escapeHtml(result.meta || "")}
+              </span>
+
+            </span>
+
+
+            <span class="result-arrow">
+              →
+            </span>
+
+          </a>
+        `
+
+    )
+    .join("");
+
+}
+
+
+function performSearch(){
+
+  const input =
+    document.getElementById(
+      "searchInput"
+    );
+
+
+  const query =
+    input.value.trim();
+
+
+  const status =
+    document.getElementById(
+      "searchStatus"
+    );
+
+
+  if(
+    !query
+  ){
+
+    status.textContent =
+      "Tapez un mot ou un nom pour lancer la recherche.";
+
+
+    document.getElementById(
+      "searchResults"
+    ).innerHTML =
+      "";
+
+
+    return;
+
+  }
+
+
+  const results =
+    buildSearchResults(
+      query
+    );
+
+
+  status.textContent =
+
+    results.length
+
+    ?
+
+    `${results.length} résultat(s) pour « ${query} »`
+
+    :
+
+    `Aucun résultat pour « ${query} »`;
+
+
+  renderSearchResults(
+    results
+  );
+
+}
+
+
+function bindSearch(){
+
+  document.getElementById(
+    "searchButton"
+  )
+  .addEventListener(
+    "click",
+    performSearch
+  );
+
+
+  document.getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if(
+        event.key
+        ===
+        "Enter"
+      ){
+
+        performSearch();
+
+      }
+
+    }
+  );
+
+
+  let timer =
+    null;
+
+
+  document.getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "input",
+    event => {
+
+      clearTimeout(
+        timer
+      );
+
+
+      const value =
+        event.target
+        .value
+        .trim();
+
+
+      if(
+        value.length
+        <
+        2
+      ){
+
+        document.getElementById(
+          "searchResults"
+        ).innerHTML =
+          "";
+
+
+        document.getElementById(
+          "searchStatus"
+        ).textContent =
+          "";
+
+
+        return;
+
+      }
+
+
+      timer =
+        setTimeout(
+          performSearch,
+          180
+        );
+
+    }
+  );
+
+}
 
 
 /* ======================================================
    INITIALISATION
 ====================================================== */
 
-(async () => {
+async function init(){
 
   try{
 
 
-    const [
-      index,
-      composition,
-      groupsPayload
-    ] =
+    indexData =
+      await loadJson(
+        ROOT
+        +
+        "index.json"
+      );
 
-      await Promise.all([
-        json(
+
+    selectedYear =
+      determineSelectedYear();
+
+
+    renderYearSwitch();
+
+
+    const results =
+      await Promise.allSettled([
+
+        loadJson(
           ROOT
           +
-          "index.json"
+          "search.json"
         ),
 
-        json(
+        loadJson(
           ROOT
           +
           "composition.json"
         ),
 
-        json(
+        loadJson(
           ROOT
           +
-          "groupes.json"
+          "deputes.json"
         )
+
       ]);
 
 
-    S.index =
-      index;
+    searchData =
+
+      results[0].status
+      ===
+      "fulfilled"
+
+      ?
+
+      results[0].value
+
+      :
+
+      {};
 
 
-    S.composition =
-      composition;
+    compositionData =
+
+      results[1].status
+      ===
+      "fulfilled"
+
+      ?
+
+      results[1].value
+
+      :
+
+      {
+        groupes:[]
+      };
 
 
-    S.groups =
-      groupsPayload.groupes
-      ||
-      [];
+    deputiesData =
+
+      results[2].status
+      ===
+      "fulfilled"
+
+      ?
+
+      results[2].value
+
+      :
+
+      {
+        deputes:[]
+      };
 
 
-    const requested =
-      params();
+    await loadSelectedYearScrutins();
 
 
-    const first =
-      findGroup(
-        requested.name
-      );
+    console.log(
+      `Scrutins chargés pour ${selectedYear} :`,
+      allScrutins.length
+    );
 
 
-    if(
-      !first
-    ){
+    renderCounts();
 
-      throw new Error(
-        "Groupe politique introuvable."
-      );
+    renderComposition();
 
-    }
+    renderScrutins();
 
-
-    S.name =
-      first.groupe;
-
-
-    S.sigle =
-      first.sigle
-      ||
-      "";
-
-
-    const availableYears =
-      years();
-
-
-    if(
-      !availableYears.length
-    ){
-
-      throw new Error(
-        "Aucune année disponible pour ce groupe."
-      );
-
-    }
-
-
-    if(
-      requested.year
-      &&
-      availableYears.includes(
-        requested.year
-      )
-    ){
-
-      S.year =
-        requested.year;
-
-    }
-
-    else{
-
-      const defaultYear =
-        Number(
-          index.default_year
-        );
-
-
-      if(
-        availableYears.includes(
-          defaultYear
-        )
-      ){
-
-        S.year =
-          defaultYear;
-
-      }
-
-      else{
-
-        S.year =
-          availableYears[0];
-
-      }
-
-    }
-
-
-    setUrl();
-
-    renderYears();
-
-    await loadDetail();
+    bindSearch();
 
 
   }
@@ -3580,13 +4428,34 @@ $(
     );
 
 
-    fail(
-      "Impossible de charger les données du groupe."
-    );
+    document.querySelector(
+      "main"
+    ).innerHTML =
+
+      `
+        <section class="panel">
+
+          <div class="error">
+
+            Impossible de charger les données du site.
+
+            <br><br>
+
+            Vérifiez que les fichiers
+            <strong>data/current</strong>
+            sont bien disponibles.
+
+          </div>
+
+        </section>
+      `;
 
   }
 
-})();
+}
+
+
+init();
 
 
 })();
