@@ -29,23 +29,36 @@ jobs:
       - name: Corriger et auditer les données
         run: python postprocess_data.py
 
-      - name: Afficher les fichiers générés
-        if: success()
-        run: ls -R data/current
+      - name: Générer le sitemap et robots.txt
+        run: python build_sitemap.py
 
-      - name: Commit et push des données
-        if: success()
+      - name: Vérifier sitemap et robots
+        run: |
+          echo "=== robots.txt ==="
+          cat robots.txt
+
+          echo ""
+          echo "=== sitemap.xml ==="
+          ls -lh sitemap.xml
+
+          echo ""
+          echo "=== nombre d'URL ==="
+          grep -c "<url>" sitemap.xml
+
+      - name: Commit et push des fichiers générés
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add data/current/
+          git add sitemap.xml
+          git add robots.txt
 
           if git diff --cached --quiet; then
             echo "Aucun changement à commit"
             exit 0
           fi
 
-          git commit -m "Mise à jour automatique des données"
+          git commit -m "Mise à jour automatique des données et du sitemap"
           git pull --rebase origin main
           git push origin main
