@@ -254,10 +254,10 @@ deputes_votes_dir = (
 deputy_count = 0
 
 
-if deputies_votes_dir.exists():
+if deputes_votes_dir.exists():
 
     for year_dir in sorted(
-        deputies_votes_dir.iterdir()
+        deputes_votes_dir.iterdir()
     ):
 
         if not year_dir.is_dir():
