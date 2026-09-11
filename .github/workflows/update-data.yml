@@ -26,6 +26,9 @@ jobs:
       - name: Générer les fichiers de données
         run: python build_data.py
 
+      - name: Corriger et auditer les données
+        run: python postprocess_data.py
+
       - name: Afficher les fichiers générés
         if: success()
         run: ls -R data/current
