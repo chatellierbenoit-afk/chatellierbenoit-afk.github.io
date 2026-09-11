@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
 GROUPS_DIR = BASE_DIR / "groupes"
-VERSION = "GROUP_FIRST_V5_1_AUDITED_DATA"
+VERSION = "GROUP_FIRST_V5_2_GLOBAL_SEARCH"
 
 
 def clean(value):
@@ -530,10 +530,71 @@ def update_group_index():
 
 def update_search_file(uid_map):
     path = BASE_DIR / "search.json"
-    if not path.exists():
-        return
 
-    payload = load_json(path)
+    if path.exists():
+        payload = load_json(path)
+    else:
+        payload = {}
+
+    # Index léger de TOUS les scrutins, toutes années confondues.
+    # La page d'accueil peut ainsi chercher "immigration" même si
+    # l'année affichée est 2026 et que les scrutins correspondants
+    # sont en 2025.
+    compact_scrutins = []
+
+    for scrutin in uid_map.values():
+        uid = clean(scrutin.get("uid"))
+        if not uid:
+            continue
+
+        date = clean(scrutin.get("date"))
+
+        try:
+            year = int(scrutin.get("year") or date[:4])
+        except Exception:
+            year = 0
+
+        subject = clean(
+            scrutin.get("sujet")
+            or scrutin.get("titre_court")
+            or scrutin.get("titre")
+            or scrutin.get("titre_officiel")
+        )
+
+        theme = clean(scrutin.get("theme")) or "Autres"
+
+        # Texte complet utilisé uniquement pour la recherche.
+        # On garde ici le titre officiel afin qu'un mot absent du
+        # titre court reste trouvable.
+        search_text = clean(
+            " ".join(
+                [
+                    theme,
+                    scrutin.get("titre_officiel") or "",
+                    scrutin.get("titre") or "",
+                    scrutin.get("sujet") or "",
+                    scrutin.get("description") or "",
+                ]
+            )
+        )
+
+        compact_scrutins.append(
+            {
+                "uid": uid,
+                "year": year,
+                "date": date,
+                "sujet": subject,
+                "theme": theme,
+                "search_text": search_text,
+            }
+        )
+
+    compact_scrutins.sort(
+        key=lambda row: (str(row.get("date") or ""), str(row.get("uid") or "")),
+        reverse=True,
+    )
+
+    payload["scrutins"] = compact_scrutins
     payload["themes"] = sorted(
         {
             clean(scrutin.get("theme"))
@@ -542,6 +603,8 @@ def update_search_file(uid_map):
         }
     )
     payload["updated_at"] = datetime.now(timezone.utc).isoformat()
+    payload["version"] = VERSION
+
     write_json(path, payload)
 
 
