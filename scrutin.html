@@ -684,6 +684,158 @@ main{
    GROUPES
 ====================================================== */
 
+.group-chart{
+  margin:0 0 24px;
+}
+
+.group-chart-caption{
+  margin:0 0 18px;
+  color:var(--muted);
+  text-align:center;
+  font-size:.88rem;
+  line-height:1.5;
+}
+
+.group-chart-legend{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 20px;
+  margin-bottom:20px;
+  font-size:.85rem;
+}
+
+.group-chart-key{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.group-chart-key::before{
+  content:"";
+  width:11px;
+  height:11px;
+  flex:none;
+  border-radius:3px;
+  background:var(--vote-color);
+}
+
+.group-chart-pour{ --vote-color:var(--green); }
+.group-chart-contre{ --vote-color:var(--red); }
+.group-chart-abstention{ --vote-color:var(--orange); }
+.group-chart-non_votant{ --vote-color:var(--grey); }
+
+.group-chart-rows{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.group-chart-row{
+  display:grid;
+  grid-template-columns:minmax(190px,280px) minmax(0,1fr);
+  align-items:center;
+  gap:12px 24px;
+  padding:14px 0;
+  border-top:1px solid var(--border);
+}
+
+.group-chart-name{
+  display:block;
+  overflow-wrap:anywhere;
+}
+
+.group-chart-name strong{
+  display:block;
+  margin-bottom:3px;
+  font-size:.95rem;
+}
+
+.group-chart-name span{
+  display:block;
+  color:var(--muted);
+  font-size:.8rem;
+  line-height:1.35;
+}
+
+.group-chart-name:hover strong{
+  color:var(--violet-dark);
+  text-decoration:underline;
+}
+
+.group-chart-name:focus-visible,
+.group-details summary:focus-visible{
+  outline:3px solid var(--violet);
+  outline-offset:4px;
+  border-radius:4px;
+}
+
+.group-chart-track{
+  display:flex;
+  height:24px;
+  overflow:hidden;
+  border-radius:5px;
+  background:#f4f1f8;
+}
+
+.group-chart-segment{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  min-width:0;
+  overflow:hidden;
+  color:#fff;
+  background:var(--vote-color);
+  font-size:.75rem;
+  font-weight:800;
+}
+
+.group-chart-counts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 14px;
+  margin:7px 0 0;
+  font-size:.78rem;
+  line-height:1.4;
+  font-variant-numeric:tabular-nums;
+}
+
+.group-chart-counts div{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+}
+
+.group-chart-counts dt{ color:var(--muted); }
+.group-chart-counts dd{ margin:0; font-weight:800; }
+
+.group-chart-note{
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:.8rem;
+  line-height:1.5;
+}
+
+.group-details summary{
+  cursor:pointer;
+  color:var(--violet-dark);
+  font-weight:800;
+}
+
+.group-details[open] summary{ margin-bottom:18px; }
+
+@media(max-width:760px){
+  .group-chart-row{
+    grid-template-columns:minmax(0,1fr);
+    gap:10px;
+    padding:16px 0;
+  }
+
+  .group-chart-name span{ font-size:.82rem; }
+  .group-chart-counts{ gap:5px 12px; }
+}
+
 .group-grid{
 
   display:grid;
@@ -1521,29 +1673,31 @@ main{
 
 <section class="panel">
 
-  <h2>
+  <h2 id="groupsTitle">
     Comment ont voté les groupes ?
   </h2>
 
 
   <p class="intro">
 
-    Position dominante des députés de chaque groupe
-    mentionnés dans ce scrutin.
+    Les voix pour, contre et les abstentions,
+    groupe par groupe, au moment du scrutin.
 
   </p>
 
 
-  <div
-    id="groupsGrid"
-    class="group-grid"
-  >
-
-    <div class="loading">
-      Chargement…
-    </div>
-
+  <div id="groupChart">
+    <div class="loading">Chargement du graphique…</div>
   </div>
+
+  <details id="groupDetails" class="group-details">
+    <summary>Voir les positions dominantes et la cohésion des groupes</summary>
+
+    <div
+      id="groupsGrid"
+      class="group-grid"
+    ></div>
+  </details>
 
 </section>
 
@@ -2667,6 +2821,94 @@ function renderSummary() {
 }
 
 
+function renderGroupChart(groups) {
+
+  const container = $("groupChart");
+  $("groupDetails").hidden = !groups.length;
+
+  if (!groups.length) {
+    container.innerHTML = `
+      <div class="empty">
+        Aucun résultat par groupe n'est disponible pour ce scrutin.
+      </div>
+    `;
+    return;
+  }
+
+  const categories = [
+    {key:"pour", label:"Pour"},
+    {key:"contre", label:"Contre"},
+    {key:"abstention", label:"Abstentions"},
+    {key:"non_votant", label:"Non-votants"}
+  ];
+
+  // Use recorded counts, never today's membership or inferred absences.
+  const count = (group, key) => {
+    const value = Number(group[key] ?? 0);
+    return Number.isSafeInteger(value) && value >= 0 ? value : 0;
+  };
+
+  const totals = groups.map(group =>
+    categories.reduce((total, category) => total + count(group, category.key), 0)
+  );
+  const maximum = Math.max(1, ...totals);
+
+  container.innerHTML = `
+    <figure class="group-chart" aria-labelledby="groupsTitle" aria-describedby="groupChartCaption groupChartNote">
+      <figcaption id="groupChartCaption" class="group-chart-caption">
+        Chaque barre représente les députés recensés pour ce groupe.
+        Toutes les barres utilisent la même échelle, de 0 à ${fmt(maximum)} députés.
+      </figcaption>
+      <div class="group-chart-legend" aria-label="Légende">
+        ${categories.map(category => `
+          <span class="group-chart-key group-chart-${category.key}">${category.label}</span>
+        `).join("")}
+      </div>
+      <ul class="group-chart-rows" role="list">
+        ${groups.map(group => {
+          const name = group.groupe || "Groupe inconnu";
+          const abbreviation = group.groupe_sigle || "";
+          const url = `./groupe.html?name=${encodeURIComponent(name)}&year=${encodeURIComponent(selectedYear)}`;
+
+          return `
+            <li class="group-chart-row">
+              <a class="group-chart-name" href="${escapeHtml(url)}">
+                <strong>${escapeHtml(abbreviation || name)}</strong>
+                ${abbreviation ? `<span>${escapeHtml(name)}</span>` : ""}
+              </a>
+              <div class="group-chart-values">
+                <div class="group-chart-track" aria-hidden="true">
+                  ${categories.map(category => {
+                    const value = count(group, category.key);
+                    if (!value) return "";
+                    const width = value / maximum * 100;
+                    return `
+                      <span class="group-chart-segment group-chart-${category.key}" style="width:${width}%">
+                        ${width >= 8 ? fmt(value) : ""}
+                      </span>
+                    `;
+                  }).join("")}
+                </div>
+                <dl class="group-chart-counts">
+                  ${categories.map(category => `
+                    <div><dt>${category.label}</dt><dd>${fmt(count(group, category.key))}</dd></div>
+                  `).join("")}
+                </dl>
+              </div>
+            </li>
+          `;
+        }).join("")}
+      </ul>
+      <p id="groupChartNote" class="group-chart-note">
+        Seuls les groupes et députés recensés dans les données de ce scrutin sont affichés.
+        Les non-votants sont ceux signalés dans le scrutin ; ce nombre ne recense pas tous les absents.
+      </p>
+    </figure>
+  `;
+
+}
+
+
 function renderGroups() {
 
   const groups =
@@ -2701,6 +2943,8 @@ function renderGroups() {
       )
   );
 
+
+  renderGroupChart(groups);
 
   if (
     !groups.length
