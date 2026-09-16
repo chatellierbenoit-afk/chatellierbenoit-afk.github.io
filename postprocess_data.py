@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 BASE_DIR = Path("data/current")
 MONTHS_DIR = BASE_DIR / "months"
 GROUPS_DIR = BASE_DIR / "groupes"
-VERSION = "GROUP_FIRST_V5_2_GLOBAL_SEARCH"
+VERSION = "GROUP_FIRST_V5_2_SEARCH_ALIASES"
 
 
 def clean(value):
@@ -528,21 +528,60 @@ def update_group_index():
     write_json(path, payload)
 
 
+SEARCH_ALIAS_RULES = [
+    (
+        [
+            "retention administrative",
+            "centre de retention",
+            "centres de retention",
+            "etranger en situation irreguliere",
+            "etrangers en situation irreguliere",
+            "eloignement des etrangers",
+            "obligation de quitter le territoire",
+            "oqtf",
+            "droit des etrangers",
+            "titre de sejour",
+            "titres de sejour",
+            "admission exceptionnelle au sejour",
+        ],
+        "immigration asile étranger étrangers migrant migrants "
+        "titre de séjour rétention administrative OQTF",
+    ),
+]
+
+
+def build_search_aliases(scrutin):
+    text = normalize_text(searchable_text(scrutin))
+    aliases = []
+
+    for triggers, alias_text in SEARCH_ALIAS_RULES:
+        if any(has_term(text, trigger) for trigger in triggers):
+            aliases.append(alias_text)
+
+    return " ".join(aliases).strip()
+
+
 def update_search_file(uid_map):
     path = BASE_DIR / "search.json"
+    if not path.exists():
+        return 0
 
-    if path.exists():
-        payload = load_json(path)
-    else:
-        payload = {}
+    payload = load_json(path)
+    payload["themes"] = sorted(
+        {
+            clean(scrutin.get("theme"))
+            for scrutin in uid_map.values()
+            if clean(scrutin.get("theme"))
+        }
+    )
 
-    # Index léger de TOUS les scrutins, toutes années confondues.
-    # La page d'accueil peut ainsi chercher "immigration" même si
-    # l'année affichée est 2026 et que les scrutins correspondants
-    # sont en 2025.
-    compact_scrutins = []
+    search_scrutins = []
 
     for scrutin in uid_map.values():
+        aliases = build_search_aliases(scrutin)
+        if not aliases:
+            continue
+
         uid = clean(scrutin.get("uid"))
         if not uid:
             continue
@@ -554,59 +593,23 @@ def update_search_file(uid_map):
         except Exception:
             year = 0
 
-        subject = clean(
-            scrutin.get("sujet")
-            or scrutin.get("titre_court")
-            or scrutin.get("titre")
-            or scrutin.get("titre_officiel")
-        )
-
-        theme = clean(scrutin.get("theme")) or "Autres"
-
-        # Texte complet utilisé uniquement pour la recherche.
-        # On garde ici le titre officiel afin qu'un mot absent du
-        # titre court reste trouvable.
-        search_text = clean(
-            " ".join(
-                [
-                    theme,
-                    scrutin.get("titre_officiel") or "",
-                    scrutin.get("titre") or "",
-                    scrutin.get("sujet") or "",
-                    scrutin.get("description") or "",
-                ]
-            )
-        )
-
-        compact_scrutins.append(
-            {
-                "uid": uid,
-                "year": year,
-                "date": date,
-                "sujet": subject,
-                "theme": theme,
-                "search_text": search_text,
-            }
-        )
-
-    compact_scrutins.sort(
-        key=lambda row: (str(row.get("date") or ""), str(row.get("uid") or "")),
-        reverse=True,
-    )
-
-    payload["scrutins"] = compact_scrutins
-    payload["themes"] = sorted(
-        {
-            clean(scrutin.get("theme"))
-            for scrutin in uid_map.values()
-            if clean(scrutin.get("theme"))
+        row = {
+            "uid": uid,
+            "description": aliases,
         }
-    )
+
+        if year:
+            row["year"] = year
+
+        if date:
+            row["date"] = date
+
+        search_scrutins.append(row)
+
+    payload["scrutins"] = search_scrutins
     payload["updated_at"] = datetime.now(timezone.utc).isoformat()
-    payload["version"] = VERSION
-
     write_json(path, payload)
-
+    return len(search_scrutins)
 
 def update_index(year_vote_counts):
     path = BASE_DIR / "index.json"
@@ -649,7 +652,7 @@ def print_audit(uid_map):
 
     print("")
     print("======================================================")
-    print(" POSTPROCESS DATA — V5.1 AUDITED")
+    print(" POSTPROCESS DATA — V5.2 SEARCH ALIASES")
     print("======================================================")
     print("")
     print("Scrutins corrigés / indexés :", len(uid_map))
@@ -678,13 +681,14 @@ def main():
 
     group_files = update_group_detail_files(uid_map)
     update_group_index()
-    update_search_file(uid_map)
+    search_alias_count = update_search_file(uid_map)
     update_index(year_vote_counts)
 
     print_audit(uid_map)
 
     print("Thèmes modifiés :", theme_changes)
     print("Fichiers groupe mis à jour :", group_files)
+    print("Scrutins enrichis pour la recherche :", search_alias_count)
     print("Version publiée :", VERSION)
     print("Post-traitement terminé.")
 
