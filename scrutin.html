@@ -688,36 +688,33 @@ main{
   margin:0 0 24px;
 }
 
-.group-chart-caption{
-  margin:0 0 18px;
-  color:var(--muted);
-  text-align:center;
-  font-size:.88rem;
-  line-height:1.5;
+.group-chart-picker{
+  max-width:620px;
+  margin:0 auto 24px;
 }
 
-.group-chart-legend{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px 20px;
-  margin-bottom:20px;
-  font-size:.85rem;
-}
-
-.group-chart-key{
-  display:inline-flex;
+.group-pie-layout{
+  display:grid;
+  grid-template-columns:minmax(0,280px) minmax(0,310px);
   align-items:center;
-  gap:7px;
+  justify-content:center;
+  gap:36px;
 }
 
-.group-chart-key::before{
-  content:"";
-  width:11px;
-  height:11px;
-  flex:none;
-  border-radius:3px;
-  background:var(--vote-color);
+.group-pie{
+  display:block;
+  width:100%;
+  max-width:280px;
+  height:auto;
+  margin:auto;
+}
+
+.group-pie-label{
+  fill:#fff;
+  font-size:18px;
+  font-weight:800;
+  text-anchor:middle;
+  dominant-baseline:central;
 }
 
 .group-chart-pour{ --vote-color:var(--green); }
@@ -725,94 +722,68 @@ main{
 .group-chart-abstention{ --vote-color:var(--orange); }
 .group-chart-non_votant{ --vote-color:var(--grey); }
 
-.group-chart-rows{
+.group-pie-slice{
+  fill:var(--vote-color);
+}
+
+.group-pie-counts{
   margin:0;
-  padding:0;
-  list-style:none;
-}
-
-.group-chart-row{
-  display:grid;
-  grid-template-columns:minmax(190px,280px) minmax(0,1fr);
-  align-items:center;
-  gap:12px 24px;
-  padding:14px 0;
-  border-top:1px solid var(--border);
-}
-
-.group-chart-name{
-  display:block;
-  overflow-wrap:anywhere;
-}
-
-.group-chart-name strong{
-  display:block;
-  margin-bottom:3px;
-  font-size:.95rem;
-}
-
-.group-chart-name span{
-  display:block;
-  color:var(--muted);
-  font-size:.8rem;
-  line-height:1.35;
-}
-
-.group-chart-name:hover strong{
-  color:var(--violet-dark);
-  text-decoration:underline;
-}
-
-.group-chart-name:focus-visible,
-.group-details summary:focus-visible{
-  outline:3px solid var(--violet);
-  outline-offset:4px;
-  border-radius:4px;
-}
-
-.group-chart-track{
-  display:flex;
-  height:24px;
-  overflow:hidden;
-  border-radius:5px;
-  background:#f4f1f8;
-}
-
-.group-chart-segment{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:none;
-  min-width:0;
-  overflow:hidden;
-  color:#fff;
-  background:var(--vote-color);
-  font-size:.75rem;
-  font-weight:800;
-}
-
-.group-chart-counts{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px 14px;
-  margin:7px 0 0;
-  font-size:.78rem;
-  line-height:1.4;
   font-variant-numeric:tabular-nums;
 }
 
-.group-chart-counts div{
+.group-pie-counts > div{
   display:flex;
-  align-items:baseline;
-  gap:4px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  padding:13px 0;
+  border-bottom:1px solid var(--border);
 }
 
-.group-chart-counts dt{ color:var(--muted); }
-.group-chart-counts dd{ margin:0; font-weight:800; }
+.group-pie-counts dt{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  font-size:.9rem;
+}
+
+.group-pie-counts dt::before{
+  content:"";
+  width:12px;
+  height:12px;
+  flex:none;
+  border-radius:3px;
+  background:var(--vote-color);
+}
+
+.group-pie-counts dd{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin:0;
+}
+
+.group-pie-counts strong{ font-size:1.15rem; }
+.group-pie-counts dd span{
+  min-width:58px;
+  color:var(--muted);
+  text-align:right;
+  font-size:.85rem;
+}
+
+.group-pie-total{
+  margin:16px 0 0;
+  color:var(--muted);
+  text-align:center;
+  font-size:.88rem;
+}
 
 .group-chart-note{
-  margin:14px 0 0;
+  max-width:760px;
+  margin:20px auto 0;
   color:var(--muted);
+  text-align:center;
   font-size:.8rem;
   line-height:1.5;
 }
@@ -823,17 +794,23 @@ main{
   font-weight:800;
 }
 
+.group-chart-picker select:focus-visible,
+.group-details summary:focus-visible{
+  outline:3px solid var(--violet);
+  outline-offset:4px;
+  border-radius:4px;
+}
+
 .group-details[open] summary{ margin-bottom:18px; }
 
 @media(max-width:760px){
-  .group-chart-row{
+  .group-pie-layout{
     grid-template-columns:minmax(0,1fr);
-    gap:10px;
-    padding:16px 0;
+    gap:12px;
   }
 
-  .group-chart-name span{ font-size:.82rem; }
-  .group-chart-counts{ gap:5px 12px; }
+  .group-pie{ max-width:240px; }
+  .group-pie-counts{ width:100%; max-width:360px; margin:auto; }
 }
 
 .group-grid{
@@ -1680,8 +1657,7 @@ main{
 
   <p class="intro">
 
-    Les voix pour, contre et les abstentions,
-    groupe par groupe, au moment du scrutin.
+    Choisissez un groupe pour voir la répartition de ses votes.
 
   </p>
 
@@ -2841,71 +2817,110 @@ function renderGroupChart(groups) {
     {key:"abstention", label:"Abstentions"},
     {key:"non_votant", label:"Non-votants"}
   ];
+  const percent = new Intl.NumberFormat("fr-FR", {maximumFractionDigits:1});
 
-  // Use recorded counts, never today's membership or inferred absences.
+  // Counts refer to the groups at the time of the vote, not today's membership.
   const count = (group, key) => {
     const value = Number(group[key] ?? 0);
     return Number.isSafeInteger(value) && value >= 0 ? value : 0;
   };
 
-  const totals = groups.map(group =>
-    categories.reduce((total, category) => total + count(group, category.key), 0)
-  );
-  const maximum = Math.max(1, ...totals);
-
   container.innerHTML = `
-    <figure class="group-chart" aria-labelledby="groupsTitle" aria-describedby="groupChartCaption groupChartNote">
-      <figcaption id="groupChartCaption" class="group-chart-caption">
-        Chaque barre représente les députés recensés pour ce groupe.
-        Toutes les barres utilisent la même échelle, de 0 à ${fmt(maximum)} députés.
-      </figcaption>
-      <div class="group-chart-legend" aria-label="Légende">
-        ${categories.map(category => `
-          <span class="group-chart-key group-chart-${category.key}">${category.label}</span>
-        `).join("")}
+    <figure class="group-chart" aria-labelledby="groupsTitle" aria-describedby="groupChartNote">
+      <div class="field group-chart-picker">
+        <label for="groupChartSelect">Afficher les votes de</label>
+        <select id="groupChartSelect">
+          <option value="">Tous les groupes</option>
+          ${groups.map((group, index) => `
+            <option value="${index}">${escapeHtml(
+              (group.groupe_sigle ? group.groupe_sigle + " — " : "")
+              + (group.groupe || "Groupe inconnu")
+            )}</option>
+          `).join("")}
+        </select>
       </div>
-      <ul class="group-chart-rows" role="list">
-        ${groups.map(group => {
-          const name = group.groupe || "Groupe inconnu";
-          const abbreviation = group.groupe_sigle || "";
-          const url = `./groupe.html?name=${encodeURIComponent(name)}&year=${encodeURIComponent(selectedYear)}`;
-
-          return `
-            <li class="group-chart-row">
-              <a class="group-chart-name" href="${escapeHtml(url)}">
-                <strong>${escapeHtml(abbreviation || name)}</strong>
-                ${abbreviation ? `<span>${escapeHtml(name)}</span>` : ""}
-              </a>
-              <div class="group-chart-values">
-                <div class="group-chart-track" aria-hidden="true">
-                  ${categories.map(category => {
-                    const value = count(group, category.key);
-                    if (!value) return "";
-                    const width = value / maximum * 100;
-                    return `
-                      <span class="group-chart-segment group-chart-${category.key}" style="width:${width}%">
-                        ${width >= 8 ? fmt(value) : ""}
-                      </span>
-                    `;
-                  }).join("")}
-                </div>
-                <dl class="group-chart-counts">
-                  ${categories.map(category => `
-                    <div><dt>${category.label}</dt><dd>${fmt(count(group, category.key))}</dd></div>
-                  `).join("")}
-                </dl>
-              </div>
-            </li>
-          `;
-        }).join("")}
-      </ul>
-      <p id="groupChartNote" class="group-chart-note">
-        Seuls les groupes et députés recensés dans les données de ce scrutin sont affichés.
-        Les non-votants sont ceux signalés dans le scrutin ; ce nombre ne recense pas tous les absents.
-      </p>
+      <div id="groupPieResult" aria-live="polite" aria-atomic="true"></div>
+      <figcaption id="groupChartNote" class="group-chart-note">
+        Les parts représentent les députés recensés dans ce scrutin.
+        Les non-votants signalés ne comprennent pas tous les absents.
+        Un groupe sans vote recensé n'apparaît pas dans la liste.
+      </figcaption>
     </figure>
   `;
 
+  const select = $("groupChartSelect");
+
+  function updatePie() {
+    const selected = select.value === ""
+      ? groups
+      : groups.filter((group, index) => index === Number(select.value));
+    const values = categories.map(category => ({
+      ...category,
+      value:selected.reduce((total, group) => total + count(group, category.key), 0)
+    }));
+    const total = values.reduce((sum, category) => sum + category.value, 0);
+    const result = $("groupPieResult");
+
+    if (!total) {
+      result.innerHTML = '<p class="empty">Aucun vote recensé pour cette sélection.</p>';
+      return;
+    }
+
+    const name = select.value === ""
+      ? "Tous les groupes"
+      : selected[0].groupe || "Groupe inconnu";
+    let angle = -Math.PI / 2;
+    const labels = [];
+    const point = (a, radius) => [120 + Math.cos(a) * radius, 120 + Math.sin(a) * radius];
+    const slices = values.map(category => {
+      if (!category.value) return "";
+      const share = category.value / total;
+      const end = angle + share * Math.PI * 2;
+      const startPoint = point(angle, 112);
+      const endPoint = point(end, 112);
+      const title = `${category.label} : ${fmt(category.value)} (${percent.format(share * 100)} %)`;
+      let shape;
+
+      // A complete circle avoids a degenerate SVG arc for unanimous votes.
+      if (category.value === total) {
+        shape = `<circle cx="120" cy="120" r="112" class="group-pie-slice group-chart-${category.key}"><title>${title}</title></circle>`;
+      } else {
+        const path = `M 120 120 L ${startPoint.join(" ")} A 112 112 0 ${share > .5 ? 1 : 0} 1 ${endPoint.join(" ")} Z`;
+        shape = `<path d="${path}" class="group-pie-slice group-chart-${category.key}"><title>${title}</title></path>`;
+      }
+
+      if (share >= .08) {
+        const [x, y] = category.value === total ? [120, 120] : point(angle + (end - angle) / 2, 73);
+        labels.push(`<text x="${x}" y="${y}" class="group-pie-label">${Math.round(share * 100)} %</text>`);
+      }
+      angle = end;
+      return shape;
+    }).join("");
+
+    result.innerHTML = `
+      <div class="group-pie-layout">
+        <div>
+          <svg class="group-pie" viewBox="0 0 240 240" role="img" aria-labelledby="groupPieTitle groupPieDescription">
+            <title id="groupPieTitle">Répartition des votes — ${escapeHtml(name)}</title>
+            <desc id="groupPieDescription">${values.map(category => `${category.label} : ${fmt(category.value)}`).join(". ")}.</desc>
+            ${slices}${labels.join("")}
+          </svg>
+          <p class="group-pie-total">${fmt(total)} député${total > 1 ? "s" : ""} recensé${total > 1 ? "s" : ""}</p>
+        </div>
+        <dl class="group-pie-counts">
+          ${values.map(category => `
+            <div>
+              <dt class="group-chart-${category.key}">${category.label}</dt>
+              <dd><strong>${fmt(category.value)}</strong><span>${percent.format(category.value / total * 100)} %</span></dd>
+            </div>
+          `).join("")}
+        </dl>
+      </div>
+    `;
+  }
+
+  select.addEventListener("change", updatePie);
+  updatePie();
 }
 
 
