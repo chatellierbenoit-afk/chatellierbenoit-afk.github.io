@@ -1427,6 +1427,8 @@ main{
 
 </style>
 
+<link rel="stylesheet" href="./analytics.css">
+<script src="./analytics.js"></script>
 </head>
 
 
@@ -3589,6 +3591,7 @@ function buildSearchResults(
 
         "";
 
+      const sigleScore = scoreText(sigle, query);
 
       const score =
 
@@ -3599,12 +3602,7 @@ function buildSearchResults(
             query
           ),
 
-          scoreText(
-            sigle,
-            query
-          )
-          +
-          10
+          sigleScore > 0 ? sigleScore + 10 : 0
 
         );
 
@@ -4149,7 +4147,7 @@ function renderSearchResults(
 }
 
 
-function performSearch(){
+function performSearch(immediate = true){
 
   const input =
     document.getElementById(
@@ -4208,6 +4206,8 @@ function performSearch(){
   renderSearchResults(
     results
   );
+
+  window.qvmdAnalytics?.search(query, results.length, 'accueil', immediate !== false);
 
 }
 
@@ -4291,7 +4291,7 @@ function bindSearch(){
 
       timer =
         setTimeout(
-          performSearch,
+          () => performSearch(false),
           180
         );
 
@@ -4414,6 +4414,8 @@ async function init(){
     renderScrutins();
 
     bindSearch();
+
+    window.qvmdAnalytics?.ready();
 
 
   }

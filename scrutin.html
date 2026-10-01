@@ -1364,6 +1364,8 @@ main{
 
 </style>
 
+<link rel="stylesheet" href="./analytics.css">
+<script src="./analytics.js"></script>
 </head>
 
 
@@ -3471,6 +3473,8 @@ function renderNominativeVotes() {
 
     `${fmt(filtered.length)} vote(s) affiché(s) sur ${fmt(nominativeVotes.length)}.`;
 
+  window.qvmdAnalytics?.search($('nameFilter').value, filtered.length, 'scrutin');
+
 
   if (
     !filtered.length
@@ -3803,6 +3807,8 @@ async function init() {
     renderSummary();
 
     renderGroups();
+
+    window.qvmdAnalytics?.ready();
 
 
     await initNominativeSection();

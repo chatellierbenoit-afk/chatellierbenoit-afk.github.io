@@ -216,6 +216,8 @@
       }
     }
   </style>
+<link rel="stylesheet" href="./analytics.css">
+<script src="./analytics.js"></script>
 </head>
 <body>
   <header class="hero">
@@ -476,13 +478,17 @@
         initMap(geojson);
 
         document.getElementById("searchInput").addEventListener("input", e => {
-          renderList(filterRows(e.target.value));
+          const rows = filterRows(e.target.value);
+          renderList(rows);
+          window.qvmdAnalytics?.search(e.target.value, rows.length, 'circonscriptions');
         });
 
       } catch (error) {
         console.error(error);
         document.querySelector("main").innerHTML =
           `<section class="panel"><div class="empty">Erreur de chargement des circonscriptions.</div></section>`;
+      } finally {
+        window.qvmdAnalytics?.ready();
       }
     }
 

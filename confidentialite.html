@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confidentialité — Que vote mon député ?</title>
+  <meta name="description" content="Les statistiques de fréquentation de Que vote mon député ? et vos choix concernant les cookies.">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f7f5fc; color: #252233; font: 17px/1.65 Arial, sans-serif; }
+    main { max-width: 800px; margin: 40px auto; padding: 28px; background: white; border-radius: 18px; }
+    h1 { font-size: 30px; line-height: 1.2; }
+    h2 { margin-top: 30px; font-size: 22px; }
+    a { color: #5b00c7; }
+    button { padding: 12px 16px; border: 1px solid #5b00c7; border-radius: 8px; color: #5b00c7; background: white; cursor: pointer; font: inherit; }
+    @media (max-width: 640px) { main { margin: 12px; padding: 20px; } }
+  </style>
+  <link rel="stylesheet" href="./analytics.css">
+  <script src="./analytics.js"></script>
+</head>
+<body>
+  <main>
+    <a href="./index.html">Retour à l’accueil</a>
+    <h1>Confidentialité et statistiques</h1>
+    <p>Que vote mon député ? utilise Google Analytics 4 pour connaître la fréquentation du site et améliorer sa recherche. Ce service est chargé uniquement si vous acceptez les cookies de statistiques. Vous pouvez consulter les votes et utiliser la recherche en les refusant.</p>
+    <h2>Ce qui est mesuré</h2>
+    <p>Après acceptation, Google Analytics reçoit des informations sur les visites et les pages consultées, la provenance des visites, le navigateur et l’appareil utilisés. Un identifiant de navigateur conservé dans un cookie permet de compter les visites et les retours sur le site.</p>
+    <p>Les mots recherchés sur le site, la rubrique de recherche et le nombre de résultats proposés sont également transmis. Les recherches sans résultat sont comptabilisées. Les adresses e-mail, URL et longues suites de chiffres détectées dans une recherche sont exclues de ce suivi. Évitez de saisir des informations personnelles dans ce champ.</p>
+    <p>Le suivi est configuré sans fonctions de personnalisation publicitaire ni Google Signals. Les recherches saisies dans Google ou un autre moteur externe ne sont pas fournies par ce suivi.</p>
+    <h2>Vos cookies et votre choix</h2>
+    <p>Votre acceptation ou votre refus est conservé dans votre navigateur pendant 180 jours. Les cookies Google Analytics, dont le nom commence par <code>_ga</code>, sont configurés pour une durée maximale de 180 jours, sans prolongation automatique à chaque visite.</p>
+    <p>Vous pouvez modifier votre choix avec le bouton « Choix des cookies » présent en bas de chaque page. Le refus arrête le suivi et supprime les cookies Google Analytics accessibles sur ce site. Il ne supprime pas les données déjà transmises.</p>
+    <button type="button" onclick="window.qvmdAnalytics?.showPreferences()">Modifier mon choix</button>
+    <h2>Le service Google Analytics</h2>
+    <p>Les données de mesure sont traitées par Google pour fournir les statistiques à l’éditeur du site. Consultez les <a href="https://policies.google.com/privacy?hl=fr" rel="noreferrer">règles de confidentialité de Google</a> et ses explications sur <a href="https://policies.google.com/technologies/partner-sites?hl=fr" rel="noreferrer">l’utilisation des données provenant de sites partenaires</a>.</p>
+  </main>
+  <script>window.qvmdAnalytics?.ready();</script>
+</body>
+</html>

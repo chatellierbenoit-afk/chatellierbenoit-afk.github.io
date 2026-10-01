@@ -1035,6 +1035,8 @@ h2{
 
 </style>
 
+<link rel="stylesheet" href="./analytics.css">
+<script src="./analytics.js"></script>
 </head>
 
 
@@ -2260,6 +2262,8 @@ async function loadDetail(){
 
   render();
 
+  window.qvmdAnalytics?.ready();
+
 }
 
 
@@ -2989,6 +2993,8 @@ function apply(){
 function renderVotes(
   array
 ){
+
+  window.qvmdAnalytics?.search(S.q, array.length, 'groupe');
 
   $(
     "status"
