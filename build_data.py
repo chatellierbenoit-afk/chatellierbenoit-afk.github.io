@@ -600,6 +600,80 @@ def choose_active_assembly_mandate(actor):
     return candidates[0][1]
 
 
+class OfficialMandateStatusParser(HTMLParser):
+    """Lire l'identité et le statut principal, pas l'historique des mandats."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.name_parts = []
+        self.status_parts = []
+        self.in_name = False
+        self.in_status = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "h1":
+            self.in_name = True
+        if tag == "span":
+            classes = set(dict(attrs).get("class", "").split())
+            if {"_colored", "_bold", "_big"} <= classes:
+                self.in_status = True
+
+    def handle_endtag(self, tag):
+        if tag == "h1":
+            self.in_name = False
+        if tag == "span":
+            self.in_status = False
+
+    def handle_data(self, data):
+        if self.in_name:
+            self.name_parts.append(data)
+        if self.in_status:
+            self.status_parts.append(data)
+
+
+def confirmed_closed_mandate(actor, html, today=None):
+    parser = OfficialMandateStatusParser()
+    parser.feed(html)
+    ident = actor.get("etatCivil", {}).get("ident", {})
+    expected_name = clean(f"{ident.get('prenom', '')} {ident.get('nom', '')}")
+    page_name = re.sub(r"^(?:Mme|M\.)\s+", "", clean("".join(parser.name_parts)))
+    if not expected_name or page_name.casefold() != expected_name.casefold():
+        return None
+    status = clean("".join(parser.status_parts))
+    match = re.fullmatch(
+        r"\|?\s*Mandat clos le (\d{1,2}) ([a-zéû]+) (\d{4}) "
+        r"\((\d+)e législature\)", status
+    )
+    if not match or match.group(4) != LEGISLATURE:
+        return None
+    months = "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split()
+    try:
+        end = date(int(match.group(3)), months.index(match.group(2)) + 1, int(match.group(1)))
+    except ValueError:
+        return None
+    return end if end < (today or date.today()) else None
+
+
+def reconcile_current_actors(raw_actors, official_groups):
+    """AMO40 peut conserver un mandat clos après sa disparition de la liste à jour."""
+    extra = sorted(set(official_groups) - set(raw_actors))
+    if extra:
+        raise RuntimeError(
+            "Députés de la liste officielle absents d'AMO40 : " + ", ".join(extra)
+        )
+    for uid in sorted(set(raw_actors) - set(official_groups)):
+        html = download_text(f"https://www.assemblee-nationale.fr/dyn/deputes/{uid}")
+        end = confirmed_closed_mandate(raw_actors[uid], html)
+        if end is None:
+            raise RuntimeError(
+                f"Décalage non résolu pour {uid} : absent de la liste des groupes, "
+                "mais la fiche officielle ne confirme pas un mandat clos. "
+                "Le build est stoppé plutôt que de publier une composition incertaine."
+            )
+        print(f"Mandat clos confirmé sur la fiche officielle : {uid}, le {end.isoformat()}.")
+    return {uid: actor for uid, actor in raw_actors.items() if uid in official_groups}
+
+
 def load_current_deputies():
     print("")
     print("Téléchargement AMO40 — députés actifs / mandats / organes…")
@@ -644,23 +718,11 @@ def load_current_deputies():
 
     official_groups = load_official_current_groups()
 
-    amo_uids = set(raw_actors)
-    group_uids = set(official_groups)
-
-    missing_group = sorted(amo_uids - group_uids)
-    extra_group = sorted(group_uids - amo_uids)
-
-    if missing_group or extra_group:
-        raise RuntimeError(
-            "Décalage entre AMO40 et la liste officielle des groupes. "
-            f"Sans groupe dans la page officielle : {len(missing_group)} ; "
-            f"présents dans la page groupes mais absents d'AMO40 : {len(extra_group)}. "
-            "Le build est stoppé plutôt que de publier une composition incertaine."
-        )
+    current_actors = reconcile_current_actors(raw_actors, official_groups)
 
     deputies = {}
 
-    for uid, actor in raw_actors.items():
+    for uid, actor in current_actors.items():
         ident = (
             actor.get("etatCivil", {})
             .get("ident", {})
